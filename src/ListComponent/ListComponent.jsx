@@ -29,7 +29,7 @@ const ListComponent = () => {
     }, []);
 
     return (
-        <div className="list-container">
+        <div className="container">
             <h2>Список комплектующих</h2>
             {error && <p className="error">{error}</p>}
             {components.length > 0 ? (
