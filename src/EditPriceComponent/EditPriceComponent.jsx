@@ -71,22 +71,23 @@ const EditPriceComponent = () => {
     };
 
     return (
-        <div className="container edit-price-component__container">
-            <div className="input-group mb-3">
-                <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Артикул"
-                    value={article}
-                    onChange={(e) => setArticle(e.target.value)}
-                    aria-label="Артикул"
-                    aria-describedby="button-addon2"
-                />
-                <button className="btn btn-outline-secondary" type="button" id="button-addon2" onClick={handleSearchComponent}>
-                    Найти
-                </button>
+        <div className="edit-price-component__container">
+            <div className="container">
+                <div className="input-group mb-3">
+                    <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Артикул"
+                        value={article}
+                        onChange={(e) => setArticle(e.target.value)}
+                        aria-label="Артикул"
+                        aria-describedby="button-addon2"
+                    />
+                    <button className="btn btn-outline-secondary" type="button" id="button-addon2" onClick={handleSearchComponent}>
+                        Найти
+                    </button>
+                </div>
             </div>
-
             {!component ? (
                 <p>Нет данных</p>
             ) : (
