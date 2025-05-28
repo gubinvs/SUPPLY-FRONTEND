@@ -9,6 +9,10 @@ const EditPriceComponent = () => {
     const [price, setPrice] = useState("");
     const [deliveryTime, setDeliveryTime] = useState("");
     const [selectedProvider, setSelectedProvider] = useState("");
+    const [name, setName] = useState('');
+    const [isSearched, setIsSearched] = useState(false);
+
+
 
     useEffect(() => {
         fetch(ApiUrl + "/api/ReturnListProvider")
@@ -23,6 +27,8 @@ const EditPriceComponent = () => {
     const handleSearchComponent = () => {
         if (!article.trim()) return;
 
+        setIsSearched(true); // помечаем, что поиск выполнен
+
         fetch(`${ApiUrl}/api/ReturnDataArticle/${encodeURIComponent(article)}`)
             .then((response) => {
                 if (!response.ok) throw new Error("Ошибка при получении данных компонента");
@@ -30,7 +36,7 @@ const EditPriceComponent = () => {
             })
             .then((data) => {
                 setComponent(data.component);
-                setPrice(""); // очищаем поля при новом поиске
+                setPrice("");
                 setDeliveryTime("");
                 setSelectedProvider("");
             })
@@ -70,27 +76,89 @@ const EditPriceComponent = () => {
         });
     };
 
+    const handleAddComponent = async () => {
+        if (!article || !name) {
+            alert('Заполните оба поля');
+            return;
+        }
+
+        try {
+            const response = await fetch(ApiUrl + '/api/AddComponent', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    vendorCodeComponent: article,
+                    nameComponent: name
+                })
+            });
+
+            if (response.ok) {
+                alert('Компонент успешно добавлен!');
+                window.location.reload(); // перезагрузить страницу
+            } else {
+                const errorText = await response.text();
+                alert(`Ошибка при добавлении: ${errorText}`);
+            }
+        } catch (error) {
+            alert(`Ошибка соединения: ${error}`);
+        }
+    };
+
     return (
-        <div className="edit-price-component__container">
-            <div className="container">
-                <div className="input-group mb-3">
-                    <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Артикул"
-                        value={article}
-                        onChange={(e) => setArticle(e.target.value)}
-                        aria-label="Артикул"
-                        aria-describedby="button-addon2"
-                    />
-                    <button className="btn btn-outline-secondary" type="button" id="button-addon2" onClick={handleSearchComponent}>
-                        Найти
-                    </button>
-                </div>
+        <div className="container edit-price-component__container">
+            <h4 className="edit-price-component__h4">Внести данные о ценах поставщика:</h4>
+            <div className="input-group mb-3 edit-price-component__search-block">
+                <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Артикул"
+                    value={article}
+                    onChange={(e) => setArticle(e.target.value)}
+                    aria-label="Артикул"
+                    aria-describedby="button-addon2"
+                />
+                <button className="btn btn-outline-secondary" type="button" id="button-addon2" onClick={handleSearchComponent}>
+                    Найти
+                </button>
             </div>
             {!component ? (
-                <p>Нет данных</p>
+                <>
+                    {/* // Если нет данных на страницу выводим форму для добавления компонента в базу данных */}
+                    {isSearched && !component ? (
+                        <>
+                            <h4 className="edit-price-component__h4">Добавить новый компонент:</h4>
+                            <div className="input-group mb-3">
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="Артикул"
+                                    value={article}
+                                    onChange={(e) => setArticle(e.target.value)}
+                                    aria-label="Артикул"
+                                    aria-describedby="button-addon3"
+                                />
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="Наименование"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    aria-label="Наименование"
+                                    aria-describedby="button-addon3"
+                                />
+                                <button className="btn btn-outline-secondary" type="button" id="button-addon3" onClick={handleAddComponent}>
+                                    Добавить в базу
+                                </button>
+                            </div>
+                        </>
+                    ) : null}
+
+                </>
+
             ) : (
+                // Если данные есть выводим их в таблице
                 <table className="table">
                     <thead>
                         <tr>
