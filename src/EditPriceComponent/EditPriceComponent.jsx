@@ -20,7 +20,15 @@ const EditPriceComponent = () => {
                 if (!response.ok) throw new Error("Ошибка загрузки поставщиков");
                 return response.json();
             })
-            .then((data) => setProviders(data.providers))
+            .then((data) => {
+                setProviders(data.providers);
+
+                const savedArticle = sessionStorage.getItem('lastAddedArticle');
+                if (savedArticle) {
+                    setArticle(savedArticle);
+                    sessionStorage.removeItem('lastAddedArticle');
+                }
+            })
             .catch((error) => console.error("Ошибка при загрузке поставщиков:", error));
     }, []);
 
@@ -96,7 +104,8 @@ const EditPriceComponent = () => {
 
             if (response.ok) {
                 alert('Компонент успешно добавлен!');
-                window.location.reload(); // перезагрузить страницу
+                sessionStorage.setItem('lastAddedArticle', article);
+                window.location.reload();
             } else {
                 const errorText = await response.text();
                 alert(`Ошибка при добавлении: ${errorText}`);
