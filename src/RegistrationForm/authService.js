@@ -1,4 +1,4 @@
-import ApiUrl from '../js/apiUrl.js';
+import ApiUrl from '../js/ApiUrl.js';
 
 export const handleLoginSubmit = async (email, password, setMessage) => {
   try {

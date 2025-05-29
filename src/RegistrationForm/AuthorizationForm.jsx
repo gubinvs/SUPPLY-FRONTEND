@@ -1,6 +1,6 @@
 // AuthorizationForm.jsx
 import React, { useState } from "react";
-import "./registrationForm.css";
+import "./RegistrationForm.css";
 import {
   handleLoginSubmit,
   redirectToRegistration,
