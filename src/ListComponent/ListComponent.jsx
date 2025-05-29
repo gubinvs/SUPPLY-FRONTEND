@@ -20,7 +20,7 @@ const ListComponent = () => {
                 return response.json();
             })
             .then((data) => {
-                setComponents(data.component);
+                setComponents(data.component || []);
             })
             .catch((error) => {
                 console.error("Ошибка получения данных:", error);
@@ -30,16 +30,31 @@ const ListComponent = () => {
 
     return (
         <div className="container">
-            <h2>Список комплектующих</h2>
+            <h2>Список комплектующих в базе данных:</h2>
+
             {error && <p className="error">{error}</p>}
+
             {components.length > 0 ? (
-                <ul>
-                    {components.map((item) => (
-                        <li key={item.id}>
-                            <strong>{item.vendorCodeComponent}</strong>: {item.nameComponent}
-                        </li>
-                    ))}
-                </ul>
+                <table className="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Id</th>
+                            <th scope="col">Артикул</th>
+                            <th scope="col">Наименование</th>
+                            <th scope="col">Производитель</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {components.map((item) => (
+                            <tr key={item.id}>
+                                <td>{item.id}</td>
+                                <td className="list-component__td">{item.vendorCodeComponent}</td>
+                                <td>{item.nameComponent}</td>
+                                <td>{item.manufacturerComponent || "—"}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             ) : (
                 !error && <p>Загрузка данных...</p>
             )}

@@ -77,6 +77,7 @@ const EditPriceComponent = () => {
         .then((response) => {
             if (!response.ok) throw new Error("Ошибка при сохранении");
             alert("Изменения успешно сохранены!");
+            window.location.reload();
         })
         .catch((error) => {
             console.error("Ошибка при сохранении:", error);
