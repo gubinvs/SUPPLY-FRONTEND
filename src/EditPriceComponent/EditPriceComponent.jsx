@@ -193,14 +193,21 @@ const EditPriceComponent = () => {
                                     onChange={(e) => setPrice(e.target.value)}
                                 />
                             </td>
-                            <td>
-                                <input
-                                    className="form-control"
-                                    type="text"
-                                    placeholder="Новый срок"
+                           <td>
+                                <select
+                                    className="form-select"
                                     value={deliveryTime}
                                     onChange={(e) => setDeliveryTime(e.target.value)}
-                                />
+                                >
+                                    <option value="">Cрок поставки</option>
+                                    <option value="В наличии">В наличии</option>
+                                    <option value="от 1 до 4 недель">от 1 до 4 недель</option>
+                                    <option value="от 4 до 8 недель">от 4 до 8 недель</option>
+                                    <option value="от 8 до 12 недель">от 8 до 12 недель</option>
+                                    <option value="от 12 до 16 недель">от 12 до 16 недель</option>
+                                    <option value="от 6 до 20 недель">от 6 до 20 недель</option>
+                                    <option value="от 20 до 24 недель">от 20 до 24 недель</option>
+                                </select>
                             </td>
                             <td>
                                 <select

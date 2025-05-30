@@ -5,7 +5,7 @@ import {
   handleLoginSubmit,
   redirectToRegistration,
   redirectToPasswordRecovery
-} from "./authService.js"; // путь подправьте под ваш проект
+} from "./authService.js";
 
 const AuthorizationForm = () => {
   const newLogin = localStorage.getItem("newLogin");
