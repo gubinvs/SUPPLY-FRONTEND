@@ -2,7 +2,7 @@ import ApiUrl from '../js/ApiUrl.js';
 
 export const handleLoginSubmit = async (email, password, setMessage) => {
   try {
-    const response = await fetch(ApiUrl + "/api/Auth", {
+    const response = await fetch(ApiUrl + "/api/Authorization", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

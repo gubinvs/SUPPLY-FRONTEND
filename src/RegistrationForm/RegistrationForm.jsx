@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ApiUrl from "../js/apiUrl.js";
+import ApiUrl from "../js/ApiUrl";
 import "./RegistrationForm.css";
 
 const RegistrationForm = () => {
@@ -45,7 +45,7 @@ const RegistrationForm = () => {
     return (
       <div className="registration-form_container">
         <div className="form-block">
-          <h2 className="form-block__title">Регистрация пользователя</h2>
+          <h2 className="form-block__title">Регистрация</h2>
           <form onSubmit={handleSubmit} className="form">
             <input
               type="email"
@@ -92,7 +92,7 @@ const RegistrationForm = () => {
     return (
       <div className="container">
         <div className="form-block">
-          <h2>Регистрация пользователя</h2>
+          <h2 className="form-block__title">Регистрация</h2>
           <form onSubmit={handleSubmit} className="form">
             <input
               type="email"
