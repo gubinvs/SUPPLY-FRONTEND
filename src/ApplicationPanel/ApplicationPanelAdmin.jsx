@@ -7,7 +7,7 @@ import "./ApplicationPanel.css";
 
 // Стартовая страница для авторизованного пользователя от компании Поставщика
 
-const ApplicationPanelProvider = () =>
+const ApplicationPanelAdmin = () =>
 {
     return (
         <>
@@ -17,4 +17,4 @@ const ApplicationPanelProvider = () =>
 
 };
 
-export default ApplicationPanelProvider;
+export default ApplicationPanelAdmin;

@@ -13,7 +13,7 @@ import "./ApplicationPanel.css";
 const ApplicationPanel = () =>
 {
     
-    window.location.href = "/ApplicationPanelСustomer"; 
+    window.location.href = "/ApplicationPanel"; 
 
 };
 
