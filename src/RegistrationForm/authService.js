@@ -2,7 +2,7 @@ import ApiUrl from '../js/ApiUrl.js';
 
 export const handleLoginSubmit = async (email, password, setMessage) => {
   try {
-    const response = await fetch(ApiUrl + "/api/Authorization", {
+    const response = await fetch(ApiUrl + "/api/Autorization", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -18,8 +18,8 @@ export const handleLoginSubmit = async (email, password, setMessage) => {
 
     if (data.token !== undefined) {
         localStorage.setItem("token", data.token);
-        window.location.href = "/ApplicationPanelProvider";
-        window.location.href = "/ApplicationPanelСustomer";
+        // Отправляем пользователя на основную панель, там проведем проверку его роли и перенаправим уже на нужную панель
+        window.location.href = "/ApplicationPanel"; 
     } else {
       setMessage(data.message);
     }

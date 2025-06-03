@@ -1,7 +1,7 @@
 // Стартовая страница для авторизованного пользователя от компании заказчика
 
 import React, { useState, useEffect } from "react";
-import ApiUrl from '../js/apiUrl.js';
+import ApiUrl from '../js/ApiUrl';
 import { useNavigate } from "react-router-dom";
 import "./ApplicationPanel.css";
 
@@ -11,7 +11,7 @@ const ApplicationPanelСustomer = () =>
 {
     return (
         <>
-        <h1>Панель Заказчика</h1>
+            <h1>Панель Заказчика</h1>
         </>
     );
 

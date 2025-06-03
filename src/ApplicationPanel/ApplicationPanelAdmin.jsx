@@ -1,5 +1,7 @@
+// Панель администратора
+
 import React, { useState, useEffect } from "react";
-import ApiUrl from '../js/ApiUrl';
+import ApiUrl from '../js/ApiUrl.js';
 import { useNavigate } from "react-router-dom";
 import "./ApplicationPanel.css";
 
@@ -9,7 +11,7 @@ const ApplicationPanelProvider = () =>
 {
     return (
         <>
-            <h1>Панель Поставщика</h1>
+            <h1>Панель Администратора</h1>
         </>
     );
 

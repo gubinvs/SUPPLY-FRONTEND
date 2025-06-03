@@ -7,6 +7,7 @@ import AuthorizationForm from './RegistrationForm/AuthorizationForm.jsx';
 import RegistrationForm from './RegistrationForm/RegistrationForm.jsx';
 import ApplicationPanelСustomer from "./ApplicationPanel/ApplicationPanelСustomer.jsx";
 import ApplicationPanelProvider from './ApplicationPanel/ApplicationPanelProvider.jsx';
+import ApplicationPanelAdmin  from './ApplicationPanel/ApplicationPanelAdmin.jsx';
 
 
 
@@ -19,6 +20,7 @@ const App = () => {
         <Route path="/Registration" element={<RegistrationForm/>} />
         <Route path="/ApplicationPanelProvider" element={<ApplicationPanelProvider/>} />
         <Route path="/ApplicationPanelСustomer" element={<ApplicationPanelСustomer/>} />
+        <Route path="/ApplicationPanelAdmin" element={<ApplicationPanelAdmin/>} />
         <Route path="/ListComponent" element={<ListComponent />} />
         <Route path='/EditPriceComponent' element={<EditPriceComponent/>} />
       </Routes>
