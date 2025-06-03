@@ -17,8 +17,9 @@ export const handleLoginSubmit = async (email, password, setMessage) => {
     const data = await response.json();
 
     if (data.token !== undefined) {
-      localStorage.setItem("token", data.token);
-      window.location.href = "/ApplicationPanel";
+        localStorage.setItem("token", data.token);
+        window.location.href = "/ApplicationPanelProvider";
+        window.location.href = "/ApplicationPanelСustomer";
     } else {
       setMessage(data.message);
     }
