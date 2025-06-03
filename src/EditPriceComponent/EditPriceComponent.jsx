@@ -203,7 +203,7 @@ const EditPriceComponent = () => {
                                         <option value="от 4 до 8 нед">от 4 до 8 нед</option>
                                         <option value="от 8 до 12 нед">от 8 до 12 нед</option>
                                         <option value="от 12 до 16 нед">от 12 до 16 нед</option>
-                                        <option value="от 16 до 20 нед">от 6 до 20 нед</option>
+                                        <option value="от 16 до 20 нед">от 16 до 20 нед</option>
                                         <option value="от 20 до 24 нед">от 20 до 24 нед</option>
                                     </select>
                                 </td>
