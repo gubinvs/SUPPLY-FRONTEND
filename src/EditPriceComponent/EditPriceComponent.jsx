@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ApiUrl from "../js/ApiUrl.js";
-import "./EditPriceComponent.css";
+import "./editPriceComponent.css";
 
 const EditPriceComponent = () => {
     const [component, setComponent] = useState("");

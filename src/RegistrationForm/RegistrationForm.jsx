@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import ApiUrl from "../js/ApiUrl";
-import "./RegistrationForm.css";
+import "./registrationForm.css";
 
 const RegistrationForm = () => {
   const [email, setEmail] = useState("");

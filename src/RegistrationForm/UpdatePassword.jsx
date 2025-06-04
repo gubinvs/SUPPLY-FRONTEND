@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ApiUrl from '../js/apiUrl.js';
-import "./RegistrationForm.css";
+import "./registrationForm.css";
 import { useNavigate } from "react-router-dom";
 
 const UpdatePassword = () => {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ApiUrl from "../js/ApiUrl.js";
-import "./ListComponent.css";
+import "./listComponent.css";
 
 const ListComponent = () => {
     const [components, setComponents] = useState([]);
