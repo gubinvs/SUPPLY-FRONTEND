@@ -125,7 +125,7 @@ const RegistrationForm = () => {
           </form>
         </div>
         <div className="form-block form block-message">
-          <h2>{message}</h2>
+          <h4 className='form-block__message'>{message}</h4>
           <button onClick={handleRedirect} type="submit" className="button">
             Пройдите авторизацию
           </button>

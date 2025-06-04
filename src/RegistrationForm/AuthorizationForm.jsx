@@ -47,7 +47,7 @@ const AuthorizationForm = () => {
 
       {message && (
         <div className="form-block form block-message">
-          <h2>{message}</h2>
+          <h4 className='form-block__message'>{message}</h4>
           <button onClick={redirectToRegistration} type="button" className="button">
             Пройти регистрацию
           </button>
