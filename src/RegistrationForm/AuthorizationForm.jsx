@@ -6,6 +6,26 @@ import {
   redirectToRegistration,
   redirectToPasswordRecovery
 } from "./authService.js";
+import ApiUrl from "../js/ApiUrl.js";
+
+const redirectToEmailActivation = (email, setMessage) => {
+  fetch(ApiUrl + "/api/ActivationEmail", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email}),
+  })
+    .then(response => response.json())
+    .then(data => {
+      setMessage(data.message || "Письмо отправлено.");
+    })
+    .catch(error => {
+      console.error("Ошибка при активации почты:", error);
+      setMessage("Ошибка при попытке отправки письма.");
+    });
+};
+
 
 const AuthorizationForm = () => {
   const newLogin = localStorage.getItem("newLogin");
@@ -47,15 +67,29 @@ const AuthorizationForm = () => {
 
       {message && (
         <div className="form-block form block-message">
-          <h4 className='form-block__message'>{message}</h4>
-          <button onClick={redirectToRegistration} type="button" className="button">
-            Пройти регистрацию
-          </button>
-          <button onClick={redirectToPasswordRecovery} type="button" className="button">
-            Восстановить пароль
-          </button>
+          <h4 className="form-block__message">{message}</h4>
+
+          {message === "Пожалуйста, подтвердите свой адрес электронной почты. В противном случае, ваш аккаунт может быть удалён в ближайшее время." ? (
+            <button
+              onClick={() => redirectToEmailActivation(email, setMessage)}
+              type="button"
+              className="button"
+            >
+              Активировать почту
+            </button>
+          ) : message === "Проверьте ваш email для подтверждения регистрации." ? null : (
+            <>
+              <button onClick={redirectToRegistration} type="button" className="button">
+                Пройти регистрацию
+              </button>
+              <button onClick={redirectToPasswordRecovery} type="button" className="button">
+                Восстановить пароль
+              </button>
+            </>
+          )}
         </div>
       )}
+
     </div>
   );
 };
