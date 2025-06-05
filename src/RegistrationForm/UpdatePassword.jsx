@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import ApiUrl from '../js/apiUrl.js';
+import ApiUrl from '../js/ApiUrl.js';
 import "./registrationForm.css";
 import { useNavigate } from "react-router-dom";
 
@@ -55,7 +55,7 @@ const UpdatePassword = () => {
     return (
         <div className="registration-form_container">
             <div className="form-block">
-                <h2>Восстановление пароля</h2>
+                <h4 className="form-block__message">Восстановить доступ</h4>
                 <form onSubmit={handleSubmit} className="form">
                     <input
                         type="email"

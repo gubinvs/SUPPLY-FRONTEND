@@ -8,6 +8,7 @@ import ApplicationPanelСustomer from "./ApplicationPanel/ApplicationPanelСusto
 import ApplicationPanelProvider from './ApplicationPanel/ApplicationPanelProvider.jsx';
 import ApplicationPanelAdmin from './ApplicationPanel/ApplicationPanelAdmin.jsx';
 import PrivateRoute from './js/PrivateRoute.jsx'; // добавили данные о роли пользователя
+import UpdatePassword from "./RegistrationForm/UpdatePassword.jsx";
 
 // Константы ролей
 const ROLE_ADMIN = "b5aff5b0-c3ac-4f1e-9467-fe13a14f6de3"; // Роль администратора системы
@@ -21,7 +22,8 @@ const App = () => {
         <Route path="/" element={<EditPriceComponent />} />
         <Route path="/AuthorizationForm" element={<AuthorizationForm />} />
         <Route path="/Registration" element={<RegistrationForm />} />
-        
+        <Route path="/UpdatePassword" element={<UpdatePassword />} />
+
         <Route path='/EditPriceComponent' element={
           <PrivateRoute allowedRoles={[ROLE_ADMIN]}>
             <EditPriceComponent />
