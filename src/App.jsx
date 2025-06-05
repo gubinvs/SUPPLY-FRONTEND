@@ -19,16 +19,11 @@ const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<EditPriceComponent />} />
-        <Route path="/AuthorizationForm" element={<AuthorizationForm />} />
+        {/* <Route path="/" element={<EditPriceComponent />} /> */}
+        {/* <Route path="/AuthorizationForm" element={<AuthorizationForm />} /> */}
+        <Route path="/" element={<AuthorizationForm />} />
         <Route path="/Registration" element={<RegistrationForm />} />
         <Route path="/UpdatePassword" element={<UpdatePassword />} />
-
-        <Route path='/EditPriceComponent' element={
-          <PrivateRoute allowedRoles={[ROLE_ADMIN]}>
-            <EditPriceComponent />
-          </PrivateRoute>
-        } />
 
         <Route path="/ListComponent" element={
           <PrivateRoute allowedRoles={[ROLE_ADMIN]}>
