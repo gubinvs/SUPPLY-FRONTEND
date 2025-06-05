@@ -21,8 +21,12 @@ const App = () => {
         <Route path="/" element={<EditPriceComponent />} />
         <Route path="/AuthorizationForm" element={<AuthorizationForm />} />
         <Route path="/Registration" element={<RegistrationForm />} />
-        <Route path="/ListComponent" element={<ListComponent />} />
         <Route path='/EditPriceComponent' element={<EditPriceComponent />} />
+
+        <Route path="/ListComponent" element={
+          <PrivateRoute allowedRoles={[ROLE_ADMIN]}>
+            <ListComponent />
+          </PrivateRoute>} />
 
         <Route path="/ApplicationPanelAdmin" element={
           <PrivateRoute allowedRoles={[ROLE_ADMIN]}>
