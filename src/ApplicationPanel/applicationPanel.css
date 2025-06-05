@@ -4,6 +4,7 @@
 }
 
 .application-panel__body {
+    padding: 20px;
     width: 100%;
     height: calc(100vh - 20px);
     border-radius: 10px;

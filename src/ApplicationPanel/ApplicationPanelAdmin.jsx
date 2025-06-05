@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import "./applicationPanel.css";
 import NavigationBarMin from "../NavigationBar/NavigationBarMin.jsx";
 import NavigationBarMax from "../NavigationBar/NavigationBarMax.jsx";
+import EditPriceComponent from "../EditPriceComponent/EditPriceComponent.jsx";
 
 const ApplicationPanelAdmin = () => {
     const [isNavMaxVisible, setIsNavMaxVisible] = useState(false);
@@ -22,8 +23,9 @@ const ApplicationPanelAdmin = () => {
             {isNavMaxVisible && <NavigationBarMax />}
 
             <div className="application-panel__body">
-                <div className="container application-panel__container">
+                <div className="application-panel__container">
                     <h1 className="application-panel__title">Панель Администратора</h1>
+                    <EditPriceComponent />
                 </div>
             </div>
         </div>

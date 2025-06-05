@@ -121,7 +121,7 @@ const EditPriceComponent = () => {
     };
 
     return (
-        <div className="container edit-price-component__container">
+        <div className="edit-price-component__container">
             <h4 className="edit-price-component__h4">Внести данные о ценах поставщика:</h4>
             <div className="input-group mb-3 edit-price-component__search-block">
                 <input
