@@ -1,4 +1,6 @@
 // ApplicationPanelRouter.jsx
+// Принимает первое направление при открытии приложения и проверяет роль текущего авторизованного пользователеля, 
+// если пользователь не авторизован перенаправляет его на страницу авторизации
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 

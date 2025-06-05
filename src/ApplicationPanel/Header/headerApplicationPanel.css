@@ -1,0 +1,12 @@
+.application-panel__header {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.application-panel__line {
+    width: 100%;
+    height: 1px;
+    background-color: #D5DAE0;
+}
