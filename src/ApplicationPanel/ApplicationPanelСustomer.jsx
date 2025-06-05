@@ -1,18 +1,37 @@
 // Стартовая страница для авторизованного пользователя от компании заказчика
 
-import React, { useState, useEffect } from "react";
-import ApiUrl from '../js/ApiUrl';
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 import "./applicationPanel.css";
+import NavigationBarMin from "../NavigationBar/NavigationBarMin.jsx";
+import NavigationBarMax from "../NavigationBar/NavigationBarMax.jsx";
+import EditPriceComponent from "../EditPriceComponent/EditPriceComponent.jsx";
 
-// Стартовая страница для авторизованного пользователя от компании Поставщика
+// Стартовая страница для авторизованного пользователя от компании Заказчика
 
 const ApplicationPanelСustomer = () =>
 {
+const [isNavMaxVisible, setIsNavMaxVisible] = useState(false);
+
+    const handleShowMax = () => setIsNavMaxVisible(true);
+    const handleHideMax = () => setIsNavMaxVisible(false);
+
     return (
-        <>
-            <h1>Панель Заказчика</h1>
-        </>
+        <div className="application-panel-section">
+            <NavigationBarMin
+                onShowMax={handleShowMax}
+                onHideMax={handleHideMax}
+                isNavMaxVisible={isNavMaxVisible}
+            />
+
+            {isNavMaxVisible && <NavigationBarMax />}
+
+            <div className="application-panel__body">
+                <div className="application-panel__container">
+                    <h6 className="application-panel__title">Роль компании: Заказчик</h6>
+                    <EditPriceComponent />
+                </div>
+            </div>
+        </div>
     );
 
 };
