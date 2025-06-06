@@ -16,6 +16,7 @@ const ROLE_PROVIDER = "a5219e2b-12f3-490e-99f5-1be54c55cc6d"; // Роль пос
 const ROLE_CUSTOMER = "52910536-2b8a-47e7-9d5a-8cca0a0b865a"; // Роль заказчика
 
 const App = () => {
+  //localStorage.clear();
   return (
     <Router>
       <Routes>
