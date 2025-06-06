@@ -1,11 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import "./navigationBar.css";
 import { Link } from "react-router-dom";
-import {linkPageApplicationPanelRouter} from "../js/linkPage.js";
-
+import {
+    linkPageApplicationPanelRouter, 
+    linkPagePurchase,
+    linkPageSpecifications
+} from "../js/linkPage.js";
 
 
 const NavigationBarMin = ({ onShowMax, onHideMax, isNavMaxVisible }) => {
+    const roleId = localStorage.getItem("roleId");
+    
+    // Если роль администратор и заказчика
+    const [role, setRole] = useState(false);
+    if (roleId == "b5aff5b0-c3ac-4f1e-9467-fe13a14f6de3" || roleId == "52910536-2b8a-47e7-9d5a-8cca0a0b865a") {
+        setRole(true);
+    } 
+
+
     return (
         <div className="navigation-bar-min">
             <div className="navigation-bar-min__top-block">
@@ -16,6 +28,14 @@ const NavigationBarMin = ({ onShowMax, onHideMax, isNavMaxVisible }) => {
                 <ul className="navigation-icon-block">
                     <li className="navigation-icon-block__item" onClick={linkPageApplicationPanelRouter}>
                         <img className="navigation-icon__icon-img" src="../images/dachbord_icon.svg" alt="Иконка на главную панель" />
+                    </li>
+                    {role ?
+                        <li className="navigation-icon-block__item" onClick={linkPageSpecifications}>
+                            <img className="navigation-icon__icon-img" src="../images/specifications-icon.svg" alt="Иконка на страницу спецификации" />
+                        </li>: ""
+                    }
+                    <li className="navigation-icon-block__item" onClick={linkPagePurchase}>
+                        <img className="navigation-icon__icon-img" src="../images/purchase-icon.svg" alt="Иконка на страницу закупки" />
                     </li>
                 </ul>
             </div>

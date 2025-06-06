@@ -20,7 +20,8 @@ const App = () => {
     <Router>
       <Routes>
         {/* <Route path="/" element={<EditPriceComponent />} /> */}
-        <Route path="/" element={<ApplicationPanelRouter />} />
+        {/* <Route path="/" element={<ApplicationPanelRouter />} /> */}
+        <Route path="/" element={<ApplicationPanelCustomer />} />
         <Route path="/AuthorizationForm" element={<AuthorizationForm />} />
         <Route path="/Registration" element={<RegistrationForm />} />
         <Route path="/UpdatePassword" element={<UpdatePassword />} />

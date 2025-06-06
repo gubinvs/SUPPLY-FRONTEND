@@ -42,6 +42,7 @@
 }
 
 .navigation-icon-block__item {
+    margin-bottom: 20px;
     cursor: pointer;
 }
 
