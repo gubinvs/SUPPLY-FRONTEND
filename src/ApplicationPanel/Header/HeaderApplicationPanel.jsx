@@ -12,7 +12,7 @@ const HeaderApplicationPanel = ({role}) => {
 
 
     useEffect(() => {
-        if (windowLocation === "/ApplicationPanelСustomer") {
+        if (windowLocation === "/ApplicationPanelCustomer") {
             setTitle("Главная панель");
         } else {
             setTitle("здесь, возможно, опечатка"); // здесь, возможно, опечатка
