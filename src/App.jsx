@@ -1,10 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ListComponent from './ListComponent/ListComponent';
-import EditPriceComponent from './EditPriceComponent/EditPriceComponent.jsx';
 import AuthorizationForm from './RegistrationForm/AuthorizationForm.jsx';
 import RegistrationForm from './RegistrationForm/RegistrationForm.jsx';
-import ApplicationPanelСustomer from "./ApplicationPanel/ApplicationPanelСustomer.jsx";
+import ApplicationPanelCustomer from "./ApplicationPanel/ApplicationPanelCustomer.jsx";
 import ApplicationPanelProvider from './ApplicationPanel/ApplicationPanelProvider.jsx';
 import ApplicationPanelAdmin from './ApplicationPanel/ApplicationPanelAdmin.jsx';
 import PrivateRoute from './js/PrivateRoute.jsx'; // добавили данные о роли пользователя
@@ -43,9 +42,9 @@ const App = () => {
           </PrivateRoute>
         } />
 
-        <Route path="/ApplicationPanelСustomer" element={
+        <Route path="/ApplicationPanelCustomer" element={
           <PrivateRoute allowedRoles={[ROLE_CUSTOMER, ROLE_ADMIN]}>
-            <ApplicationPanelСustomer />
+            <ApplicationPanelCustomer />
           </PrivateRoute>
         } />
       </Routes>

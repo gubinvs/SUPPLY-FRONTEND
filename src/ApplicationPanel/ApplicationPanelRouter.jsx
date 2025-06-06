@@ -27,7 +27,7 @@ const ApplicationPanelRouter = () => {
         navigate("/ApplicationPanelProvider");
         break;
       case ROLE_CUSTOMER:
-        navigate("/ApplicationPanelСustomer");
+        navigate("/ApplicationPanelCustomer");
         break;
       default:
         navigate("/AuthorizationForm");

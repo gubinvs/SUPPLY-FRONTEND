@@ -5,7 +5,7 @@ import NavigationBarMax from "../NavigationBar/NavigationBarMax.jsx";
 import EditPriceComponent from "../EditPriceComponent/EditPriceComponent.jsx";
 import HeaderApplicationPanel from "./Header/HeaderApplicationPanel.jsx";
 
-const ApplicationPanelСustomer = () => {
+const ApplicationPanelCustomer = () => {
     const [isNavMaxVisible, setIsNavMaxVisible] = useState(false);
     const [role, setRole] = useState("");
 
@@ -46,4 +46,4 @@ const ApplicationPanelСustomer = () => {
     );
 };
 
-export default ApplicationPanelСustomer;
+export default ApplicationPanelCustomer;

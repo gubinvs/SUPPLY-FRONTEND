@@ -1,5 +1,9 @@
 import React from "react";
 import "./navigationBar.css";
+import { Link } from "react-router-dom";
+import {linkPageApplicationPanelRouter} from "../js/linkPage.js";
+
+
 
 const NavigationBarMin = ({ onShowMax, onHideMax, isNavMaxVisible }) => {
     return (
@@ -10,7 +14,9 @@ const NavigationBarMin = ({ onShowMax, onHideMax, isNavMaxVisible }) => {
                 </picture>
                 <div className="top-block__line"></div>
                 <ul className="navigation-icon-block">
-                    <li className="navigation-icon-block__item"><img className="navigation-icon__icon-img" src="../images/dachbord_icon.svg" alt="Иконка на главную панель" /></li>
+                    <li className="navigation-icon-block__item" onClick={linkPageApplicationPanelRouter}>
+                        <img className="navigation-icon__icon-img" src="../images/dachbord_icon.svg" alt="Иконка на главную панель" />
+                    </li>
                 </ul>
             </div>
             <div className="navigation-bar-min__bootom-block">

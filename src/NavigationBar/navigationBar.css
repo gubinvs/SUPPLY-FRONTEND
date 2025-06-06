@@ -41,6 +41,10 @@
     margin-bottom: 20px;
 }
 
+.navigation-icon-block__item {
+    cursor: pointer;
+}
+
 .bottom-block__navigation-arrow {
     display: flex;
     justify-content: center;

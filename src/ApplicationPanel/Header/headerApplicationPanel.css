@@ -2,11 +2,32 @@
     display: flex;
     width: 100%;
     justify-content: space-between;
-    margin-bottom: 20px;
 }
 
-.application-panel__line {
+.application-panel-header__role-discr {
+    font-size: 12px;
+    font-weight: 400;
+    color: #948F8C;
+}
+
+.application-panel-header__line {
     width: 100%;
     height: 1px;
     background-color: #D5DAE0;
+}
+
+.application-panel-header__title {
+    font-size: 24px;
+    line-height: 24px;
+    font-size: 400;
+    margin-bottom: 4px;
+    color: #342F2C;
+}
+
+.application-panel-header__botton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 120px;
+    height: 30px;
 }
