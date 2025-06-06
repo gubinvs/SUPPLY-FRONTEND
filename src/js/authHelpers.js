@@ -29,5 +29,5 @@ export function ProtectedRoute({ children }) {
     return <div>Загрузка...</div>;
   }
 
-  return isAuthenticated ? children : <Navigate to="/Panel" replace />;
+  return isAuthenticated ? children : <Navigate to="/ApplicationPanelRouter" replace />;
 }

@@ -7,12 +7,11 @@ import clearRoleId from "../../js/clearRoleId.js";
 const HeaderApplicationPanel = ({role}) => {
     // Определяем на какой странице находимся
     const windowLocation = window.location.pathname;
-    //console.log(windowLocation);
     const [title, setTitle] = useState("");
 
 
     useEffect(() => {
-        if (windowLocation === "/ApplicationPanelCustomer") {
+        if (windowLocation === "/ApplicationPanelСharterer") {
             setTitle("Главная панель");
         } else {
             setTitle("здесь, возможно, опечатка"); // здесь, возможно, опечатка

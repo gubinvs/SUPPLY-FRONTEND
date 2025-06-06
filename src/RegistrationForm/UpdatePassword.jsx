@@ -45,7 +45,7 @@ const UpdatePassword = () => {
     useEffect(() => {
         if (message === "Пароль отправлен на почту") {
             const timer = setTimeout(() => {
-                navigate('/Authorization');
+                navigate('/AuthorizationForm');
             }, 3000); // 3 секунды
 
             return () => clearTimeout(timer);

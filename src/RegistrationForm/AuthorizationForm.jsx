@@ -28,6 +28,7 @@ const redirectToEmailActivation = (email, setMessage) => {
 
 
 const AuthorizationForm = () => {
+  // Для того, чтобы автоматически заполнить поле логина
   const newLogin = localStorage.getItem("newLogin");
   const [email, setEmail] = useState(newLogin || "");
   const [password, setPassword] = useState("");
