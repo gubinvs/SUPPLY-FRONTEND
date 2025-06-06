@@ -15,4 +15,4 @@ export function linkPageSpecifications () {
 
 export function linkPageСompanies () {
     window.location = "/";
-}; 
+};
