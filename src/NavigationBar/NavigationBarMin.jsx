@@ -10,7 +10,7 @@ const NavigationBarMin = ({ onShowMax, onHideMax, isNavMaxVisible }) => {
         <div className="navigation-bar-min">
             <div className="navigation-bar-min__top-block">
                 <picture>
-                    <img src="../images/header_logo_1280.svg" alt="Логотип системы" className="navigation-bar-min__logo" />
+                    <img src="../images/logo-ha.png" alt="Логотип системы" className="navigation-bar-min__logo" />
                 </picture>
                 <div className="top-block__line"></div>
                 <ul className="navigation-icon-block">
