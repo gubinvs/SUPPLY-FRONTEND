@@ -28,7 +28,7 @@ export const handleLoginSubmit = async (email, password, setMessage) => {
           window.location.href = "/ApplicationPanelProvider";
           break;
         default: 
-            window.location.href = "/ApplicationPanelCustomer"; // Заказчик
+            window.location.href = "/ApplicationPanelСharterer"; // Заказчик
           break;
       }
     } else {
