@@ -1,6 +1,3 @@
-// ApplicationPanelRouter.jsx
-// Принимает первое направление при открытии приложения и проверяет роль текущего авторизованного пользователеля, 
-// если пользователь не авторизован перенаправляет его на страницу авторизации
 import { useEffect } from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -14,9 +11,10 @@ const ApplicationPanelRouter = () => {
 
   useEffect(() => {
     const role = localStorage.getItem("roleId");
+    const currentPath = location.pathname;
 
     if (!role) {
-      if (location.pathname !== "/AuthorizationForm") {
+      if (currentPath !== "/AuthorizationForm") {
         navigate("/AuthorizationForm");
       }
       return;
@@ -24,29 +22,30 @@ const ApplicationPanelRouter = () => {
 
     switch (role) {
       case ROLE_ADMIN:
-        if (location.pathname !== "/ApplicationPanelAdmin") {
+        if (currentPath !== "/ApplicationPanelAdmin") {
           navigate("/ApplicationPanelAdmin");
         }
         break;
       case ROLE_PROVIDER:
-        if (location.pathname !== "/ApplicationPanelProvider") {
+        if (currentPath !== "/ApplicationPanelProvider") {
           navigate("/ApplicationPanelProvider");
         }
         break;
       case ROLE_CUSTOMER:
-        if (location.pathname !== "/ApplicationPanelCustomer") {
+        if (currentPath !== "/ApplicationPanelCustomer") {
           navigate("/ApplicationPanelCustomer");
         }
         break;
       default:
-        if (location.pathname !== "/AuthorizationForm") {
+        if (currentPath !== "/AuthorizationForm") {
           navigate("/AuthorizationForm");
         }
         break;
     }
-  }, [navigate, location]);
+  }, [navigate, location.pathname]); // Только pathname
 
   return null;
 };
 
 export default ApplicationPanelRouter;
+

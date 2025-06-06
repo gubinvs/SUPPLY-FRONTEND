@@ -11,6 +11,7 @@ const ApplicationPanelCustomer = () => {
 
     useEffect(() => {
         const roleId = localStorage.getItem("roleId");
+        
 
         if (roleId === "b5aff5b0-c3ac-4f1e-9467-fe13a14f6de3") {
             setRole("Администратор");
