@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 import {
     linkPageApplicationPanelRouter, 
     linkPagePurchase,
-    linkPageSpecifications
+    linkPageSpecifications,
+    linkPageСompanies
 } from "../js/linkPage.js";
 
 
@@ -13,9 +14,19 @@ const NavigationBarMin = ({ onShowMax, onHideMax, isNavMaxVisible }) => {
     
     // Если роль администратор и заказчика
     const [role, setRole] = useState(false);
-    if (roleId == "b5aff5b0-c3ac-4f1e-9467-fe13a14f6de3" || roleId == "52910536-2b8a-47e7-9d5a-8cca0a0b865a") {
+    const [roleAdmin, setRoleAdmin] = useState(false);
+
+    // Если роль заказчик
+    if (roleId == "52910536-2b8a-47e7-9d5a-8cca0a0b865a") {
         setRole(true);
-    } 
+    };
+    
+    // Если роль администратор
+    if (roleId == "b5aff5b0-c3ac-4f1e-9467-fe13a14f6de3") {
+        setRoleAdmin(true);
+    };
+
+
 
 
     return (
@@ -29,10 +40,25 @@ const NavigationBarMin = ({ onShowMax, onHideMax, isNavMaxVisible }) => {
                     <li className="navigation-icon-block__item" onClick={linkPageApplicationPanelRouter}>
                         <img className="navigation-icon__icon-img" src="../images/dachbord_icon.svg" alt="Иконка на главную панель" />
                     </li>
-                    {role ?
+                    {/* Если роль пользователя заказчик! */}
+                    {!role ?
                         <li className="navigation-icon-block__item" onClick={linkPageSpecifications}>
                             <img className="navigation-icon__icon-img" src="../images/specifications-icon.svg" alt="Иконка на страницу спецификации" />
-                        </li>: ""
+                        </li>:
+                        <li className="navigation-icon-block__item" onClick={linkPageСompanies}>
+                            <img className="navigation-icon__icon-img" src="../images/companies-icon.svg" alt="Иконка на страницу компаний" />
+                        </li>
+                    }
+                    {/* Если роль пользователяадминистратор! */}
+                    {!roleAdmin ? 
+                            <>
+                                <li className="navigation-icon-block__item" onClick={linkPageSpecifications}>
+                                    <img className="navigation-icon__icon-img" src="../images/specifications-icon.svg" alt="Иконка на страницу спецификации" />
+                                </li>
+                                <li className="navigation-icon-block__item" onClick={linkPageСompanies}>
+                                    <img className="navigation-icon__icon-img" src="../images/companies-icon.svg" alt="Иконка на страницу компаний" />
+                                </li>
+                            </>:""
                     }
                     <li className="navigation-icon-block__item" onClick={linkPagePurchase}>
                         <img className="navigation-icon__icon-img" src="../images/purchase-icon.svg" alt="Иконка на страницу закупки" />

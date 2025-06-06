@@ -12,3 +12,7 @@ export function linkPagePurchase() {
 export function linkPageSpecifications () {
     window.location = "/";
 };
+
+export function linkPageСompanies () {
+    window.location = "/";
+}; 
