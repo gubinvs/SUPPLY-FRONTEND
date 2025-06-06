@@ -27,8 +27,6 @@ const NavigationBarMin = ({ onShowMax, onHideMax, isNavMaxVisible }) => {
     };
 
 
-
-
     return (
         <div className="navigation-bar-min">
             <div className="navigation-bar-min__top-block">
