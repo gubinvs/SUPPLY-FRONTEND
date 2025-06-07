@@ -1,6 +1,5 @@
 import React from "react";
 import "./informationPanel.css";
-import EditPriceComponent from "../../EditPriceComponent/EditPriceComponent";
 
 // Основной блок информационной панели, вводит информацию для конкретного пользователя симтемы в соответствии с ролью
 const InformationPanel = () => {
@@ -36,6 +35,10 @@ const InformationPanel = () => {
                             </li> 
                        </ul>
                     </div>
+                    <div className="information-panel-left-block__bottom-card-block">
+                        <div className="iplb-bottom-card-block__bottom-card_left"> </div>
+                        <div className="iplb-bottom-card-block__bottom-card_right"> </div>
+                    </div>
                 </div>
                 <div className="iformation-panel-right-block">
                     <div className="information-user-card">
@@ -57,6 +60,7 @@ const InformationPanel = () => {
                        </ul>
                        <button type="button" className="btn btn-outline-warning information-user-card__edit-botton">Редактировать</button>
                     </div>
+                    <div className="iformation-panel-right-block__bottom-cart"> </div>
                 </div>
             </div>
         </>
