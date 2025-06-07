@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ListComponent from './ListComponent/ListComponent';
 import AuthorizationForm from './RegistrationForm/AuthorizationForm.jsx';
 import RegistrationForm from './RegistrationForm/RegistrationForm.jsx';
-import ApplicationPanelСharterer from "./ApplicationPanel/ApplicationPanelСharterer.jsx";
+import ApplicationPanelCustomer from "./ApplicationPanel/ApplicationPanelCustomer.jsx";
 import ApplicationPanelProvider from './ApplicationPanel/ApplicationPanelProvider.jsx';
 import ApplicationPanelAdmin from './ApplicationPanel/ApplicationPanelAdmin.jsx';
 import PrivateRoute from './js/PrivateRoute.jsx'; // добавили данные о роли пользователя
@@ -16,7 +16,7 @@ const ROLE_PROVIDER = "a5219e2b-12f3-490e-99f5-1be54c55cc6d"; // Роль пос
 const ROLE_CUSTOMER = "52910536-2b8a-47e7-9d5a-8cca0a0b865a"; // Роль заказчика
 
 const App = () => {
-
+  //localStorage.clear();
   return (
     <Router>
       <Routes>
@@ -43,9 +43,9 @@ const App = () => {
           </PrivateRoute>
         } />
 
-        <Route path="/ApplicationPanelСharterer" element={
+        <Route path="/ApplicationPanelCustomer" element={
           <PrivateRoute allowedRoles={[ROLE_CUSTOMER, ROLE_ADMIN]}>
-            <ApplicationPanelСharterer />
+            <ApplicationPanelCustomer />
           </PrivateRoute>
         } />
       </Routes>

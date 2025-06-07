@@ -20,6 +20,8 @@ export const handleLoginSubmit = async (email, password, setMessage) => {
       localStorage.setItem("token", data.token);
       localStorage.setItem("roleId", data.roleId);
 
+      console.log(data.roleId);
+
       switch (data.roleId.toLowerCase()) {
         case "b5aff5b0-c3ac-4f1e-9467-fe13a14f6de3": // администратор
           window.location.href = "/ApplicationPanelAdmin";
@@ -28,7 +30,7 @@ export const handleLoginSubmit = async (email, password, setMessage) => {
           window.location.href = "/ApplicationPanelProvider";
           break;
         default: 
-            window.location.href = "/ApplicationPanelСharterer"; // Заказчик
+            window.location.href = "/ApplicationPanelCustomer"; // Заказчик
           break;
       }
     } else {

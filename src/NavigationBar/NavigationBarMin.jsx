@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./navigationBar.css";
-import { Link } from "react-router-dom";
 import {
-    linkPageApplicationPanelRouter, 
+    linkPageApplicationPanel, 
     linkPagePurchase,
     linkPageSpecifications,
     linkPageСompanies
@@ -11,20 +10,23 @@ import {
 
 const NavigationBarMin = ({ onShowMax, onHideMax, isNavMaxVisible }) => {
     const roleId = localStorage.getItem("roleId");
-    
-    // Если роль администратор и заказчика
+
     const [role, setRole] = useState(false);
     const [roleAdmin, setRoleAdmin] = useState(false);
 
-    // Если роль заказчик
-    if (roleId == "52910536-2b8a-47e7-9d5a-8cca0a0b865a") {
-        setRole(true);
-    };
-    
-    // Если роль администратор
-    if (roleId == "b5aff5b0-c3ac-4f1e-9467-fe13a14f6de3") {
-        setRoleAdmin(true);
-    };
+    useEffect(() => {
+        if (roleId === "52910536-2b8a-47e7-9d5a-8cca0a0b865a") {
+            setRole(true);
+        } else {
+            setRole(false);
+        }
+
+        if (roleId === "b5aff5b0-c3ac-4f1e-9467-fe13a14f6de3") {
+            setRoleAdmin(true);
+        } else {
+            setRoleAdmin(false);
+        }
+    }, [roleId]); // добавляем roleId как зависимость
 
 
     return (
@@ -35,11 +37,11 @@ const NavigationBarMin = ({ onShowMax, onHideMax, isNavMaxVisible }) => {
                 </picture>
                 <div className="top-block__line"></div>
                 <ul className="navigation-icon-block">
-                    <li className="navigation-icon-block__item" onClick={linkPageApplicationPanelRouter}>
+                    <li className="navigation-icon-block__item" onClick={linkPageApplicationPanel}>
                         <img className="navigation-icon__icon-img" src="../images/dachbord_icon.svg" alt="Иконка на главную панель" />
                     </li>
                     {/* Если роль пользователя заказчик! */}
-                    {!role ?
+                    {role ?
                         <li className="navigation-icon-block__item" onClick={linkPageSpecifications}>
                             <img className="navigation-icon__icon-img" src="../images/specifications-icon.svg" alt="Иконка на страницу спецификации" />
                         </li>:
@@ -48,7 +50,7 @@ const NavigationBarMin = ({ onShowMax, onHideMax, isNavMaxVisible }) => {
                         </li>
                     }
                     {/* Если роль пользователяадминистратор! */}
-                    {!roleAdmin ? 
+                    {roleAdmin ? 
                             <>
                                 <li className="navigation-icon-block__item" onClick={linkPageSpecifications}>
                                     <img className="navigation-icon__icon-img" src="../images/specifications-icon.svg" alt="Иконка на страницу спецификации" />

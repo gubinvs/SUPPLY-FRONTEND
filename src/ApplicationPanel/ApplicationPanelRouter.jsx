@@ -4,14 +4,13 @@
 
 import { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { ROLE_ADMIN, ROLE_PROVIDER, ROLE_CUSTOMER  } from "../js/roleMap.js";
 
-const ROLE_ADMIN = "b5aff5b0-c3ac-4f1e-9467-fe13a14f6de3";
-const ROLE_PROVIDER = "a5219e2b-12f3-490e-99f5-1be54c55cc6d";
-const ROLE_CUSTOMER = "52910536-2b8a-47e7-9d5a-8cca0a0b865a";
 
 const ApplicationPanelRouter = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  console.log("ROLE_ID", localStorage.getItem("roleId"));
 
   useEffect(() => {
     const role = localStorage.getItem("roleId");
@@ -19,7 +18,7 @@ const ApplicationPanelRouter = () => {
     const routesByRole = {
       [ROLE_ADMIN]: "/ApplicationPanelAdmin",
       [ROLE_PROVIDER]: "/ApplicationPanelProvider",
-      [ROLE_CUSTOMER]: "/ApplicationPanelСharterer",
+      [ROLE_CUSTOMER]: "/ApplicationPanelCustomer",
     };
 
     const targetPath = routesByRole[role] || "/AuthorizationForm";

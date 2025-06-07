@@ -1,6 +1,6 @@
 // Ссылка на главную страницу распределения по ролям
-export function linkPageApplicationPanelRouter() {
-    window.location = "/ApplicationPanelRouter";
+export function linkPageApplicationPanel() {
+    window.location = "/";
 };
 
 // Страница заказов на закупку
