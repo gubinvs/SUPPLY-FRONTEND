@@ -1,0 +1,87 @@
+.iformation-panel-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.iformation-panel-left-block {
+    width: 70%;
+}
+
+.iformation-panel-right-block {
+     width: 29%; /* Оставим зазор на отступ */
+}
+
+.information-company-card {
+    position: relative;
+    padding: 20px;
+    width: 100%;
+    min-height: 200px;
+    height: 100%;
+    border-radius: 6px; 
+    background-color: #E0E5F8;
+    margin-right: 20px;
+}
+
+.information-company-card__edit-botton {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+    z-index: 4;
+}
+
+.information-company-card__title {
+    position: inherit;
+    font-size: 24px;
+    font-weight: 500;
+    margin-bottom: 10px;
+    z-index: 3;
+}
+
+.information-company-card__title_fon {
+    position: absolute;
+    top: 50px;
+    left: 31px;
+    width: 223px;
+    height: 4px;
+    background-color: #FAC855;
+    border-radius: 4px;
+    z-index: 0;
+}
+
+.information-company-card__name-company {
+    font-size: 20px;
+    font-weight: 400;
+    color: #342F2C;
+}
+
+.information-company-card__item {
+    margin-bottom: 10px;
+}
+
+.information-company-card__item_title {
+    font-weight: 800;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.information-user-card {
+    padding: 20px;
+    width: 100%;
+    border-radius: 6px;
+    background-color: #FFF;
+}
+
+.information-user-card__title {
+    font-size: 20px;
+    font-weight: 400;
+}

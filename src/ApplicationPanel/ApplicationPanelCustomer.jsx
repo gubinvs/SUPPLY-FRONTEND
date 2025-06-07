@@ -3,6 +3,7 @@ import "./applicationPanel.css";
 import NavigationBarMin from "../NavigationBar/NavigationBarMin.jsx";
 import NavigationBarMax from "../NavigationBar/NavigationBarMax.jsx";
 import HeaderApplicationPanel from "./Header/HeaderApplicationPanel.jsx";
+import InformationPanel from "./InformationPanel/InformationPanel.jsx"
 
 const ApplicationPanelCustomer = () => {
     
@@ -24,6 +25,7 @@ const ApplicationPanelCustomer = () => {
             <div className="application-panel__body">
                 <div className="application-panel__container">
                     <HeaderApplicationPanel />
+                    <InformationPanel />
                 </div>
             </div>
         </div>
