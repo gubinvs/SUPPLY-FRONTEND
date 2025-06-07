@@ -75,6 +75,7 @@
 
 
 .information-user-card {
+    position: relative;
     padding: 20px;
     width: 100%;
     border-radius: 6px;
@@ -82,6 +83,27 @@
 }
 
 .information-user-card__title {
+    position: inherit;
     font-size: 20px;
-    font-weight: 400;
+    font-weight: 600;
+    margin-bottom: 10px;
+    z-index: 4;
+}
+
+.information-user-card__title_fon {
+    position: absolute;
+    position: absolute;
+    top: 24px;
+    left: 10px;
+    width: 313px;
+    height: 14px;
+    border-radius: 10px;
+    background-color: #FAC855;
+    z-index: 0;
+}
+
+.information-user-card__edit-botton {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
 }
