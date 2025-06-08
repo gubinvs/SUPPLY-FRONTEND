@@ -17,8 +17,12 @@ export const handleLoginSubmit = async (email, password, setMessage) => {
     const data = await response.json();
 
     if (data.token !== undefined && data.roleId !== undefined) {
+      // Запишем в хранилище токен пользователя
       localStorage.setItem("token", data.token);
+      // Запишем в хранилище роль в системе пользователя
       localStorage.setItem("roleId", data.roleId);
+      // Запишем в хранилище guidId пользователя 
+      localStorage.setItem("guidIdCollaborator", data.GuidIdCollaborator);
 
       console.log(data.roleId);
 

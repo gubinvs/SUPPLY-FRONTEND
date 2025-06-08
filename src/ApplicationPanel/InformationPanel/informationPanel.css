@@ -90,7 +90,8 @@
     position: absolute;
     top: 24px;
     left: 10px;
-    width: 313px;
+    width: 60%;
+    max-width: 314px;
     height: 14px;
     border-radius: 10px;
     background-color: #FAC855;
