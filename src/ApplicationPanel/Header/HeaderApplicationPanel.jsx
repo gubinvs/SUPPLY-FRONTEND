@@ -1,25 +1,8 @@
-import React, { useState, useEffect } from "react";
+
 import "./headerApplicationPanel.css";
 import clearRoleId from "../../js/clearRoleId.js";
-import { roleMap } from "../../js/roleMap.js";
 
-const HeaderApplicationPanel = () => {
-    const [roleId] = useState(() => localStorage.getItem("roleId")); // ✅ кэшируем значение
-    const [role, setRole] = useState("");
-    const [title, setTitle] = useState("");
-
-    useEffect(() => {
-        const currentRole = roleMap[roleId] || "Неизвестная роль";
-        setRole(currentRole);
-    }, [roleId]);
-
-    useEffect(() => {
-        const location = window.location.pathname;
-        
-        setTitle(location === "/ApplicationPanelCustomer"
-            ? "Информационная панель"
-            : "");
-    }, []);
+const HeaderApplicationPanel = ({role, title}) => {
 
     return (
         <>

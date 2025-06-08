@@ -1,6 +1,7 @@
 .iformation-panel-container {
     display: flex;
     justify-content: space-between;
+    height: 100%;
 }
 
 .iformation-panel-left-block {
@@ -8,7 +9,8 @@
 }
 
 .iformation-panel-right-block {
-     width: 29%; /* Оставим зазор на отступ */
+    height: 100%;
+    width: 29%; /* Оставим зазор на отступ */
 }
 
 .information-company-card {
@@ -16,7 +18,7 @@
     padding: 20px;
     width: 100%;
     min-height: 200px;
-    height: 100%;
+    height: auto;
     border-radius: 6px; 
     background-color: #E0E5F8;
     margin-right: 20px;
@@ -67,8 +69,9 @@
 
 .information-user-card {
     position: relative;
-    padding: 20px;
+    padding: 20px 20px 60px 20px ;
     width: 100%;
+    height: auto;
     border-radius: 6px;
     background-color: #FFF;
     margin-bottom: 20px;
@@ -100,38 +103,6 @@
     right: 20px;
 }
 
-
-.information-panel-left-block__bottom-card-block{
-    width: 100%;
-    height: 100%;
-    display: flex;
-}
-
-.iplb-bottom-card-block__bottom-card_left,
-.iplb-bottom-card-block__bottom-card_right {
-    width: calc(50% - 20px);
-    height: calc(100% - 76px);
-    border-radius: 10px;
-    border: 1px solid #D5DAE0;
-    background-color: #fff;
-}
-
-.iplb-bottom-card-block__bottom-card_left {
-    margin-right: 20px;
-}
-
-.iplb-bottom-card-block__bottom-card_right {
-    width: calc(50%);
-    height: calc(100% - 76px);
-    border-radius: 10px;
-    border: 1px solid #D5DAE0;
-    background-color: #fff;
-}
-
-.iformation-panel-right-block__bottom-cart {
-    width: 100%;
-    height: 117%;
-    border: 1px solid #D5DAE0;
-    border-radius: 10px;
-    background-color: #FFF;
+.information-user-card__item_discr {
+    margin-bottom: 10px;
 }

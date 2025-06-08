@@ -1,4 +1,5 @@
-import React from 'react';
+
+import {useState, useEffect} from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ListComponent from './ListComponent/ListComponent';
 import AuthorizationForm from './RegistrationForm/AuthorizationForm.jsx';
@@ -9,14 +10,33 @@ import ApplicationPanelAdmin from './ApplicationPanel/ApplicationPanelAdmin.jsx'
 import PrivateRoute from './js/PrivateRoute.jsx'; // добавили данные о роли пользователя
 import UpdatePassword from "./RegistrationForm/UpdatePassword.jsx";
 import ApplicationPanelRouter from "./ApplicationPanel/ApplicationPanelRouter.jsx";
+import { roleMap } from "./js/roleMap.js";
+
 
 // Константы ролей
 const ROLE_ADMIN = "b5aff5b0-c3ac-4f1e-9467-fe13a14f6de3"; // Роль администратора системы
 const ROLE_PROVIDER = "a5219e2b-12f3-490e-99f5-1be54c55cc6d"; // Роль поставщика
 const ROLE_CUSTOMER = "52910536-2b8a-47e7-9d5a-8cca0a0b865a"; // Роль заказчика
 
+
 const App = () => {
-  //localStorage.clear();
+  const [roleId] = useState(() => localStorage.getItem("roleId")); // ✅ кэшируем значение
+  const [role, setRole] = useState("");
+  const [title, setTitle] = useState("");
+
+    useEffect(() => {
+      const currentRole = roleMap[roleId] || "Неизвестная роль";
+      setRole(currentRole);
+  }, [roleId]);
+
+  useEffect(() => {
+      const location = window.location.pathname;
+      
+      setTitle(location === "/ApplicationPanelCustomer"
+          ? "Информационная панель"
+          : "");
+  }, []);
+
   return (
     <Router>
       <Routes>
@@ -45,7 +65,7 @@ const App = () => {
 
         <Route path="/ApplicationPanelCustomer" element={
           <PrivateRoute allowedRoles={[ROLE_CUSTOMER, ROLE_ADMIN]}>
-            <ApplicationPanelCustomer />
+            <ApplicationPanelCustomer role={role} title={title} />
           </PrivateRoute>
         } />
       </Routes>
@@ -54,5 +74,3 @@ const App = () => {
 };
 
 export default App;
-
-

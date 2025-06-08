@@ -5,7 +5,7 @@ import NavigationBarMax from "../NavigationBar/NavigationBarMax.jsx";
 import HeaderApplicationPanel from "./Header/HeaderApplicationPanel.jsx";
 import InformationPanel from "./InformationPanel/InformationPanel.jsx"
 
-const ApplicationPanelCustomer = () => {
+const ApplicationPanelCustomer = ({role, title}) => {
     
     const [isNavMaxVisible, setIsNavMaxVisible] = useState(false);
 
@@ -24,8 +24,8 @@ const ApplicationPanelCustomer = () => {
 
             <div className="application-panel__body">
                 <div className="application-panel__container">
-                    <HeaderApplicationPanel />
-                    <InformationPanel />
+                    <HeaderApplicationPanel role={role} title={title} />
+                    <InformationPanel role={role} />
                 </div>
             </div>
         </div>
