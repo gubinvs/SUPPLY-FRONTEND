@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import "./informationPanel.css";
 import InformationCompanyCardContent from "./InformationCompanyCardContent.jsx";
+import InformationEditCompanyCardContent from "./InformationEditCompanyCardContent.jsx";
 
-const InformationCompanyCard = ({ role, company }) => {
+const InformationCompanyCard = (company) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   if (!company || company.length === 0) {
@@ -27,6 +28,13 @@ const InformationCompanyCard = ({ role, company }) => {
       <div className="information-company-card">
         <button type="button" className="btn btn-outline-warning information-company-card__edit-botton">Редактировать</button>
         <InformationCompanyCardContent 
+            fullNameCompany={currentCompany.fullNameCompany}
+            abbreviatedNameCompany={currentCompany.abbreviatedNameCompany}
+            innCompany={currentCompany.innCompany} 
+            addressCompany={currentCompany.addressCompany}
+        />
+
+        <InformationEditCompanyCardContent 
             fullNameCompany={currentCompany.fullNameCompany}
             abbreviatedNameCompany={currentCompany.abbreviatedNameCompany}
             innCompany={currentCompany.innCompany} 
