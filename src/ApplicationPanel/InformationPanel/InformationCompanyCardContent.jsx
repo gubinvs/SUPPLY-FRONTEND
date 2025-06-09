@@ -2,7 +2,7 @@ import React from "react";
 import "./informationPanel.css";
 
 
-const InformationCompanyCardContent =({fullNameCompany, abbreviatedNameCompany, innCompany, addressCompany })=> {
+const InformationCompanyCardContent =({fullNameCompany, abbreviatedNameCompany, innCompany, addressCompany})=> {
 
     return(
         <>

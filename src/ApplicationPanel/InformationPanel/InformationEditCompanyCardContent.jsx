@@ -6,6 +6,7 @@ const InformationEditCompanyCardContent = ({fullNameCompany, abbreviatedNameComp
 
     return (
         <>
+            <button type="button" className="btn btn-success information-company-card__edit-botton">Записать</button>
             <div className="information-company-card__title">Реквизиты компании:</div>
             <div className="information-company-card__title_fon"></div>
             <ul className="information-company-card__list">

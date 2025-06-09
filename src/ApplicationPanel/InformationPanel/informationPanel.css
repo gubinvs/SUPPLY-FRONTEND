@@ -19,7 +19,7 @@
 /*-------------InformationCompanyCard -------------- */
 .information-company-card {
     position: relative;
-    padding: 20px;
+    padding: 20px 20px 40px 20px;
     width: 100%;
     min-height: 200px;
     height: auto;
@@ -33,6 +33,11 @@
     position: absolute;
     top: 20px;
     right: 20px;
+    cursor: pointer;
+    z-index: 4;
+}
+
+.information-company-card__add-botton {
     cursor: pointer;
     z-index: 4;
 }
