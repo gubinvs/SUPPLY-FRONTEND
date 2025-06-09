@@ -3,22 +3,30 @@ import {useState, useEffect} from "react";
 import "./informationPanel.css";
 import ApiUrl from "../../js/ApiUrl";
 import InformationCompanyCard from "./InformationCompanyCard";
-import { data } from "react-router-dom";
+
 
 // Основной блок информационной панели, вводит информацию для 
 // конкретного пользователя симтемы в соответствии с ролью
 
 const InformationPanel = ({role}) => {
-    // Считываем guidIdCollaborator
-    const guidIdCollaborator =  localStorage.getItem("guidIdCollaborator");
+    // Формируем данные о пользователе
     const [nameCollaborator, setNameCollaborator] = useState("");
     const [emailCollaborator, setEmailCollaborator] = useState("");
     const [phoneCollaborator, setPhoneCollaborator] = useState("");
+
+
+    // Собираем данные о компаниях
+    const [company, setCompany] = useState([]);
+
+    // Собирем данные о адресах доставки
     const [addressDiliveryCollaborator, setAddressDiliveryCollaborator] = useState([]);
+
+
 
     useEffect(() => {
         // Достаем GUID из хранилища
-        const guidIdCollaborator = localStorage.getItem("guidIdCollaborator");
+        const guidIdCollaborator = "369581ef-5f9d-4c41-b083-6bfe926605dc";
+        //const guidIdCollaborator = localStorage.getItem("guidIdCollaborator");
         
         // Оборачиваем асинхронную функцию внутрь useEffect
         const fetchData = async () => {
@@ -35,7 +43,11 @@ const InformationPanel = ({role}) => {
             }
       
             const data = await response.json();
-            setNameCollaborator(data.massage);
+            setNameCollaborator(data.user.nameCollaborator);
+            setEmailCollaborator(data.user.emailCollaborator);
+            setPhoneCollaborator(data.user.phoneCollaborator);
+            setCompany(data.companyInfo);
+            setAddressDiliveryCollaborator(data.deliveryAddress);
       
           } catch (error) {
             console.error("Ошибка при авторизации:", error);
@@ -49,7 +61,7 @@ const InformationPanel = ({role}) => {
         <>
             <div className="iformation-panel-container">
                 <div className="iformation-panel-left-block">
-                    <InformationCompanyCard role={role} />
+                    <InformationCompanyCard role={role} company={company} />
                 </div>
                 <div className="iformation-panel-right-block">
                     <div className="information-user-card">
@@ -66,12 +78,16 @@ const InformationPanel = ({role}) => {
                             </li> 
                             <li className="information-company-card__item">
                                 <div className="information-company-card__item_title">Телефон:</div>
-                                <div className="information-company-card__item_discr">{phoneCollaborator}</div>
+                                <div className="information-company-card__item_discr">{phoneCollaborator==null?phoneCollaborator:"Не указан"}</div>
                             </li>
                             <li className="information-company-card__item">
                                 <div className="information-company-card__item_title">Адреса доставки:</div>
-                                <div className="information-company-card__item_discr information-user-card__item_discr">197375 г. Санкт-Петербург Макулатурный проезд, 4Б, пом. 37.</div>
-                                <div className="information-company-card__item_discr information-user-card__item_discr">197375, Санкт-Петербург, ул. Вербная, 27 офис 514</div>
+                                {addressDiliveryCollaborator.map((item, index) => (
+                                    <div key={index} className="information-company-card__item_discr information-user-card__item_discr">
+                                        <span role="img" aria-label="address" style={{ marginRight: '6px' }}>📍</span>
+                                        {item}
+                                    </div>
+                                ))}
                             </li>
                        </ul>
                        <button type="button" className="btn btn-outline-warning information-user-card__edit-botton">Редактировать</button>
