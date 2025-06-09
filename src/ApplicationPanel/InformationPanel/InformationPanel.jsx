@@ -61,7 +61,7 @@ const InformationPanel = ({role}) => {
         <>
             <div className="iformation-panel-container">
                 <div className="iformation-panel-left-block">
-                    <InformationCompanyCard role={role} company={company} />
+                    <InformationCompanyCard company={company} />
                 </div>
                 <div className="iformation-panel-right-block">
                     <div className="information-user-card">
@@ -79,6 +79,10 @@ const InformationPanel = ({role}) => {
                             <li className="information-company-card__item">
                                 <div className="information-company-card__item_title">Телефон:</div>
                                 <div className="information-company-card__item_discr">{phoneCollaborator==null?phoneCollaborator:"Не указан"}</div>
+                            </li>
+                            <li className="information-company-card__item">
+                                <div className="information-company-card__item_title">Роль пользователя:</div>
+                                <div className="information-company-card__item_discr">{role}</div>
                             </li>
                             <li className="information-company-card__item">
                                 <div className="information-company-card__item_title">Адреса доставки:</div>

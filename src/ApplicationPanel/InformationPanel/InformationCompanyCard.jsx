@@ -41,10 +41,6 @@ const InformationCompanyCard = ({ role, company }) => {
             <div className="information-company-card__item_title">Юридический адрес:</div>
             <div className="information-company-card__item_discr">{currentCompany.addressCompany}</div>
           </li>
-          <li className="information-company-card__item">
-            <div className="information-company-card__item_title">Роль компании в системе:</div>
-            <div className="information-company-card__item_discr">{role}</div>
-          </li>
         </ul>
 
         {/* Индикаторы страниц в правом нижнем углу */}
