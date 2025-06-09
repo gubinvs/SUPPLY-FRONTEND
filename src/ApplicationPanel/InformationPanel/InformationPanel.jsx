@@ -25,8 +25,7 @@ const InformationPanel = ({role}) => {
 
     useEffect(() => {
         // Достаем GUID из хранилища
-        const guidIdCollaborator = "369581ef-5f9d-4c41-b083-6bfe926605dc";
-        //const guidIdCollaborator = localStorage.getItem("guidIdCollaborator");
+        const guidIdCollaborator = localStorage.getItem("guidIdCollaborator");
         
         // Оборачиваем асинхронную функцию внутрь useEffect
         const fetchData = async () => {
