@@ -22,9 +22,7 @@ export const handleLoginSubmit = async (email, password, setMessage) => {
       // Запишем в хранилище роль в системе пользователя
       localStorage.setItem("roleId", data.roleId);
       // Запишем в хранилище guidId пользователя 
-      localStorage.setItem("guidIdCollaborator", data.GuidIdCollaborator);
-
-      console.log(data.roleId);
+      localStorage.setItem("guidIdCollaborator", data.guidIdCollaborator);
 
       switch (data.roleId.toLowerCase()) {
         case "b5aff5b0-c3ac-4f1e-9467-fe13a14f6de3": // администратор
