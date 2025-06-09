@@ -1,10 +1,23 @@
 import React, { useState } from "react";
+import "./informationPanel.css"
 
 const InformationCompanyCard = ({ role, company }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   if (!company || company.length === 0) {
-    return <div>Компании не найдены</div>;
+    return (
+      <>
+        <div className="information-company-card" style={{ position: "relative" }}>
+          <div>Нет данных о компаниях</div>
+          <button
+            type="button"
+            className="btn btn-outline-warning information-company-card__edit-botton"
+          >
+            Редактировать
+          </button>
+        </div>
+      </>
+    );
   }
 
   const currentCompany = company[currentIndex];
