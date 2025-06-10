@@ -61,7 +61,6 @@ const InformationPanel = ({role}) => {
             <div className="iformation-panel-container">
                 <div className="iformation-panel-left-block">
                     <InformationCompanyCard company={company} />
-                    <button type="button" className="btn btn-outline-success information-company-card__add-botton">Добавить</button>
                 </div>
                 <div className="iformation-panel-right-block">
                     <div className="information-user-card">

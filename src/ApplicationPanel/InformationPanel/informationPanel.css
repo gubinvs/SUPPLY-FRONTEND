@@ -96,6 +96,19 @@
     user-select: none;
 }
 
+.pagination-icon-block__add-icon {
+    padding: 0px 0px 2px 0px;
+    font-size: 14px !important;
+    font-weight: bold;
+    border: 1px solid #342F2C;
+    background-color: #E0E5F8;
+    color: #342F2C;
+}
+
+.pagination-icon-block__add-icon:hover {
+    background-color: #ffc107;
+}
+
 
 
 /**/
