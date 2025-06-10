@@ -20,37 +20,33 @@ const InformationAddCompanyCardContent = ({ guidIdCollaborator }) => {
         }));
     };
 
-    const handleSubmit = () => {
-        const companyData = {
-            ...formData,
-            innCompany: Number(formData.innCompany), // Преобразуем ИНН в число
-        };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-        console.log("Отправка данных:", companyData);
-        console.log(JSON.stringify({formData}));
-
-        // Отправка на сервер
         try {
-                const response = fetch(ApiUrl + "/api/AddInformationCompany", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                    body: JSON.stringify({formData})
-                });
-                
-                
-                if (!response.ok) {
-                throw new Error(`Ошибка при отправке: ${response.statusText}`);
-                }
+            const response = await fetch(ApiUrl+"/api/AddInformationCompany", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(formData)
+            });
 
-                const data = response.json();
-                return data;
+            const result = await response.json();
+            console.log(result);
 
-            } catch (error) {
-                console.error("Ошибка отправки данных о компании:", error);
-                throw error;
+            if (!response.ok) {
+            throw new Error(result.message || "Ошибка на сервере");
             }
+
+            //alert(result.message);
+
+            
+        } catch (err) {
+            console.error("Ошибка при отправке:", err); // <-- сюда смотрим
+            alert("Ошибка при отправке: " + (err.message || err.toString()));
+        }
+
+        // Вернемся на текущюю страницу
+        window.location = window.location.href;
     };
 
     return (
