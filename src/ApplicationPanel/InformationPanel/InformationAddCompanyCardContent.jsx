@@ -2,7 +2,7 @@ import React from "react";
 import "./informationPanel.css";
 
 // Компонент для изменения данных о компании
-const InformationAddCompanyCardContent = ()=> {
+const InformationAddCompanyCardContent = (guidIdCollaborator)=> {
 
     return (
         <>

@@ -21,11 +21,10 @@ const InformationPanel = ({role}) => {
     // Собирем данные о адресах доставки
     const [addressDiliveryCollaborator, setAddressDiliveryCollaborator] = useState([]);
 
-
+    // Достаем GUID из хранилища
+    const guidIdCollaborator = localStorage.getItem("guidIdCollaborator");
 
     useEffect(() => {
-        // Достаем GUID из хранилища
-        const guidIdCollaborator = localStorage.getItem("guidIdCollaborator");
         
         // Оборачиваем асинхронную функцию внутрь useEffect
         const fetchData = async () => {
@@ -60,7 +59,7 @@ const InformationPanel = ({role}) => {
         <>
             <div className="iformation-panel-container">
                 <div className="iformation-panel-left-block">
-                    <InformationCompanyCard company={company} />
+                    <InformationCompanyCard company={company} guidIdCollaborator={guidIdCollaborator} />
                 </div>
                 <div className="iformation-panel-right-block">
                     <div className="information-user-card">
