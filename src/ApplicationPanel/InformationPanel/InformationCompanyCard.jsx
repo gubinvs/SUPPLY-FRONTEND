@@ -5,27 +5,22 @@ import InformationEditCompanyCardContent from "./InformationEditCompanyCardConte
 import InformationAddCompanyCardContent from "./InformationAddCompanyCardContent.jsx";
 import { generateGUID } from "../../js/generateGUID.js";
 
-
-
 ///
 /// Компонент отвечает за отображение информации о компаниях пользователя
 ///
 
-
-const InformationCompanyCard = ( {company, guidIdCollaborator} ) => {
-  // Инициализация идентификатора
+const InformationCompanyCard = ({ company, guidIdCollaborator }) => {
+  // Состояния компонента
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [state, setState] = useState(true); // режим просмотра
+  const [addState, setAddState] = useState(false); // режим добавления
 
-  // Состояние просмотра двнных о компании
-  const [state, setState] = useState(true); // состояние информации о компании
-  const [addState, setAddState] = useState(false); // состояние для отображения формы добавления информации о компании
-
-  // Переключение на режим редактирвания информации о компании
-  const editState =()=> {
-    setState(false);
+  // Проверка корректности ИНН
+  const isInnValid = (inn) => {
+    return /^\d{10}$/.test(inn); // ИНН должен быть строкой из 10 цифр
   };
 
-  // Если нет записи о компании
+  // Если company не передана или пуста — используем заглушку
   if (!company || company.length === 0) {
     company = [
       {
@@ -38,90 +33,108 @@ const InformationCompanyCard = ( {company, guidIdCollaborator} ) => {
     ];
   }
 
-  // Идентификация полей для конкретной компании
   const currentCompany = company[currentIndex];
 
   const goToIndex = (index) => {
     setCurrentIndex(index);
   };
 
-  // Открыть форму заполнения для добавления новой компании
   const addNewCompany = () => {
     setAddState(true);
   };
 
-  // Закроем форму для добавления новой компании
   const clearAddNewCompany = () => {
     setAddState(false);
   };
 
-  // Валидация данных о ИНН компании
-  const isValidInn = (inn) => {
-    const regex = /^\d{10}(\d{2})?$/;
-    return regex.test(inn);
+  const editState = () => {
+    setState(false);
   };
 
+  // Если ИНН некорректен — покажем предупреждение
+  const showInvalidInnWarning = !isInnValid(currentCompany.innCompany);
+
   return (
-    <>
-      <div className="information-company-card">
-        
-        {/* Если включено состояние добавления новой компании */}
-        {addState? 
-            <>
-                {/* форма для добавления информации о новой компании */}
-                <InformationAddCompanyCardContent guidIdCollaborator={guidIdCollaborator} />
-            </>
-            :
-            <>
-                {/* Если состояние редактирование выводим InformationEditCompanyCardContent */}
-                {state?
-                    <>
-                        {/* Информация о компаниях */}
-                        <button type="button" className="btn btn-outline-warning information-company-card__edit-botton" onClick={editState}>Редактировать</button>
-                        <InformationCompanyCardContent 
-                          guidIdCompany={currentCompany.guidIdCompany}
-                          fullNameCompany={currentCompany.fullNameCompany}
-                          abbreviatedNameCompany={currentCompany.abbreviatedNameCompany}
-                          innCompany={currentCompany.innCompany} 
-                          addressCompany={currentCompany.addressCompany}
-                        />
+    <div className="information-company-card">
+      {addState ? (
+        <InformationAddCompanyCardContent guidIdCollaborator={guidIdCollaborator} />
+      ) : showInvalidInnWarning ? (
+        <>
+          <div className="alert alert-warning">
+            ИНН компании некорректен или отсутствует. Пожалуйста, добавьте корректные данные.
+          </div>
+          <div className="pagination-icon-block">
+            <div
+              className="pagination-icon-block__icon pagination-icon-block__add-icon"
+              onClick={addNewCompany}
+            >
+              +
+            </div>
+          </div>
+        </>
+      ) : state ? (
+        <>
+          <button
+            type="button"
+            className="btn btn-outline-warning information-company-card__edit-botton"
+            onClick={editState}
+          >
+            Редактировать
+          </button>
+          <InformationCompanyCardContent
+            guidIdCompany={currentCompany.guidIdCompany}
+            fullNameCompany={currentCompany.fullNameCompany}
+            abbreviatedNameCompany={currentCompany.abbreviatedNameCompany}
+            innCompany={currentCompany.innCompany}
+            addressCompany={currentCompany.addressCompany}
+          />
+        </>
+      ) : (
+        <InformationEditCompanyCardContent
+          guidIdCompany={currentCompany.guidIdCompany}
+          fullNameCompany={currentCompany.fullNameCompany}
+          abbreviatedNameCompany={currentCompany.abbreviatedNameCompany}
+          innCompany={currentCompany.innCompany}
+          addressCompany={currentCompany.addressCompany}
+          guidIdCollaborator={guidIdCollaborator}
+        />
+      )}
 
-                        {!isValidInn(currentCompany.innCompany) && (
-                          <div className="text-danger" style={{ marginTop: "10px" }}>
-                            Внимание: ИНН указан некорректно
-                          </div>
-                        )}
-                    </>
-                    :
-                    <>
-                      {/* Форма для изменения данных о текущей компании */}
-                      <InformationEditCompanyCardContent
-                          guidIdCompany={currentCompany.guidIdCompany}
-                          fullNameCompany={currentCompany.fullNameCompany}
-                          abbreviatedNameCompany={currentCompany.abbreviatedNameCompany}
-                          innCompany={currentCompany.innCompany} 
-                          addressCompany={currentCompany.addressCompany}
-                          guidIdCollaborator={guidIdCollaborator}
-                      />
-                    </>
-                }
-            </>
-        }
-
-        {/* Индикаторы пагинации компаний в правом нижнем углу */}
+      {/* Пагинация и кнопка добавления компании */}
+      {!addState && !showInvalidInnWarning && (
         <div className="pagination-icon-block">
           {company.map((_, index) => (
-            <div key={index} className="pagination-icon-block__icon" onClick={() => goToIndex(index)} style={{backgroundColor: index === currentIndex ? "#ffc107" : "#e0e0e0",}}> {index + 1}</div>
+            <div
+              key={index}
+              className="pagination-icon-block__icon"
+              onClick={() => goToIndex(index)}
+              style={{
+                backgroundColor: index === currentIndex ? "#ffc107" : "#e0e0e0",
+              }}
+            >
+              {index + 1}
+            </div>
           ))}
-          {/* Кнопка для отображения формы заполнения информации о новой компании, либо (+) либо (-) */}
-          {addState?
-              <div className="pagination-icon-block__icon pagination-icon-block__add-icon" onClick={clearAddNewCompany}>-</div>
-              :
-              <div className="pagination-icon-block__icon pagination-icon-block__add-icon" onClick={addNewCompany}>+</div>
-          }
+          <div
+            className="pagination-icon-block__icon pagination-icon-block__add-icon"
+            onClick={addNewCompany}
+          >
+            +
+          </div>
         </div>
-      </div>
-    </>
+      )}
+
+      {addState && (
+        <div className="pagination-icon-block">
+          <div
+            className="pagination-icon-block__icon pagination-icon-block__add-icon"
+            onClick={clearAddNewCompany}
+          >
+            -
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 
