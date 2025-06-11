@@ -6,8 +6,6 @@ import InformationAddCompanyCardContent from "./InformationAddCompanyCardContent
 
 
 
-
-
 ///
 /// Компонент отвечает за отображение информации о компаниях пользователя
 ///
@@ -73,6 +71,7 @@ const InformationCompanyCard = ( {company, guidIdCollaborator} ) => {
                         {/* Информация о компаниях */}
                         <button type="button" className="btn btn-outline-warning information-company-card__edit-botton" onClick={editState}>Редактировать</button>
                         <InformationCompanyCardContent 
+                            guidIdCompany={currentCompany.guidIdCompany}
                             fullNameCompany={currentCompany.fullNameCompany}
                             abbreviatedNameCompany={currentCompany.abbreviatedNameCompany}
                             innCompany={currentCompany.innCompany} 
@@ -83,10 +82,12 @@ const InformationCompanyCard = ( {company, guidIdCollaborator} ) => {
                     <>
                       {/* Форма для изменения данных о текущей компании */}
                       <InformationEditCompanyCardContent
+                          guidIdCompany={currentCompany.guidIdCompany}
                           fullNameCompany={currentCompany.fullNameCompany}
                           abbreviatedNameCompany={currentCompany.abbreviatedNameCompany}
                           innCompany={currentCompany.innCompany} 
                           addressCompany={currentCompany.addressCompany}
+                          guidIdCollaborator={guidIdCollaborator}
                       />
                     </>
                   
