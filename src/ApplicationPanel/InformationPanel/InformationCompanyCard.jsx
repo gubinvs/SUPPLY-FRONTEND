@@ -3,6 +3,7 @@ import "./informationPanel.css";
 import InformationCompanyCardContent from "./InformationCompanyCardContent.jsx";
 import InformationEditCompanyCardContent from "./InformationEditCompanyCardContent.jsx";
 import InformationAddCompanyCardContent from "./InformationAddCompanyCardContent.jsx";
+import { generateGUID } from "../../js/generateGUID.js";
 
 
 
@@ -26,14 +27,15 @@ const InformationCompanyCard = ( {company, guidIdCollaborator} ) => {
 
   // Если нет записи о компании
   if (!company || company.length === 0) {
-    return (
-      <>
-        <div className="information-company-card" style={{ position: "relative" }}>
-          <div>Нет данных о компаниях</div>
-          <button type="button" className="btn btn-outline-warning information-company-card__edit-botton"  onClick={editState}>Редактировать</button>
-        </div>
-      </>
-    );
+    company = [
+      {
+        guidIdCompany: generateGUID(),
+        fullNameCompany: "Нет данных",
+        abbreviatedNameCompany: "Нет данных",
+        innCompany: "Нет данных",
+        addressCompany: "Нет данных",
+      },
+    ];
   }
 
   // Идентификация полей для конкретной компании
@@ -51,6 +53,12 @@ const InformationCompanyCard = ( {company, guidIdCollaborator} ) => {
   // Закроем форму для добавления новой компании
   const clearAddNewCompany = () => {
     setAddState(false);
+  };
+
+  // Валидация данных о ИНН компании
+  const isValidInn = (inn) => {
+    const regex = /^\d{10}(\d{2})?$/;
+    return regex.test(inn);
   };
 
   return (
@@ -71,12 +79,18 @@ const InformationCompanyCard = ( {company, guidIdCollaborator} ) => {
                         {/* Информация о компаниях */}
                         <button type="button" className="btn btn-outline-warning information-company-card__edit-botton" onClick={editState}>Редактировать</button>
                         <InformationCompanyCardContent 
-                            guidIdCompany={currentCompany.guidIdCompany}
-                            fullNameCompany={currentCompany.fullNameCompany}
-                            abbreviatedNameCompany={currentCompany.abbreviatedNameCompany}
-                            innCompany={currentCompany.innCompany} 
-                            addressCompany={currentCompany.addressCompany}
+                          guidIdCompany={currentCompany.guidIdCompany}
+                          fullNameCompany={currentCompany.fullNameCompany}
+                          abbreviatedNameCompany={currentCompany.abbreviatedNameCompany}
+                          innCompany={currentCompany.innCompany} 
+                          addressCompany={currentCompany.addressCompany}
                         />
+
+                        {!isValidInn(currentCompany.innCompany) && (
+                          <div className="text-danger" style={{ marginTop: "10px" }}>
+                            Внимание: ИНН указан некорректно
+                          </div>
+                        )}
                     </>
                     :
                     <>
@@ -90,7 +104,6 @@ const InformationCompanyCard = ( {company, guidIdCollaborator} ) => {
                           guidIdCollaborator={guidIdCollaborator}
                       />
                     </>
-                  
                 }
             </>
         }
