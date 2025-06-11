@@ -10,7 +10,6 @@ import { ROLE_ADMIN, ROLE_PROVIDER, ROLE_CUSTOMER  } from "../js/roleMap.js";
 const ApplicationPanelRouter = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  console.log("ROLE_ID", localStorage.getItem("roleId"));
 
   useEffect(() => {
     const role = localStorage.getItem("roleId");

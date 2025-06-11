@@ -10,51 +10,54 @@ import DataCollaborator from "./DataCollaborator.jsx";
 // конкретного пользователя симтемы в соответствии с ролью
 
 const InformationPanel = ({role}) => {
-    // Формируем данные о пользователе
-    const [nameCollaborator, setNameCollaborator] = useState("");
-    const [emailCollaborator, setEmailCollaborator] = useState("");
-    const [phoneCollaborator, setPhoneCollaborator] = useState("");
+    
+  // Формируем данные о пользователе
+  const [nameCollaborator, setNameCollaborator] = useState("");
+  const [emailCollaborator, setEmailCollaborator] = useState("");
+  const [phoneCollaborator, setPhoneCollaborator] = useState("");
 
 
-    // Собираем данные о компаниях
-    const [company, setCompany] = useState([]);
+  // Собираем данные о компаниях
+  const [company, setCompany] = useState([]);
 
-    // Собирем данные о адресах доставки
-    const [addressDiliveryCollaborator, setAddressDiliveryCollaborator] = useState([]);
+  // Собирем данные о адресах доставки
+  const [addressDiliveryCollaborator, setAddressDiliveryCollaborator] = useState([]);
 
-    // Достаем GUID из хранилища
-    const guidIdCollaborator = localStorage.getItem("guidIdCollaborator");
+  // Достаем GUID из хранилища
+  const guidIdCollaborator = localStorage.getItem("guidIdCollaborator");
 
-    useEffect(() => {
-        
-        // Оборачиваем асинхронную функцию внутрь useEffect
-        const fetchData = async () => {
-          try {
-            const response = await fetch(ApiUrl + "/api/DataInfoPanel/" + guidIdCollaborator, {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-              },
-            });
+
+  useEffect(() => {
       
-            if (!response.ok) {
-              throw new Error(`HTTP error! status: ${response.status}`);
-            }
-      
-            const data = await response.json();
-            setNameCollaborator(data.user.nameCollaborator);
-            setEmailCollaborator(data.user.emailCollaborator);
-            setPhoneCollaborator(data.user.phoneCollaborator);
-            setCompany(data.companyInfo);
-            setAddressDiliveryCollaborator(data.deliveryAddress);
-      
-          } catch (error) {
-            console.error("Ошибка при авторизации:", error);
+      // Оборачиваем асинхронную функцию внутрь useEffect
+      const fetchData = async () => {
+        try {
+          const response = await fetch(ApiUrl + "/api/DataInfoPanel/" + guidIdCollaborator, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+    
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
           }
-        };
-      
-        fetchData();
-      }, []);
+    
+          const data = await response.json();
+          
+          setNameCollaborator(data.user.nameCollaborator);
+          setEmailCollaborator(data.user.emailCollaborator);
+          setPhoneCollaborator(data.user.phoneCollaborator);
+          setCompany(data.companyInfo);
+          setAddressDiliveryCollaborator(data.deliveryAddress);
+    
+        } catch (error) {
+          console.error("Ошибка при авторизации:", error);
+        }
+      };
+    
+      fetchData();
+    }, []);
       
     return (
         <>

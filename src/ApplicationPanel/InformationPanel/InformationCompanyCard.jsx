@@ -15,10 +15,7 @@ const InformationCompanyCard = ({ company, guidIdCollaborator }) => {
   const [state, setState] = useState(true); // режим просмотра
   const [addState, setAddState] = useState(false); // режим добавления
 
-  // Проверка корректности ИНН
-  const isInnValid = (inn) => {
-    return /^\d{10}$/.test(inn); // ИНН должен быть строкой из 10 цифр
-  };
+
 
   // Если company не передана или пуста — используем заглушку
   if (!company || company.length === 0) {
@@ -33,6 +30,7 @@ const InformationCompanyCard = ({ company, guidIdCollaborator }) => {
     ];
   }
 
+console.log(company);
   const currentCompany = company[currentIndex];
 
   const goToIndex = (index) => {
@@ -51,9 +49,15 @@ const InformationCompanyCard = ({ company, guidIdCollaborator }) => {
     setState(false);
   };
 
+  // Проверка корректности ИНН (может быть 10 или 12 цифр)
+  const isInnValid = (inn) => {
+    return /^\d{10}$/.test(inn) || /^\d{12}$/.test(inn);
+  };
+
   // Если ИНН некорректен — покажем предупреждение
   const showInvalidInnWarning = !isInnValid(currentCompany.innCompany);
 
+  
   return (
     <div className="information-company-card">
       {addState ? (
@@ -61,7 +65,7 @@ const InformationCompanyCard = ({ company, guidIdCollaborator }) => {
       ) : showInvalidInnWarning ? (
         <>
           <div className="alert alert-warning">
-            ИНН компании некорректен или отсутствует. Пожалуйста, добавьте корректные данные.
+            Данные о компании отсутствуют
           </div>
           <div className="pagination-icon-block">
             <div

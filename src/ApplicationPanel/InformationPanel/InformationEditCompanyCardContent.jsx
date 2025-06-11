@@ -27,12 +27,10 @@ const InformationEditCompanyCardContent = ({
         }));
     };
 
-    console.log(formData);
+    
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        
 
         try {
             const response = await fetch(ApiUrl + "/api/AddInformationCompany", {
@@ -42,7 +40,6 @@ const InformationEditCompanyCardContent = ({
             });
 
             const result = await response.json();
-            console.log(result);
 
             if (!response.ok) {
                 throw new Error(result.message || "Ошибка на сервере");
@@ -52,7 +49,7 @@ const InformationEditCompanyCardContent = ({
 
         } catch (err) {
             console.error("Ошибка при отправке:", err);
-            alert("Ошибка при отправке: " + (err.message || err.toString()));
+            alert("Ошибка при отправке: ИНН должен быть из 10 или 12 цифр");
         }
 
         // Вернемся на текущую страницу

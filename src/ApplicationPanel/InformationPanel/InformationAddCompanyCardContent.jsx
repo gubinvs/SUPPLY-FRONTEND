@@ -31,7 +31,6 @@ const InformationAddCompanyCardContent = ({ guidIdCollaborator }) => {
             });
 
             const result = await response.json();
-            console.log(result);
 
             if (!response.ok) {
             throw new Error(result.message || "Ошибка на сервере");

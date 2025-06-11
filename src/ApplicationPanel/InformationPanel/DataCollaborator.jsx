@@ -1,10 +1,8 @@
 import React from "react";
-import {useState, useEffect} from "react";
+import {useState} from "react";
 import "./informationPanel.css";
 import ApiUrl from "../../js/ApiUrl.js";
 import EditDataCollaborator from "./EditDataCollaborator.jsx";
-
-
 
 
 const DataCollaborator = ({
