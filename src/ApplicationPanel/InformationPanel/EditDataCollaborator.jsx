@@ -18,7 +18,6 @@ const EditDataCollaborator = ({
         deliveryAddress: [...addressDiliveryCollaborator] || []
     });
 
-    console.log(formData);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -66,7 +65,7 @@ const EditDataCollaborator = ({
                 throw new Error(result.message || "Ошибка на сервере");
             }
 
-            alert("Данные успешно обновлены!");
+            //alert("Данные успешно обновлены!");
             window.location = window.location.href;
 
         } catch (err) {
