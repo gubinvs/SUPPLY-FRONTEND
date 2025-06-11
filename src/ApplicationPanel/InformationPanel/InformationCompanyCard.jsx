@@ -30,7 +30,6 @@ const InformationCompanyCard = ({ company, guidIdCollaborator }) => {
     ];
   }
 
-console.log(company);
   const currentCompany = company[currentIndex];
 
   const goToIndex = (index) => {
