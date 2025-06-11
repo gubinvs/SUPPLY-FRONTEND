@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./informationPanel.css";
 import ApiUrl from "../../js/ApiUrl.js";
+import { exitEdit } from "../../js/exitEdit";
 
 const EditDataCollaborator = ({
     guidIdCollaborator,
@@ -149,6 +150,8 @@ const EditDataCollaborator = ({
             >
                 Записать
             </button>
+            {/* Выйти из редактирования */}
+            <button type="button" class="btn btn-outline-danger information-user-card__exit-botton" onClick={exitEdit}>Х</button>
         </div>
     );
 };

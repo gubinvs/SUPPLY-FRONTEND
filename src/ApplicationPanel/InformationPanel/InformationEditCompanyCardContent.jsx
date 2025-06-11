@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./informationPanel.css";
 import ApiUrl from "../../js/ApiUrl";
+import { exitEdit } from "../../js/exitEdit";
 
 const InformationEditCompanyCardContent = ({
     guidIdCompany,
@@ -56,6 +57,7 @@ const InformationEditCompanyCardContent = ({
         window.location = window.location.href;
     };
 
+
     return (
         <>
             <button
@@ -65,6 +67,8 @@ const InformationEditCompanyCardContent = ({
             >
                 Записать
             </button>
+            {/* Выйти из редактирования */}
+            <button type="button" class="btn btn-outline-danger information-company-card__exit-botton" onClick={exitEdit}>Х</button>
             <div className="information-company-card__title">Реквизиты компании:</div>
             <div className="information-company-card__title_fon"></div>
             <ul className="information-company-card__list">

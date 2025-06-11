@@ -37,6 +37,22 @@
     z-index: 4;
 }
 
+.information-company-card__exit-botton {
+    position: absolute;
+    top: 20px;
+    right: 124px;
+    cursor: pointer;
+    z-index: 4;
+}
+
+.information-user-card__exit-botton {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+    z-index: 4;
+}
+
 .information-company-card__add-botton {
     cursor: pointer;
     z-index: 4;
