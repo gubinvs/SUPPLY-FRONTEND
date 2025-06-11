@@ -59,7 +59,14 @@ const EditDataCollaborator = ({
                 body: JSON.stringify(formData)
             });
 
-            const result = await response.json();
+            let resultText = await response.text();
+            let result;
+
+            try {
+                result = JSON.parse(resultText);
+            } catch {
+                result = { message: resultText };
+            }
 
             if (!response.ok) {
                 throw new Error(result.message || "Ошибка на сервере");
