@@ -2,9 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./navigationBar.css";
 import {
     linkPageApplicationPanel, 
-    linkPagePurchase,
-    linkPageSpecifications,
-    linkPageСompanies
+    suppliersOffers
 } from "../js/linkPage.js";
 
 
@@ -42,25 +40,25 @@ const NavigationBarMin = ({ onShowMax, onHideMax, isNavMaxVisible }) => {
                     </li>
                     {/* Если роль пользователя заказчик! */}
                     {role ?
-                        <li className="navigation-icon-block__item" onClick={linkPageSpecifications}>
-                            <img className="navigation-icon__icon-img" src="../images/specifications-icon.svg" alt="Иконка на страницу спецификации" />
+                        <li className="navigation-icon-block__item" onClick={suppliersOffers}>
+                            <img className="navigation-icon__icon-img" src="../images/specifications-icon.svg" alt="Иконка на страницу с предложениями" />
                         </li>:
-                        <li className="navigation-icon-block__item" onClick={linkPageСompanies}>
+                        <li className="navigation-icon-block__item" onClick="">
                             <img className="navigation-icon__icon-img" src="../images/companies-icon.svg" alt="Иконка на страницу компаний" />
                         </li>
                     }
-                    {/* Если роль пользователяадминистратор! */}
+                    {/* Если роль пользователя администратор! */}
                     {roleAdmin ? 
                             <>
-                                <li className="navigation-icon-block__item" onClick={linkPageSpecifications}>
+                                <li className="navigation-icon-block__item" onClick="">
                                     <img className="navigation-icon__icon-img" src="../images/specifications-icon.svg" alt="Иконка на страницу спецификации" />
                                 </li>
-                                <li className="navigation-icon-block__item" onClick={linkPageСompanies}>
+                                <li className="navigation-icon-block__item" onClick="">
                                     <img className="navigation-icon__icon-img" src="../images/companies-icon.svg" alt="Иконка на страницу компаний" />
                                 </li>
                             </>:""
                     }
-                    <li className="navigation-icon-block__item" onClick={linkPagePurchase}>
+                    <li className="navigation-icon-block__item" onClick="">
                         <img className="navigation-icon__icon-img" src="../images/purchase-icon.svg" alt="Иконка на страницу закупки" />
                     </li>
                 </ul>

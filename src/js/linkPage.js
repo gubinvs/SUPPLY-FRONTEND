@@ -4,15 +4,6 @@ export function linkPageApplicationPanel() {
 };
 
 // Страница заказов на закупку
-export function linkPagePurchase() {
-    window.location = "/";
-};
-
-// Ссылка на страницу со спецификациями
-export function linkPageSpecifications () {
-    window.location = "/";
-};
-
-export function linkPageСompanies () {
-    window.location = "/";
+export function suppliersOffers() {
+    window.location = "/SuppliersOffers";
 };

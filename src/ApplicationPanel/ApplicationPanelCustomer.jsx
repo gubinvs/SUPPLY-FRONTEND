@@ -25,7 +25,7 @@ const ApplicationPanelCustomer = ({role, title}) => {
             <div className="application-panel__body">
                 <div className="application-panel__container">
                     <HeaderApplicationPanel role={role} title={title} />
-                    <InformationPanel role={role} />
+                    <InformationPanel />
                 </div>
             </div>
         </div>

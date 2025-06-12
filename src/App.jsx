@@ -11,7 +11,7 @@ import PrivateRoute from './js/PrivateRoute.jsx'; // добавили данны
 import UpdatePassword from "./RegistrationForm/UpdatePassword.jsx";
 import ApplicationPanelRouter from "./ApplicationPanel/ApplicationPanelRouter.jsx";
 import { roleMap } from "./js/roleMap.js";
-
+import SuppliersOffers from "./SuppliersOffers/SuppliersOffers.jsx";
 
 // Константы ролей
 const ROLE_ADMIN = "b5aff5b0-c3ac-4f1e-9467-fe13a14f6de3"; // Роль администратора системы
@@ -68,6 +68,14 @@ const App = () => {
             <ApplicationPanelCustomer role={role} title={title} />
           </PrivateRoute>
         } />
+
+        {/* Страница для заказчика, на ней посковая строка и выдача результатов по лучшим предложениям */}
+        <Route path="/SuppliersOffers" element={
+          <PrivateRoute allowedRoles={[ROLE_CUSTOMER, ROLE_ADMIN]}>
+            <SuppliersOffers role={role} title="Предложения поставщиков" />
+          </PrivateRoute>
+        } />
+
       </Routes>
     </Router>
   );
