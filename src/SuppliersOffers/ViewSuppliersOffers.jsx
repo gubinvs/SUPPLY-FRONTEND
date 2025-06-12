@@ -1,118 +1,98 @@
-
 import { useState, useEffect } from "react";
 import ApiUrl from "../js/ApiUrl.js";
 import "./viewSuppliersOffers.css";
 
+// выводит полный список предложений поставщиков
 const ViewSuppliersOffers = () => {
-    const [component, setComponent] = useState("");
-    const [article, setArticle] = useState("");
-    const [isSearched, setIsSearched] = useState(false);
-    const [offers, setOffers] = useState([]); // 👈 добавлено состояние для истории цен
+    const [components, setComponents] = useState([]);
+    const [error, setError] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 40; // количество строк на странице
 
     useEffect(() => {
-        fetch(ApiUrl + "/api/ReturnListProvider")
+        fetch(ApiUrl + "/api/ReturnListDataComponent", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
             .then((response) => {
-                if (!response.ok) throw new Error("Ошибка загрузки поставщиков");
-                return response.json();
-            })
-            .then((data) => {
-               
-                const savedArticle = sessionStorage.getItem('lastAddedArticle');
-                if (savedArticle) {
-                    setArticle(savedArticle);
-                    sessionStorage.removeItem('lastAddedArticle');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
-            })
-            .catch((error) => console.error("Ошибка при загрузке поставщиков:", error));
-    }, []);
-
-    const handleSearchComponent = () => {
-        if (!article.trim()) return;
-
-        setIsSearched(true);
-
-        fetch(`${ApiUrl}/api/ReturnDataArticle/${encodeURIComponent(article)}`)
-            .then((response) => {
-                if (!response.ok) throw new Error("Ошибка при получении данных компонента");
                 return response.json();
             })
             .then((data) => {
-                setComponent(data.component);
-
-                // 👇 параллельно загружаем историю предложений
-                fetch(`${ApiUrl}/api/ReturnPriceProviderArticle/${encodeURIComponent(article)}`)
-                    .then(res => res.ok ? res.json() : Promise.reject("Ошибка истории предложений"))
-                    .then(data => {
-                        setOffers(data.offers || []);
-                    })
-                    .catch(error => {
-                        console.error("Ошибка загрузки истории цен:", error);
-                        setOffers([]);
-                    });
+                setComponents(data.component || []);
             })
             .catch((error) => {
-                console.error("Ошибка при получении компонента:", error);
-                setComponent(null);
-                setOffers([]);
+                console.error("Ошибка получения данных:", error);
+                setError("Ошибка загрузки данных: " + error.message);
             });
+    }, []);
+
+    // Пагинация
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = components.slice(indexOfFirstItem, indexOfLastItem);
+    const totalPages = Math.ceil(components.length / itemsPerPage);
+
+    const handleNextPage = () => {
+        if (currentPage < totalPages) setCurrentPage(currentPage + 1);
     };
 
+    const handlePrevPage = () => {
+        if (currentPage > 1) setCurrentPage(currentPage - 1);
+    };
 
     return (
         <div className="view-suppliers-offers__container">
-            <div className="input-group mb-3 view-suppliers-offers__search-block">
-                {/* Строка поискового запроса предложений */}
-                <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Артикул"
-                    value={article}
-                    onChange={(e) => setArticle(e.target.value)}
-                    aria-label="Артикул"
-                    aria-describedby="button-addon2"
-                />
-                <button className="btn btn-outline-secondary" type="button" id="button-addon2" onClick={handleSearchComponent}>
-                    Найти
-                </button>
-            </div>
+            {error && <p className="error">{error}</p>}
 
-            {!component ? (
+            {components.length > 0 ? (
                 <>
-                {/* 👇 Если нет предложений */}
-                    {isSearched && !component ? (
-                        <>
-                            <h4 className="view-suppliers-offers__h4">Нет предложений по данному артикулу</h4>
-                        </>
-                    ) : null}
+                    <div className="pagination-controls__block">
+                        <div className="pagination-controls">
+                            <button
+                                className="btn btn-outline-primary me-2 pagination-controls__button"
+                                onClick={handlePrevPage}
+                                disabled={currentPage === 1}
+                            >
+                                &#8592;
+                            </button>
+                            <span>Страница {currentPage} из {totalPages}</span>
+                            <button
+                                className="btn btn-outline-primary ms-2 pagination-controls__button"
+                                onClick={handleNextPage}
+                                disabled={currentPage === totalPages}
+                            >
+                                &#8594;
+                            </button>
+                        </div>
+                    </div>
+                    <table className="table-borderless">
+                        <thead className="table-borderless__theder">
+                            <tr>
+                                <th scope="col" className="table-borderless__check-coll"></th>
+                                <th scope="col" className="table-borderless__article">Артикул</th>
+                                <th scope="col" className="table-borderless__name">Наименование</th>
+                            </tr>
+                        </thead>
+                        <tbody className="table-borderless__tbody">
+                            {currentItems.map((item, index) => (
+                                <tr key={item.id}>
+                                    <td>
+                                        <input class="form-check-input" type="checkbox" value="" id="" />
+                                    </td>
+                                    <td>{item.vendorCodeComponent}</td>
+                                    <td>{item.nameComponent}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
                 </>
             ) : (
-                <>
-                    {/* 👇 Таблица с данными о предложении поставщиков */}
-                    {offers.length > 0 && (
-                        <>
-                            <table className="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>Компания поставщик</th>
-                                        <th>Цена</th>
-                                        <th>Срок поставки</th>
-                                        <th>Актуальность</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {offers.map((offer, index) => (
-                                        <tr key={index}>
-                                            <td>{offer.nameProvider}</td>
-                                            <td>{offer.priceComponent.toLocaleString('ru-RU')} ₽</td>
-                                            <td>{offer.deliveryTimeComponent}</td>
-                                            <td>{new Date(offer.saveDataPrice).toLocaleDateString('ru-RU')}</td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </>
-                    )}
-                </>
+                !error && <p>Загрузка данных...</p>
             )}
         </div>
     );

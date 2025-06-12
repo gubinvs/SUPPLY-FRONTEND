@@ -6,7 +6,8 @@ const HeaderApplicationPanel = ({role, title}) => {
 
     return (
         <>
-            <div className="application-panel__header">
+        <div className="header-application-panel__container">
+           <div className="application-panel__header">
                 <h6 className="application-panel-header__role-discr">Роль в системе: {role}</h6>
                 <button
                     type="button"
@@ -18,6 +19,8 @@ const HeaderApplicationPanel = ({role, title}) => {
             </div>
             <div className="application-panel-header__title">{title}</div>
             <div className="application-panel-header__line"></div>
+        </div>
+ 
         </>
     );
 };

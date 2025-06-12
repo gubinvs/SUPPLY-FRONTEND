@@ -28,13 +28,8 @@ const SuppliersOffers = ({role, title}) => {
             />
 
             {isNavMaxVisible && <NavigationBarMax />}
-
-            <div className="application-panel__body">
-                <div className="application-panel__container">
-                    <HeaderApplicationPanel role={role} title={title} />
-                    <ViewSuppliersOffers />
-                </div>
-            </div>
+            <HeaderApplicationPanel role={role} title={title} />
+            <ViewSuppliersOffers />
         </div>
             
         </>

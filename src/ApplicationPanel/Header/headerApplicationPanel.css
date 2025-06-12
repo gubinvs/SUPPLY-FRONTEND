@@ -1,3 +1,15 @@
+.header-application-panel__container {
+    position: sticky;
+    top: 10px;
+    left: 86px;
+    padding: 20px;
+    width: calc(100% - 76px);
+    height: 106px;
+    border-radius: 10px 10px 0px 0px;
+    background-color: #F5F6FA;
+    z-index: 4;
+}
+
 .application-panel__header {
     display: flex;
     width: 100%;
