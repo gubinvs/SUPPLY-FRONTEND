@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./informationPanel.css";
 import ApiUrl from "../../js/ApiUrl.js";
 import { exitEdit } from "../../js/exitEdit";
 

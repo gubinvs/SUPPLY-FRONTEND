@@ -13,7 +13,7 @@ const ApplicationPanelCustomer = ({role, title}) => {
     const handleHideMax = () => setIsNavMaxVisible(false);
 
     return (
-        <div className="application-panel-section">
+        <div className="main-application-panel">
             <NavigationBarMin
                 onShowMax={handleShowMax}
                 onHideMax={handleHideMax}
@@ -22,12 +22,8 @@ const ApplicationPanelCustomer = ({role, title}) => {
 
             {isNavMaxVisible && <NavigationBarMax />}
 
-            <div className="application-panel__body">
-                <div className="application-panel__container">
-                    <HeaderApplicationPanel role={role} title={title} />
-                    <InformationPanel />
-                </div>
-            </div>
+            <HeaderApplicationPanel role={role} title={title} />
+            <InformationPanel />           
         </div>
     );
 };

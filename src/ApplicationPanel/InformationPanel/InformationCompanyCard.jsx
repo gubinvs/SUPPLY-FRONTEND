@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./informationPanel.css";
 import InformationCompanyCardContent from "./InformationCompanyCardContent.jsx";
 import InformationEditCompanyCardContent from "./InformationEditCompanyCardContent.jsx";
 import InformationAddCompanyCardContent from "./InformationAddCompanyCardContent.jsx";

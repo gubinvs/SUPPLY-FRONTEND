@@ -1,0 +1,41 @@
+/* Карточка пользователя */
+.information-user-card {
+    position: relative;
+    padding: 20px 20px 80px 20px ;
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+    background-color: #FFF;
+    margin-bottom: 20px;
+}
+
+.information-user-card__title {
+    position: inherit;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    z-index: 4;
+}
+
+.information-user-card__title_fon {
+    position: absolute;
+    position: absolute;
+    top: 24px;
+    left: 10px;
+    width: 60%;
+    max-width: 314px;
+    height: 14px;
+    border-radius: 10px;
+    background-color: #FAC855;
+    z-index: 0;
+}
+
+.information-user-card__edit-botton {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+}
+
+.information-user-card__item_discr {
+    margin-bottom: 10px;
+}

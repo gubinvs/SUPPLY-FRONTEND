@@ -1,14 +1,27 @@
-.application-panel-section {
+.main-application-panel {
     display: flex;
+    flex-direction: column;
     padding: 10px;
 }
 
-/* .application-panel__body {
+.main-application-panel__container {
     position: absolute;
-    top: 116px;
+    top: 86px;
     left: 86px;
-    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    padding: 40px 10px 20px 10px;
     width: calc(100% - 96px);
-    min-height: calc(100vh - 126px);
+    min-height: calc(100vh - 98px);
+    border-radius: 0px 0px 10px 10px;
     background-color: #F5F6FA;
-} */
+}
+
+.main-application-panel__left-block {
+    width: 70%;
+}
+
+.main-application-panel__right-block {
+    height: 100%;
+    width: 29%; /* Оставим зазор на отступ */
+}

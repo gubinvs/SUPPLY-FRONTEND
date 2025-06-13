@@ -1,6 +1,8 @@
-import React from "react";
+
 import {useState, useEffect} from "react";
-import "./informationPanel.css";
+import "../applicationPanel.css";
+import "./dataCollaborator.css";
+import "./informationCompanyCard.css";
 import ApiUrl from "../../js/ApiUrl";
 import InformationCompanyCard from "./InformationCompanyCard.jsx";
 import DataCollaborator from "./DataCollaborator.jsx";
@@ -57,18 +59,18 @@ const InformationPanel = ({role}) => {
       };
     
       fetchData();
-    }, []);
+    }, [guidIdCollaborator]);
       
     return (
         <>
-            <div className="iformation-panel-container">
-                <div className="iformation-panel-left-block">
+            <div className="main-application-panel__container">
+                <div className="main-application-panel__left-block">
                     <InformationCompanyCard 
                         company={company} 
                         guidIdCollaborator={guidIdCollaborator} 
                     />
                 </div>
-                <div className="iformation-panel-right-block">
+                <div className="main-application-panel__right-block">
                     <DataCollaborator 
                         guidIdCollaborator={guidIdCollaborator}
                         role={role}
