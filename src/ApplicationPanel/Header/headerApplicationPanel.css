@@ -1,4 +1,4 @@
-.header-application-panel__container {
+.header-application__container {
     position: sticky;
     top: 10px;
     left: 86px;
@@ -10,26 +10,26 @@
     z-index: 4;
 }
 
-.application-panel__header {
+.header-application__top-block {
     display: flex;
     width: 100%;
     justify-content: space-between;
 }
 
-.application-panel-header__role-discr {
+.ha-top-block__role-discr {
     font-size: 12px;
     font-weight: 400;
     color: #948F8C;
 }
 
-.application-panel-header__line {
+.header-application__title__line {
     width: 100%;
     height: 1px;
     background-color: #D5DAE0;
     margin-bottom: 20px;
 }
 
-.application-panel-header__title {
+.header-application__title {
     font-size: 24px;
     line-height: 24px;
     font-size: 400;
@@ -37,7 +37,7 @@
     color: #342F2C;
 }
 
-.application-panel-header__botton {
+.ha-top-block__botton {
     display: flex;
     align-items: center;
     justify-content: center;

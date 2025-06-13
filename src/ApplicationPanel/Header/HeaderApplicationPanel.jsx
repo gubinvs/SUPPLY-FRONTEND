@@ -6,19 +6,19 @@ const HeaderApplicationPanel = ({role, title}) => {
 
     return (
         <>
-        <div className="header-application-panel__container">
-           <div className="application-panel__header">
-                <h6 className="application-panel-header__role-discr">Роль в системе: {role}</h6>
+        <div className="header-application__container">
+           <div className="header-application__top-block">
+                <h6 className="ha-top-block__role-discr">Роль в системе: {role}</h6>
                 <button
                     type="button"
-                    className="btn btn-outline-warning application-panel-header__botton"
+                    className="btn btn-outline-warning ha-top-block__botton"
                     onClick={clearRoleId}
                 >
                     Выход
                 </button>
             </div>
-            <div className="application-panel-header__title">{title}</div>
-            <div className="application-panel-header__line"></div>
+            <div className="header-application__title">{title}</div>
+            <div className="header-application__title__line"></div>
         </div>
  
         </>

@@ -4,11 +4,15 @@ import ApiUrl from "../js/ApiUrl.js";
 import "./viewSuppliersOffers.css";
 
 const BestOffer = () => {
+    
+    
     const [component, setComponent] = useState("");
     const [article, setArticle] = useState("");
     const [isSearched, setIsSearched] = useState(false);
     const [offers, setOffers] = useState([]); // 👈 добавлено состояние для истории цен
-
+    
+    const analyzeData = JSON.parse(localStorage.getItem("analyzeData") || "{}");
+    
     useEffect(() => {
         fetch(ApiUrl + "/api/ReturnListProvider")
             .then((response) => {

@@ -1,36 +1,51 @@
-.view-suppliers-offers__container {
+.view-suppliers-offers__block {
+    position: relative;
     display: flex;
     flex-direction: column;
+    align-items: center;
     width: 100%;
 }
 
-.view-suppliers-offers__search-block {
-    margin-bottom: 40px !important;
+.analyze-offers-button {
+    position: absolute;
+    top: 0px;
+    right: 0px;
 }
 
-.view-suppliers-offers__all-offest-title {
-    font-weight: 800;
+.pagination-controls__block {
+    margin-bottom: 20px;
 }
 
-.table-borderless__theder {
-    background-color: #D5DAE0;
+.pagination-controls__button {
+    padding: 0px 10px 0px 10px;
+    height: 30px;
+    border: 1px solid #FAC855;
+    color: #FAC855;
 }
 
-.table-borderless__theder th {
-    padding-top: 4px;
-    padding-bottom: 4px;
-    padding-left: 8px;
+.pagination-controls__button:disabled {
+    border: 1px solid #FAC855;
+    color: #FAC855;
 }
 
-.table-borderless__tbody td {
-    vertical-align: top;
-    padding-top: 10px;
-    padding-right: 20px;
-    padding-left: 8px;
+.pagination-controls__button:hover {
+    background-color:  #FAC855;
+    border: 1px solid #FAC855;
+    color: black;
+}
+
+
+.table-borderless {
+    margin-bottom: 40px;
 }
 
 .table-borderless__check-coll {
-    width: 40px;
+    min-width: 40px;
+    border-top-left-radius: 10px;
+}
+
+.table-borderless__name {
+    border-top-right-radius: 10px;
 }
 
 .table-borderless__article {
@@ -39,15 +54,4 @@
 
 .table-borderless__name {
     width: 100%;
-}
-
-.pagination-controls__block {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 20px;
-}
-
-.pagination-controls__button {
-    padding-top: 2px !important;
-    padding-bottom: 2px !important;
 }
