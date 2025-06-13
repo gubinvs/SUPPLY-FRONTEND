@@ -12,7 +12,7 @@ import UpdatePassword from "./RegistrationForm/UpdatePassword.jsx";
 import ApplicationPanelRouter from "./ApplicationPanel/ApplicationPanelRouter.jsx";
 import { roleMap } from "./js/roleMap.js";
 import SuppliersOffers from "./SuppliersOffers/SuppliersOffers.jsx";
-import BestOffers from "./SuppliersOffers/BestOffer.jsx";
+import AllOffersForSelected from "./SuppliersOffers/AllOffersForSelected.jsx";
 
 // Константы ролей
 const ROLE_ADMIN = "b5aff5b0-c3ac-4f1e-9467-fe13a14f6de3"; // Роль администратора системы
@@ -78,9 +78,9 @@ const App = () => {
         } />
 
         {/* Страница для заказчика, на ней посковая строка и выдача результатов по лучшим предложениям */}
-        <Route path="/BestOffers" element={
+        <Route path="/AllOffersForSelected" element={
           <PrivateRoute allowedRoles={[ROLE_CUSTOMER, ROLE_ADMIN]}>
-            <BestOffers role={role} title="Лучшие предложения" />
+            <AllOffersForSelected role={role} title="Предложения по выбранным артикулам" />
           </PrivateRoute>
         } />
 

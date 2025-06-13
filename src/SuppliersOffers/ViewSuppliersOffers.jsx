@@ -10,10 +10,12 @@ const ViewSuppliersOffers = () => {
     const [error, setError] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [searchTerm, setSearchTerm] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
     const itemsPerPage = 40;
     const navigate = useNavigate();
 
     useEffect(() => {
+        setIsLoading(true); // начинаем загрузку
         fetch(ApiUrl + "/api/ReturnListDataComponent", {
             method: "GET",
             headers: {
@@ -28,10 +30,12 @@ const ViewSuppliersOffers = () => {
             })
             .then((data) => {
                 setComponents(data.component || []);
+                setIsLoading(false); // завершение загрузки
             })
             .catch((error) => {
                 console.error("Ошибка получения данных:", error);
                 setError("Ошибка загрузки данных: " + error.message);
+                setIsLoading(false); // даже при ошибке убираем спиннер
             });
     }, []);
 
@@ -59,7 +63,7 @@ const ViewSuppliersOffers = () => {
         };
 
         localStorage.setItem("analyzeData", JSON.stringify(dataToAnalyze));
-        navigate("/BestOffers");
+        navigate("/AllOffersForSelected");
     };
 
     const filteredComponents = components.filter(item =>
@@ -86,11 +90,11 @@ const ViewSuppliersOffers = () => {
                 <input
                     className="form-control view-suppliers-offers__search"
                     type="text"
-                    placeholder="Поисковый запрос"
+                    placeholder="Поисковая строка"
                     value={searchTerm}
                     onChange={(e) => {
                         setSearchTerm(e.target.value);
-                        setCurrentPage(1); // сброс страницы при новом поиске
+                        setCurrentPage(1);
                     }}
                 />
 
@@ -104,7 +108,11 @@ const ViewSuppliersOffers = () => {
 
                 {error && <p className="error">{error}</p>}
 
-                {components.length > 0 ? (
+                {isLoading ? (
+                    <div className="custom-spinner-container">
+                        <div className="custom-spinner"></div>
+                    </div>
+                ) : components.length > 0 ? (
                     <>
                         <div className="pagination-controls__block">
                             <div className="pagination-controls">
@@ -171,7 +179,7 @@ const ViewSuppliersOffers = () => {
                         </div>
                     </>
                 ) : (
-                    !error && <p>Загрузка данных...</p>
+                    !error && <p>Данных не найдено.</p>
                 )}
             </div>
         </div>
@@ -179,4 +187,3 @@ const ViewSuppliersOffers = () => {
 };
 
 export default ViewSuppliersOffers;
-
