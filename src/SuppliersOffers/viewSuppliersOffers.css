@@ -10,6 +10,7 @@
     position: absolute;
     top: 0px;
     right: 0px;
+    width: 400px;
 }
 
 .pagination-controls__block {
@@ -54,4 +55,12 @@
 
 .table-borderless__name {
     width: 100%;
+}
+
+.view-suppliers-offers__search {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 400px;
+    height: 40px;
 }

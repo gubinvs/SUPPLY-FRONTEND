@@ -9,6 +9,7 @@ const ViewSuppliersOffers = () => {
     const [selectedIds, setSelectedIds] = useState(new Set());
     const [error, setError] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
+    const [searchTerm, setSearchTerm] = useState("");
     const itemsPerPage = 40;
     const navigate = useNavigate();
 
@@ -61,10 +62,15 @@ const ViewSuppliersOffers = () => {
         navigate("/BestOffers");
     };
 
+    const filteredComponents = components.filter(item =>
+        item.vendorCodeComponent?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.nameComponent?.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = components.slice(indexOfFirstItem, indexOfLastItem);
-    const totalPages = Math.ceil(components.length / itemsPerPage);
+    const currentItems = filteredComponents.slice(indexOfFirstItem, indexOfLastItem);
+    const totalPages = Math.ceil(filteredComponents.length / itemsPerPage);
 
     const handleNextPage = () => {
         if (currentPage < totalPages) setCurrentPage(currentPage + 1);
@@ -77,6 +83,17 @@ const ViewSuppliersOffers = () => {
     return (
         <div className="main-application-panel__container">
             <div className="view-suppliers-offers__block">
+                <input
+                    className="form-control view-suppliers-offers__search"
+                    type="text"
+                    placeholder="Поисковый запрос"
+                    value={searchTerm}
+                    onChange={(e) => {
+                        setSearchTerm(e.target.value);
+                        setCurrentPage(1); // сброс страницы при новом поиске
+                    }}
+                />
+
                 <button
                     className="btn btn-outline-secondary analyze-offers-button"
                     onClick={handleAnalyzeClick}
@@ -162,3 +179,4 @@ const ViewSuppliersOffers = () => {
 };
 
 export default ViewSuppliersOffers;
+
