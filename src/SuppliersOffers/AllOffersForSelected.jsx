@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import ApiUrl from "../js/ApiUrl.js";
 import "./allOffersForSelected.css";
@@ -6,112 +5,184 @@ import NavigationBarMin from "../NavigationBar/NavigationBarMin.jsx";
 import NavigationBarMax from "../NavigationBar/NavigationBarMax.jsx";
 import HeaderApplicationPanel from "../ApplicationPanel/Header/HeaderApplicationPanel.jsx";
 
-const AllOffersForSelected = ({role, title}) => {
+const AllOffersForSelected = ({ role, title }) => {
+  const [isNavMaxVisible, setIsNavMaxVisible] = useState(false);
+  const handleShowMax = () => setIsNavMaxVisible(true);
+  const handleHideMax = () => setIsNavMaxVisible(false);
 
-    const [isNavMaxVisible, setIsNavMaxVisible] = useState(false);
-    const handleShowMax = () => setIsNavMaxVisible(true);
-    const handleHideMax = () => setIsNavMaxVisible(false);
-    const [analyzedComponents, setAnalyzedComponents] = useState([]);
-    const [offersByComponent, setOffersByComponent] = useState({});
-    const [loadingArticles, setLoadingArticles] = useState({}); // 👈 индикаторы загрузки по артикулам
+  const [analyzedComponents, setAnalyzedComponents] = useState([]);
+  const [combinedOffers, setCombinedOffers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [priceTabActive, setPriceTabActive] = useState(false);
 
-    useEffect(() => {
-        const analyzeData = JSON.parse(localStorage.getItem("analyzeData") || "{}");
-        const selected = analyzeData.selectedComponents || [];
-        setAnalyzedComponents(selected);
+  const [selectedVendorCodes, setSelectedVendorCodes] = useState(new Set());
 
-        const fetchSequentially = async () => {
-            for (const comp of selected) {
-                setLoadingArticles(prev => ({ ...prev, [comp.vendorCodeComponent]: true }));
+  useEffect(() => {
+    const analyzeData = JSON.parse(localStorage.getItem("analyzeData") || "{}");
+    const selected = analyzeData.selectedComponents || [];
+    setAnalyzedComponents(selected);
 
-                try {
-                    const response = await fetch(`${ApiUrl}/api/ReturnPriceProviderArticle/${encodeURIComponent(comp.vendorCodeComponent)}`);
-                    if (!response.ok) throw new Error("Ошибка загрузки предложений");
+    const fetchData = async () => {
+      setLoading(true);
+      let allOffers = [];
 
-                    const data = await response.json();
-                    setOffersByComponent(prev => ({
-                        ...prev,
-                        [comp.vendorCodeComponent]: data.offers || [],
-                    }));
-                } catch (error) {
-                    console.error(`Ошибка для артикула ${comp.vendorCodeComponent}:`, error);
-                    setOffersByComponent(prev => ({
-                        ...prev,
-                        [comp.vendorCodeComponent]: [],
-                    }));
-                } finally {
-                    setLoadingArticles(prev => ({ ...prev, [comp.vendorCodeComponent]: false }));
-                }
-            }
-        };
+      for (const comp of selected) {
+        try {
+          const response = await fetch(
+            `${ApiUrl}/api/ReturnPriceProviderArticle/${encodeURIComponent(comp.vendorCodeComponent)}`
+          );
+          if (!response.ok) throw new Error("Ошибка загрузки");
 
-        if (selected.length > 0) {
-            fetchSequentially();
+          const data = await response.json();
+          const offers = data.offers || [];
+
+          allOffers = allOffers.concat(
+            offers.map((o) => ({
+              ...o,
+              vendorCode: comp.vendorCodeComponent,
+              nameComponent: comp.nameComponent,
+            }))
+          );
+        } catch (error) {
+          console.error("Ошибка:", error);
         }
-    }, []);
+      }
 
-    return (
-        <>
-            <div className="main-application-panel">
-            <NavigationBarMin
-                onShowMax={handleShowMax}
-                onHideMax={handleHideMax}
-                isNavMaxVisible={isNavMaxVisible}
-            />
+      setCombinedOffers(allOffers);
+      setLoading(false);
+    };
 
-            {isNavMaxVisible && <NavigationBarMax />}
-            <HeaderApplicationPanel role={role} title={title} />
-        </div>
-            <div className="main-application-panel__container">        
-                <div className="all-offers-selected__container">
-                    {analyzedComponents.length === 0 ? (
-                        <p>Нет выбранных компонентов для анализа.</p>
-                    ) : (
-                        analyzedComponents.map((component) => {
-                            const vendorCode = component.vendorCodeComponent;
-                            const offers = offersByComponent[vendorCode] || [];
-                            const isLoading = loadingArticles[vendorCode];
+    if (selected.length > 0) {
+      fetchData();
+    }
+  }, []);
 
-                            return (
-                                <div key={component.id} className="mb-5">
-                                    <h5>{vendorCode} — {component.nameComponent}</h5>
+  const toggleVendorSelection = (vendorCode) => {
+    setSelectedVendorCodes((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(vendorCode)) {
+        newSet.delete(vendorCode);
+      } else {
+        newSet.add(vendorCode);
+      }
+      return newSet;
+    });
+  };
 
-                                    {isLoading ? (
-                                        <div className="custom-spinner-container">
-                                            <div className="custom-spinner"></div>
-                                        </div>
-                                    ) : offers.length > 0 ? (
-                                        <table className="table table-bordered all-offers-selected__table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Компания поставщик</th>
-                                                    <th>Цена</th>
-                                                    <th>Срок поставки</th>
-                                                    <th>Актуальность</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {offers.map((offer, index) => (
-                                                    <tr key={index}>
-                                                        <td>{offer.nameProvider}</td>
-                                                        <td>{offer.priceComponent.toLocaleString('ru-RU')} ₽</td>
-                                                        <td>{offer.deliveryTimeComponent}</td>
-                                                        <td>{new Date(offer.saveDataPrice).toLocaleDateString('ru-RU')}</td>
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
-                                    ) : (
-                                        <p className="text-muted">Нет предложений по этому компоненту.</p>
-                                    )}
-                                </div>
-                            );
-                        })
-                    )}
-                </div>
+  const getFilteredOffers = () => {
+    let offers = combinedOffers;
+
+    if (selectedVendorCodes.size > 0) {
+      offers = offers.filter((o) => selectedVendorCodes.has(o.vendorCode));
+    }
+
+    if (priceTabActive) {
+      offers = offers
+        .filter((o) => o.priceComponent > 0)
+        .sort((a, b) => a.priceComponent - b.priceComponent);
+    }
+
+    return offers;
+  };
+
+  const renderRows = () => {
+    const offers = getFilteredOffers();
+
+    let prevVendor = null;
+    let prevName = null;
+
+    return offers.map((offer, index) => {
+      const isFirstOccurrence =
+        offer.vendorCode !== prevVendor || offer.nameComponent !== prevName;
+
+      // Обновляем prev для следующей итерации
+      if (isFirstOccurrence) {
+        prevVendor = offer.vendorCode;
+        prevName = offer.nameComponent;
+      }
+
+      return (
+        <tr key={index}>
+          <td>
+            {isFirstOccurrence && (
+              <input
+                type="checkbox"
+                checked={selectedVendorCodes.has(offer.vendorCode)}
+                onChange={() => toggleVendorSelection(offer.vendorCode)}
+              />
+            )}
+          </td>
+
+          {/* Артикул и наименование выводим только для первой строки компонента */}
+          <td>{isFirstOccurrence ? offer.vendorCode : ""}</td>
+          <td>{isFirstOccurrence ? offer.nameComponent : ""}</td>
+
+          <td>{offer.nameProvider}</td>
+          <td>{offer.priceComponent.toLocaleString("ru-RU")} ₽</td>
+          <td>{offer.deliveryTimeComponent}</td>
+          <td>{new Date(offer.saveDataPrice).toLocaleDateString("ru-RU")}</td>
+        </tr>
+      );
+    });
+  };
+
+  return (
+    <>
+      <div className="main-application-panel">
+        <NavigationBarMin
+          onShowMax={handleShowMax}
+          onHideMax={handleHideMax}
+          isNavMaxVisible={isNavMaxVisible}
+        />
+        {isNavMaxVisible && <NavigationBarMax />}
+        <HeaderApplicationPanel role={role} title={title} />
+      </div>
+
+      <div className="main-application-panel__container">
+        <div className="all-offers-selected__container">
+          {analyzedComponents.length === 0 ? (
+            <p>Нет выбранных компонентов для анализа.</p>
+          ) : loading ? (
+            <div className="custom-spinner-container">
+              <div className="custom-spinner"></div>
             </div>
-        </>
-    );
+          ) : combinedOffers.length === 0 ? (
+            <p className="text-muted">Нет предложений.</p>
+          ) : (
+            <>
+              <div className="mb-4">
+              <button
+                className={`btn btn-sm ${
+                    priceTabActive ? "btn-custom" : "btn-custom-outline"
+                }`}
+                onClick={() => setPriceTabActive(!priceTabActive)}
+                >
+                {priceTabActive
+                    ? "Показать все предложения"
+                    : "Сортировать по лучшей цене"}
+                </button>
+              </div>
+
+              <table className="table table-bordered all-offers-selected__table">
+                <thead>
+                  <tr>
+                    <th></th> {/* Колонка для чекбоксов */}
+                    <th>Артикул</th>
+                    <th>Наименование</th>
+                    <th>Компания</th>
+                    <th>Цена</th>
+                    <th>Срок</th>
+                    <th>Актуальность</th>
+                  </tr>
+                </thead>
+                <tbody>{renderRows()}</tbody>
+              </table>
+            </>
+          )}
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default AllOffersForSelected;

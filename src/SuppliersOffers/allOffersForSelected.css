@@ -20,8 +20,29 @@
 }
 
 .all-offers-selected__container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
     width: 100%;
 }
 .all-offers-selected__table {
     width: 100% !important;
 }
+
+.btn-custom {
+    background-color: #FAC855;
+    border-color: #FAC855;
+    color: #000; /* черный текст, можно изменить */
+}
+
+.btn-custom-outline {
+    background-color: transparent;
+    border-color: #FAC855;
+    color: #FAC855;
+}
+
+.btn-custom-outline:hover {
+    background-color: #FAC855;
+    color: #000;
+}
+  
