@@ -1,3 +1,20 @@
+.all-offers-selected__container {
+    width: 100%;
+}
+
+.all-offers-selected__button-block {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+
+
+
+
+
+
+
 .custom-spinner-container {
     display: flex;
     justify-content: center;
@@ -19,12 +36,6 @@
     100% { transform: rotate(360deg); }
 }
 
-.all-offers-selected__container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    width: 100%;
-}
 .all-offers-selected__table {
     width: 100% !important;
 }
@@ -44,5 +55,9 @@
 .btn-custom-outline:hover {
     background-color: #FAC855;
     color: #000;
+}
+
+.all-offers-selected__button-mr10 {
+    margin-right: 10px;
 }
   
