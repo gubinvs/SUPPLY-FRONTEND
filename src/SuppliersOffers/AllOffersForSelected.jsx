@@ -69,10 +69,10 @@ const AllOffersForSelected = ({ role, title }) => {
         // Находим лучшие предложения по каждому артикулу (минимальная цена)
         const bestOffersByArticle = new Map();
         allOffers.forEach((offer) => {
-          const currentBest = bestOffersByArticle.get(offer.vendorCode);
-          if (!currentBest || offer.priceComponent < currentBest.priceComponent) {
-            bestOffersByArticle.set(offer.vendorCode, offer);
-          }
+        const currentBest = bestOffersByArticle.get(offer.vendorCode);
+        if (offer.priceComponent !== 0 && (!currentBest || offer.priceComponent < currentBest.priceComponent)) {
+          bestOffersByArticle.set(offer.vendorCode, offer);
+        }
         });
 
         // Группируем лучшие предложения по поставщикам
