@@ -13,11 +13,11 @@ const AllOffersForSelected = ({ role, title }) => {
   const [combinedOffers, setCombinedOffers] = useState([]);
   const [bestOffersByProvider, setBestOffersByProvider] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [priceTabActive, setPriceTabActive] = useState(false);
+  // const [priceTabActive] = useState(false);
   const [showBestByProvider, setShowBestByProvider] = useState(false);
   const [selectedVendorCodes, setSelectedVendorCodes] = useState(new Set());
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 10;
+  const rowsPerPage = 14;
 
   const handleShowMax = () => setIsNavMaxVisible(true);
   const handleHideMax = () => setIsNavMaxVisible(false);
@@ -92,9 +92,9 @@ const AllOffersForSelected = ({ role, title }) => {
     if (selectedVendorCodes.size > 0) {
       offers = offers.filter((o) => selectedVendorCodes.has(o.vendorCode));
     }
-    if (priceTabActive) {
-      offers = offers.filter((o) => o.priceComponent > 0).sort((a, b) => a.priceComponent - b.priceComponent);
-    }
+    // if (priceTabActive) {
+    //   offers = offers.filter((o) => o.priceComponent > 0).sort((a, b) => a.priceComponent - b.priceComponent);
+    // }
     return offers;
   };
 
@@ -173,25 +173,22 @@ const AllOffersForSelected = ({ role, title }) => {
             <p className="text-muted">Нет предложений.</p>
           ) : (
             <>
-            <div className="all-offers-selected__button-block">
-              <div className="mb-4">
-              <button className="btn btn-sm btn-outline-secondary all-offers-selected__button-mr10" onClick={exportToExcel}>
-                      Скачать Excel
-                    </button>
-                <button
-                  className={`btn btn-sm all-offers-selected__button-mr10 ${priceTabActive ? "btn-custom" : "btn-custom-outline"}`}
-                  onClick={() => setPriceTabActive(!priceTabActive)}
-                >
-                  {priceTabActive ? "Показать все предложения" : "Сортировать по лучшей цене"}
-                </button>
-
-                <button
-                  className={`btn btn-sm ml-2 ${showBestByProvider ? "btn-custom" : "btn-custom-outline"}`}
-                  onClick={() => setShowBestByProvider(!showBestByProvider)}
-                >
-                  {showBestByProvider ? "Скрыть лучших по поставщикам" : "Показать лучших по поставщикам"}
-                </button>
+              <div className="mb-4 all-offers-selected__button-block">
+                <div className="aos-button-block__selectet-buton">
+                  {/* <button
+                    className={`btn btn-sm all-offers-selected__button-mr10 ${priceTabActive ? "btn-custom" : "btn-custom-outline"}`}
+                    onClick={() => setPriceTabActive(!priceTabActive)}
+                  >
+                    {priceTabActive ? "Показать все предложения" : "Сортировать по лучшей цене"}
+                  </button> */}
+                  <button
+                    className={`btn btn-sm ml-2 ${showBestByProvider ? "btn-custom" : "btn-custom-outline"}`}
+                    onClick={() => setShowBestByProvider(!showBestByProvider)}
+                  >
+                    {showBestByProvider ? "Скрыть" : "Лучшие предложения поставщиков"}
+                  </button>
               </div>
+            
             </div>
               {!showBestByProvider ? (
                 <>
@@ -258,9 +255,9 @@ const AllOffersForSelected = ({ role, title }) => {
                               <td>{new Date(offer.saveDataPrice).toLocaleDateString("ru-RU")}</td>
                             </tr>
                           ))}
-                          <tr className="table-success font-weight-bold">
-                            <td colSpan="2">Итого</td>
-                            <td>{totalPrice.toLocaleString("ru-RU")} ₽</td>
+                          <tr className="table">
+                            <td colSpan="2"><b>Итого</b></td>
+                            <td><b>{totalPrice.toLocaleString("ru-RU")} ₽</b></td>
                             <td colSpan="2"></td>
                           </tr>
                         </tbody>

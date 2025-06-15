@@ -5,9 +5,20 @@
 .all-offers-selected__button-block {
     display: flex;
     justify-content: flex-end;
+    align-items: center;
     width: 100%;
 }
 
+.aos-button-block__selectet-buton {
+    display: flex;
+}
+
+.text-primary {
+    font-family: "Mulish", serif !important;
+    font-size: 22px;
+    font-weight: 600;
+    color: #342F2C !important;
+}
 
 
 
