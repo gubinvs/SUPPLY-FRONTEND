@@ -12,9 +12,11 @@ const AllOffersForSelected = ({ role, title }) => {
 
   const [analyzedComponents, setAnalyzedComponents] = useState([]);
   const [combinedOffers, setCombinedOffers] = useState([]);
+  const [bestOffersByProvider, setBestOffersByProvider] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [priceTabActive, setPriceTabActive] = useState(false);
 
+  const [priceTabActive, setPriceTabActive] = useState(false);
+  const [showBestByProvider, setShowBestByProvider] = useState(false);
   const [selectedVendorCodes, setSelectedVendorCodes] = useState(new Set());
 
   useEffect(() => {
@@ -49,6 +51,26 @@ const AllOffersForSelected = ({ role, title }) => {
       }
 
       setCombinedOffers(allOffers);
+
+      // Формируем лучшие предложения по каждому поставщику и артикулу
+      const bestMap = new Map();
+      allOffers.forEach((offer) => {
+        const key = `${offer.nameProvider}_${offer.vendorCode}`;
+        if (
+          !bestMap.has(key) ||
+          offer.priceComponent < bestMap.get(key).priceComponent
+        ) {
+          bestMap.set(key, offer);
+        }
+      });
+
+      const bestGrouped = Array.from(bestMap.values()).reduce((acc, offer) => {
+        if (!acc[offer.nameProvider]) acc[offer.nameProvider] = [];
+        acc[offer.nameProvider].push(offer);
+        return acc;
+      }, {});
+
+      setBestOffersByProvider(bestGrouped);
       setLoading(false);
     };
 
@@ -95,7 +117,6 @@ const AllOffersForSelected = ({ role, title }) => {
       const isFirstOccurrence =
         offer.vendorCode !== prevVendor || offer.nameComponent !== prevName;
 
-      // Обновляем prev для следующей итерации
       if (isFirstOccurrence) {
         prevVendor = offer.vendorCode;
         prevName = offer.nameComponent;
@@ -112,11 +133,8 @@ const AllOffersForSelected = ({ role, title }) => {
               />
             )}
           </td>
-
-          {/* Артикул и наименование выводим только для первой строки компонента */}
           <td>{isFirstOccurrence ? offer.vendorCode : ""}</td>
           <td>{isFirstOccurrence ? offer.nameComponent : ""}</td>
-
           <td>{offer.nameProvider}</td>
           <td>{offer.priceComponent.toLocaleString("ru-RU")} ₽</td>
           <td>{offer.deliveryTimeComponent}</td>
@@ -151,32 +169,84 @@ const AllOffersForSelected = ({ role, title }) => {
           ) : (
             <>
               <div className="mb-4">
-              <button
-                className={`btn btn-sm ${
+                <button
+                  className={`btn btn-sm ${
                     priceTabActive ? "btn-custom" : "btn-custom-outline"
-                }`}
-                onClick={() => setPriceTabActive(!priceTabActive)}
+                  }`}
+                  onClick={() => setPriceTabActive(!priceTabActive)}
                 >
-                {priceTabActive
+                  {priceTabActive
                     ? "Показать все предложения"
                     : "Сортировать по лучшей цене"}
                 </button>
+
+                <button
+                  className={`btn btn-sm ml-2 ${
+                    showBestByProvider ? "btn-custom" : "btn-custom-outline"
+                  }`}
+                  onClick={() => setShowBestByProvider(!showBestByProvider)}
+                >
+                  {showBestByProvider
+                    ? "Скрыть лучших по поставщикам"
+                    : "Показать лучших по поставщикам"}
+                </button>
               </div>
 
-              <table className="table table-bordered all-offers-selected__table">
-                <thead>
-                  <tr>
-                    <th></th> {/* Колонка для чекбоксов */}
-                    <th>Артикул</th>
-                    <th>Наименование</th>
-                    <th>Компания</th>
-                    <th>Цена</th>
-                    <th>Срок</th>
-                    <th>Актуальность</th>
-                  </tr>
-                </thead>
-                <tbody>{renderRows()}</tbody>
-              </table>
+              {!showBestByProvider ? (
+                <table className="table table-bordered all-offers-selected__table">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>Артикул</th>
+                      <th>Наименование</th>
+                      <th>Компания</th>
+                      <th>Цена</th>
+                      <th>Срок</th>
+                      <th>Актуальность</th>
+                    </tr>
+                  </thead>
+                  <tbody>{renderRows()}</tbody>
+                </table>
+              ) : (
+                <>
+                  <h5 className="mt-5 mb-3">Лучшие предложения от поставщиков:</h5>
+                  {Object.entries(bestOffersByProvider).map(
+                    ([provider, offers], index) => (
+                      <div key={index} className="mb-4">
+                        <h6 className="text-primary">
+                          {provider} предлагает лучшие цены по:
+                        </h6>
+                        <table className="table table-bordered all-offers-selected__table">
+                          <thead>
+                            <tr>
+                              <th>Артикул</th>
+                              <th>Наименование</th>
+                              <th>Цена</th>
+                              <th>Срок</th>
+                              <th>Актуальность</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {offers.map((offer, idx) => (
+                              <tr key={idx}>
+                                <td>{offer.vendorCode}</td>
+                                <td>{offer.nameComponent}</td>
+                                <td>{offer.priceComponent.toLocaleString("ru-RU")} ₽</td>
+                                <td>{offer.deliveryTimeComponent}</td>
+                                <td>
+                                  {new Date(
+                                    offer.saveDataPrice
+                                  ).toLocaleDateString("ru-RU")}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    )
+                  )}
+                </>
+              )}
             </>
           )}
         </div>
