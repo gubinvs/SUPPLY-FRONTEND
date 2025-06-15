@@ -11,9 +11,8 @@ const AllOffersForSelected = ({ role, title }) => {
   const [isNavMaxVisible, setIsNavMaxVisible] = useState(false);
   const [analyzedComponents, setAnalyzedComponents] = useState([]);
   const [combinedOffers, setCombinedOffers] = useState([]);
-  const [bestOffersByProvider, setBestOffersByProvider] = useState([]);
+  const [bestOffersByProvider, setBestOffersByProvider] = useState({});
   const [loading, setLoading] = useState(false);
-  // const [priceTabActive] = useState(false);
   const [showBestByProvider, setShowBestByProvider] = useState(false);
   const [selectedVendorCodes, setSelectedVendorCodes] = useState(new Set());
   const [currentPage, setCurrentPage] = useState(1);
@@ -29,48 +28,68 @@ const AllOffersForSelected = ({ role, title }) => {
 
     const fetchData = async () => {
       setLoading(true);
-      let allOffers = [];
 
-      for (const comp of selected) {
-        try {
-          const response = await fetch(
-            `${ApiUrl}/api/ReturnPriceProviderArticle/${encodeURIComponent(comp.vendorCodeComponent)}`
-          );
-          if (!response.ok) throw new Error("Ошибка загрузки");
+      const articleList = selected
+        .map((comp) => comp.vendorCodeComponent)
+        .filter((a) => a && a.trim().length > 0);
 
-          const data = await response.json();
-          const offers = data.offers || [];
-
-          allOffers = allOffers.concat(
-            offers.map((o) => ({
-              ...o,
-              vendorCode: comp.vendorCodeComponent,
-              nameComponent: comp.nameComponent,
-            }))
-          );
-        } catch (error) {
-          console.error("Ошибка:", error);
-        }
+      if (articleList.length === 0) {
+        setLoading(false);
+        return;
       }
 
-      setCombinedOffers(allOffers);
+      try {
+        const response = await fetch(`${ApiUrl}/api/ReturnPriceProviderListArticle`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ Articles: articleList }),
+        });
 
-      const bestMap = new Map();
-      allOffers.forEach((offer) => {
-        const key = `${offer.nameProvider}_${offer.vendorCode}`;
-        if (!bestMap.has(key) || offer.priceComponent < bestMap.get(key).priceComponent) {
-          bestMap.set(key, offer);
-        }
-      });
+        if (!response.ok) throw new Error("Ошибка загрузки данных");
 
-      const bestGrouped = Array.from(bestMap.values()).reduce((acc, offer) => {
-        if (!acc[offer.nameProvider]) acc[offer.nameProvider] = [];
-        acc[offer.nameProvider].push(offer);
-        return acc;
-      }, {});
+        const data = await response.json();
 
-      setBestOffersByProvider(bestGrouped);
-      setLoading(false);
+        // Формируем плоский массив всех предложений с данными компонента
+        const allOffers = [];
+
+        data.found.forEach((component) => {
+          component.offers.forEach((offer) => {
+            allOffers.push({
+              ...offer,
+              vendorCode: component.article,
+              nameComponent: component.nameComponent,
+            });
+          });
+        });
+
+        setCombinedOffers(allOffers);
+
+        // Находим лучшие предложения по каждому артикулу (минимальная цена)
+        const bestOffersByArticle = new Map();
+        allOffers.forEach((offer) => {
+          const currentBest = bestOffersByArticle.get(offer.vendorCode);
+          if (!currentBest || offer.priceComponent < currentBest.priceComponent) {
+            bestOffersByArticle.set(offer.vendorCode, offer);
+          }
+        });
+
+        // Группируем лучшие предложения по поставщикам
+        const bestGroupedByProvider = {};
+        bestOffersByArticle.forEach((offer) => {
+          if (!bestGroupedByProvider[offer.nameProvider]) {
+            bestGroupedByProvider[offer.nameProvider] = [];
+          }
+          bestGroupedByProvider[offer.nameProvider].push(offer);
+        });
+
+        setBestOffersByProvider(bestGroupedByProvider);
+      } catch (error) {
+        console.error("Ошибка:", error);
+      } finally {
+        setLoading(false);
+      }
     };
 
     if (selected.length > 0) {
@@ -92,9 +111,6 @@ const AllOffersForSelected = ({ role, title }) => {
     if (selectedVendorCodes.size > 0) {
       offers = offers.filter((o) => selectedVendorCodes.has(o.vendorCode));
     }
-    // if (priceTabActive) {
-    //   offers = offers.filter((o) => o.priceComponent > 0).sort((a, b) => a.priceComponent - b.priceComponent);
-    // }
     return offers;
   };
 
@@ -154,12 +170,9 @@ const AllOffersForSelected = ({ role, title }) => {
 
   return (
     <>
-      
       <div className="main-application-panel">
-        {/* Навигационная панель приложения малая слева */}
         <NavigationBarMin onShowMax={handleShowMax} onHideMax={handleHideMax} isNavMaxVisible={isNavMaxVisible} />
         {isNavMaxVisible && <NavigationBarMax />}
-        {/* Навигационная панель приложения большая слева */}
         <HeaderApplicationPanel role={role} title={title} />
       </div>
 
@@ -168,28 +181,23 @@ const AllOffersForSelected = ({ role, title }) => {
           {analyzedComponents.length === 0 ? (
             <p>Нет выбранных компонентов для анализа.</p>
           ) : loading ? (
-            <div className="custom-spinner-container"><div className="custom-spinner"></div></div>
+            <div className="custom-spinner-container">
+              <div className="custom-spinner"></div>
+            </div>
           ) : combinedOffers.length === 0 ? (
             <p className="text-muted">Нет предложений.</p>
           ) : (
             <>
               <div className="mb-4 all-offers-selected__button-block">
                 <div className="aos-button-block__selectet-buton">
-                  {/* <button
-                    className={`btn btn-sm all-offers-selected__button-mr10 ${priceTabActive ? "btn-custom" : "btn-custom-outline"}`}
-                    onClick={() => setPriceTabActive(!priceTabActive)}
-                  >
-                    {priceTabActive ? "Показать все предложения" : "Сортировать по лучшей цене"}
-                  </button> */}
                   <button
                     className={`btn btn-sm ml-2 ${showBestByProvider ? "btn-custom" : "btn-custom-outline"}`}
                     onClick={() => setShowBestByProvider(!showBestByProvider)}
                   >
-                    {showBestByProvider ? "Скрыть" : "Лучшие предложения поставщиков"}
+                    {showBestByProvider ? "Вернуться к полному списку" : "Лучшие предложения поставщиков"}
                   </button>
+                </div>
               </div>
-            
-            </div>
               {!showBestByProvider ? (
                 <>
                   <table className="table table-bordered all-offers-selected__table">
@@ -212,9 +220,7 @@ const AllOffersForSelected = ({ role, title }) => {
                       Скачать Excel
                     </button>
                     <div>
-                      {Array.from({
-                        length: Math.ceil(getFilteredOffers().length / rowsPerPage),
-                      }, (_, i) => (
+                      {Array.from({ length: Math.ceil(getFilteredOffers().length / rowsPerPage) }, (_, i) => (
                         <button
                           key={i}
                           className={`btn btn-sm mx-1 ${currentPage === i + 1 ? "btn-primary" : "btn-outline-primary"}`}
@@ -256,8 +262,12 @@ const AllOffersForSelected = ({ role, title }) => {
                             </tr>
                           ))}
                           <tr className="table">
-                            <td colSpan="2"><b>Итого</b></td>
-                            <td><b>{totalPrice.toLocaleString("ru-RU")} ₽</b></td>
+                            <td colSpan="2">
+                              <b>Итого</b>
+                            </td>
+                            <td>
+                              <b>{totalPrice.toLocaleString("ru-RU")} ₽</b>
+                            </td>
                             <td colSpan="2"></td>
                           </tr>
                         </tbody>
