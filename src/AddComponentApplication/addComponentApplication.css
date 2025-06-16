@@ -1,25 +1,30 @@
-.add-component-application__left-block,
-.add-component-application__right-block {
-    width: 50%;
+.add-component-application__left-block {
+    width: 70%;
 }
 
 .add-component-application__left-block {
     margin-right: 20px;
 }
 
+.add-component-application__right-block {
+    width: 30%;
+}
+
 .add-component-application__input-form {
     display: flex;
+    flex-direction: column;
 }
-
 .aca-input-form__article {
-    width: 30%;
-    margin-right: 4px;
+    width: 100%;
+    margin-bottom: 8px;
 }
 
-.aca-input-form__name {
-
-    margin-right: 4px;
+.aca-input-form__name,
+.aca-input-form__select,
+.aca-input-form__new-price {
+    margin-bottom: 8px;
 }
+
 .add-component-application__container {
     display: flex;
     flex-direction: column;
@@ -35,5 +40,9 @@
     align-items: center;
     width: 100%;
 
+}
+
+.aca-input-form__edit-button {
+    width: 100%;
 }
 

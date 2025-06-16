@@ -39,18 +39,18 @@ const NavigationBarMin = ({ onShowMax, onHideMax, isNavMaxVisible }) => {
                     <li className="navigation-icon-block__item" onClick={linkPageApplicationPanel}>
                         <img className="navigation-icon__icon-img" src="../images/dachbord_icon.svg" alt="Иконка на главную панель" />
                     </li>
-                    <li className="navigation-icon-block__item" onClick={linkPageAddComponent}>
-                        <img className="navigation-icon__icon-img" src="../images/add-component-icon.svg" alt="Иконка на главную панель" />
-                    </li>
                     {/* Если роль пользователя заказчик! */}
                     {role ?
                         <li className="navigation-icon-block__item" onClick={suppliersOffers}>
-                            <img className="navigation-icon__icon-img" src="../images/specifications-icon.svg" alt="Иконка на страницу с предложениями" />
+                            <img className="navigation-icon__icon-img" src="../images/specifications-icon.svg" alt="Иконка на страницу со списком номенклатуры" />
                         </li>:
                         <li className="navigation-icon-block__item" onClick="">
                             <img className="navigation-icon__icon-img" src="../images/companies-icon.svg" alt="Иконка на страницу компаний" />
                         </li>
                     }
+                    <li className="navigation-icon-block__item" onClick={linkPageAddComponent}>
+                        <img className="navigation-icon__icon-img" src="../images/add-component-icon.svg" alt="Иконка на страницу добавления артикулов" />
+                    </li>
                     {/* Если роль пользователя администратор! */}
                     {roleAdmin ? 
                             <>
@@ -62,9 +62,9 @@ const NavigationBarMin = ({ onShowMax, onHideMax, isNavMaxVisible }) => {
                                 </li>
                             </>:""
                     }
-                    <li className="navigation-icon-block__item" onClick="">
+                    {/* <li className="navigation-icon-block__item" onClick="">
                         <img className="navigation-icon__icon-img" src="../images/purchase-icon.svg" alt="Иконка на страницу закупки" />
-                    </li>
+                    </li> */}
                 </ul>
             </div>
             <div className="navigation-bar-min__bootom-block">
