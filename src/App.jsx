@@ -13,6 +13,7 @@ import ApplicationPanelRouter from "./ApplicationPanel/ApplicationPanelRouter.js
 import { roleMap } from "./js/roleMap.js";
 import SuppliersOffers from "./SuppliersOffers/SuppliersOffers.jsx";
 import AllOffersForSelected from "./SuppliersOffers/AllOffersForSelected.jsx";
+import AddComponentApplication from "./AddComponentApplication/AddComponentApplication.jsx";
 
 // Константы ролей
 const ROLE_ADMIN = "b5aff5b0-c3ac-4f1e-9467-fe13a14f6de3"; // Роль администратора системы
@@ -47,10 +48,12 @@ const App = () => {
         <Route path="/Registration" element={<RegistrationForm />} />
         <Route path="/UpdatePassword" element={<UpdatePassword />} />
 
+        {/* Роут первоначальный для упрошенного отображения, работает пока не введено новое приложение, потом удалить */}
         <Route path="/ListComponent" element={
           <PrivateRoute allowedRoles={[ROLE_ADMIN]}>
             <ListComponent />
           </PrivateRoute>} />
+
 
         <Route path="/ApplicationPanelAdmin" element={
           <PrivateRoute allowedRoles={[ROLE_ADMIN]}>
@@ -67,6 +70,13 @@ const App = () => {
         <Route path="/ApplicationPanelCustomer" element={
           <PrivateRoute allowedRoles={[ROLE_CUSTOMER, ROLE_ADMIN]}>
             <ApplicationPanelCustomer role={role} title={title} />
+          </PrivateRoute>
+        } />
+
+        {/* Страница c формой добавления компонентов в систему */}
+        <Route path="/AddComponentApplication" element={
+          <PrivateRoute allowedRoles={[ROLE_CUSTOMER, ROLE_PROVIDER, ROLE_ADMIN]}>
+            <AddComponentApplication role={role} title="Добавление товара в базу данных" />
           </PrivateRoute>
         } />
 

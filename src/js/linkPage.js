@@ -7,3 +7,8 @@ export function linkPageApplicationPanel() {
 export function suppliersOffers() {
     window.location = "/SuppliersOffers";
 };
+
+// Ссылка на страницу добавления товара в базу данных
+export function linkPageAddComponent () {
+    window.location = "/AddComponentApplication";
+};

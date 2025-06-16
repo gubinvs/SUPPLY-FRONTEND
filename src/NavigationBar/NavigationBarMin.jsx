@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./navigationBar.css";
 import {
+    linkPageAddComponent,
     linkPageApplicationPanel, 
     suppliersOffers
 } from "../js/linkPage.js";
@@ -37,6 +38,9 @@ const NavigationBarMin = ({ onShowMax, onHideMax, isNavMaxVisible }) => {
                 <ul className="navigation-icon-block">
                     <li className="navigation-icon-block__item" onClick={linkPageApplicationPanel}>
                         <img className="navigation-icon__icon-img" src="../images/dachbord_icon.svg" alt="Иконка на главную панель" />
+                    </li>
+                    <li className="navigation-icon-block__item" onClick={linkPageAddComponent}>
+                        <img className="navigation-icon__icon-img" src="../images/add-component-icon.svg" alt="Иконка на главную панель" />
                     </li>
                     {/* Если роль пользователя заказчик! */}
                     {role ?
