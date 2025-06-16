@@ -76,7 +76,7 @@ const App = () => {
         {/* Страница c формой добавления компонентов в систему */}
         <Route path="/AddComponentApplication" element={
           <PrivateRoute allowedRoles={[ROLE_CUSTOMER, ROLE_PROVIDER, ROLE_ADMIN]}>
-            <AddComponentApplication role={role} title="Добавление товара в базу данных" />
+            <AddComponentApplication role={role} title="Добавление нового артикула в базу данных" />
           </PrivateRoute>
         } />
 
