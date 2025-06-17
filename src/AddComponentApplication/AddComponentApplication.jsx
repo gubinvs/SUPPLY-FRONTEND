@@ -4,12 +4,13 @@ import ApiUrl from "../js/ApiUrl.js";
 import NavigationBarMin from "../NavigationBar/NavigationBarMin.jsx";
 import NavigationBarMax from "../NavigationBar/NavigationBarMax.jsx";
 import HeaderApplicationPanel from "../ApplicationPanel/Header/HeaderApplicationPanel.jsx";
-import ReturnListDataComponent from "../js/RequestsApi/ReturnListDataComponent.js";
 
 const ITEMS_PER_PAGE = 10;
 
-const AddComponentApplication = ({ role, title }) => {
-    const [components, setComponents] = useState([]);
+const AddComponentApplication = (
+    {role, title, components}
+) => {
+    // const [components, setComponents] = useState([]);
     const [isNavMaxVisible, setIsNavMaxVisible] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [searchTerm, setSearchTerm] = useState("");
@@ -21,21 +22,6 @@ const AddComponentApplication = ({ role, title }) => {
     const [providerId, setProviderId] = useState('');
     const [providers, setProviders] = useState([]);
     const [showEditPriceBlock, setShowEditPriceBlock] = useState(false);
-
-    useEffect(() => {
-        async function loadComponents() {
-            const result = await ReturnListDataComponent();
-            setComponents(result);
-            console.log("Полученные компоненты:", result);
-        }
-
-        loadComponents();
-
-        const savedProviderId = localStorage.getItem("lastProviderId");
-        if (savedProviderId) {
-            setProviderId(savedProviderId);
-        }
-    }, []);
 
     const filteredItems = components.filter(
         (item) =>

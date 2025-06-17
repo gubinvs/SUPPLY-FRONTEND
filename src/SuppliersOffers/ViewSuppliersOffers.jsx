@@ -1,43 +1,18 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import ApiUrl from "../js/ApiUrl.js";
 import "../ApplicationPanel/applicationPanel.css";
 import "./viewSuppliersOffers.css";
 
-const ViewSuppliersOffers = () => {
-    const [components, setComponents] = useState([]);
+const ViewSuppliersOffers = (
+    {components, error}
+) => {
+
     const [selectedIds, setSelectedIds] = useState(new Set());
-    const [error, setError] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [searchTerm, setSearchTerm] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
     const itemsPerPage = 15;
     const navigate = useNavigate();
 
-    useEffect(() => {
-        setIsLoading(true); // начинаем загрузку
-        fetch(ApiUrl + "/api/ReturnListDataComponent", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then((data) => {
-                setComponents(data.component || []);
-                setIsLoading(false); // завершение загрузки
-            })
-            .catch((error) => {
-                console.error("Ошибка получения данных:", error);
-                setError("Ошибка загрузки данных: " + error.message);
-                setIsLoading(false); // даже при ошибке убираем спиннер
-            });
-    }, []);
 
     const handleCheckboxToggle = (id) => {
         setSelectedIds(prev => {
@@ -109,11 +84,7 @@ const ViewSuppliersOffers = () => {
 
                 {error && <p className="error">{error}</p>}
 
-                {isLoading ? (
-                    <div className="custom-spinner-container">
-                        <div className="custom-spinner"></div>
-                    </div>
-                ) : components.length > 0 ? (
+                {components.length > 0 ? (
                     <>
                         <table className="table">
                             <thead className="table-borderless__theder">

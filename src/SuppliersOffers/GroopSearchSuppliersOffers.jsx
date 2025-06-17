@@ -1,41 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState} from "react";
 import { useNavigate } from "react-router-dom";
-import * as XLSX from "xlsx"; // 📘 Импорт библиотеки XLSX
-import ApiUrl from "../js/ApiUrl.js";
+// import * as XLSX from "xlsx"; // 📘 Импорт библиотеки XLSX
 import "../ApplicationPanel/applicationPanel.css";
 import "./viewSuppliersOffers.css";
 
-const GroopSearchSuppliersOffers = () => {
-    const [components, setComponents] = useState([]);
+const GroopSearchSuppliersOffers = ({components, error}) => {
     const [selectedIds, setSelectedIds] = useState(new Set());
-    const [error, setError] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [searchList, setSearchList] = useState([]);
     const [textareaValue, setTextareaValue] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
     const itemsPerPage = 15;
     const navigate = useNavigate();
-
-    useEffect(() => {
-        setIsLoading(true);
-        fetch(ApiUrl + "/api/ReturnListDataComponent", {
-            method: "GET",
-            headers: { "Content-Type": "application/json" },
-        })
-            .then((response) => {
-                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                return response.json();
-            })
-            .then((data) => {
-                setComponents(data.component || []);
-                setIsLoading(false);
-            })
-            .catch((error) => {
-                console.error("Ошибка получения данных:", error);
-                setError("Ошибка загрузки данных: " + error.message);
-                setIsLoading(false);
-            });
-    }, []);
 
     const processSearchList = (list) => {
         const cleaned = list.map(v => v.trim().toLowerCase()).filter(Boolean);
@@ -56,23 +31,23 @@ const GroopSearchSuppliersOffers = () => {
         processSearchList(parsed);
     };
 
-    const handleFileUpload = (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
+    // const handleFileUpload = (e) => {
+    //     const file = e.target.files[0];
+    //     if (!file) return;
 
-        const reader = new FileReader();
-        reader.onload = (evt) => {
-            const data = new Uint8Array(evt.target.result);
-            const workbook = XLSX.read(data, { type: "array" });
-            const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-            const rows = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+    //     const reader = new FileReader();
+    //     reader.onload = (evt) => {
+    //         const data = new Uint8Array(evt.target.result);
+    //         const workbook = XLSX.read(data, { type: "array" });
+    //         const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+    //         const rows = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
 
-            const flatValues = rows.flat().map(String);
-            processSearchList(flatValues);
-            setTextareaValue(flatValues.join("\n")); // для наглядности заполним textarea
-        };
-        reader.readAsArrayBuffer(file);
-    };
+    //         const flatValues = rows.flat().map(String);
+    //         processSearchList(flatValues);
+    //         setTextareaValue(flatValues.join("\n")); // для наглядности заполним textarea
+    //     };
+    //     reader.readAsArrayBuffer(file);
+    // };
 
     const handleAnalyzeClick = () => {
         const selectedComponents = components.filter(item => selectedIds.has(item.id));
@@ -123,11 +98,7 @@ const GroopSearchSuppliersOffers = () => {
 
                 {error && <p className="error">{error}</p>}
 
-                {isLoading ? (
-                    <div className="custom-spinner-container">
-                        <div className="custom-spinner"></div>
-                    </div>
-                ) : filteredComponents.length > 0 ? (
+                {filteredComponents.length > 0 ? (
                     <>
                         <table className="table">
                             <thead>

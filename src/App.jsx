@@ -1,6 +1,6 @@
-
 import {useState, useEffect} from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import ApiUrl from "./js/ApiUrl.js";
 import ListComponent from './ListComponent/ListComponent';
 import AuthorizationForm from './RegistrationForm/AuthorizationForm.jsx';
 import RegistrationForm from './RegistrationForm/RegistrationForm.jsx';
@@ -16,7 +16,7 @@ import AllOffersForSelected from "./SuppliersOffers/AllOffersForSelected.jsx";
 import AddComponentApplication from "./AddComponentApplication/AddComponentApplication.jsx";
 import ExcelPasteInput from "./ExcelPasteInput.jsx";
 
-// Константы ролей
+// Константы ролей пользователей
 const ROLE_ADMIN = "b5aff5b0-c3ac-4f1e-9467-fe13a14f6de3"; // Роль администратора системы
 const ROLE_PROVIDER = "a5219e2b-12f3-490e-99f5-1be54c55cc6d"; // Роль поставщика
 const ROLE_CUSTOMER = "52910536-2b8a-47e7-9d5a-8cca0a0b865a"; // Роль заказчика
@@ -27,7 +27,11 @@ const App = () => {
   const [role, setRole] = useState("");
   const [title, setTitle] = useState("");
 
-    useEffect(() => {
+  const [components, setComponents] = useState([]);
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
       const currentRole = roleMap[roleId] || "Неизвестная роль";
       setRole(currentRole);
   }, [roleId]);
@@ -39,6 +43,29 @@ const App = () => {
           ? "Информационная панель"
           : "");
   }, []);
+
+  // Запрос полного списка номенклатуры в базе данных
+    useEffect(() => {
+        setIsLoading(true);
+        fetch(ApiUrl + "/api/ReturnListDataComponent", {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+        })
+            .then((response) => {
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                return response.json();
+            })
+            .then((data) => {
+                setComponents(data.component || []);
+                setIsLoading(false);
+            })
+            .catch((error) => {
+                console.error("Ошибка получения данных:", error);
+                setError("Ошибка загрузки данных: " + error.message);
+                setIsLoading(false);
+            });
+    }, []);
+
 
   return (
     <Router>
@@ -78,14 +105,35 @@ const App = () => {
         {/* Страница c формой добавления компонентов в систему */}
         <Route path="/AddComponentApplication" element={
           <PrivateRoute allowedRoles={[ROLE_CUSTOMER, ROLE_PROVIDER, ROLE_ADMIN]}>
-            <AddComponentApplication role={role} title="Добавление нового артикула в базу данных" />
+            {isLoading ? (
+                    <div className="custom-spinner-container">
+                        <div className="custom-spinner"></div>
+                    </div>
+                ) : (
+                    <AddComponentApplication 
+                      role={role} 
+                      title="Добавление нового артикула в базу данных"
+                      components={components} 
+                      />
+            )}
           </PrivateRoute>
         } />
 
         {/* Страница для заказчика, на ней посковая строка и выдача результатов по лучшим предложениям */}
         <Route path="/SuppliersOffers" element={
           <PrivateRoute allowedRoles={[ROLE_CUSTOMER, ROLE_ADMIN]}>
-            <SuppliersOffers role={role} title="Предложения поставщиков" />
+            {isLoading ? (
+                    <div className="custom-spinner-container">
+                        <div className="custom-spinner"></div>
+                    </div>
+                ) : (
+                    <SuppliersOffers 
+                      role={role} 
+                      title="Предложения поставщиков" 
+                      components={components}
+                      error={error}
+                    />
+            )}
           </PrivateRoute>
         } />
 
