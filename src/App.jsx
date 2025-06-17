@@ -119,7 +119,7 @@ const App = () => {
           </PrivateRoute>
         } />
 
-        {/* Страница для заказчика, на ней посковая строка и выдача результатов по лучшим предложениям */}
+        {/* Страница для заказчика, на ней посковая строка и выдача результатов всех предложеий */}
         <Route path="/SuppliersOffers" element={
           <PrivateRoute allowedRoles={[ROLE_CUSTOMER, ROLE_ADMIN]}>
             {isLoading ? (
