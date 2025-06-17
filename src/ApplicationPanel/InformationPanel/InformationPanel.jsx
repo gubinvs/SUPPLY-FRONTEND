@@ -11,7 +11,7 @@ import DataCollaborator from "./DataCollaborator.jsx";
 // Основной блок информационной панели, вводит информацию для 
 // конкретного пользователя симтемы в соответствии с ролью
 
-const InformationPanel = ({role}) => {
+const InformationPanel = ({ role }) => {
     
   // Формируем данные о пользователе
   const [nameCollaborator, setNameCollaborator] = useState("");
