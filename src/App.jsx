@@ -14,6 +14,7 @@ import { roleMap } from "./js/roleMap.js";
 import SuppliersOffers from "./SuppliersOffers/SuppliersOffers.jsx";
 import AllOffersForSelected from "./SuppliersOffers/AllOffersForSelected.jsx";
 import AddComponentApplication from "./AddComponentApplication/AddComponentApplication.jsx";
+import ExcelPasteInput from "./ExcelPasteInput.jsx";
 
 // Константы ролей
 const ROLE_ADMIN = "b5aff5b0-c3ac-4f1e-9467-fe13a14f6de3"; // Роль администратора системы
@@ -47,6 +48,7 @@ const App = () => {
         <Route path="/AuthorizationForm" element={<AuthorizationForm />} />
         <Route path="/Registration" element={<RegistrationForm />} />
         <Route path="/UpdatePassword" element={<UpdatePassword />} />
+        <Route path='/ExcelPasteInput' element={<ExcelPasteInput />} />
 
         {/* Роут первоначальный для упрошенного отображения, работает пока не введено новое приложение, потом удалить */}
         <Route path="/ListComponent" element={

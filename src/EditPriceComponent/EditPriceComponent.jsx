@@ -78,6 +78,8 @@ const EditPriceComponent = () => {
             deliveryTimeComponent: deliveryTime
         };
 
+        
+
         fetch(ApiUrl + "/api/ChangePrice", {
             method: "POST",
             headers: { "Content-Type": "application/json" },

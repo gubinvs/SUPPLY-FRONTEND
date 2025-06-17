@@ -12,3 +12,9 @@ export function suppliersOffers() {
 export function linkPageAddComponent () {
     window.location = "/AddComponentApplication";
 };
+
+// Ссылка на страницу добавления товара в базу данных списком
+export function linkPageAddGroopComponent () {
+    window.location = "/ExcelPasteInput";
+};
+

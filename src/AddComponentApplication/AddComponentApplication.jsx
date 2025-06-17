@@ -129,14 +129,15 @@ const AddComponentApplication = ({ role, title }) => {
         }
 
         try {
-            const response = await fetch(ApiUrl + '/api/AddOrUpdatePriceForComponent', {
+            const response = await fetch(ApiUrl + '/api/ChangePrice', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     vendorCodeComponent: article,
-                    price: parseFloat(price),
-                    term: deliveryTerm,
-                    guidIdProvider: providerId
+                    guidIdProvider: providerId,
+                    priceComponent: parseFloat(price),
+                    deliveryTimeComponent: deliveryTerm,
+                    
                 })
             });
 
