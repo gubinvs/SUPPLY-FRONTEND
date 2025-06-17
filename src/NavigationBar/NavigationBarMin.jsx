@@ -52,9 +52,6 @@ const NavigationBarMin = ({ onShowMax, onHideMax, isNavMaxVisible }) => {
                     <li className="navigation-icon-block__item" onClick={linkPageAddComponent}>
                         <img className="navigation-icon__icon-img" src="../images/add-component-icon.svg" alt="Иконка на страницу добавления артикулов" />
                     </li>
-                    <li className="navigation-icon-block__item" onClick={linkPageAddGroopComponent}>
-                        <img className="navigation-icon__icon-img" src="../images/add-groop-component-icon.svg" alt="Иконка на страницу добавления артикулов" />
-                    </li>
                     {/* Если роль пользователя администратор! */}
                     {roleAdmin ? 
                             <>

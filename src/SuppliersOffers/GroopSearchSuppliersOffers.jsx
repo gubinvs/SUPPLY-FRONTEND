@@ -4,7 +4,7 @@ import ApiUrl from "../js/ApiUrl.js";
 import "../ApplicationPanel/applicationPanel.css";
 import "./viewSuppliersOffers.css";
 
-const ViewSuppliersOffers = () => {
+const GroopSearchSuppliersOffers = () => {
     const [components, setComponents] = useState([]);
     const [selectedIds, setSelectedIds] = useState(new Set());
     const [error, setError] = useState(null);
@@ -91,7 +91,7 @@ const ViewSuppliersOffers = () => {
                 <input
                     className="form-control view-suppliers-offers__search"
                     type="text"
-                    placeholder="Одиночный поиск: артикул или наименование"
+                    placeholder="Групповой поиск: можно вставить строки из Excel"
                     value={searchTerm}
                     onChange={(e) => {
                         setSearchTerm(e.target.value);
@@ -168,4 +168,4 @@ const ViewSuppliersOffers = () => {
     );
 };
 
-export default ViewSuppliersOffers;
+export default GroopSearchSuppliersOffers;
