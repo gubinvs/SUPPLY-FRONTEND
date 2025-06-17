@@ -29,7 +29,8 @@ const App = () => {
 
   const [components, setComponents] = useState([]);
   const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+
+
 
   useEffect(() => {
       const currentRole = roleMap[roleId] || "Неизвестная роль";
@@ -44,9 +45,9 @@ const App = () => {
           : "");
   }, []);
 
+
   // Запрос полного списка номенклатуры в базе данных
     useEffect(() => {
-        setIsLoading(true);
         fetch(ApiUrl + "/api/ReturnListDataComponent", {
             method: "GET",
             headers: { "Content-Type": "application/json" },
@@ -57,12 +58,10 @@ const App = () => {
             })
             .then((data) => {
                 setComponents(data.component || []);
-                setIsLoading(false);
             })
             .catch((error) => {
                 console.error("Ошибка получения данных:", error);
                 setError("Ошибка загрузки данных: " + error.message);
-                setIsLoading(false);
             });
     }, []);
 
@@ -105,35 +104,24 @@ const App = () => {
         {/* Страница c формой добавления компонентов в систему */}
         <Route path="/AddComponentApplication" element={
           <PrivateRoute allowedRoles={[ROLE_CUSTOMER, ROLE_PROVIDER, ROLE_ADMIN]}>
-            {isLoading ? (
-                    <div className="custom-spinner-container">
-                        <div className="custom-spinner"></div>
-                    </div>
-                ) : (
-                    <AddComponentApplication 
-                      role={role} 
-                      title="Добавление нового артикула в базу данных"
-                      components={components} 
-                      />
-            )}
+            <AddComponentApplication 
+              role={role} 
+              title="Добавление нового артикула в базу данных"
+              components={components} 
+            />
+          
           </PrivateRoute>
         } />
 
         {/* Страница для заказчика, на ней посковая строка и выдача результатов всех предложеий */}
         <Route path="/SuppliersOffers" element={
           <PrivateRoute allowedRoles={[ROLE_CUSTOMER, ROLE_ADMIN]}>
-            {isLoading ? (
-                    <div className="custom-spinner-container">
-                        <div className="custom-spinner"></div>
-                    </div>
-                ) : (
-                    <SuppliersOffers 
-                      role={role} 
-                      title="Предложения поставщиков" 
-                      components={components}
-                      error={error}
-                    />
-            )}
+            <SuppliersOffers 
+              role={role} 
+              title="Предложения поставщиков" 
+              components={components}
+              error={error}
+            />
           </PrivateRoute>
         } />
 
