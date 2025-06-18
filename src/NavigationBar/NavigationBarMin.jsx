@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import "./navigationBar.css";
 import {
     linkPageAddComponent,
-    linkPageAddGroopComponent,
     linkPageApplicationPanel, 
     suppliersOffers
 } from "../js/linkPage.js";
@@ -11,16 +10,24 @@ import {
 const NavigationBarMin = ({ onShowMax, onHideMax, isNavMaxVisible }) => {
     const roleId = localStorage.getItem("roleId");
 
-    const [role, setRole] = useState(false);
+    const [roleCustomer, setRoleCustomer] = useState(false);
+    const [roleProvider, setRoleProvider] = useState(false);
     const [roleAdmin, setRoleAdmin] = useState(false);
 
     useEffect(() => {
+        // Если заказчик
         if (roleId === "52910536-2b8a-47e7-9d5a-8cca0a0b865a") {
-            setRole(true);
+            setRoleCustomer(true);
         } else {
-            setRole(false);
+            setRoleCustomer(false);
         }
-
+        // Если поставщик
+        if (roleId === "a5219e2b-12f3-490e-99f5-1be54c55cc6d") {
+            setRoleProvider(true);
+        } else {
+            setRoleProvider(false);
+        }
+        // Если администатор
         if (roleId === "b5aff5b0-c3ac-4f1e-9467-fe13a14f6de3") {
             setRoleAdmin(true);
         } else {
@@ -41,13 +48,12 @@ const NavigationBarMin = ({ onShowMax, onHideMax, isNavMaxVisible }) => {
                         <img className="navigation-icon__icon-img" src="../images/dachbord_icon.svg" alt="Иконка на главную панель" />
                     </li>
                     {/* Если роль пользователя заказчик! */}
-                    {role ?
-                        <li className="navigation-icon-block__item" onClick={suppliersOffers}>
-                            <img className="navigation-icon__icon-img" src="../images/specifications-icon.svg" alt="Иконка на страницу со списком номенклатуры" />
-                        </li>:
-                        <li className="navigation-icon-block__item" onClick="">
-                            <img className="navigation-icon__icon-img" src="../images/companies-icon.svg" alt="Иконка на страницу компаний" />
-                        </li>
+                    {roleCustomer ?
+                        <>
+                            <li className="navigation-icon-block__item" onClick={suppliersOffers}>
+                                <img className="navigation-icon__icon-img" src="../images/specifications-icon.svg" alt="Иконка на страницу со списком номенклатуры" />
+                            </li>
+                        </>:""
                     }
                     <li className="navigation-icon-block__item" onClick={linkPageAddComponent}>
                         <img className="navigation-icon__icon-img" src="../images/add-component-icon.svg" alt="Иконка на страницу добавления артикулов" />
@@ -55,17 +61,13 @@ const NavigationBarMin = ({ onShowMax, onHideMax, isNavMaxVisible }) => {
                     {/* Если роль пользователя администратор! */}
                     {roleAdmin ? 
                             <>
-                                <li className="navigation-icon-block__item" onClick="">
-                                    <img className="navigation-icon__icon-img" src="../images/specifications-icon.svg" alt="Иконка на страницу спецификации" />
-                                </li>
-                                <li className="navigation-icon-block__item" onClick="">
-                                    <img className="navigation-icon__icon-img" src="../images/companies-icon.svg" alt="Иконка на страницу компаний" />
+                                <li className="navigation-icon-block__item" onClick={suppliersOffers}>
+                                    <img className="navigation-icon__icon-img" src="../images/specifications-icon.svg" alt="Иконка на страницу со списком номенклатуры" />
                                 </li>
                             </>:""
                     }
-                    {/* <li className="navigation-icon-block__item" onClick="">
-                        <img className="navigation-icon__icon-img" src="../images/purchase-icon.svg" alt="Иконка на страницу закупки" />
-                    </li> */}
+                    {/* Если роль пользователя поставщик! */}
+                    {roleProvider?"":""}
                 </ul>
             </div>
             <div className="navigation-bar-min__bootom-block">

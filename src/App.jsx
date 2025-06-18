@@ -85,7 +85,7 @@ const App = () => {
 
         <Route path="/ApplicationPanelAdmin" element={
           <PrivateRoute allowedRoles={[ROLE_ADMIN]}>
-            <ApplicationPanelAdmin />
+            <ApplicationPanelAdmin role={role} title="Панель администратора" />
           </PrivateRoute>
         } />
 

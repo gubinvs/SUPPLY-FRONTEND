@@ -10,7 +10,6 @@ const ITEMS_PER_PAGE = 10;
 const AddComponentApplication = (
     {role, title, components}
 ) => {
-    // const [components, setComponents] = useState([]);
     const [isNavMaxVisible, setIsNavMaxVisible] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [searchTerm, setSearchTerm] = useState("");
@@ -22,6 +21,7 @@ const AddComponentApplication = (
     const [providerId, setProviderId] = useState('');
     const [providers, setProviders] = useState([]);
     const [showEditPriceBlock, setShowEditPriceBlock] = useState(false);
+    const [combinedOffers, setCombinedOffers] = useState([]); // для цен поставщиков
 
     const filteredItems = components.filter(
         (item) =>
@@ -44,7 +44,7 @@ const AddComponentApplication = (
         if (currentPage > 1) setCurrentPage((prev) => prev - 1);
     };
 
-    const handleCheckboxToggle = (id) => {
+    const handleCheckboxToggle = async (id) => {
         setSelectedIds((prev) => {
             const newSet = new Set(prev);
             if (newSet.has(id)) {
@@ -52,6 +52,7 @@ const AddComponentApplication = (
                 setArticle('');
                 setName('');
                 setShowEditPriceBlock(false);
+                setCombinedOffers([]); // очистка цен при снятии выбора
             } else {
                 newSet.clear();
                 newSet.add(id);
@@ -61,6 +62,9 @@ const AddComponentApplication = (
                     setArticle(selectedItem.vendorCodeComponent);
                     setName(selectedItem.nameComponent);
                     setShowEditPriceBlock(true);
+                    
+                    // Запрос цен поставщиков по выбранному артикулу
+                    fetchPrices(selectedItem.vendorCodeComponent);
                 }
             }
             return newSet;
@@ -139,6 +143,41 @@ const AddComponentApplication = (
             alert(`Ошибка соединения: ${error}`);
         }
     };
+
+    const fetchPrices = async (article) => {
+        try {
+            const response = await fetch(`${ApiUrl}/api/ReturnPriceProviderArticle/${article}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            });
+
+            if (!response.ok) throw new Error("Ошибка загрузки данных");
+
+            const data = await response.json();
+
+            // Сохраняем имя компонента
+            setName(data.nameComponent);
+
+            // Фильтруем предложения с ценой > 0 и сохраняем
+            const filteredOffers = data.offers
+                .filter(item => item.priceComponent > 0)
+                .map(item => ({
+                    nameProvider: item.nameProvider,
+                    priceComponent: item.priceComponent,
+                    deliveryTimeComponent: item.deliveryTimeComponent,
+                    saveDataPrice: item.saveDataPrice
+                }));
+
+            setCombinedOffers(filteredOffers);
+
+        } catch (error) {
+            console.error("Ошибка загрузки цен поставщиков:", error);
+            setCombinedOffers([]);
+        }
+    };
+
 
     return (
         <div className="main-application-panel">
@@ -219,6 +258,20 @@ const AddComponentApplication = (
                     {searchTerm.trim() && filteredItems.length === 0 && (
                         <div className="mt-3 text-muted">Ничего не найдено по запросу.</div>
                     )}
+
+                    <div className="offers-list">
+                        {combinedOffers.length === 0 ? "": (
+                            combinedOffers.map((offer, index) => (
+                                <div key={index} className="offer-item border rounded p-2 mb-2">
+                                    <p><strong>Поставщик:</strong> {offer.nameProvider}</p>
+                                    <p><strong>Цена:</strong> {offer.priceComponent > 0 ? `${offer.priceComponent} ₽` : '—'}</p>
+                                    <p><strong>Срок поставки:</strong> {offer.deliveryTimeComponent}</p>
+                                    <p><strong>Обновлено:</strong> {new Date(offer.saveDataPrice).toLocaleDateString()}</p>
+                                </div>
+                            ))
+                        )}
+                    </div>
+
                 </div>
 
                 <div className="add-component-application__right-block">
