@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../ApplicationPanel/applicationPanel.css";
 import "./viewSuppliersOffers.css";
@@ -8,7 +8,7 @@ const ViewSuppliersOffers = (
 ) => {
 
     const [selectedIds, setSelectedIds] = useState(new Set());
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(1); 
     const [searchTerm, setSearchTerm] = useState("");
     const itemsPerPage = 15;
     const navigate = useNavigate();
@@ -41,10 +41,16 @@ const ViewSuppliersOffers = (
         navigate("/AllOffersForSelected");
     };
 
-    const filteredComponents = components.filter(item =>
-        item.vendorCodeComponent?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.nameComponent?.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    // Начинаем выдавать данные для отображения на странице только после изменения (вводе данных в форму)
+    const [filteredComponents, setFilteredComponents] = useState([]);
+    useEffect(() => {
+        const filtered = components.filter(item =>
+            item.vendorCodeComponent?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            item.nameComponent?.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setFilteredComponents(filtered);
+    }, [searchTerm]);
+    
 
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -95,6 +101,7 @@ const ViewSuppliersOffers = (
                                 </tr>
                             </thead>
                             <tbody className="table-borderless__tbody">
+                                {/* Заполнение таблицы */}
                                 {currentItems.map((item) => (
                                     <tr key={item.id}>
                                         <td>
