@@ -66,6 +66,7 @@ const InformationPanel = ({ role }) => {
             <div className="main-application-panel__container">
                 <div className="main-application-panel__left-block">
                     <InformationCompanyCard 
+                        role={role}
                         company={company} 
                         guidIdCollaborator={guidIdCollaborator} 
                     />

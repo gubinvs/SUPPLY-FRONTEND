@@ -10,16 +10,16 @@ import ApplicationPanelAdmin from './ApplicationPanel/ApplicationPanelAdmin.jsx'
 import PrivateRoute from './js/PrivateRoute.jsx'; // добавили данные о роли пользователя
 import UpdatePassword from "./RegistrationForm/UpdatePassword.jsx";
 import ApplicationPanelRouter from "./ApplicationPanel/ApplicationPanelRouter.jsx";
-import { roleMap } from "./js/roleMap.js";
+import { roleMap, ROLE_ADMIN, ROLE_PROVIDER, ROLE_CUSTOMER} from "./js/roleMap.js";
 import SuppliersOffers from "./SuppliersOffers/SuppliersOffers.jsx";
 import AllOffersForSelected from "./SuppliersOffers/AllOffersForSelected.jsx";
 import AddComponentApplication from "./AddComponentApplication/AddComponentApplication.jsx";
 import ExcelPasteInput from "./ExcelPasteInput.jsx";
 
-// Константы ролей пользователей
-const ROLE_ADMIN = "b5aff5b0-c3ac-4f1e-9467-fe13a14f6de3"; // Роль администратора системы
-const ROLE_PROVIDER = "a5219e2b-12f3-490e-99f5-1be54c55cc6d"; // Роль поставщика
-const ROLE_CUSTOMER = "52910536-2b8a-47e7-9d5a-8cca0a0b865a"; // Роль заказчика
+// // Константы ролей пользователей
+// const ROLE_ADMIN = "b5aff5b0-c3ac-4f1e-9467-fe13a14f6de3"; // Роль администратора системы
+// const ROLE_PROVIDER = "a5219e2b-12f3-490e-99f5-1be54c55cc6d"; // Роль поставщика
+// const ROLE_CUSTOMER = "52910536-2b8a-47e7-9d5a-8cca0a0b865a"; // Роль заказчика
 
 
 const App = () => {

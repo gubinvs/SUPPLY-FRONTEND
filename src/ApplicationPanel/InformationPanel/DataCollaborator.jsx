@@ -10,8 +10,6 @@ const DataCollaborator = ({
     phoneCollaborator,
     addressDiliveryCollaborator
 }) => {
-
-    console.log(role);
     
     // Состояние редактирования данных
     const [state, setState] = useState(false);

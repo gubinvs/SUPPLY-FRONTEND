@@ -1,15 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ApiUrl from "../../js/ApiUrl";
+import { ROLE_PROVIDER, ROLE_CUSTOMER, ROLE_ADMIN } from "../../js/roleMap.js";
 
-const InformationAddCompanyCardContent = ({ guidIdCollaborator }) => {
+const InformationAddCompanyCardContent = ({ role, guidIdCollaborator }) => {
+    const isAdmin = role === "Администратор";
+
     const [formData, setFormData] = useState({
         guidIdCompany: "f8617fbf",
         fullNameCompany: "",
         abbreviatedNameCompany: "",
         innCompany: "",
         addressCompany: "",
+        roleCompany: "", // 👈 Добавили
         guidIdCollaborator: guidIdCollaborator
     });
+console.log(formData);
+console.log(guidIdCollaborator);
+
+    const [companyFound, setCompanyFound] = useState(false);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -19,32 +27,68 @@ const InformationAddCompanyCardContent = ({ guidIdCollaborator }) => {
         }));
     };
 
+    useEffect(() => {
+        const fetchCompanyByInn = async () => {
+            if (![10, 12].includes(formData.innCompany.length)) return; // ИНН: 10 или 12 цифр
+
+            try {
+                const response = await fetch(`${ApiUrl}/api/ReturnListCompany`);
+                if (!response.ok) {
+                    setCompanyFound(false);
+                    return;
+                }
+
+                const result = await response.json();
+                const companies = result.company;
+
+                const found = companies.find(
+                    c => String(c.innCompany) === formData.innCompany
+                );
+
+                if (found) {
+                    setFormData((prev) => ({
+                        ...prev,
+                        guidIdCompany: found.guidIdCompany,
+                        fullNameCompany: found.fullNameCompany || "",
+                        abbreviatedNameCompany: found.abbreviatedNameCompany || "",
+                        addressCompany: found.addressCompany || ""
+                    }));
+                    setCompanyFound(true);
+                } else {
+                    setCompanyFound(false);
+                }
+
+            } catch (error) {
+                console.error("Ошибка при поиске компании по ИНН:", error);
+                setCompanyFound(false);
+            }
+        };
+
+        fetchCompanyByInn();
+    }, [formData.innCompany]);
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            const response = await fetch(ApiUrl+"/api/AddInformationCompany", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(formData)
+            const response = await fetch(`${ApiUrl}/api/AddInformationCompany`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(formData),
             });
 
             const result = await response.json();
 
             if (!response.ok) {
-            throw new Error(result.message || "Ошибка на сервере");
+                throw new Error(result.message || "Ошибка на сервере");
             }
 
-            //alert(result.message);
-
-            
+            window.location = window.location.href;
         } catch (err) {
-            console.error("Ошибка при отправке:", err); // <-- сюда смотрим
+            console.error("Ошибка при отправке:", err);
             alert("Ошибка при отправке: " + (err.message || err.toString()));
         }
-
-        // Вернемся на текущюю страницу
-        window.location = window.location.href;
     };
 
     return (
@@ -91,6 +135,9 @@ const InformationAddCompanyCardContent = ({ guidIdCollaborator }) => {
                         onChange={handleChange}
                         aria-label="ИНН"
                     />
+                    {companyFound && (
+                        <div className="text-success small mt-1">Компания найдена, данные заполнены автоматически</div>
+                    )}
                 </li>
                 <li className="information-company-card__item">
                     <div className="information-company-card__item_title">Юридический адрес:</div>
@@ -103,6 +150,22 @@ const InformationAddCompanyCardContent = ({ guidIdCollaborator }) => {
                         aria-label="Юридический адрес"
                     />
                 </li>
+
+                {isAdmin && (
+                <div className="information-company-card__item">
+                    <div className="information-company-card__item_title">Роль компании:</div>
+                    <select
+                        className="form-select"
+                        name="roleCompany"
+                        value={formData.roleCompany}
+                        onChange={handleChange}
+                    >
+                        <option value="">Выбрать роль</option>
+                        <option value={ROLE_PROVIDER}>Поставщик</option>
+                        <option value={ROLE_CUSTOMER}>Заказчик</option>
+                    </select>
+                </div>
+                )}
             </ul>
         </>
     );

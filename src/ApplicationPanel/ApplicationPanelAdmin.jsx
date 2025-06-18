@@ -27,7 +27,10 @@ const ApplicationPanelAdmin = (
             {isNavMaxVisible && <NavigationBarMax />}
 
             <HeaderApplicationPanel role={role} title={title} />
-            <InformationPanel role={role}  />           
+            {/* Панель с данными о компании пользователя и данными пользователя */}
+            <InformationPanel role={role}  /> 
+            {/* Панель для редактирования номенклатуры */}
+
         </div>
 
     );

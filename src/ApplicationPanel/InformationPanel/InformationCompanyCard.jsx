@@ -8,7 +8,7 @@ import { generateGUID } from "../../js/generateGUID.js";
 /// Компонент отвечает за отображение информации о компаниях пользователя
 ///
 
-const InformationCompanyCard = ({ company, guidIdCollaborator }) => {
+const InformationCompanyCard = ({ role, company, guidIdCollaborator }) => {
   // Состояния компонента
   const [currentIndex, setCurrentIndex] = useState(0);
   const [state, setState] = useState(true); // режим просмотра
@@ -59,7 +59,7 @@ const InformationCompanyCard = ({ company, guidIdCollaborator }) => {
   return (
     <div className="information-company-card">
       {addState ? (
-        <InformationAddCompanyCardContent guidIdCollaborator={guidIdCollaborator} />
+        <InformationAddCompanyCardContent role={role} guidIdCollaborator={guidIdCollaborator} company={company} />
       ) : showInvalidInnWarning ? (
         <>
           <div className="alert alert-warning">
