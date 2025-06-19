@@ -96,7 +96,7 @@ const App = () => {
         } />
 
         <Route path="/ApplicationPanelCustomer" element={
-          <PrivateRoute allowedRoles={[ROLE_CUSTOMER, ROLE_ADMIN]}>
+          <PrivateRoute allowedRoles={[ROLE_CUSTOMER, ROLE_ADMIN, ROLE_USER]}>
             <ApplicationPanelCustomer role={role} title={title} />
           </PrivateRoute>
         } />
@@ -115,7 +115,7 @@ const App = () => {
 
         {/* Страница для заказчика, на ней посковая строка и выдача результатов всех предложеий */}
         <Route path="/SuppliersOffers" element={
-          <PrivateRoute allowedRoles={[ROLE_CUSTOMER, ROLE_ADMIN]}>
+          <PrivateRoute allowedRoles={[ROLE_CUSTOMER, ROLE_ADMIN, ROLE_USER]}>
             <SuppliersOffers 
               role={role} 
               title="Предложения поставщиков" 
@@ -127,7 +127,7 @@ const App = () => {
 
         {/* Страница для заказчика, на ней посковая строка и выдача результатов по лучшим предложениям */}
         <Route path="/AllOffersForSelected" element={
-          <PrivateRoute allowedRoles={[ROLE_CUSTOMER, ROLE_ADMIN]}>
+          <PrivateRoute allowedRoles={[ROLE_CUSTOMER, ROLE_ADMIN, ROLE_USER]}>
             <AllOffersForSelected role={role} title="Предложения по выбранным артикулам" />
           </PrivateRoute>
         } />

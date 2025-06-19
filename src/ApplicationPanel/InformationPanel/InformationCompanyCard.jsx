@@ -54,7 +54,7 @@ const InformationCompanyCard = ({ role, company, guidIdCollaborator }) => {
 
   // Если ИНН некорректен — покажем предупреждение
   const showInvalidInnWarning = !isInnValid(currentCompany.innCompany);
-
+ 
   
   return (
     <div className="information-company-card">

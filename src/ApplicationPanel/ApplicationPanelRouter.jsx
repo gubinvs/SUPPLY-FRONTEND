@@ -4,7 +4,7 @@
 
 import { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { ROLE_ADMIN, ROLE_PROVIDER, ROLE_CUSTOMER  } from "../js/roleMap.js";
+import { ROLE_ADMIN, ROLE_PROVIDER, ROLE_CUSTOMER, ROLE_USER  } from "../js/roleMap.js";
 
 
 const ApplicationPanelRouter = () => {
@@ -18,6 +18,7 @@ const ApplicationPanelRouter = () => {
       [ROLE_ADMIN]: "/ApplicationPanelAdmin",
       [ROLE_PROVIDER]: "/ApplicationPanelProvider",
       [ROLE_CUSTOMER]: "/ApplicationPanelCustomer",
+      [ROLE_USER]: "/ApplicationPanelCustomer"
     };
 
     const targetPath = routesByRole[role] || "/AuthorizationForm";

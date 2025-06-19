@@ -29,7 +29,6 @@ const InformationPanel = ({ role }) => {
   // Достаем GUID из хранилища
   const guidIdCollaborator = localStorage.getItem("guidIdCollaborator");
 
-
   useEffect(() => {
       
       // Оборачиваем асинхронную функцию внутрь useEffect

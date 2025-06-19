@@ -55,24 +55,30 @@ const NavigationBarMin = ({ onShowMax, onHideMax, isNavMaxVisible }) => {
                         <img className="navigation-icon__icon-img" src="../images/dachbord_icon.svg" alt="Иконка на главную панель" />
                     </li>
                     {/* Если роль пользователя заказчик! */}
-                    {roleCustomer ?
+                    {roleCustomer || roleUser || roleAdmin ?
                         <>
                             <li className="navigation-icon-block__item" onClick={suppliersOffers}>
                                 <img className="navigation-icon__icon-img" src="../images/specifications-icon.svg" alt="Иконка на страницу со списком номенклатуры" />
                             </li>
                         </>:""
                     }
-                    <li className="navigation-icon-block__item" onClick={linkPageAddComponent}>
-                        <img className="navigation-icon__icon-img" src="../images/add-component-icon.svg" alt="Иконка на страницу добавления артикулов" />
-                    </li>
-                    {/* Если роль пользователя администратор! */}
+                    {/* Если роль не пользователь откроем добавление артикулов */}
+                    {!roleUser?
+                        <>
+                            <li className="navigation-icon-block__item" onClick={linkPageAddComponent}>
+                                <img className="navigation-icon__icon-img" src="../images/add-component-icon.svg" alt="Иконка на страницу добавления артикулов" />
+                            </li>
+                        </>
+                    :""}
+                    
+                    {/* Если роль пользователя администратор!
                     {roleAdmin ? 
                             <>
                                 <li className="navigation-icon-block__item" onClick={suppliersOffers}>
                                     <img className="navigation-icon__icon-img" src="../images/specifications-icon.svg" alt="Иконка на страницу со списком номенклатуры" />
                                 </li>
                             </>:""
-                    }
+                    } */}
                     {/* Если роль пользователя поставщик! */}
                     {roleProvider?"":""}
                 </ul>
