@@ -20,7 +20,7 @@ const InformationPanel = ({ role }) => {
   const [phoneCollaborator, setPhoneCollaborator] = useState("");
 
 
-  // Собираем данные о компаниях
+  // Собираем данные о компаниях в таблице SupplyCompany информацию о компаниях пользователей
   const [company, setCompany] = useState([]);
 
   // Собирем данные о адресах доставки
