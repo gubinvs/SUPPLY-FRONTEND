@@ -4,6 +4,11 @@ import { useNavigate } from "react-router-dom";
 import "../ApplicationPanel/applicationPanel.css";
 import "./viewSuppliersOffers.css";
 
+
+ 
+// 
+// Групповой поиск номенклатуры в базе данных
+//
 const GroopSearchSuppliersOffers = ({components, error}) => {
     const [selectedIds, setSelectedIds] = useState(new Set());
     const [currentPage, setCurrentPage] = useState(1);
