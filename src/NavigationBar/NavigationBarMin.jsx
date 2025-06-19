@@ -14,8 +14,6 @@ const NavigationBarMin = (
 
     // состояни роли пользователя в системе
     const { roleCustomer, roleProvider, roleAdmin, roleUser, error } = useRoleId();
-
-    // на какой странице находимся
     
 
     return (
