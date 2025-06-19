@@ -102,10 +102,20 @@ const AddComponentApplication = (
             });
 
             if (response.ok) {
-                // alert('Компонент успешно добавлен!');
-                sessionStorage.setItem('lastAddedArticle', article);
-                localStorage.setItem("newArticle", article);
-                window.location.reload();
+                const addedComponent = await response.json(); // если backend возвращает добавленный объект
+
+                // Очистка старого состояния
+                setSelectedIds(new Set());
+                setPrice('');
+                setDeliveryTerm('');
+                setShowEditPriceBlock(false);
+
+                // Установка нового артикула
+                setSearchTerm(article);       // покажет в списке
+                setName(name);                // оставим имя
+                setArticle(article);          // артикул в input
+                setShowEditPriceBlock(true);  // показать блок цен
+                fetchPrices(article);         // загрузка предложений
             } else {
                 const errorText = await response.text();
                 alert(`Ошибка при добавлении: ${errorText}`);
