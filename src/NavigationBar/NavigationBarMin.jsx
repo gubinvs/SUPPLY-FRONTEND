@@ -35,7 +35,7 @@ const NavigationBarMin = ({ onShowMax, onHideMax, isNavMaxVisible }) => {
             setRoleAdmin(false);
         }
         // Если пользователь
-          if (roleId === "ba246092-47bf-4bcc-9e97-5b59969c8976") {
+        if (roleId === "ba246092-47bf-4bcc-9e97-5b59969c8976") {
             setRoleUser(true);
         } else {
             setRoleUser(false);
