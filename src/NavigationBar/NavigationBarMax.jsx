@@ -1,51 +1,65 @@
 import React from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./navigationBarMax.css";
 import { useRoleId } from "../js/Utilits/roleId.js";
-import {
-    linkPageAddComponent,
-    linkPageApplicationPanel, 
-    suppliersOffers
-} from "../js/linkPage.js";
 
+const NavigationBarMax = () => {
+    const location = useLocation();
+    const navigate = useNavigate();
+    const { roleCustomer, roleProvider, roleAdmin, roleUser } = useRoleId();
 
-const NavigationBarMax =()=> {
-    const { roleCustomer, roleProvider, roleAdmin, roleUser, error } = useRoleId();
+    // Пути
+    let pathApplicationPanel = "";
+    const pathSuppliersOffers = "/SuppliersOffers";
+    const pathAddComponent = "/AddComponentApplication";
+
+    if (roleAdmin) {
+        pathApplicationPanel = "/ApplicationPanelAdmin";
+    } else if (roleUser || roleCustomer) {
+        pathApplicationPanel = "/ApplicationPanelCustomer";
+    } else if (roleProvider) {
+        pathApplicationPanel = "/ApplicationPanelProvider";
+    }
+
     return (
-        <>
-            <div className="navigation-bar-max">
-                <div className="navigation-bar-max__logo-block">
-                    <picture>
-                        <img src="../images/logo-ha.png" alt="Логотип системы" className="navigation-bar-min__logo" />
-                    </picture>
-                    <div className="nbm-logo-block__title">Handy Automation</div>
-                </div>
-                <div className="top-block__line navigation-bar-max__top-block__line"></div>
-                <ul className="navigation-bar-max__navigation-list">
-                    <li className="navigation-bar-max__navigation-item navigation-bar-max__navigation-item_active" onClick={linkPageApplicationPanel}>
-                        <img src="../../images/dachbord_icon.svg" className="nbm-navigation-item__icon" />
-                        <div className="nbm-navigation-item__name">Информационная панель</div>
-                    </li>
-                    {/* Если роль пользователя заказчик! */}
-                    {roleCustomer || roleUser || roleAdmin ?
-                        <>
-                            <li className="navigation-bar-max__navigation-item"  onClick={suppliersOffers}>
-                                <img src="../images/specifications-icon.svg" className="nbm-navigation-item__icon" />
-                                <div className="nbm-navigation-item__name">Предложения поставщиков</div>
-                            </li>
-                        </>:""
-                    }
-                    {/* Если роль не пользователь (просто наблюдатель) откроем добавление артикулов */}
-                    {!roleUser?
-                        <>
-                             <li className="navigation-bar-max__navigation-item"  onClick={linkPageAddComponent}>
-                               <img src="../images/add-component-icon.svg" className="nbm-navigation-item__icon" />
-                                <div className="nbm-navigation-item__name">Добавить номенклатуру</div>
-                            </li>
-                        </>
-                    :""}
-                </ul>
+        <div className="navigation-bar-max">
+            <div className="navigation-bar-max__logo-block">
+                <picture>
+                    <img src="../images/logo-ha.png" alt="Логотип системы" className="navigation-bar-max__logo" />
+                </picture>
+                <div className="nbm-logo-block__title">Handy Automation</div>
             </div>
-        </>
+            <div className="top-block__line navigation-bar-max__top-block__line"></div>
+            <ul className="navigation-bar-max__navigation-list">
+                <li
+                    className={`navigation-bar-max__navigation-item ${location.pathname === pathApplicationPanel ? 'navigation-bar-max__navigation-item_active' : ''}`}
+                    onClick={() => navigate(pathApplicationPanel)}
+                >
+                    <img src="../../images/dachbord_icon.svg" className="nbm-navigation-item__icon" />
+                    <div className="nbm-navigation-item__name">Информационная панель</div>
+                </li>
+
+                {(roleCustomer || roleUser || roleAdmin) && (
+                    <li
+                        className={`navigation-bar-max__navigation-item ${location.pathname === pathSuppliersOffers ? 'navigation-bar-max__navigation-item_active' : ''}`}
+                        onClick={() => navigate(pathSuppliersOffers)}
+                    >
+                        <img src="../images/specifications-icon.svg" className="nbm-navigation-item__icon" />
+                        <div className="nbm-navigation-item__name">Предложения поставщиков</div>
+                    </li>
+                )}
+
+                {!roleUser && (
+                    <li
+                        className={`navigation-bar-max__navigation-item ${location.pathname === pathAddComponent ? 'navigation-bar-max__navigation-item_active' : ''}`}
+                        onClick={() => navigate(pathAddComponent)}
+                    >
+                        <img src="../images/add-component-icon.svg" className="nbm-navigation-item__icon" />
+                        <div className="nbm-navigation-item__name">Добавить номенклатуру</div>
+                    </li>
+                )}
+            </ul>
+        </div>
     );
 };
 
