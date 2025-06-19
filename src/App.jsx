@@ -10,7 +10,7 @@ import ApplicationPanelAdmin from './ApplicationPanel/ApplicationPanelAdmin.jsx'
 import PrivateRoute from './js/PrivateRoute.jsx'; // добавили данные о роли пользователя
 import UpdatePassword from "./RegistrationForm/UpdatePassword.jsx";
 import ApplicationPanelRouter from "./ApplicationPanel/ApplicationPanelRouter.jsx";
-import { roleMap, ROLE_ADMIN, ROLE_PROVIDER, ROLE_CUSTOMER} from "./js/roleMap.js";
+import { roleMap, ROLE_ADMIN, ROLE_PROVIDER, ROLE_CUSTOMER, ROLE_USER} from "./js/roleMap.js";
 import SuppliersOffers from "./SuppliersOffers/SuppliersOffers.jsx";
 import AllOffersForSelected from "./SuppliersOffers/AllOffersForSelected.jsx";
 import AddComponentApplication from "./AddComponentApplication/AddComponentApplication.jsx";
