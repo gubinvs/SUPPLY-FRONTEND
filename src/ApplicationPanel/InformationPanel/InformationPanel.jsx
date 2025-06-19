@@ -6,6 +6,7 @@ import "./informationCompanyCard.css";
 import ApiUrl from "../../js/ApiUrl";
 import InformationCompanyCard from "./InformationCompanyCard.jsx";
 import DataCollaborator from "./DataCollaborator.jsx";
+import AddCompanyProvider from "./AddCompanyProvider.jsx";
 
 
 // Основной блок информационной панели, вводит информацию для 
@@ -70,6 +71,12 @@ const InformationPanel = ({ role }) => {
                         company={company} 
                         guidIdCollaborator={guidIdCollaborator} 
                     />
+
+                    {/* Форма для добавления новой компании поставщика, Если роль пользователя в системе заказчик, то выводим эту форму */}
+                    {role === "Заказчик"?
+                    <AddCompanyProvider />
+                    :""}
+
                 </div>
                 <div className="main-application-panel__right-block">
                     <DataCollaborator 

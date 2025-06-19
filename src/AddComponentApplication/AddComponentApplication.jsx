@@ -102,7 +102,7 @@ const AddComponentApplication = (
             });
 
             if (response.ok) {
-                alert('Компонент успешно добавлен!');
+                // alert('Компонент успешно добавлен!');
                 sessionStorage.setItem('lastAddedArticle', article);
                 localStorage.setItem("newArticle", article);
                 window.location.reload();
@@ -135,9 +135,10 @@ const AddComponentApplication = (
             });
 
             if (response.ok) {
-                alert("Цена успешно записана!");
+                // alert("Цена успешно записана!");
                 setPrice('');
                 setDeliveryTerm('');
+                window.location.reload();
             } else {
                 const errorText = await response.text();
                 alert(`Ошибка при сохранении: ${errorText}`);
@@ -181,6 +182,17 @@ const AddComponentApplication = (
         }
     };
 
+    // Заполним последнего выбранного поставщика
+    useEffect(() => {
+        loadProviders();
+
+        // Восстановление providerId
+        const savedProviderId = localStorage.getItem("lastProviderId");
+        if (savedProviderId) {
+            setProviderId(savedProviderId);
+        }
+    }, []);
+
 
     return (
         <div className="main-application-panel">
@@ -199,13 +211,14 @@ const AddComponentApplication = (
                         type="text"
                         placeholder="Поисковая строка"
                         value={searchTerm}
-                        onChange={(e) => {
+                       onChange={(e) => {
                             setSearchTerm(e.target.value);
                             setCurrentPage(1);
-                            setSelectedIds(new Set()); // Сброс всех чекбоксов
+                            setSelectedIds(new Set()); // Сброс выбранного чекбокса
                             setArticle('');
                             setName('');
                             setShowEditPriceBlock(false);
+                            setCombinedOffers([]); // 👈 Очистка предложений
                         }}
                     />
 

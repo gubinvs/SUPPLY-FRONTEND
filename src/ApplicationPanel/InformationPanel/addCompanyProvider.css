@@ -1,0 +1,18 @@
+.add-company-provider__section {
+    position: relative;
+    padding: 20px;
+    width: 100%;
+    background-color: #E0E5F8;
+    border-radius: 4px;
+}
+
+.acps-slider {
+    position: absolute;
+    top: 23px;
+    right: 20px;
+    cursor: pointer;
+}
+
+.acps__add-button {
+    width: 100%;
+}
