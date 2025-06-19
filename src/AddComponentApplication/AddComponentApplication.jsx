@@ -366,6 +366,13 @@ const AddComponentApplication = (
                    <div className="offers-list">
                         {combinedOffers.length === 0 ? "" : (
                             <>
+                                <button
+                                    className="btn btn-outline-secondary aca__analyze-offers-button"
+                                    onClick={() => handleAnalyzeClick(components, selectedIds, navigate)}
+                                    disabled={selectedIds.size === 0}
+                                >
+                                    Анализировать предложения
+                                </button>
                                 {combinedOffers.map((offer, index) => (
                                     <div key={index} className="offer-item border rounded p-2 mb-2">
                                         <p><strong>Поставщик:</strong> {offer.nameProvider}</p>
@@ -375,13 +382,7 @@ const AddComponentApplication = (
                                     </div>
                                 ))}
                                 
-                                <button
-                                    className="btn btn-outline-secondary aca__analyze-offers-button"
-                                    onClick={() => handleAnalyzeClick(components, selectedIds, navigate)}
-                                    disabled={selectedIds.size === 0}
-                                >
-                                    Анализировать предложения
-                                </button>
+                                
                             </>
                         )}
                     </div>
