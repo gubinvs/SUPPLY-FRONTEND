@@ -3,19 +3,10 @@ import "./addCompanyProvider.css";
 import { useProviders } from "../../js/Utilits/loadProviders";
 import ApiUrl from "../../js/ApiUrl";
 
-//
-// Компонент отвечает за карточку добавления новой компании поставщика в систему, 
-// отображается только у пользователей с ролью заказчик
-//
-
 const AddCompanyProvider = () => {
-    // Состояние формы заполнения данных о компании
     const [addForm, setAddForm] = useState(true);
-
-    // Получаем все компании поставщики из таблицы SupplyProvider
     const { providers, loading, error } = useProviders();
 
-    // Состояние значений формы
     const [formData, setFormData] = useState({
         abbreviatedNameCompany: "",
         innCompany: "",
@@ -23,45 +14,68 @@ const AddCompanyProvider = () => {
     });
     const [statusMessage, setStatusMessage] = useState("");
 
-
-    // При изменении ИНН ищем совпадение среди поставщиков и подставляем наименование
+    // При изменении ИНН ищем совпадение среди поставщиков и подставляем наименование,
+    // если совпадений нет — очищаем поле с именем
     useEffect(() => {
         const inn = formData.innCompany?.trim() ?? "";
-        if (inn === "" || providers.length === 0) return;
+        if (inn === "" || providers.length === 0) {
+            // Сбрасываем имя, если поле ИНН пустое или данных нет
+            setFormData(prev => ({
+                ...prev,
+                abbreviatedNameCompany: "",
+                lastAutoFilledName: ""
+            }));
+            return;
+        }
 
         const found = providers.find(p => p.innProvider === inn);
-        console.log("Найдено совпадение:", found);
+        console.log("useEffect: найдено совпадение:", found);
 
         if (found) {
             setFormData(prev => {
-                // Если пользователь сам ничего не вводил или предыдущее значение совпадает с предыдущим найденным
-                const prevAbbr = prev.abbreviatedNameCompany?.trim() ?? "";
-                const newAbbr = found.nameProvider || "";
-
-                if (prevAbbr === "" || prevAbbr === prev.lastAutoFilledName) {
+                // если поле пустое или совпадает с прошлым автозаполнением, обновляем имя
+                if (
+                    prev.abbreviatedNameCompany.trim() === "" ||
+                    prev.abbreviatedNameCompany === prev.lastAutoFilledName
+                ) {
                     return {
                         ...prev,
-                        abbreviatedNameCompany: newAbbr,
-                        lastAutoFilledName: newAbbr, // сохраняем последнее автозаполненное
+                        abbreviatedNameCompany: found.nameProvider || "",
+                        lastAutoFilledName: found.nameProvider || ""
                     };
                 }
-
-                return prev; // иначе не трогаем, пользователь ввёл своё
+                // иначе пользователь вводил свое — не меняем имя
+                return prev;
             });
+        } else {
+            // Совпадений нет — сбрасываем имя и lastAutoFilledName
+            setFormData(prev => ({
+                ...prev,
+                abbreviatedNameCompany: "",
+                lastAutoFilledName: ""
+            }));
         }
     }, [formData.innCompany, providers]);
 
+    const handleChange = (e) => {
+        const { name, value } = e.target;
 
-       // Обработчик изменений в полях формы
-        const handleChange = (e) => {
-            const { name, value } = e.target;
+        // Если пользователь меняет поле имени вручную — сбросим lastAutoFilledName,
+        // чтобы автозаполнение не перезаписывалось
+        if (name === "abbreviatedNameCompany") {
+            setFormData(prev => ({
+                ...prev,
+                abbreviatedNameCompany: value,
+                lastAutoFilledName: ""
+            }));
+        } else {
             setFormData(prev => ({
                 ...prev,
                 [name]: value
             }));
-        };
+        }
+    };
 
-    // Отправка формы
     const handleSubmit = async () => {
         const abbreviatedName = formData.abbreviatedNameCompany?.trim() ?? "";
         const inn = formData.innCompany?.trim() ?? "";
@@ -81,7 +95,6 @@ const AddCompanyProvider = () => {
             const response = await fetch(ApiUrl + "/api/AddCompanyProvider", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-
                 body: JSON.stringify({
                     abbreviatedNameCompany: formData.abbreviatedNameCompany,
                     innCompany: formData.innCompany
@@ -100,7 +113,6 @@ const AddCompanyProvider = () => {
         }
     };
 
-    // Обработчик слайдера для открытия/закрытия формы
     const openFormAddProvider = () => {
         setAddForm(prev => !prev);
     };
@@ -142,7 +154,7 @@ const AddCompanyProvider = () => {
                                     handleChange({
                                         target: {
                                             name: "innCompany",
-                                            value: e.target.value.replace(/\D/g, "") // только цифры
+                                            value: e.target.value.replace(/\D/g, "")
                                         }
                                     })
                                 }
