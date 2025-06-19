@@ -71,14 +71,6 @@ const NavigationBarMin = ({ onShowMax, onHideMax, isNavMaxVisible }) => {
                         </>
                     :""}
                     
-                    {/* Если роль пользователя администратор!
-                    {roleAdmin ? 
-                            <>
-                                <li className="navigation-icon-block__item" onClick={suppliersOffers}>
-                                    <img className="navigation-icon__icon-img" src="../images/specifications-icon.svg" alt="Иконка на страницу со списком номенклатуры" />
-                                </li>
-                            </>:""
-                    } */}
                     {/* Если роль пользователя поставщик! */}
                     {roleProvider?"":""}
                 </ul>
