@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../ApplicationPanel/applicationPanel.css";
 import "./viewSuppliersOffers.css";
+import { handleAnalyzeClick } from "../js/Utilits/handleAnalyzeClick.js";
+
 
 const ViewSuppliersOffers = (
     {components, error}
@@ -24,21 +26,6 @@ const ViewSuppliersOffers = (
             }
             return newSet;
         });
-    };
-
-    const handleAnalyzeClick = () => {
-        const selectedComponents = components.filter(item => selectedIds.has(item.id));
-        const analyzeComponents = JSON.parse(localStorage.getItem("analyzeComponents") || "[]");
-        const cartItems = JSON.parse(localStorage.getItem("cart") || "[]");
-
-        const dataToAnalyze = {
-            selectedComponents,
-            analyzeComponents,
-            cartItems
-        };
-
-        localStorage.setItem("analyzeData", JSON.stringify(dataToAnalyze));
-        navigate("/AllOffersForSelected");
     };
 
     // Начинаем выдавать данные для отображения на странице только после изменения (вводе данных в форму)
@@ -82,11 +69,12 @@ const ViewSuppliersOffers = (
 
                 <button
                     className="btn btn-outline-secondary analyze-offers-button"
-                    onClick={handleAnalyzeClick}
+                    onClick={() => handleAnalyzeClick(components, selectedIds, navigate)}
                     disabled={selectedIds.size === 0}
                 >
                     Анализировать предложения
                 </button>
+
 
                 {error && <p className="error">{error}</p>}
 

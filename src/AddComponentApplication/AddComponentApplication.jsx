@@ -1,6 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect} from "react";
+import { useNavigate } from "react-router-dom";
 import "./addComponentApplication.css";
 import ApiUrl from "../js/ApiUrl.js";
+import { handleAnalyzeClick } from "../js/Utilits/handleAnalyzeClick.js";
 import NavigationBarMin from "../NavigationBar/NavigationBarMin.jsx";
 import NavigationBarMax from "../NavigationBar/NavigationBarMax.jsx";
 import HeaderApplicationPanel from "../ApplicationPanel/Header/HeaderApplicationPanel.jsx";
@@ -22,6 +24,7 @@ const AddComponentApplication = (
     const [providers, setProviders] = useState([]);
     const [showEditPriceBlock, setShowEditPriceBlock] = useState(false);
     const [combinedOffers, setCombinedOffers] = useState([]); // для цен поставщиков
+    const navigate = useNavigate();
 
     const filteredItems = components.filter(
         (item) =>
@@ -258,20 +261,6 @@ const AddComponentApplication = (
                     {searchTerm.trim() && filteredItems.length === 0 && (
                         <div className="mt-3 text-muted">Ничего не найдено по запросу.</div>
                     )}
-
-                    <div className="offers-list">
-                        {combinedOffers.length === 0 ? "": (
-                            combinedOffers.map((offer, index) => (
-                                <div key={index} className="offer-item border rounded p-2 mb-2">
-                                    <p><strong>Поставщик:</strong> {offer.nameProvider}</p>
-                                    <p><strong>Цена:</strong> {offer.priceComponent > 0 ? `${offer.priceComponent} ₽` : '—'}</p>
-                                    <p><strong>Срок поставки:</strong> {offer.deliveryTimeComponent}</p>
-                                    <p><strong>Обновлено:</strong> {new Date(offer.saveDataPrice).toLocaleDateString()}</p>
-                                </div>
-                            ))
-                        )}
-                    </div>
-
                 </div>
 
                 <div className="add-component-application__right-block">
@@ -349,6 +338,30 @@ const AddComponentApplication = (
                             </button>
                         </>
                     )}
+
+                    {/* Выводим имеющиеся предложения */}
+                   <div className="offers-list">
+                        {combinedOffers.length === 0 ? "" : (
+                            <>
+                                {combinedOffers.map((offer, index) => (
+                                    <div key={index} className="offer-item border rounded p-2 mb-2">
+                                        <p><strong>Поставщик:</strong> {offer.nameProvider}</p>
+                                        <p><strong>Цена:</strong> {offer.priceComponent > 0 ? `${offer.priceComponent} ₽` : '—'}</p>
+                                        <p><strong>Срок поставки:</strong> {offer.deliveryTimeComponent}</p>
+                                        <p><strong>Обновлено:</strong> {new Date(offer.saveDataPrice).toLocaleDateString()}</p>
+                                    </div>
+                                ))}
+                                
+                                <button
+                                    className="btn btn-outline-secondary aca__analyze-offers-button"
+                                    onClick={() => handleAnalyzeClick(components, selectedIds, navigate)}
+                                    disabled={selectedIds.size === 0}
+                                >
+                                    Анализировать предложения
+                                </button>
+                            </>
+                        )}
+                    </div>
                 </div>
             </div>
         </div>
