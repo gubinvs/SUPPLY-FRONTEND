@@ -2,10 +2,17 @@ import React, { useState } from "react";
 import ApiUrl from "../js/ApiUrl";
 import "./registrationForm.css";
 
+
+/// Компонент формы регистрации пользователя в системе
+/// если это локальная версия, то выбор роли в компании заблокировано
+///
+
 const RegistrationForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [guidIdRoleSystem, setGuidIdRoleSystem] = useState(""); // Состояние для роли
+  // const [guidIdRoleSystem, setGuidIdRoleSystem] = useState(""); // Состояние для роли если полная версия программы
+  // если урезанная для локального деплоя, то пользователь всегда заказчик
+  const guidIdRoleSystem =  "52910536-2b8a-47e7-9d5a-8cca0a0b865a";
   const [honeypot, setHoneypot] = useState("");
   const [message, setMessage] = useState("");
 
@@ -69,7 +76,7 @@ const RegistrationForm = () => {
             required
           />
 
-          <select
+          {/* <select
             className="input"
             value={guidIdRoleSystem}
             onChange={(e) => setGuidIdRoleSystem(e.target.value)}
@@ -78,7 +85,7 @@ const RegistrationForm = () => {
             <option>Выбор роли</option>
             <option value="a5219e2b-12f3-490e-99f5-1be54c55cc6d">Поставщик</option>
             <option value="52910536-2b8a-47e7-9d5a-8cca0a0b865a">Заказчик</option>
-          </select>
+          </select> */}
 
           <input
             type="text"

@@ -14,18 +14,6 @@
     margin-right: 10px;
 }
 
-.navigation-bar-max {
-    position: fixed;
-    left: 82px;
-    width: 300px;
-    min-width: 300px;
-    height: calc(100vh - 20px); /* вычел падинги у секции */
-    background-color: #F5F6FA;
-    border-right: 1px solid #D5DAE0;
-    border-radius: 10px;
-    margin-right: 10px;
-    z-index: 10;
-}
 
 .navigation-bar-min__top-block {
     display: flex;

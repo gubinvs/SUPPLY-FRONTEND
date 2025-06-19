@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
-import "./navigationBar.css";
+import React from "react";
+import { useRoleId } from "../js/Utilits/roleId.js";
+import "./navigationBarMin.css";
 import {
     linkPageAddComponent,
     linkPageApplicationPanel, 
@@ -7,41 +8,15 @@ import {
 } from "../js/linkPage.js";
 
 
-const NavigationBarMin = ({ onShowMax, onHideMax, isNavMaxVisible }) => {
-    const roleId = localStorage.getItem("roleId");
+const NavigationBarMin = (
+    { onShowMax, onHideMax, isNavMaxVisible }
+) => {
 
-    const [roleCustomer, setRoleCustomer] = useState(false);
-    const [roleProvider, setRoleProvider] = useState(false);
-    const [roleAdmin, setRoleAdmin] = useState(false);
-    const [roleUser, setRoleUser] = useState(false);
+    // состояни роли пользователя в системе
+    const { roleCustomer, roleProvider, roleAdmin, roleUser, error } = useRoleId();
 
-    useEffect(() => {
-        // Если заказчик
-        if (roleId === "52910536-2b8a-47e7-9d5a-8cca0a0b865a") {
-            setRoleCustomer(true);
-        } else {
-            setRoleCustomer(false);
-        }
-        // Если поставщик
-        if (roleId === "a5219e2b-12f3-490e-99f5-1be54c55cc6d") {
-            setRoleProvider(true);
-        } else {
-            setRoleProvider(false);
-        }
-        // Если администатор
-        if (roleId === "b5aff5b0-c3ac-4f1e-9467-fe13a14f6de3") {
-            setRoleAdmin(true);
-        } else {
-            setRoleAdmin(false);
-        }
-        // Если пользователь
-        if (roleId === "ba246092-47bf-4bcc-9e97-5b59969c8976") {
-            setRoleUser(true);
-        } else {
-            setRoleUser(false);
-        }
-    }, [roleId]); // добавляем roleId как зависимость
-
+    // на какой странице находимся
+    
 
     return (
         <div className="navigation-bar-min">
@@ -62,7 +37,7 @@ const NavigationBarMin = ({ onShowMax, onHideMax, isNavMaxVisible }) => {
                             </li>
                         </>:""
                     }
-                    {/* Если роль не пользователь откроем добавление артикулов */}
+                    {/* Если роль не пользователь (просто наблюдатель) откроем добавление артикулов */}
                     {!roleUser?
                         <>
                             <li className="navigation-icon-block__item" onClick={linkPageAddComponent}>
