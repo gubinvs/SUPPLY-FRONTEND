@@ -13,6 +13,7 @@ const NavigationBarMin = ({ onShowMax, onHideMax, isNavMaxVisible }) => {
     const [roleCustomer, setRoleCustomer] = useState(false);
     const [roleProvider, setRoleProvider] = useState(false);
     const [roleAdmin, setRoleAdmin] = useState(false);
+    const [roleUser, setRoleUser] = useState(false);
 
     useEffect(() => {
         // Если заказчик
@@ -32,6 +33,12 @@ const NavigationBarMin = ({ onShowMax, onHideMax, isNavMaxVisible }) => {
             setRoleAdmin(true);
         } else {
             setRoleAdmin(false);
+        }
+        // Если пользователь
+          if (roleId === "ba246092-47bf-4bcc-9e97-5b59969c8976") {
+            setRoleUser(true);
+        } else {
+            setRoleUser(false);
         }
     }, [roleId]); // добавляем roleId как зависимость
 
