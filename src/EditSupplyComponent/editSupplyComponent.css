@@ -5,6 +5,7 @@
 
 .edit-supply-component__right-block {
     position: relative;
+    width: 30%;
 }
 
 .edit-supply-component__search {

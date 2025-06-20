@@ -124,7 +124,7 @@ const EditSupplyComponent = ({ role, components, title, error }) => {
             <HeaderApplicationPanel role={role} title={title} />
 
             <div className="main-application-panel__container">
-                <div className="edit-supply-component__left-block">
+                <div className={selectedComponent === null?"":"edit-supply-component__left-block"}>
                     <input
                         className="form-control edit-supply-component__search"
                         type="text"
@@ -166,16 +166,21 @@ const EditSupplyComponent = ({ role, components, title, error }) => {
                     )}
                 </div>
                 {/* Блок редактирования */}
-                <div className="edit-supply-component__right-block">
-                        <button 
-                            type="button" 
-                            class="btn btn-outline-danger dit-supply-component__clear-botton"
-                            onClick={handleDeleteComponent}
-                        >
-                            Удалить номенклатуру
-                        </button>
-                        <h5 className="edit-supply-component__title">Данные для редактирования:</h5>
-                        <div className="edit-supply-component__title_fon"></div>
+                <div className={selectedComponent === null?"":"edit-supply-component__right-block"}>
+                    {selectedComponent === null?
+                    "":
+                        <>
+                            <button 
+                                type="button" 
+                                class="btn btn-outline-danger dit-supply-component__clear-botton"
+                                onClick={handleDeleteComponent}
+                            >
+                                Удалить номенклатуру
+                            </button>
+                            <h5 className="edit-supply-component__title">Данные для редактирования:</h5>
+                            <div className="edit-supply-component__title_fon"></div>
+                        </>
+                    }
                         {selectedComponent && (
                             <div>
                                 <label className="edit-supply-component__label" htmlFor="Артикул">Артикул:</label>
