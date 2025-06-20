@@ -109,17 +109,17 @@ const EditSupplyComponent = ({ role, components, title, error }) => {
                         <div className="edit-supply-component__title_fon"></div>
                         {selectedComponent && (
                             <div>
-                                <label className="edit-supply-component__label" htmlFor="Артикул">Артикул</label>
+                                <label className="edit-supply-component__label" htmlFor="Артикул">Артикул:</label>
                                 <input
                                     type="text"
                                     className="form-control mb-2 dit-supply-component__edit-input"
                                     value={selectedComponent.vendorCodeComponent}
                                     readOnly
                                 />
-                                <label className="edit-supply-component__label"  htmlFor="Наименование">Наименование</label>
-                                <input
+                                <label className="edit-supply-component__label"  htmlFor="Наименование">Наименование:</label>
+                                <textarea
                                     type="text"
-                                    className="form-control mb-2 dit-supply-component__edit-input"
+                                    className="form-control mb-2 dit-supply-component__edit-textarea"
                                     value={selectedComponent.nameComponent}
                                     readOnly
                                 />

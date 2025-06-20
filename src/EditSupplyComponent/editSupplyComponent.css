@@ -41,4 +41,9 @@
 
 .edit-supply-component__label  {
     padding-left: 2px;
+    font-weight: 600;
+}
+
+.dit-supply-component__edit-textarea {
+    height: 200px;
 }
