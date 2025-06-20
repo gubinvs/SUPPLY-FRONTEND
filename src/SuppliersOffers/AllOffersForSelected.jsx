@@ -266,10 +266,14 @@ const AllOffersForSelected = ({ role, title }) => {
                 Object.entries(bestOffersByProvider).map(([provider, offers], index) => {
                   const sortedOffers = offers.sort((a, b) => a.priceComponent - b.priceComponent);
                   const totalPrice = sortedOffers.reduce((sum, o) => sum + o.priceComponent, 0);
+
+                  
                   return (
                     <div key={index} className="mb-5">
                       <h6 className="text-primary mb-2">
-                        <strong>{provider}</strong> предлагает лучшие цены по:
+
+                        <strong >{provider}</strong> предлагает лучшие цены по:
+
                       </h6>
                       <table className="table table-bordered all-offers-selected__table">
                         <thead className="thead-light">
