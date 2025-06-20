@@ -237,12 +237,12 @@ const AllOffersForSelected = ({ role, title }) => {
                     <thead>
                       <tr>
                         <th></th>
-                        <th>Артикул</th>
+                        <th className="aos-table__th-article">Артикул</th>
                         <th>Наименование</th>
-                        <th>Компания</th>
-                        <th>Цена</th>
-                        <th>Срок</th>
-                        <th>Актуальность</th>
+                        <th className="aos-table__th-company">Компания</th>
+                        <th className="aos-table__th-price">Цена</th>
+                        <th className="aos-table__th-term">Срок</th>
+                        <th className="aos-table__th-data">Актуальность</th>
                       </tr>
                     </thead>
                     <tbody>{renderRows()}</tbody>

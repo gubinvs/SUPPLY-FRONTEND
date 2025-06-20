@@ -77,3 +77,7 @@
 .aos-table__th-price {
     width: 150px;
 }
+
+.aos-table__th-company {
+    width: 200px;
+}
