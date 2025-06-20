@@ -2,9 +2,6 @@ import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./navigationBarMax.css";
 import { useRoleId } from "../js/Utilits/roleId.js";
-import {
-    linkPageEditSupplyComponent
-} from "../js/linkPage.js";
 
 const NavigationBarMax = () => {
     const location = useLocation();
@@ -15,6 +12,7 @@ const NavigationBarMax = () => {
     let pathApplicationPanel = "";
     const pathSuppliersOffers = "/SuppliersOffers";
     const pathAddComponent = "/AddComponentApplication";
+    const pathEditSupplyComponent = "/EditSupplyComponent"
 
     if (roleAdmin) {
         pathApplicationPanel = "/ApplicationPanelAdmin";
@@ -52,8 +50,8 @@ const NavigationBarMax = () => {
                             <div className="nbm-navigation-item__name">Предложения поставщиков</div>
                         </li>
                         <li
-                            className={`navigation-bar-max__navigation-item ${location.pathname === linkPageEditSupplyComponent ? 'navigation-bar-max__navigation-item_active' : ''}`}
-                            onClick={linkPageEditSupplyComponent}
+                            className={`navigation-bar-max__navigation-item ${location.pathname === pathEditSupplyComponent ? 'navigation-bar-max__navigation-item_active' : ''}`}
+                            onClick={pathEditSupplyComponent}
                         >
                             <img src="../images/file-pen-line.svg" className="nbm-navigation-item__icon" alt="#" />
                             <div className="nbm-navigation-item__name">Редактировать данные</div>
