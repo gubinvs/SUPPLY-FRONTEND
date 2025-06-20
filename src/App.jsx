@@ -133,9 +133,14 @@ const App = () => {
         } />
 
         {/* Страница для Редактирование номенклатуры в приложении, корректировка артикулов и наименований */}
-        <Route path="/AllOffersForSelected" element={
+        <Route path="/EditSupplyComponent" element={
           <PrivateRoute allowedRoles={[ROLE_CUSTOMER, ROLE_ADMIN, ROLE_PROVIDER]}>
-            <EditSupplyComponent role={role} title="Страница редактирования данных" />
+            <EditSupplyComponent 
+              role={role} 
+              title="Страница редактирования данных"
+              components={components}
+              error={error}
+            />
           </PrivateRoute>
         } />
         

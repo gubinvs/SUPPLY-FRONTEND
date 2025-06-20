@@ -3,9 +3,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import "./navigationBarMax.css";
 import { useRoleId } from "../js/Utilits/roleId.js";
 import {
-    linkPageAddComponent,
-    linkPageApplicationPanel, 
-    suppliersOffers,
     linkPageEditSupplyComponent
 } from "../js/linkPage.js";
 
