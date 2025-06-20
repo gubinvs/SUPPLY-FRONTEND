@@ -2,6 +2,12 @@ import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./navigationBarMax.css";
 import { useRoleId } from "../js/Utilits/roleId.js";
+import {
+    linkPageAddComponent,
+    linkPageApplicationPanel, 
+    suppliersOffers,
+    linkPageEditSupplyComponent
+} from "../js/linkPage.js";
 
 const NavigationBarMax = () => {
     const location = useLocation();
@@ -25,7 +31,7 @@ const NavigationBarMax = () => {
         <div className="navigation-bar-max">
             <div className="navigation-bar-max__logo-block">
                 <picture>
-                    <img src="../images/logo-ha.png" alt="Логотип системы" className="navigation-bar-max__logo" />
+                    <img src="../images/logo-ha.png" alt="Логотип системы" className="navigation-bar-max__logo"/>
                 </picture>
                 <div className="nbm-logo-block__title">Handy Automation</div>
             </div>
@@ -35,18 +41,27 @@ const NavigationBarMax = () => {
                     className={`navigation-bar-max__navigation-item ${location.pathname === pathApplicationPanel ? 'navigation-bar-max__navigation-item_active' : ''}`}
                     onClick={() => navigate(pathApplicationPanel)}
                 >
-                    <img src="../../images/dachbord_icon.svg" className="nbm-navigation-item__icon" />
+                    <img src="../../images/dachbord_icon.svg" className="nbm-navigation-item__icon" alt="#"/>
                     <div className="nbm-navigation-item__name">Информационная панель</div>
                 </li>
 
                 {(roleCustomer || roleUser || roleAdmin) && (
-                    <li
-                        className={`navigation-bar-max__navigation-item ${location.pathname === pathSuppliersOffers ? 'navigation-bar-max__navigation-item_active' : ''}`}
-                        onClick={() => navigate(pathSuppliersOffers)}
-                    >
-                        <img src="../images/specifications-icon.svg" className="nbm-navigation-item__icon" />
-                        <div className="nbm-navigation-item__name">Предложения поставщиков</div>
-                    </li>
+                    <>
+                        <li
+                            className={`navigation-bar-max__navigation-item ${location.pathname === pathSuppliersOffers ? 'navigation-bar-max__navigation-item_active' : ''}`}
+                            onClick={() => navigate(pathSuppliersOffers)}
+                        >
+                            <img src="../images/specifications-icon.svg" className="nbm-navigation-item__icon" alt="#"/>
+                            <div className="nbm-navigation-item__name">Предложения поставщиков</div>
+                        </li>
+                        <li
+                            className={`navigation-bar-max__navigation-item ${location.pathname === linkPageEditSupplyComponent ? 'navigation-bar-max__navigation-item_active' : ''}`}
+                            onClick={linkPageEditSupplyComponent}
+                        >
+                            <img src="../images/file-pen-line.svg" className="nbm-navigation-item__icon" alt="#" />
+                            <div className="nbm-navigation-item__name">Редактировать данные</div>
+                        </li>
+                    </>
                 )}
 
                 {!roleUser && (
@@ -54,7 +69,7 @@ const NavigationBarMax = () => {
                         className={`navigation-bar-max__navigation-item ${location.pathname === pathAddComponent ? 'navigation-bar-max__navigation-item_active' : ''}`}
                         onClick={() => navigate(pathAddComponent)}
                     >
-                        <img src="../images/add-component-icon.svg" className="nbm-navigation-item__icon" />
+                        <img src="../images/add-component-icon.svg" className="nbm-navigation-item__icon" alt="#"/>
                         <div className="nbm-navigation-item__name">Добавить номенклатуру</div>
                     </li>
                 )}

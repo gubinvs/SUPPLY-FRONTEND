@@ -109,7 +109,7 @@ const AddComponentApplication = (
             });
 
             if (response.ok) {
-                const addedComponent = await response.json(); // если backend возвращает добавленный объект
+                // const addedComponent = await response.json(); // если backend возвращает добавленный объект
 
                 // Очистка старого состояния
                 setSelectedIds(new Set());

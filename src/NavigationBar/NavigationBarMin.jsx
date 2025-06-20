@@ -4,7 +4,8 @@ import "./navigationBarMin.css";
 import {
     linkPageAddComponent,
     linkPageApplicationPanel, 
-    suppliersOffers
+    suppliersOffers,
+    linkPageEditSupplyComponent
 } from "../js/linkPage.js";
 
 
@@ -13,7 +14,7 @@ const NavigationBarMin = (
 ) => {
 
     // состояни роли пользователя в системе
-    const { roleCustomer, roleProvider, roleAdmin, roleUser, error } = useRoleId();
+    const { roleCustomer, roleProvider, roleAdmin, roleUser} = useRoleId();
     
 
     return (
@@ -32,6 +33,9 @@ const NavigationBarMin = (
                         <>
                             <li className="navigation-icon-block__item" onClick={suppliersOffers}>
                                 <img className="navigation-icon__icon-img" src="../images/specifications-icon.svg" alt="Иконка на страницу со списком номенклатуры" />
+                            </li>
+                            <li className="navigation-icon-block__item" onClick={linkPageEditSupplyComponent}>
+                                <img className="navigation-icon__icon-img" src="../images/file-pen-line.svg" alt="Иконка на страницу с редактированием номенклатуры" />
                             </li>
                         </>:""
                     }

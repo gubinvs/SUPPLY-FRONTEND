@@ -5,7 +5,7 @@ import ApiUrl from "../../js/ApiUrl";
 
 const AddCompanyProvider = () => {
     const [addForm, setAddForm] = useState(true);
-    const { providers, loading, error } = useProviders();
+    const { providers} = useProviders();
 
     const [formData, setFormData] = useState({
         abbreviatedNameCompany: "",

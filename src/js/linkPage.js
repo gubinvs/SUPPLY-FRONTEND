@@ -18,3 +18,8 @@ export function linkPageAddGroopComponent () {
     window.location = "/ExcelPasteInput";
 };
 
+// Ссылка на страницу редактирования данных номенклатуры
+export function linkPageEditSupplyComponent() {
+    window.location = "/EditSupplyComponent";
+};
+

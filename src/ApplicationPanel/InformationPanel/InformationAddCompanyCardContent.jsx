@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ApiUrl from "../../js/ApiUrl";
-import { ROLE_PROVIDER, ROLE_CUSTOMER, ROLE_ADMIN } from "../../js/roleMap.js";
+import { ROLE_PROVIDER, ROLE_CUSTOMER} from "../../js/roleMap.js";
 
 const InformationAddCompanyCardContent = ({ role, guidIdCollaborator }) => {
     const isAdmin = role === "Администратор";

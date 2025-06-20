@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 
 // Удаляем роль пользователя в системе и токен, для повторной авторизации
 function clearRoleId () {

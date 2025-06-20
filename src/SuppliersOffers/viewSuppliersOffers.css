@@ -58,6 +58,12 @@
     width: 100%;
 }
 
+.table-borderless__edit {
+    text-align: center;
+    vertical-align: middle;
+    width: 50px;
+}
+
 .view-suppliers-offers__search {
     position: absolute;
     top: 0px;
@@ -85,4 +91,8 @@
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+.table-borderless__icon-edit {
+    cursor: pointer;
 }

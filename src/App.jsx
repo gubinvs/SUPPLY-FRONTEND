@@ -15,6 +15,7 @@ import SuppliersOffers from "./SuppliersOffers/SuppliersOffers.jsx";
 import AllOffersForSelected from "./SuppliersOffers/AllOffersForSelected.jsx";
 import AddComponentApplication from "./AddComponentApplication/AddComponentApplication.jsx";
 import ExcelPasteInput from "./ExcelPasteInput.jsx";
+import EditSupplyComponent from "./EditSupplyComponent/EditSupplyComponent.jsx";
 
 // // Константы ролей пользователей
 // const ROLE_ADMIN = "b5aff5b0-c3ac-4f1e-9467-fe13a14f6de3"; // Роль администратора системы
@@ -109,7 +110,6 @@ const App = () => {
               title="Добавление нового артикула в базу данных"
               components={components} 
             />
-          
           </PrivateRoute>
         } />
 
@@ -131,6 +131,14 @@ const App = () => {
             <AllOffersForSelected role={role} title="Предложения по выбранным артикулам" />
           </PrivateRoute>
         } />
+
+        {/* Страница для Редактирование номенклатуры в приложении, корректировка артикулов и наименований */}
+        <Route path="/AllOffersForSelected" element={
+          <PrivateRoute allowedRoles={[ROLE_CUSTOMER, ROLE_ADMIN, ROLE_PROVIDER]}>
+            <EditSupplyComponent role={role} title="Страница редактирования данных" />
+          </PrivateRoute>
+        } />
+        
 
       </Routes>
     </Router>

@@ -28,6 +28,12 @@ const ViewSuppliersOffers = (
         });
     };
 
+    // Функция обработки клика на иконку редактировать компонент
+    const handleEditClick = (vendorCode) => {
+        localStorage.setItem("edit-article", vendorCode);
+        navigate("/EditSupplyComponent");
+    };
+
     // Начинаем выдавать данные для отображения на странице только после изменения (вводе данных в форму)
     const [filteredComponents, setFilteredComponents] = useState([]);
     useEffect(() => {
@@ -36,7 +42,7 @@ const ViewSuppliersOffers = (
             item.nameComponent?.toLowerCase().includes(searchTerm.toLowerCase())
         );
         setFilteredComponents(filtered);
-    }, [searchTerm]);
+    }, [searchTerm, components]);
     
 
     const indexOfLastItem = currentPage * itemsPerPage;
@@ -86,6 +92,7 @@ const ViewSuppliersOffers = (
                                     <th scope="col" className="table-borderless__check-coll"></th>
                                     <th scope="col" className="table-borderless__article">Артикул</th>
                                     <th scope="col" className="table-borderless__name">Наименование</th>
+                                    <th scope="col" className="table-borderless__th-edit">Edit</th>
                                 </tr>
                             </thead>
                             <tbody className="table-borderless__tbody">
@@ -102,6 +109,15 @@ const ViewSuppliersOffers = (
                                         </td>
                                         <td>{item.vendorCodeComponent}</td>
                                         <td>{item.nameComponent}</td>
+                                        <td className="table-borderless__edit">
+                                            <img
+                                                className="table-borderless__icon-edit"
+                                                src="../images/file-pen-line__table.svg"
+                                                alt="Редактировать"
+                                                onClick={() => handleEditClick(item.vendorCodeComponent)}
+                                                style={{ cursor: "pointer" }}
+                                            />
+                                        </td>
                                     </tr>
                                 ))}
                             </tbody>
