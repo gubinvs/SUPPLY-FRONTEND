@@ -202,7 +202,7 @@ const EditSupplyComponent = ({ role, components, title, error }) => {
                                     class="btn btn-outline-secondary dit-supply-component__save-botton"
                                     onClick={handleSaveComponent}
                                 >
-                                    Записать
+                                    Сохранить изменения
                                 </button>
                             </div>
                         )}
