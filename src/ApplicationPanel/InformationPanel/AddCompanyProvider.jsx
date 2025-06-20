@@ -149,6 +149,7 @@ const AddCompanyProvider = () => {
                                 type="text"
                                 name="innCompany"
                                 aria-label="ИНН"
+                                placeholder="Поиск по ИНН"
                                 value={formData.innCompany}
                                 onChange={(e) =>
                                     handleChange({

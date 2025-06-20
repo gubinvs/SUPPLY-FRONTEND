@@ -6,6 +6,7 @@ import { handleAnalyzeClick } from "../js/Utilits/handleAnalyzeClick.js";
 import NavigationBarMin from "../NavigationBar/NavigationBarMin.jsx";
 import NavigationBarMax from "../NavigationBar/NavigationBarMax.jsx";
 import HeaderApplicationPanel from "../ApplicationPanel/Header/HeaderApplicationPanel.jsx";
+import Select from 'react-select'; // установка в проект = npm install react-select
 
 const ITEMS_PER_PAGE = 10;
 
@@ -25,6 +26,12 @@ const AddComponentApplication = (
     const [showEditPriceBlock, setShowEditPriceBlock] = useState(false);
     const [combinedOffers, setCombinedOffers] = useState([]); // для цен поставщиков
     const navigate = useNavigate();
+
+    // Преобразуй данные поставщиков в формат, понятный React Select
+    const providerOptions = providers.map((item) => ({
+                            value: item.guidIdProvider,
+                            label: item.nameProvider,
+                            }));
 
     const filteredItems = components.filter(
         (item) =>
@@ -337,7 +344,7 @@ const AddComponentApplication = (
                                 <option value="от 16 до 20 нед">от 16 до 20 нед</option>
                                 <option value="от 20 до 24 нед">от 20 до 24 нед</option>
                             </select>
-                            <select
+                            {/* <select
                                 className="form-select aca-input-form__select"
                                 value={providerId}
                                 onChange={(e) => {
@@ -351,7 +358,22 @@ const AddComponentApplication = (
                                         {item.nameProvider}
                                     </option>
                                 ))}
-                            </select>
+                            </select> */}
+                            {/* // Преобразуй данные поставщиков в формат, понятный React Select */}
+                            <Select
+                            className="basic-single"
+                            classNamePrefix="select"
+                            value={providerOptions.find(option => option.value === providerId) || null}
+                            onChange={(selectedOption) => {
+                                setProviderId(selectedOption?.value || "");
+                                localStorage.setItem("lastProviderId", selectedOption?.value || "");
+                            }}
+                            options={providerOptions}
+                            placeholder="Выбери поставщика"
+                            isClearable
+                            isSearchable
+                            />
+
                             <button
                                 type="button"
                                 className="btn btn-outline-success mt-2 aca-input-form__edit-button"

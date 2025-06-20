@@ -66,4 +66,14 @@
 .all-offers-selected__button-mr10 {
     margin-right: 10px;
 }
-  
+
+/*Стилизация таблицы выдачи результатов*/
+.aos-table__th-article {
+    width: 150px;
+}
+
+.aos-table__th-data,
+.aos-table__th-term,
+.aos-table__th-price {
+    width: 150px;
+}

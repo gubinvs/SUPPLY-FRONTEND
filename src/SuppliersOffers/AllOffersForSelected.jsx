@@ -28,7 +28,6 @@ const AllOffersForSelected = ({ role, title }) => {
 
     const fetchData = async () => {
       setLoading(true);
-
       const articleList = selected
         .map((comp) => comp.vendorCodeComponent)
         .filter((a) => a && a.trim().length > 0);
@@ -41,19 +40,14 @@ const AllOffersForSelected = ({ role, title }) => {
       try {
         const response = await fetch(`${ApiUrl}/api/ReturnPriceProviderListArticle`, {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ Articles: articleList }),
         });
 
         if (!response.ok) throw new Error("Ошибка загрузки данных");
-
         const data = await response.json();
 
-        // Формируем плоский массив всех предложений с данными компонента
         const allOffers = [];
-
         data.found.forEach((component) => {
           component.offers.forEach((offer) => {
             allOffers.push({
@@ -66,16 +60,14 @@ const AllOffersForSelected = ({ role, title }) => {
 
         setCombinedOffers(allOffers);
 
-        // Находим лучшие предложения по каждому артикулу (минимальная цена)
         const bestOffersByArticle = new Map();
         allOffers.forEach((offer) => {
-        const currentBest = bestOffersByArticle.get(offer.vendorCode);
-        if (offer.priceComponent !== 0 && (!currentBest || offer.priceComponent < currentBest.priceComponent)) {
-          bestOffersByArticle.set(offer.vendorCode, offer);
-        }
+          const currentBest = bestOffersByArticle.get(offer.vendorCode);
+          if (offer.priceComponent !== 0 && (!currentBest || offer.priceComponent < currentBest.priceComponent)) {
+            bestOffersByArticle.set(offer.vendorCode, offer);
+          }
         });
 
-        // Группируем лучшие предложения по поставщикам
         const bestGroupedByProvider = {};
         bestOffersByArticle.forEach((offer) => {
           if (!bestGroupedByProvider[offer.nameProvider]) {
@@ -92,26 +84,70 @@ const AllOffersForSelected = ({ role, title }) => {
       }
     };
 
-    if (selected.length > 0) {
-      fetchData();
-    }
+    if (selected.length > 0) fetchData();
   }, []);
 
   const toggleVendorSelection = (vendorCode) => {
     setSelectedVendorCodes((prev) => {
       const newSet = new Set(prev);
-      if (newSet.has(vendorCode)) newSet.delete(vendorCode);
-      else newSet.add(vendorCode);
+      newSet.has(vendorCode) ? newSet.delete(vendorCode) : newSet.add(vendorCode);
       return newSet;
     });
   };
 
   const getFilteredOffers = () => {
-    let offers = combinedOffers;
-    if (selectedVendorCodes.size > 0) {
-      offers = offers.filter((o) => selectedVendorCodes.has(o.vendorCode));
-    }
-    return offers;
+    return selectedVendorCodes.size > 0
+      ? combinedOffers.filter((o) => selectedVendorCodes.has(o.vendorCode))
+      : combinedOffers;
+  };
+
+  const exportToExcel = () => {
+    const data = getFilteredOffers().map((offer) => ({
+        Артикул: offer.vendorCode,
+        Наименование: offer.nameComponent,
+        Компания: offer.nameProvider,
+        Цена: offer.priceComponent,
+        Срок: offer.deliveryTimeComponent,
+        Актуальность: new Date(offer.saveDataPrice).toLocaleDateString("ru-RU"),
+      }));
+      const ws = XLSX.utils.json_to_sheet(data);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Предложения");
+      const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+      const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
+      saveAs(blob, "Предложения.xlsx");
+    };
+
+    const exportBestByProviderToExcel = () => {
+    const wb = XLSX.utils.book_new();
+
+    Object.entries(bestOffersByProvider).forEach(([provider, offers]) => {
+      const sortedOffers = offers.sort((a, b) => a.priceComponent - b.priceComponent);
+      const wsData = sortedOffers.map((offer) => ({
+        Артикул: offer.vendorCode,
+        Наименование: offer.nameComponent,
+        Цена: offer.priceComponent,
+        Срок: offer.deliveryTimeComponent,
+        Актуальность: new Date(offer.saveDataPrice).toLocaleDateString("ru-RU"),
+      }));
+
+      // Добавление строки с итогом
+      const total = sortedOffers.reduce((sum, o) => sum + o.priceComponent, 0);
+      wsData.push({
+        Артикул: "",
+        Наименование: "Итого",
+        Цена: total,
+        Срок: "",
+        Актуальность: "",
+      });
+
+      const ws = XLSX.utils.json_to_sheet(wsData);
+      XLSX.utils.book_append_sheet(wb, ws, provider.substring(0, 31)); // Excel max sheet name = 31 chars
+    });
+
+    const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
+    saveAs(blob, "ЛучшиеПредложенияПоПоставщикам.xlsx");
   };
 
   const renderRows = () => {
@@ -151,23 +187,6 @@ const AllOffersForSelected = ({ role, title }) => {
     });
   };
 
-  const exportToExcel = () => {
-    const data = getFilteredOffers().map((offer) => ({
-      Артикул: offer.vendorCode,
-      Наименование: offer.nameComponent,
-      Компания: offer.nameProvider,
-      Цена: offer.priceComponent,
-      Срок: offer.deliveryTimeComponent,
-      Актуальность: new Date(offer.saveDataPrice).toLocaleDateString("ru-RU"),
-    }));
-    const ws = XLSX.utils.json_to_sheet(data);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Предложения");
-    const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
-    const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
-    saveAs(blob, "Предложения.xlsx");
-  };
-
   return (
     <>
       <div className="main-application-panel">
@@ -188,10 +207,24 @@ const AllOffersForSelected = ({ role, title }) => {
             <p className="text-muted">Нет предложений.</p>
           ) : (
             <>
-              <div className="mb-4 all-offers-selected__button-block">
-                <div className="aos-button-block__selectet-buton">
+              <div className="mb-4 all-offers-selected__button-block d-flex justify-content-between align-items-center">
+                <div>
+                    <button
+                      className="btn btn-sm btn-outline-success mx-2"
+                      onClick={exportToExcel}
+                    >
+                      Скачать все предложения (Excel)
+                    </button>
+                    <button
+                      className="btn btn-sm btn-outline-success"
+                      onClick={exportBestByProviderToExcel}
+                    >
+                      Скачать лучшие по поставщикам (Excel)
+                    </button>
+                </div>
+                <div>
                   <button
-                    className={`btn btn-sm ml-2 ${showBestByProvider ? "btn-custom" : "btn-custom-outline"}`}
+                    className={`btn ml-2 ${showBestByProvider ? "btn-outline-secondary" : "btn-secondary"}`}
                     onClick={() => setShowBestByProvider(!showBestByProvider)}
                   >
                     {showBestByProvider ? "Вернуться к полному списку" : "Лучшие предложения поставщиков"}
@@ -216,9 +249,6 @@ const AllOffersForSelected = ({ role, title }) => {
                   </table>
 
                   <div className="d-flex justify-content-between align-items-center mt-3">
-                    <button className="btn btn-sm btn-outline-secondary all-offers-selected__button-mr10" onClick={exportToExcel}>
-                      Скачать Excel
-                    </button>
                     <div>
                       {Array.from({ length: Math.ceil(getFilteredOffers().length / rowsPerPage) }, (_, i) => (
                         <button
@@ -244,11 +274,11 @@ const AllOffersForSelected = ({ role, title }) => {
                       <table className="table table-bordered all-offers-selected__table">
                         <thead className="thead-light">
                           <tr>
-                            <th>Артикул</th>
+                            <th className="aos-table__th-article">Артикул</th>
                             <th>Наименование</th>
-                            <th>Цена</th>
-                            <th>Срок</th>
-                            <th>Актуальность</th>
+                            <th className="aos-table__th-price">Цена</th>
+                            <th className="aos-table__th-term">Срок</th>
+                            <th className="aos-table__th-data">Актуальность</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -262,12 +292,8 @@ const AllOffersForSelected = ({ role, title }) => {
                             </tr>
                           ))}
                           <tr className="table">
-                            <td colSpan="2">
-                              <b>Итого</b>
-                            </td>
-                            <td>
-                              <b>{totalPrice.toLocaleString("ru-RU")} ₽</b>
-                            </td>
+                            <td colSpan="2"><b>Итого</b></td>
+                            <td><b>{totalPrice.toLocaleString("ru-RU")} ₽</b></td>
                             <td colSpan="2"></td>
                           </tr>
                         </tbody>
