@@ -62,3 +62,7 @@
 .select__menu {
   z-index: 9999; /* чтобы не перекрывался */
 }
+
+.add-component-application__add-provider-block {
+    margin-bottom: 20px;
+}

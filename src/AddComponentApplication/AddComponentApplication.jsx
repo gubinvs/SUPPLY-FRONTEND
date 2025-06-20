@@ -7,6 +7,7 @@ import NavigationBarMin from "../NavigationBar/NavigationBarMin.jsx";
 import NavigationBarMax from "../NavigationBar/NavigationBarMax.jsx";
 import HeaderApplicationPanel from "../ApplicationPanel/Header/HeaderApplicationPanel.jsx";
 import Select from 'react-select'; // установка в проект = npm install react-select
+import AddCompanyProvider from "../ApplicationPanel/InformationPanel/AddCompanyProvider.jsx";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -294,6 +295,10 @@ const AddComponentApplication = (
                 </div>
 
                 <div className="add-component-application__right-block">
+                    <div className="add-component-application__add-provider-block">
+                        <AddCompanyProvider />
+                    </div>
+                    
                     <h6><b>Артикул не найден — добавьте новый:</b></h6>
                     <div className="add-component-application__input-form">
                         <input
@@ -403,8 +408,6 @@ const AddComponentApplication = (
                                         <p><strong>Обновлено:</strong> {new Date(offer.saveDataPrice).toLocaleDateString()}</p>
                                     </div>
                                 ))}
-                                
-                                
                             </>
                         )}
                     </div>
