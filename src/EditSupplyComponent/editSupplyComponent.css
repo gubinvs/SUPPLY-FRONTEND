@@ -20,6 +20,11 @@
     width: 100%;
 }
 
+.dit-supply-component__clear-botton {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
 .edit-supply-component__title {
     position: sticky;
     padding-left: 4px;
@@ -30,7 +35,7 @@
 
 .edit-supply-component__title_fon {
     position: absolute;
-    top: 15px;
+    top: 72px;
     left: 12px;
     width: 280px;
     height: 10px;
