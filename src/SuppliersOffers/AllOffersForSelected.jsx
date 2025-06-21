@@ -6,6 +6,7 @@ import NavigationBarMax from "../NavigationBar/NavigationBarMax.jsx";
 import HeaderApplicationPanel from "../ApplicationPanel/Header/HeaderApplicationPanel.jsx";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
+import FullDataCompanyAndCollaborators from "./FullDataCompanyAndCollaborators.jsx";
 
 const AllOffersForSelected = ({ role, title }) => {
   const [isNavMaxVisible, setIsNavMaxVisible] = useState(false);
@@ -286,12 +287,8 @@ const AllOffersForSelected = ({ role, title }) => {
                   return (
                     <div key={index} className="mb-5">
                       <h6 className="text-primary mb-2"><strong>{provider}</strong> предлагает лучшие цены на:</h6>
-                      <div className="all-offers-selected__company-card">
-
-                        Это всплывающее окно карточки компании
-
-
-                      </div>
+                      {/* Это всплывающее окно карточки компании */}
+                      <FullDataCompanyAndCollaborators dataCompany={""}/>
                       <table className="table table-bordered all-offers-selected__table">
                         <thead className="thead-light">
                           <tr>

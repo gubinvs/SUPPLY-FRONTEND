@@ -81,18 +81,3 @@
 .aos-table__th-company {
     width: 200px;
 }
-
-
-/* Стилизация окны с информацией о компании */
-
-.all-offers-selected__company-card {
-    position: fixed;
-    top: 100px;
-    right: 100px;
-    bottom: 100px;
-    left: 100px;
-    border-radius: 20px;
-    padding: 40px;
-    background-color: #FAC855;
-    z-index: 555;
-}
