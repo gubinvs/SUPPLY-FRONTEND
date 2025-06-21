@@ -20,13 +20,17 @@
 }
 
 .navigation-bar-max__logo {
+    width: 100px;
     margin-right: 20px;
 }
 
 .nbm-logo-block__title {
-    font-size: 28px;
+    font-size: 24px;
+    line-height: 24px;
     font-weight: 600;
+    color: #342F2C;
 }
+
 .navigation-bar-max__top-block__line {
     width: 100%;
 }

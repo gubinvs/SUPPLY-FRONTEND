@@ -63,7 +63,7 @@ const InformationCompanyCard = ({ role, company, guidIdCollaborator }) => {
       ) : showInvalidInnWarning ? (
         <>
           <div className="alert alert-warning">
-            Данные о компании отсутствуют
+            Данные о компании пользователя отсутствуют
           </div>
           <div className="pagination-icon-block">
             <div
