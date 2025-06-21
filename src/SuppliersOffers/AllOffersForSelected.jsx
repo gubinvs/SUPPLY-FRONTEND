@@ -287,8 +287,10 @@ const AllOffersForSelected = ({ role, title }) => {
                   return (
                     <div key={index} className="mb-5">
                       <h6 className="text-primary mb-2"><strong>{provider}</strong> предлагает лучшие цены на:</h6>
+                      
                       {/* Это всплывающее окно карточки компании */}
                       <FullDataCompanyAndCollaborators dataCompany={""}/>
+                      
                       <table className="table table-bordered all-offers-selected__table">
                         <thead className="thead-light">
                           <tr>
