@@ -37,6 +37,7 @@ const AllOffersForSelected = ({ role, title }) => {
         return;
       }
 
+      // Запросили данные о ценах поставщика
       try {
         const response = await fetch(`${ApiUrl}/api/ReturnPriceProviderListArticle`, {
           method: "POST",
@@ -58,8 +59,10 @@ const AllOffersForSelected = ({ role, title }) => {
           });
         });
 
+        // Сохраняем все предложения
         setCombinedOffers(allOffers);
 
+        // Фильтруем по артикулу и лучшей цене
         const bestOffersByArticle = new Map();
         allOffers.forEach((offer) => {
           const currentBest = bestOffersByArticle.get(offer.vendorCode);
@@ -68,6 +71,7 @@ const AllOffersForSelected = ({ role, title }) => {
           }
         });
 
+        // Группируем предложения по поставщику
         const bestGroupedByProvider = {};
         bestOffersByArticle.forEach((offer) => {
           if (!bestGroupedByProvider[offer.nameProvider]) {
@@ -77,6 +81,7 @@ const AllOffersForSelected = ({ role, title }) => {
         });
 
         setBestOffersByProvider(bestGroupedByProvider);
+
       } catch (error) {
         console.error("Ошибка:", error);
       } finally {
@@ -86,6 +91,16 @@ const AllOffersForSelected = ({ role, title }) => {
 
     if (selected.length > 0) fetchData();
   }, []);
+
+  // 
+  // Соберем всю информацию о компаниях поставщиках и их представителях, для всплывающей карточки компании
+  // запрос на API сервер по ИНН, запрашиваем списком .если есть в системе прикрепленные колабораторы тоже подтягиваем
+  //
+
+
+
+
+
 
   const toggleVendorSelection = (vendorCode) => {
     setSelectedVendorCodes((prev) => {
@@ -270,11 +285,13 @@ const AllOffersForSelected = ({ role, title }) => {
                   
                   return (
                     <div key={index} className="mb-5">
-                      <h6 className="text-primary mb-2">
+                      <h6 className="text-primary mb-2"><strong>{provider}</strong> предлагает лучшие цены на:</h6>
+                      <div className="all-offers-selected__company-card">
 
-                        <strong >{provider}</strong> предлагает лучшие цены по:
+                        Это всплывающее окно карточки компании
 
-                      </h6>
+
+                      </div>
                       <table className="table table-bordered all-offers-selected__table">
                         <thead className="thead-light">
                           <tr>

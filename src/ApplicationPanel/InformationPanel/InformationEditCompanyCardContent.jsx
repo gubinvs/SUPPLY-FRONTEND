@@ -27,8 +27,6 @@ const InformationEditCompanyCardContent = ({
         }));
     };
 
-    
-
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -99,6 +97,7 @@ const InformationEditCompanyCardContent = ({
                         className="form-control"
                         type="text"
                         name="innCompany"
+                        placeholder="Поиск по ИНН"
                         value={formData.innCompany}
                         onChange={handleChange}
                         aria-label="ИНН"

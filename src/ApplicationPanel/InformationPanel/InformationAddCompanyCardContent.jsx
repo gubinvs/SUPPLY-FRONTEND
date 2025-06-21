@@ -131,6 +131,7 @@ console.log(guidIdCollaborator);
                         className="form-control"
                         type="text"
                         name="innCompany"
+                        placeholder="Поиск по ИНН"
                         value={formData.innCompany}
                         onChange={handleChange}
                         aria-label="ИНН"
