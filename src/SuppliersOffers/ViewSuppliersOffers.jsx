@@ -98,7 +98,7 @@ const ViewSuppliersOffers = (
                             <tbody className="table-borderless__tbody">
                                 {/* Заполнение таблицы */}
                                 {currentItems.map((item) => (
-                                    <tr key={item.id}>
+                                    <tr key={item.id} className="ts-tbody__tr">
                                         <td>
                                             <input
                                                 className="form-check-input"

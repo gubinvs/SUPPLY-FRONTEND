@@ -93,6 +93,13 @@
     100% { transform: rotate(360deg); }
 }
 
+
+
+.ts-tbody__tr:hover td {
+    border-top: 2px solid #FAC855;
+    border-bottom: 2px solid #FAC855;
+}
+
 .table-borderless__icon-edit {
     cursor: pointer;
 }

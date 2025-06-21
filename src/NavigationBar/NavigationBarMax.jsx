@@ -12,7 +12,7 @@ const NavigationBarMax = () => {
     let pathApplicationPanel = "";
     const pathSuppliersOffers = "/SuppliersOffers";
     const pathAddComponent = "/AddComponentApplication";
-    const pathEditSupplyComponent = "/EditSupplyComponent"
+    const pathEditSupplyComponent = "/EditSupplyComponent";
 
     if (roleAdmin) {
         pathApplicationPanel = "/ApplicationPanelAdmin";
@@ -51,7 +51,7 @@ const NavigationBarMax = () => {
                         </li>
                         <li
                             className={`navigation-bar-max__navigation-item ${location.pathname === pathEditSupplyComponent ? 'navigation-bar-max__navigation-item_active' : ''}`}
-                            onClick={pathEditSupplyComponent}
+                            onClick={() => navigate(pathEditSupplyComponent)}
                         >
                             <img src="../images/file-pen-line.svg" className="nbm-navigation-item__icon" alt="#" />
                             <div className="nbm-navigation-item__name">Редактировать данные</div>
