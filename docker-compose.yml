@@ -1,0 +1,28 @@
+version: "3.8"
+# Запуск docker-compose up -d
+
+services:
+  service1:
+    image: 1f09a266269e
+    container_name: SHOP-ENCOMPONENT__API
+    ports:
+      - "1010:8080"
+
+  service2:
+    image: 6a83744d4137
+    container_name: SHOP-ENCOMPONENT__SITE
+    ports:
+      - "1020:3000"
+
+  service3:
+    image: 6fb020dde51b
+    container_name: SUPPLY-HANDY__API
+    ports:
+      - "1030:8080"
+
+  service4:
+    image: 250f2bbbba58
+    container_name: SUPPLY-HANDY__FRONTEND
+    ports:
+      - "1040:3000"
+
