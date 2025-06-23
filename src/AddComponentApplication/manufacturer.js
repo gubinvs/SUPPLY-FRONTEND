@@ -14,8 +14,8 @@ export const manufacturer = [
 
 
 export const unitMeasurement = [
-    "Штук",
-    "Упаковка",
+    "Шт.",
+    "Упак.",
     "Метр",
     "Сантиметр",
     "Килограмм",
