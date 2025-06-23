@@ -151,7 +151,12 @@ const EditSupplyComponent = ({ role, components, title, error }) => {
                                                     className="form-check-input"
                                                     type="checkbox"
                                                     checked={selectedComponent?.vendorCodeComponent === item.vendorCodeComponent}
-                                                    onChange={() => setSelectedComponent(item)}
+                                                    // На проверку: если уже выбран этот компонент — снимаем выделение (setSelectedComponent(null)), иначе выбираем:
+                                                    onChange={() =>
+                                                        selectedComponent?.vendorCodeComponent === item.vendorCodeComponent
+                                                            ? setSelectedComponent(null)
+                                                            : setSelectedComponent(item)
+                                                    }
                                                 />
                                             </td>
                                             <td>{item.vendorCodeComponent}</td>
@@ -160,6 +165,24 @@ const EditSupplyComponent = ({ role, components, title, error }) => {
                                     ))}
                                 </tbody>
                             </table>
+                            {/* // Пагинация страниц */}
+                            <div className="pagination">
+                                <button
+                                    className="btn btn-sm btn-outline-primary me-2"
+                                    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                                    disabled={currentPage === 1}
+                                >
+                                    &#8592;
+                                </button>
+                                <span>Страница {currentPage} из {Math.ceil(filteredComponents.length / itemsPerPage)}</span>
+                                <button
+                                    className="btn btn-sm btn-outline-primary ms-2"
+                                    onClick={() => setCurrentPage(prev => Math.min(prev + 1, Math.ceil(filteredComponents.length / itemsPerPage)))}
+                                    disabled={currentPage === Math.ceil(filteredComponents.length / itemsPerPage)}
+                                >
+                                     &#8594;
+                                </button>
+                            </div>
                         </>
                     ) : (
                         !error && <p>Данных не найдено.</p>
