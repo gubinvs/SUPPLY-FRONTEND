@@ -1,5 +1,6 @@
 import { useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
+import {manufacturer} from "./manufacturer.js";
 import "./addComponentApplication.css";
 import ApiUrl from "../js/ApiUrl.js";
 import { handleAnalyzeClick } from "../js/Utilits/handleAnalyzeClick.js";
@@ -321,9 +322,9 @@ const AddComponentApplication = (
                             onChange={(e) => setSelectedProvider(e.target.value)}
                         >
                             <option value="">Выбери производителя</option>
-                            {providers.map((item) => (
-                                <option key={item.guidIdProvider} value={item.guidIdProvider}>
-                                    {item.nameProvider}
+                            {manufacturer.map((item, index) => (
+                                <option key={index} value={item}>
+                                    {item}
                                 </option>
                             ))}
                         </select>

@@ -9,6 +9,5 @@ export const manufacturer = [
     "Провенто",
     "Dekraft",
     "ABB",
-    "Systeme Electric",
-    ""
+    "Systeme Electric"
 ];
