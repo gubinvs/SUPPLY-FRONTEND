@@ -54,14 +54,23 @@
     min-width: 300px;
 }
 
-.table-borderless__name {
-    width: 100%;
-}
-
 .table-borderless__edit {
     text-align: center;
     vertical-align: middle;
     width: 50px;
+}
+
+.table-borderless__um {
+    width: 100px;
+    text-align: center;
+}
+
+.table-borderless__manuf {
+    width: 200px;
+}
+
+.table-borderless__name {
+    width: calc(100% - 650px);
 }
 
 .view-suppliers-offers__search {

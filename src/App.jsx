@@ -58,7 +58,7 @@ const App = () => {
                 return response.json();
             })
             .then((data) => {
-                setComponents(data.component || []);
+                setComponents(data || []);
             })
             .catch((error) => {
                 console.error("Ошибка получения данных:", error);

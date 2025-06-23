@@ -14,7 +14,7 @@ export const manufacturer = [
 
 
 export const unitMeasurement = [
-    "Шт.",
+    "Штук",
     "Упак.",
     "Метр",
     "Сантиметр",

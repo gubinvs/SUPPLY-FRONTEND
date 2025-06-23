@@ -15,7 +15,6 @@ const ViewSuppliersOffers = (
     const itemsPerPage = 15;
     const navigate = useNavigate();
 
-
     const handleCheckboxToggle = (id) => {
         setSelectedIds(prev => {
             const newSet = new Set(prev);
@@ -92,6 +91,8 @@ const ViewSuppliersOffers = (
                                     <th scope="col" className="table-borderless__check-coll"></th>
                                     <th scope="col" className="table-borderless__article">Артикул</th>
                                     <th scope="col" className="table-borderless__name">Наименование</th>
+                                    <th scope="col" className="table-borderless__manuf">Производитель</th>
+                                     <th scope="col" className="table-borderless__um">Ед. изм</th>
                                     <th scope="col" className="table-borderless__th-edit">Edit</th>
                                 </tr>
                             </thead>
@@ -109,6 +110,8 @@ const ViewSuppliersOffers = (
                                         </td>
                                         <td>{item.vendorCodeComponent}</td>
                                         <td>{item.nameComponent}</td>
+                                        <td>{item.manufacturerName}</td>
+                                        <td className="table-borderless__um">{item.unitMeasurementName}</td>
                                         <td className="table-borderless__edit">
                                             <img
                                                 className="table-borderless__icon-edit"
