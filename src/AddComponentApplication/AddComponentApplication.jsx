@@ -1,6 +1,6 @@
 import { useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
-import {manufacturer} from "./manufacturer.js";
+import {manufacturer, unitMeasurement} from "./manufacturer.js";
 import "./addComponentApplication.css";
 import ApiUrl from "../js/ApiUrl.js";
 import { handleAnalyzeClick } from "../js/Utilits/handleAnalyzeClick.js";
@@ -317,12 +317,20 @@ const AddComponentApplication = (
                             onChange={(e) => setName(e.target.value)}
                         />
                         <select
-                            className="form-select"
-                            value={selectedProvider}
-                            onChange={(e) => setSelectedProvider(e.target.value)}
+                            className="form-select aca-input-form__name"
                         >
                             <option value="">Выбери производителя</option>
                             {manufacturer.map((item, index) => (
+                                <option key={index} value={item}>
+                                    {item}
+                                </option>
+                            ))}
+                        </select>
+                        <select
+                            className="form-select aca-input-form__name"
+                        >
+                            <option value="">Едница измерения</option>
+                            {unitMeasurement.map((item, index) => (
                                 <option key={index} value={item}>
                                     {item}
                                 </option>

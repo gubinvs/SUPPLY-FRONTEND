@@ -11,3 +11,13 @@ export const manufacturer = [
     "ABB",
     "Systeme Electric"
 ];
+
+
+export const unitMeasurement = [
+    "Штук",
+    "Упаковка",
+    "Метр",
+    "Сантиметр",
+    "Килограмм",
+    "Комплект"
+];
