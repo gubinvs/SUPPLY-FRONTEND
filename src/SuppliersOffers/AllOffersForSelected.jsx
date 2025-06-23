@@ -27,6 +27,8 @@ const AllOffersForSelected = ({ role, title }) => {
     const selected = analyzeData.selectedComponents || [];
     setAnalyzedComponents(selected);
 
+  
+
     const fetchData = async () => {
       setLoading(true);
       const articleList = selected
@@ -49,16 +51,32 @@ const AllOffersForSelected = ({ role, title }) => {
         if (!response.ok) throw new Error("Ошибка загрузки данных");
         const data = await response.json();
 
-        const allOffers = [];
+        // Собрали данные с сервера
+        const allOffersApi = [];
         data.found.forEach((component) => {
           component.offers.forEach((offer) => {
-            allOffers.push({
+            allOffersApi.push({
               ...offer,
               vendorCode: component.article,
               nameComponent: component.nameComponent,
             });
           });
         });
+
+
+        // Добавляем количество из константы: "selected "
+        const allOffers = [];
+        allOffersApi.forEach((item) => {
+          selected.forEach((itemSelected)=> {
+            if (item.vendorCode === itemSelected.vendorCodeComponent) {
+              allOffers.push(
+                {
+                  ...item,
+                  quantity: itemSelected.quantity,
+                });}
+          })
+        });
+
 
         // Сохраняем все предложения
         setCombinedOffers(allOffers);
@@ -99,10 +117,6 @@ const AllOffersForSelected = ({ role, title }) => {
   //
 
 
-
-
-
-
   const toggleVendorSelection = (vendorCode) => {
     setSelectedVendorCodes((prev) => {
       const newSet = new Set(prev);
@@ -118,7 +132,7 @@ const AllOffersForSelected = ({ role, title }) => {
   };
 
   const exportToExcel = () => {
-    const data = getFilteredOffers().map((offer) => ({
+      const data = getFilteredOffers().map((offer) => ({
         Артикул: offer.vendorCode,
         Наименование: offer.nameComponent,
         Компания: offer.nameProvider,
@@ -126,7 +140,19 @@ const AllOffersForSelected = ({ role, title }) => {
         Срок: offer.deliveryTimeComponent,
         Актуальность: new Date(offer.saveDataPrice).toLocaleDateString("ru-RU"),
       }));
+
       const ws = XLSX.utils.json_to_sheet(data);
+
+      // Пример установки ширины колонок (ширина в "знаках")
+      ws['!cols'] = [
+        { wch: 20 }, // Артикул
+        { wch: 60 }, // Наименование — можно ограничить по желанию
+        { wch: 20 }, // Компания
+        { wch: 11 }, // Цена
+        { wch: 15 }, // Срок
+        { wch: 15 }, // Актуальность
+      ];
+
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, "Предложения");
       const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
@@ -135,36 +161,52 @@ const AllOffersForSelected = ({ role, title }) => {
     };
 
     const exportBestByProviderToExcel = () => {
-    const wb = XLSX.utils.book_new();
+      const wb = XLSX.utils.book_new();
 
-    Object.entries(bestOffersByProvider).forEach(([provider, offers]) => {
-      const sortedOffers = offers.sort((a, b) => a.priceComponent - b.priceComponent);
-      const wsData = sortedOffers.map((offer) => ({
-        Артикул: offer.vendorCode,
-        Наименование: offer.nameComponent,
-        Цена: offer.priceComponent,
-        Срок: offer.deliveryTimeComponent,
-        Актуальность: new Date(offer.saveDataPrice).toLocaleDateString("ru-RU"),
-      }));
+      Object.entries(bestOffersByProvider).forEach(([provider, offers]) => {
+        const sortedOffers = offers.sort((a, b) => a.priceComponent - b.priceComponent);
+        const wsData = sortedOffers.map((offer) => ({
+          Артикул: offer.vendorCode,
+          Наименование: offer.nameComponent,
+          Количество: offer.quantity,
+          Цена: offer.priceComponent,
+          Срок: offer.deliveryTimeComponent,
+          Актуальность: new Date(offer.saveDataPrice).toLocaleDateString("ru-RU"),
+        }));
 
-      // Добавление строки с итогом
-      const total = sortedOffers.reduce((sum, o) => sum + o.priceComponent, 0);
-      wsData.push({
-        Артикул: "",
-        Наименование: "Итого",
-        Цена: total,
-        Срок: "",
-        Актуальность: "",
+        
+        // Добавление строки с итогом
+        // const total = sortedOffers.reduce((sum, o) => sum + o.priceComponent, 0);
+        // wsData.push({
+        //   Артикул: "",
+        //   Наименование: "Итого",
+        //   Цена: total,
+        //   Срок: "",
+        //   Актуальность: "",
+        // });
+
+        const ws = XLSX.utils.json_to_sheet(wsData);
+
+        // Пример установки ширины колонок, адаптируй по своему набору полей
+        ws['!cols'] = [
+          { wch: 20 }, // Артикул
+          { wch: 60 }, // Наименование
+          { wch: 15 }, // Количество
+          { wch: 11 }, // Цена
+          { wch: 15 }, // Срок
+          { wch: 15 }, // Актуальность
+        ];
+
+        XLSX.utils.book_append_sheet(wb, ws, provider.substring(0, 31));
       });
 
-      const ws = XLSX.utils.json_to_sheet(wsData);
-      XLSX.utils.book_append_sheet(wb, ws, provider.substring(0, 31)); // Excel max sheet name = 31 chars
-    });
+      const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+      const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
+      saveAs(blob, "ЛучшиеПредложенияПоПоставщикам.xlsx");
+    };
 
-    const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
-    const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
-    saveAs(blob, "ЛучшиеПредложенияПоПоставщикам.xlsx");
-  };
+
+
 
   const renderRows = () => {
     const offers = getFilteredOffers();
@@ -289,13 +331,14 @@ const AllOffersForSelected = ({ role, title }) => {
                       <h6 className="text-primary mb-2"><strong>{provider}</strong> предлагает лучшие цены на:</h6>
                       
                       {/* Это всплывающее окно карточки компании */}
-                      <FullDataCompanyAndCollaborators dataCompany={""}/>
+                      {/* <FullDataCompanyAndCollaborators dataCompany={""}/> */}
                       
                       <table className="table table-bordered all-offers-selected__table">
                         <thead className="thead-light">
                           <tr>
                             <th className="aos-table__th-article">Артикул</th>
                             <th>Наименование</th>
+                            <th className="aos-table__th-quant">Кол-во</th>
                             <th className="aos-table__th-price">Цена</th>
                             <th className="aos-table__th-term">Срок</th>
                             <th className="aos-table__th-data">Актуальность</th>
@@ -306,15 +349,16 @@ const AllOffersForSelected = ({ role, title }) => {
                             <tr key={idx}>
                               <td>{offer.vendorCode}</td>
                               <td>{offer.nameComponent}</td>
+                              <td className="aos-table__th-quant">{offer.quantity}</td>
                               <td>{offer.priceComponent.toLocaleString("ru-RU")} ₽</td>
                               <td>{offer.deliveryTimeComponent}</td>
                               <td>{new Date(offer.saveDataPrice).toLocaleDateString("ru-RU")}</td>
                             </tr>
                           ))}
                           <tr className="table">
-                            <td colSpan="2"><b>Итого</b></td>
+                            <td colSpan="3"><b>Итого</b></td>
                             <td><b>{totalPrice.toLocaleString("ru-RU")} ₽</b></td>
-                            <td colSpan="2"></td>
+                            <td colSpan="3"></td>
                           </tr>
                         </tbody>
                       </table>

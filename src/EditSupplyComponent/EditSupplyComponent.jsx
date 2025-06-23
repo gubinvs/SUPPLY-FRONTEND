@@ -20,7 +20,7 @@ const EditSupplyComponent = ({ role, components, title, error }) => {
 
     // Пагинация (если нужна)
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 10;
+    const itemsPerPage = 15;
     const currentItems = filteredComponents.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
     useEffect(() => {
@@ -110,7 +110,11 @@ const EditSupplyComponent = ({ role, components, title, error }) => {
         setFilteredComponents(filtered);
         setCurrentPage(1);
     };
-
+    // Функция обработки клика на иконку редактировать компонент
+    const handleEditClick = (vendorCode) => {
+        localStorage.setItem("edit-article", vendorCode);
+        window.location.reload();
+    };
 
     return (
         <div className="main-application-panel">
@@ -124,7 +128,7 @@ const EditSupplyComponent = ({ role, components, title, error }) => {
             <HeaderApplicationPanel role={role} title={title} />
 
             <div className="main-application-panel__container">
-                <div className={selectedComponent === null?"":"edit-supply-component__left-block"}>
+                <div className={selectedComponent === null?"edit-supply-component__content-block":"edit-supply-component__left-block"}>
                     <input
                         className="form-control edit-supply-component__search"
                         type="text"
@@ -141,26 +145,42 @@ const EditSupplyComponent = ({ role, components, title, error }) => {
                                         <th scope="col" className=""></th>
                                         <th scope="col" className="">Артикул</th>
                                         <th scope="col" className="">Наименование</th>
+                                        <th scope="col" className="table-borderless__th-edit">Edit</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {currentItems.map((item) => (
-                                        <tr key={item.vendorCodeComponent}>
+                                        <tr key={item.vendorCodeComponent} className="ts-tbody__tr">
                                             <td>
                                                 <input
                                                     className="form-check-input"
                                                     type="checkbox"
                                                     checked={selectedComponent?.vendorCodeComponent === item.vendorCodeComponent}
                                                     // На проверку: если уже выбран этот компонент — снимаем выделение (setSelectedComponent(null)), иначе выбираем:
-                                                    onChange={() =>
-                                                        selectedComponent?.vendorCodeComponent === item.vendorCodeComponent
-                                                            ? setSelectedComponent(null)
-                                                            : setSelectedComponent(item)
-                                                    }
+                                                    onChange={() => {
+                                                        if (selectedComponent?.vendorCodeComponent === item.vendorCodeComponent) {
+                                                            // Снимаем выбор и очищаем поиск
+                                                            setSelectedComponent(null);
+                                                            setSearchQuery('');
+                                                            setFilteredComponents(components); // сброс фильтра
+                                                        } else {
+                                                            // Выбираем новый компонент
+                                                            setSelectedComponent(item);
+                                                        }
+                                                    }}
                                                 />
                                             </td>
                                             <td>{item.vendorCodeComponent}</td>
                                             <td>{item.nameComponent}</td>
+                                            <td className="table-borderless__edit">
+                                                <img
+                                                    className="table-borderless__icon-edit"
+                                                    src="../images/file-pen-line__table.svg"
+                                                    alt="Редактировать"
+                                                    onClick={() => handleEditClick(item.vendorCodeComponent)}
+                                                    style={{ cursor: "pointer" }}
+                                                />
+                                            </td>
                                         </tr>
                                     ))}
                                 </tbody>

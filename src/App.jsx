@@ -137,7 +137,7 @@ const App = () => {
           <PrivateRoute allowedRoles={[ROLE_CUSTOMER, ROLE_ADMIN, ROLE_PROVIDER]}>
             <EditSupplyComponent 
               role={role} 
-              title="Редактирование базы данных"
+              title="Редактирование номенклатуры"
               components={components}
               error={error}
             />

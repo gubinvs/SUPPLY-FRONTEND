@@ -81,3 +81,8 @@
 .aos-table__th-company {
     width: 200px;
 }
+
+.aos-table__th-quant {
+    width: 100px;
+    text-align: center;
+}

@@ -1,29 +1,33 @@
-import { useState} from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import * as XLSX from "xlsx"; // 📘 Импорт библиотеки XLSX
 import "../ApplicationPanel/applicationPanel.css";
 import "./viewSuppliersOffers.css";
 
-
- 
-// 
-// Групповой поиск номенклатуры в базе данных
-//
-const GroopSearchSuppliersOffers = ({components, error}) => {
+const GroopSearchSuppliersOffers = ({ components, error }) => {
     const [selectedIds, setSelectedIds] = useState(new Set());
     const [currentPage, setCurrentPage] = useState(1);
-    const [searchList, setSearchList] = useState([]);
+    const [parsedInput, setParsedInput] = useState([]); // [{ vendorCode, quantity }]
     const [textareaValue, setTextareaValue] = useState("");
     const itemsPerPage = 15;
     const navigate = useNavigate();
+    const normalizeCode = (code) => code?.trim().toLowerCase();
 
-    const processSearchList = (list) => {
-        const cleaned = list.map(v => v.trim().toLowerCase()).filter(Boolean);
-        setSearchList(cleaned);
+    const processInputList = (list) => {
+        
+        
+        const parsed = list.map((line) => {
+            const parts = line.trim().split(/\s*[\t|,;]\s*/);
+            const vendorCode = normalizeCode(parts[0]);
+            const quantity = parseFloat(parts[1]) || 1;
+            return { vendorCode, quantity };
+        }).filter(item => item.vendorCode);
+
+        setParsedInput(parsed);
         setCurrentPage(1);
+
         const matchedIds = new Set(
             components
-                .filter(item => cleaned.includes(item.vendorCodeComponent?.toLowerCase()))
+                .filter(item => parsed.some(p => p.vendorCode === normalizeCode(item.vendorCodeComponent)))
                 .map(item => item.id)
         );
         setSelectedIds(matchedIds);
@@ -32,30 +36,23 @@ const GroopSearchSuppliersOffers = ({components, error}) => {
     const handlePasteOrChange = (e) => {
         const value = e.target.value;
         setTextareaValue(value);
-        const parsed = value.split(/[\n\r\t;,]+/).map(v => v.trim().toLowerCase()).filter(Boolean);
-        processSearchList(parsed);
+        const lines = value.split(/[\r\n]+/).filter(Boolean);
+        processInputList(lines);
     };
 
-    // const handleFileUpload = (e) => {
-    //     const file = e.target.files[0];
-    //     if (!file) return;
-
-    //     const reader = new FileReader();
-    //     reader.onload = (evt) => {
-    //         const data = new Uint8Array(evt.target.result);
-    //         const workbook = XLSX.read(data, { type: "array" });
-    //         const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-    //         const rows = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
-
-    //         const flatValues = rows.flat().map(String);
-    //         processSearchList(flatValues);
-    //         setTextareaValue(flatValues.join("\n")); // для наглядности заполним textarea
-    //     };
-    //     reader.readAsArrayBuffer(file);
-    // };
-
     const handleAnalyzeClick = () => {
-        const selectedComponents = components.filter(item => selectedIds.has(item.id));
+        const normalizeCode = (code) => code?.trim().toLowerCase();
+
+        const selectedComponents = components
+            .filter(item => selectedIds.has(item.id))
+            .map(item => {
+                const match = parsedInput.find(p => p.vendorCode === normalizeCode(item.vendorCodeComponent));
+                return {
+                    ...item,
+                    quantity: match?.quantity || 1
+                };
+            });
+
         const analyzeComponents = JSON.parse(localStorage.getItem("analyzeComponents") || "[]");
         const cartItems = JSON.parse(localStorage.getItem("cart") || "[]");
 
@@ -64,9 +61,12 @@ const GroopSearchSuppliersOffers = ({components, error}) => {
         navigate("/AllOffersForSelected");
     };
 
-    const filteredComponents = components.filter(item =>
-        searchList.includes(item.vendorCodeComponent?.toLowerCase())
-    );
+    const filteredComponents = components
+        .filter(item => parsedInput.some(p => p.vendorCode === normalizeCode(item.vendorCodeComponent)))
+        .map(item => {
+            const match = parsedInput.find(p => p.vendorCode === normalizeCode(item.vendorCodeComponent));
+            return { ...item, quantity: match?.quantity || 1 };
+        });
 
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -76,22 +76,13 @@ const GroopSearchSuppliersOffers = ({components, error}) => {
     return (
         <div className="main-application-panel__container">
             <div className="view-suppliers-offers__block">
-
                 <textarea
                     className="form-control mb-3 view-suppliers-offers__search"
                     rows={6}
-                    placeholder="Вставьте артикулы из Excel"
+                    placeholder="Вставьте данные из Excel: Артикул | Кол-во (опционально)"
                     value={textareaValue}
                     onChange={handlePasteOrChange}
-                    // style={{ height: "150px", resize: "none" }} // ← фиксируем высоту и отключаем растягивание
                 />
-
-                {/* <input
-                    type="file"
-                    accept=".xlsx,.xls"
-                    onChange={handleFileUpload}
-                    className="form-control mb-3"
-                /> */}
 
                 <button
                     className="btn btn-outline-secondary analyze-offers-button"
@@ -111,6 +102,7 @@ const GroopSearchSuppliersOffers = ({components, error}) => {
                                     <th></th>
                                     <th>Артикул</th>
                                     <th>Наименование</th>
+                                    <th>Кол-во</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -131,6 +123,7 @@ const GroopSearchSuppliersOffers = ({components, error}) => {
                                         </td>
                                         <td>{item.vendorCodeComponent}</td>
                                         <td>{item.nameComponent}</td>
+                                        <td>{item.quantity}</td>
                                     </tr>
                                 ))}
                             </tbody>
