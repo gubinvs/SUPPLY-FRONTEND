@@ -229,15 +229,15 @@ const AddComponentApplication = (
                         type="text"
                         placeholder="Поисковая строка"
                         value={searchTerm}
-                       onChange={(e) => {
-                            setSearchTerm(e.target.value);
-                            setCurrentPage(1);
-                            setSelectedIds(new Set()); // Сброс выбранного чекбокса
-                            setArticle('');
-                            setName('');
-                            setShowEditPriceBlock(false);
-                            setCombinedOffers([]); // 👈 Очистка предложений
-                        }}
+                        onChange={(e) => {
+                                setSearchTerm(e.target.value);
+                                setCurrentPage(1);
+                                setSelectedIds(new Set()); // Сброс выбранного чекбокса
+                                setArticle('');
+                                setName('');
+                                setShowEditPriceBlock(false);
+                                setCombinedOffers([]); // 👈 Очистка предложений
+                            }}
                     />
 
                     {searchTerm.trim() && filteredItems.length > 0 && (
@@ -315,6 +315,18 @@ const AddComponentApplication = (
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                         />
+                        <select
+                            className="form-select"
+                            value={selectedProvider}
+                            onChange={(e) => setSelectedProvider(e.target.value)}
+                        >
+                            <option value="">Выбери производителя</option>
+                            {providers.map((item) => (
+                                <option key={item.guidIdProvider} value={item.guidIdProvider}>
+                                    {item.nameProvider}
+                                </option>
+                            ))}
+                        </select>
                         {!showEditPriceBlock && (
                             <button
                                 className="btn btn-outline-secondary"
