@@ -195,8 +195,6 @@ const AllOffersForSelected = ({ role, title }) => {
     };
 
 
-
-
   const renderRows = () => {
     const offers = getFilteredOffers();
     const startIndex = (currentPage - 1) * rowsPerPage;
@@ -266,7 +264,7 @@ const AllOffersForSelected = ({ role, title }) => {
                       className="btn btn-sm btn-outline-success"
                       onClick={exportBestByProviderToExcel}
                     >
-                      Скачать лучшие по поставщикам (Excel)
+                      Скачать файл заказа поставщикам (Excel)
                     </button>
                 </div>
                 <div>
@@ -327,7 +325,7 @@ const AllOffersForSelected = ({ role, title }) => {
                           <tr>
                             <th className="aos-table__th-article">Артикул</th>
                             <th>Наименование</th>
-                            <th className="aos-table__th-quant">Кол-во</th>
+                            
                             <th className="aos-table__th-price">Цена</th>
                             <th className="aos-table__th-term">Срок</th>
                             <th className="aos-table__th-data">Актуальность</th>
@@ -338,16 +336,16 @@ const AllOffersForSelected = ({ role, title }) => {
                             <tr key={idx}>
                               <td>{offer.vendorCode}</td>
                               <td>{offer.nameComponent}</td>
-                              <td className="aos-table__th-quant">{offer.quantity}</td>
+                             
                               <td>{offer.priceComponent.toLocaleString("ru-RU")} ₽</td>
                               <td>{offer.deliveryTimeComponent}</td>
                               <td>{new Date(offer.saveDataPrice).toLocaleDateString("ru-RU")}</td>
                             </tr>
                           ))}
                           <tr className="table">
-                            <td colSpan="3"><b>Итого</b></td>
+                            <td colSpan="2"><b>Итого</b></td>
                             <td><b>{totalPrice.toLocaleString("ru-RU")} ₽</b></td>
-                            <td colSpan="3"></td>
+                            <td colSpan="2"></td>
                           </tr>
                         </tbody>
                       </table>
