@@ -158,9 +158,9 @@ const AllOffersForSelected = ({ role, title }) => {
       const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
       const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
       saveAs(blob, "Предложения.xlsx");
-    };
+  };
 
-    const exportBestByProviderToExcel = () => {
+  const exportBestByProviderToExcel = () => {
       const wb = XLSX.utils.book_new();
 
       Object.entries(bestOffersByProvider).forEach(([provider, offers]) => {
@@ -173,17 +173,6 @@ const AllOffersForSelected = ({ role, title }) => {
           Срок: offer.deliveryTimeComponent,
           Актуальность: new Date(offer.saveDataPrice).toLocaleDateString("ru-RU"),
         }));
-
-        
-        // Добавление строки с итогом
-        // const total = sortedOffers.reduce((sum, o) => sum + o.priceComponent, 0);
-        // wsData.push({
-        //   Артикул: "",
-        //   Наименование: "Итого",
-        //   Цена: total,
-        //   Срок: "",
-        //   Актуальность: "",
-        // });
 
         const ws = XLSX.utils.json_to_sheet(wsData);
 
