@@ -114,9 +114,6 @@ const EditSupplyComponent = ({ role, components, title, error }) => {
     }, [components]);
 
 
-
-
-
     // Отправляем данные на сервер
     const handleSaveComponent = async () => {
         try {
