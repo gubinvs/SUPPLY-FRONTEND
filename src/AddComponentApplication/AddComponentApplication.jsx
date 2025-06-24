@@ -385,7 +385,7 @@ const AddComponentApplication = (
                                     </option>
                                 ))}
                             </select>
-                            <select
+                            {/* <select
                                 className="form-select aca-input-form__unit"
                                 value={selectedUnit}
                                 onChange={(e) => {
@@ -399,7 +399,7 @@ const AddComponentApplication = (
                                         {item.nameUnitMeasurement}
                                     </option>
                                 ))}
-                            </select>
+                            </select> */}
                         </div>
                         {!showEditPriceBlock && (
                             <button
