@@ -67,7 +67,7 @@ const EditSupplyComponent = ({ role, components, title, error }) => {
         }
     }, [selectedComponent]);
 
-    // Удаление номенклатуры
+    // Удаление номенклатуры из базы данных
     const handleDeleteComponent = async () => {
         if (!selectedComponent) return;
 
@@ -93,15 +93,23 @@ const EditSupplyComponent = ({ role, components, title, error }) => {
         }
     };
 
-    // подгружается информация по редактируемой номенклатуре
+
+
+    // Контроль и изменение данных о редактируемой номенклатуре
     useEffect(() => {
+        // Прочиталы из браузера данные о редактируемом артикуле, если переходим с другой страницы по ссылке на редактирование данных
         const article = localStorage.getItem("edit-article");
+
         if (article) {
+            // Записали данные о редактируемом артикуле
             setSearchQuery(article);
+
+            // Константа содержит отфтльтрованные данные о номенклатуре по артикулу или наименованию
             const filtered = components.filter(c =>
                 c.vendorCodeComponent?.toLowerCase().includes(article.toLowerCase()) ||
                 c.nameComponent?.toLowerCase().includes(article.toLowerCase())
             );
+            // Сохранили полученные данные если по артикулу
             setFilteredComponents(filtered);
 
             if (filtered.length === 1) {
@@ -109,13 +117,22 @@ const EditSupplyComponent = ({ role, components, title, error }) => {
                 
             }
         } else {
+            // Сохранили полученные данные еслиарикул не выбран
             setFilteredComponents(components);
         }
-    }, [components]);
+    }, [components]); // следим за изменениями
 
 
-    // Отправляем данные на сервер
+
+
+
+
+    // Отправляем данные на сервер для редактирования базы данных
     const handleSaveComponent = async () => {
+
+
+
+        
         try {
             const response = await fetch(ApiUrl+"/api/AddComponent", {
                 method: "POST",
