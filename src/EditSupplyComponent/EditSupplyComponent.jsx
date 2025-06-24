@@ -1,6 +1,12 @@
+// EditSupplyComponent.jsx
 import { useState, useEffect } from "react";
 import "./editSupplyComponent.css";
-import ApiUrl from "../js/ApiUrl.js";
+import { handleEditClick } from "../js/Utilits/nandleEditClick.js";
+import { handleSaveComponent } from "../js/Utilits/handleSaveComponent.js";
+import { handleDeleteComponent } from "../js/Utilits/handleDeleteComponent.js";
+import { loadUnitMeasurement } from "../js/Utilits/loadUnitMeasurement.js";
+import { loadManufacturer } from "../js/Utilits/loadManufacturer.js";
+import { onSearchChange } from "../js/Utilits/onSearchChange.js";
 import NavigationBarMin from "../NavigationBar/NavigationBarMin.jsx";
 import NavigationBarMax from "../NavigationBar/NavigationBarMax.jsx";
 import HeaderApplicationPanel from "../ApplicationPanel/Header/HeaderApplicationPanel.jsx";
@@ -12,173 +18,51 @@ const EditSupplyComponent = ({ role, components, title, error }) => {
 
     const [vendorCode, setVendorCode] = useState("");
     const [name, setName] = useState("");
-    const [manufacturer, setManufacturer] = useState([]); // Данные о наименовании производителей
-    const [unitMeasurement, setUnitMeasurement] = useState([]); // Данные о единицах измерения
-    const [selectedManufacturer, setSelectedManufacturer] = useState(''); // данные из выбранного списка про производителя
-    const [selectedUnit, setSelectedUnit] = useState(''); // данные из выбранного списка по единицам измерения
-  
-    
-    // Поиск и редактирование
+    const [manufacturer, setManufacturer] = useState([]);
+    const [unitMeasurement, setUnitMeasurement] = useState([]);
+    const [selectedManufacturer, setSelectedManufacturer] = useState('');
+    const [selectedUnit, setSelectedUnit] = useState('');
+
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredComponents, setFilteredComponents] = useState(components);
     const [selectedComponent, setSelectedComponent] = useState(null);
 
-    // Пагинация (если нужна)
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 15;
     const currentItems = filteredComponents.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
-    // Загрузка списка наименований производителей
-    async function loadManufacturer() {
-        try {
-            const responseManufacturer = await fetch(ApiUrl + "/api/ReturnListManufacturer");
-            const allManufacturer = await responseManufacturer.json();
-            setManufacturer(allManufacturer.manufacturer);
-        } catch (error) {
-            console.error("Ошибка загрузки поставщиков:", error);
+    useEffect(() => {
+        const article = localStorage.getItem("edit-article");
+
+        if (article) {
+            setSearchQuery(article);
+            const filtered = components.filter(c =>
+                c.vendorCodeComponent?.toLowerCase().includes(article.toLowerCase()) ||
+                c.nameComponent?.toLowerCase().includes(article.toLowerCase())
+            );
+            setFilteredComponents(filtered);
+            if (filtered.length === 1) setSelectedComponent(filtered[0]);
+        } else {
+            setFilteredComponents(components);
         }
-    }
+    }, [components]);
 
     useEffect(() => {
-        loadManufacturer();
+        loadUnitMeasurement(setUnitMeasurement);
+        loadManufacturer(setManufacturer);
     }, []);
-
-
-    // Загрузка списка единиц измерения
-    async function loadUnitMeasurement() {
-        try {
-            const responseUnit = await fetch(ApiUrl + "/api/ReturnListUnitMeasurement");
-            const allUnit = await responseUnit.json();
-            setUnitMeasurement(allUnit.unitMeasurement);
-        } catch (error) {
-            console.error("Ошибка загрузки поставщиков:", error);
-        }
-    }
-
-    useEffect(() => {
-        loadUnitMeasurement();
-    }, []);
-
 
     useEffect(() => {
         if (selectedComponent) {
             setVendorCode(selectedComponent.vendorCodeComponent);
             setName(selectedComponent.nameComponent);
+            setSelectedManufacturer(selectedComponent.manufacturerName);
+            setSelectedUnit(selectedComponent.unitMeasurementName);
         }
     }, [selectedComponent]);
 
-    // Удаление номенклатуры из базы данных
-    const handleDeleteComponent = async () => {
-        if (!selectedComponent) return;
 
-        const confirmDelete = window.confirm("Вы уверены, что хотите удалить этот компонент?");
-        if (!confirmDelete) return;
-
-        try {
-            const response = await fetch(ApiUrl+`/api/AddComponent/${selectedComponent.vendorCodeComponent}`, {
-                method: "DELETE",
-            });
-
-            if (response.ok) {
-                alert("Компонент успешно удалён.");
-                setSelectedComponent(null);
-                // Можно либо обновить components вручную, либо перезагрузить:
-                window.location.reload();
-            } else {
-                const err = await response.json();
-                alert("Ошибка при удалении: " + (err.message || response.status));
-            }
-        } catch (error) {
-            alert("Сетевая ошибка: " + error.message);
-        }
-    };
-
-
-
-    // Контроль и изменение данных о редактируемой номенклатуре
-    useEffect(() => {
-        // Прочиталы из браузера данные о редактируемом артикуле, если переходим с другой страницы по ссылке на редактирование данных
-        const article = localStorage.getItem("edit-article");
-
-        if (article) {
-            // Записали данные о редактируемом артикуле
-            setSearchQuery(article);
-
-            // Константа содержит отфтльтрованные данные о номенклатуре по артикулу или наименованию
-            const filtered = components.filter(c =>
-                c.vendorCodeComponent?.toLowerCase().includes(article.toLowerCase()) ||
-                c.nameComponent?.toLowerCase().includes(article.toLowerCase())
-            );
-            // Сохранили полученные данные если по артикулу
-            setFilteredComponents(filtered);
-
-            if (filtered.length === 1) {
-                setSelectedComponent(filtered[0]);
-                
-            }
-        } else {
-            // Сохранили полученные данные еслиарикул не выбран
-            setFilteredComponents(components);
-        }
-    }, [components]); // следим за изменениями
-
-
-
-
-
-
-    // Отправляем данные на сервер для редактирования базы данных
-    handleSaveComponent();
-    // const handleSaveComponent = async () => {
-
-    //     try {
-    //         const response = await fetch(ApiUrl+"/api/AddComponent", {
-    //             method: "POST",
-    //             headers: { "Content-Type": "application/json" },
-    //             body: JSON.stringify({
-    //                 vendorCodeComponent: vendorCode,
-    //                 nameComponent: name,
-    //             }),
-    //         });
-
-    //         if (response.ok) {
-    //             alert("Компонент успешно записан.");
-    //             window.location.reload();
-    //         } else {
-    //             const err = await response.json();
-    //             alert("Ошибка при сохранении: " + (err.message || response.status));
-    //         }
-    //     } catch (error) {
-    //         alert("Сетевая ошибка: " + error.message);
-    //     }
-    // };
-
-
-
-    const onSearchChange = (e) => {
-
-        const value = e.target.value;
-
-        setSearchQuery(value);
-
-        const filtered = components.filter(c =>
-            c.vendorCodeComponent?.toLowerCase().includes(value.toLowerCase()) ||
-            c.nameComponent?.toLowerCase().includes(value.toLowerCase())
-        );
-
-        setFilteredComponents(filtered);
-        setCurrentPage(1);
-    };
-
-
-    // Функция обработки клика на иконку редактировать компонент
-    handleEditClick(vendorCode);
-    // const handleEditClick = (vendorCode) => {
-    //     localStorage.setItem("edit-article", vendorCode);
-    //     window.location.reload();
-    // };
-
-    
+    console.log(selectedUnit);
 
     return (
         <div className="main-application-panel">
@@ -187,17 +71,16 @@ const EditSupplyComponent = ({ role, components, title, error }) => {
                 onHideMax={handleHideMax} 
                 isNavMaxVisible={isNavMaxVisible} 
             />
-            
             {isNavMaxVisible && <NavigationBarMax />}
             <HeaderApplicationPanel role={role} title={title} />
 
             <div className="main-application-panel__container">
-                <div className={selectedComponent === null?"edit-supply-component__content-block":"edit-supply-component__left-block"}>
+                <div className={selectedComponent === null ? "edit-supply-component__content-block" : "edit-supply-component__left-block"}>
                     <input
                         className="form-control edit-supply-component__search"
                         type="text"
                         value={searchQuery}
-                        onChange={onSearchChange}
+                        onChange={(e) => onSearchChange(e, components, setSearchQuery, setFilteredComponents, setCurrentPage)}
                         placeholder="Артикул или наименование"
                     />
 
@@ -206,10 +89,10 @@ const EditSupplyComponent = ({ role, components, title, error }) => {
                             <table className="table">
                                 <thead>
                                     <tr>
-                                        <th scope="col" className=""></th>
-                                        <th scope="col" className="">Артикул</th>
-                                        <th scope="col" className="">Наименование</th>
-                                        <th scope="col" className="table-borderless__th-edit">Edit</th>
+                                        <th></th>
+                                        <th>Артикул</th>
+                                        <th>Наименование</th>
+                                        <th className="table-borderless__th-edit">Edit</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -220,15 +103,12 @@ const EditSupplyComponent = ({ role, components, title, error }) => {
                                                     className="form-check-input"
                                                     type="checkbox"
                                                     checked={selectedComponent?.vendorCodeComponent === item.vendorCodeComponent}
-                                                    // На проверку: если уже выбран этот компонент — снимаем выделение (setSelectedComponent(null)), иначе выбираем:
                                                     onChange={() => {
                                                         if (selectedComponent?.vendorCodeComponent === item.vendorCodeComponent) {
-                                                            // Снимаем выбор и очищаем поиск
                                                             setSelectedComponent(null);
                                                             setSearchQuery('');
-                                                            setFilteredComponents(components); // сброс фильтра
+                                                            setFilteredComponents(components);
                                                         } else {
-                                                            // Выбираем новый компонент
                                                             setSelectedComponent(item);
                                                         }
                                                     }}
@@ -249,7 +129,6 @@ const EditSupplyComponent = ({ role, components, title, error }) => {
                                     ))}
                                 </tbody>
                             </table>
-                            {/* // Пагинация страниц */}
                             <div className="pagination">
                                 <button
                                     className="btn btn-sm btn-outline-primary me-2"
@@ -272,33 +151,28 @@ const EditSupplyComponent = ({ role, components, title, error }) => {
                         !error && <p>Данных не найдено.</p>
                     )}
                 </div>
-                {/* Блок редактирования */}
-                <div className={selectedComponent === null?"":"edit-supply-component__right-block"}>
-                    {selectedComponent === null?
-                    "":
+
+                <div className={selectedComponent === null ? "" : "edit-supply-component__right-block"}>
+                    {selectedComponent && (
                         <>
                             <button 
                                 type="button" 
-                                class="btn btn-outline-danger dit-supply-component__clear-botton"
-                                onClick={handleDeleteComponent}
+                                className="btn btn-outline-danger dit-supply-component__clear-botton"
+                                onClick={() => handleDeleteComponent(selectedComponent, selectedComponent.vendorCodeComponent, setSelectedComponent)}
                             >
                                 Удалить номенклатуру
                             </button>
                             <h5 className="edit-supply-component__title">Данные для редактирования:</h5>
                             <div className="edit-supply-component__title_fon"></div>
-                        </>
-                    }
-                        {selectedComponent && (
                             <div>
                                 <label className="edit-supply-component__label" htmlFor="Артикул">Артикул:</label>
-                               <input
+                                <input
                                     type="text"
                                     className="form-control mb-2 dit-supply-component__edit-input"
                                     value={vendorCode}
-                                    // onChange={(e) => setVendorCode(e.target.value)}
                                     readOnly
                                 />
-                                <label className="edit-supply-component__label"  htmlFor="Наименование">Наименование:</label>
+                                <label className="edit-supply-component__label" htmlFor="Наименование">Наименование:</label>
                                 <textarea
                                     className="form-control mb-2 dit-supply-component__edit-textarea"
                                     value={name}
@@ -313,9 +187,9 @@ const EditSupplyComponent = ({ role, components, title, error }) => {
                                             localStorage.setItem("lastManufacturer", e.target.value);
                                         }}
                                     >
-                                        <option value="">Производитель</option>
+                                        <option value={selectedManufacturer}>{selectedManufacturer != null ? selectedManufacturer: "Производитель"}</option>
                                         {manufacturer.map((item, index) => (
-                                            <option key={index} value={item.guidIdManufacturer}>
+                                            <option key={index} value={item.nameManufacturer}>
                                                 {item.nameManufacturer}
                                             </option>
                                         ))}
@@ -328,9 +202,9 @@ const EditSupplyComponent = ({ role, components, title, error }) => {
                                             localStorage.setItem("lastUnit", e.target.value);
                                         }}
                                     >
-                                        <option value="">Ед. изм.</option>
+                                        <option value={selectedUnit}>{selectedUnit != null ? selectedUnit:"Ед. изм."}</option>
                                         {unitMeasurement.map((item, index) => (
-                                            <option key={index} value={item.guidIdUnitMeasurement}>
+                                            <option key={index} value={item.nameUnitMeasurement}>
                                                 {item.nameUnitMeasurement}
                                             </option>
                                         ))}
@@ -338,13 +212,14 @@ const EditSupplyComponent = ({ role, components, title, error }) => {
                                 </div>
                                 <button 
                                     type="button" 
-                                    class="btn btn-outline-secondary dit-supply-component__save-botton"
-                                    onClick={handleSaveComponent}
+                                    className="btn btn-outline-secondary dit-supply-component__save-botton"
+                                    onClick={() => handleSaveComponent(vendorCode, name, selectedManufacturer, selectedUnit, manufacturer, unitMeasurement)}
                                 >
                                     Сохранить изменения
                                 </button>
                             </div>
-                        )}
+                        </>
+                    )}
                 </div>
             </div>
         </div>

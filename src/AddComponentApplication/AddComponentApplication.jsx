@@ -360,7 +360,11 @@ const AddComponentApplication = (
                             className="form-control aca-input-form__article"
                             placeholder="Артикул"
                             value={article}
-                            onChange={(e) => setArticle(e.target.value)}
+                            onChange={(e) => {
+                                setArticle(e.target.value);
+                                setSelectedManufacturer("");
+                                setSelectedUnit("");
+                            }}
                         />
                         <input
                             type="text"
