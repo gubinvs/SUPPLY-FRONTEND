@@ -66,3 +66,15 @@
 .add-component-application__add-provider-block {
     margin-bottom: 20px;
 }
+
+.aca-input-form__manufacturer-block {
+    display: flex;
+    margin-bottom: 20px;
+}
+.aca-input-form__manufacturer {
+    width: 100%;
+}
+
+.aca-input-form__unit {
+    width: 120px;
+}

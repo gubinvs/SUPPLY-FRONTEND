@@ -1,6 +1,5 @@
 import { useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
-import {manufacturer, unitMeasurement} from "./manufacturer.js";
 import "./addComponentApplication.css";
 import ApiUrl from "../js/ApiUrl.js";
 import { handleAnalyzeClick } from "../js/Utilits/handleAnalyzeClick.js";
@@ -24,9 +23,13 @@ const AddComponentApplication = (
     const [price, setPrice] = useState('');
     const [deliveryTerm, setDeliveryTerm] = useState('');
     const [providerId, setProviderId] = useState('');
-    const [providers, setProviders] = useState([]);
+    const [providers, setProviders] = useState([]); // Данные о наименовании компаний поставщиков
     const [showEditPriceBlock, setShowEditPriceBlock] = useState(false);
+    const [manufacturer, setManufacturer] = useState([]); // Данные о наименовании производителей
+    const [unitMeasurement, setUnitMeasurement] = useState([]); // Данные о единицах измерения
     const [combinedOffers, setCombinedOffers] = useState([]); // для цен поставщиков
+    const [selectedManufacturer, setSelectedManufacturer] = useState(''); // данные из выбранного списка про производителя
+    const [selectedUnit, setSelectedUnit] = useState(''); // данные из выбранного списка по единицам измерения
     const navigate = useNavigate();
 
     // Преобразуй данные поставщиков в формат, понятный React Select
@@ -40,6 +43,7 @@ const AddComponentApplication = (
             item.vendorCodeComponent.toLowerCase().includes(searchTerm.toLowerCase()) ||
             item.nameComponent.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
 
     const totalPages = Math.ceil(filteredItems.length / ITEMS_PER_PAGE);
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -83,6 +87,7 @@ const AddComponentApplication = (
         });
     };
 
+    // Загрузка списка компаний поставщиков
     async function loadProviders() {
         try {
             const response = await fetch(ApiUrl + "/api/ReturnListProvider");
@@ -97,17 +102,59 @@ const AddComponentApplication = (
         loadProviders();
     }, []);
 
+
+    // Загрузка списка наименований производителей
+    async function loadManufacturer() {
+        try {
+            const responseManufacturer = await fetch(ApiUrl + "/api/ReturnListManufacturer");
+            const allManufacturer = await responseManufacturer.json();
+            setManufacturer(allManufacturer.manufacturer);
+        } catch (error) {
+            console.error("Ошибка загрузки поставщиков:", error);
+        }
+    }
+
+    useEffect(() => {
+        loadManufacturer();
+    }, []);
+
+
+    // Загрузка списка единиц измерения
+    async function loadUnitMeasurement() {
+        try {
+            const responseUnit = await fetch(ApiUrl + "/api/ReturnListUnitMeasurement");
+            const allUnit = await responseUnit.json();
+            setUnitMeasurement(allUnit.unitMeasurement);
+        } catch (error) {
+            console.error("Ошибка загрузки поставщиков:", error);
+        }
+    }
+
+    useEffect(() => {
+        loadUnitMeasurement();
+    }, []);
+
+
+    // Функция заполнения данных о новой номенклатуре
     const handleAddComponent = async () => {
         if (!article || !name) {
             alert('Заполните оба поля');
             return;
         }
 
+        // Запрос на добавление номенклатуры
+        const request = {
+            vendorCodeComponent: article,
+            nameComponent: name,
+            guidIdManufacturer: selectedManufacturer,
+            guidIdUnitMeasurement: selectedUnit
+        };
+
         try {
             const response = await fetch(ApiUrl + '/api/AddComponent', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ vendorCodeComponent: article, nameComponent: name })
+                body: JSON.stringify(request)
             });
 
             if (response.ok) {
@@ -134,6 +181,8 @@ const AddComponentApplication = (
         }
     };
 
+
+    // Функция записи новых цен
     const handleSavePrice = async () => {
         if (!article || !price || !providerId || !deliveryTerm) {
             alert("Заполните все поля для записи цены");
@@ -201,16 +250,20 @@ const AddComponentApplication = (
         }
     };
 
+
     // Заполним последнего выбранного поставщика
     useEffect(() => {
         loadProviders();
-
-        // Восстановление providerId
         const savedProviderId = localStorage.getItem("lastProviderId");
-        if (savedProviderId) {
-            setProviderId(savedProviderId);
-        }
+        if (savedProviderId) setProviderId(savedProviderId);
+
+        const savedManufacturer = localStorage.getItem("lastManufacturer");
+        if (savedManufacturer) setSelectedManufacturer(savedManufacturer);
+
+        const savedUnit = localStorage.getItem("lastUnit");
+        if (savedUnit) setSelectedUnit(savedUnit);
     }, []);
+
 
 
     return (
@@ -316,26 +369,38 @@ const AddComponentApplication = (
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                         />
-                        <select
-                            className="form-select aca-input-form__name"
-                        >
-                            <option value="">Выбери производителя</option>
-                            {manufacturer.map((item, index) => (
-                                <option key={index} value={item}>
-                                    {item}
-                                </option>
-                            ))}
-                        </select>
-                        <select
-                            className="form-select aca-input-form__name"
-                        >
-                            <option value="">Едница измерения</option>
-                            {unitMeasurement.map((item, index) => (
-                                <option key={index} value={item}>
-                                    {item}
-                                </option>
-                            ))}
-                        </select>
+                        <div className="aca-input-form__manufacturer-block">
+                            <select
+                                className="form-select aca-input-form__manufacturer"
+                                value={selectedManufacturer}
+                                onChange={(e) => {
+                                    setSelectedManufacturer(e.target.value);
+                                    localStorage.setItem("lastManufacturer", e.target.value);
+                                }}
+                            >
+                                <option value="">Производитель</option>
+                                {manufacturer.map((item, index) => (
+                                    <option key={index} value={item.guidIdManufacturer}>
+                                        {item.nameManufacturer}
+                                    </option>
+                                ))}
+                            </select>
+                            <select
+                                className="form-select aca-input-form__unit"
+                                value={selectedUnit}
+                                onChange={(e) => {
+                                    setSelectedUnit(e.target.value);
+                                    localStorage.setItem("lastUnit", e.target.value);
+                                }}
+                            >
+                                <option value="">Ед. изм.</option>
+                                {unitMeasurement.map((item, index) => (
+                                    <option key={index} value={item.guidIdUnitMeasurement}>
+                                        {item.nameUnitMeasurement}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
                         {!showEditPriceBlock && (
                             <button
                                 className="btn btn-outline-secondary"
@@ -370,21 +435,6 @@ const AddComponentApplication = (
                                 <option value="от 16 до 20 нед">от 16 до 20 нед</option>
                                 <option value="от 20 до 24 нед">от 20 до 24 нед</option>
                             </select>
-                            {/* <select
-                                className="form-select aca-input-form__select"
-                                value={providerId}
-                                onChange={(e) => {
-                                    setProviderId(e.target.value);
-                                    localStorage.setItem("lastProviderId", e.target.value);
-                                }}
-                            >
-                                <option value="">Выбери поставщика</option>
-                                {providers.map((item) => (
-                                    <option key={item.guidIdProvider} value={item.guidIdProvider}>
-                                        {item.nameProvider}
-                                    </option>
-                                ))}
-                            </select> */}
                             {/* // Преобразуй данные поставщиков в формат, понятный React Select */}
                             <Select
                             className="basic-single"
