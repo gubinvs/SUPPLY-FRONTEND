@@ -128,48 +128,57 @@ const EditSupplyComponent = ({ role, components, title, error }) => {
 
 
     // Отправляем данные на сервер для редактирования базы данных
-    const handleSaveComponent = async () => {
+    handleSaveComponent();
+    // const handleSaveComponent = async () => {
+
+    //     try {
+    //         const response = await fetch(ApiUrl+"/api/AddComponent", {
+    //             method: "POST",
+    //             headers: { "Content-Type": "application/json" },
+    //             body: JSON.stringify({
+    //                 vendorCodeComponent: vendorCode,
+    //                 nameComponent: name,
+    //             }),
+    //         });
+
+    //         if (response.ok) {
+    //             alert("Компонент успешно записан.");
+    //             window.location.reload();
+    //         } else {
+    //             const err = await response.json();
+    //             alert("Ошибка при сохранении: " + (err.message || response.status));
+    //         }
+    //     } catch (error) {
+    //         alert("Сетевая ошибка: " + error.message);
+    //     }
+    // };
 
 
-
-        
-        try {
-            const response = await fetch(ApiUrl+"/api/AddComponent", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    vendorCodeComponent: vendorCode,
-                    nameComponent: name,
-                }),
-            });
-
-            if (response.ok) {
-                alert("Компонент успешно записан.");
-                window.location.reload();
-            } else {
-                const err = await response.json();
-                alert("Ошибка при сохранении: " + (err.message || response.status));
-            }
-        } catch (error) {
-            alert("Сетевая ошибка: " + error.message);
-        }
-    };
 
     const onSearchChange = (e) => {
+
         const value = e.target.value;
+
         setSearchQuery(value);
+
         const filtered = components.filter(c =>
             c.vendorCodeComponent?.toLowerCase().includes(value.toLowerCase()) ||
             c.nameComponent?.toLowerCase().includes(value.toLowerCase())
         );
+
         setFilteredComponents(filtered);
         setCurrentPage(1);
     };
+
+
     // Функция обработки клика на иконку редактировать компонент
-    const handleEditClick = (vendorCode) => {
-        localStorage.setItem("edit-article", vendorCode);
-        window.location.reload();
-    };
+    handleEditClick(vendorCode);
+    // const handleEditClick = (vendorCode) => {
+    //     localStorage.setItem("edit-article", vendorCode);
+    //     window.location.reload();
+    // };
+
+    
 
     return (
         <div className="main-application-panel">
