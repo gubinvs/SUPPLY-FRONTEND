@@ -12,7 +12,12 @@ const EditSupplyComponent = ({ role, components, title, error }) => {
 
     const [vendorCode, setVendorCode] = useState("");
     const [name, setName] = useState("");
-
+    const [manufacturer, setManufacturer] = useState([]); // Данные о наименовании производителей
+    const [unitMeasurement, setUnitMeasurement] = useState([]); // Данные о единицах измерения
+    const [selectedManufacturer, setSelectedManufacturer] = useState(''); // данные из выбранного списка про производителя
+    const [selectedUnit, setSelectedUnit] = useState(''); // данные из выбранного списка по единицам измерения
+  
+    
     // Поиск и редактирование
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredComponents, setFilteredComponents] = useState(components);
@@ -22,6 +27,38 @@ const EditSupplyComponent = ({ role, components, title, error }) => {
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 15;
     const currentItems = filteredComponents.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
+    // Загрузка списка наименований производителей
+    async function loadManufacturer() {
+        try {
+            const responseManufacturer = await fetch(ApiUrl + "/api/ReturnListManufacturer");
+            const allManufacturer = await responseManufacturer.json();
+            setManufacturer(allManufacturer.manufacturer);
+        } catch (error) {
+            console.error("Ошибка загрузки поставщиков:", error);
+        }
+    }
+
+    useEffect(() => {
+        loadManufacturer();
+    }, []);
+
+
+    // Загрузка списка единиц измерения
+    async function loadUnitMeasurement() {
+        try {
+            const responseUnit = await fetch(ApiUrl + "/api/ReturnListUnitMeasurement");
+            const allUnit = await responseUnit.json();
+            setUnitMeasurement(allUnit.unitMeasurement);
+        } catch (error) {
+            console.error("Ошибка загрузки поставщиков:", error);
+        }
+    }
+
+    useEffect(() => {
+        loadUnitMeasurement();
+    }, []);
+
 
     useEffect(() => {
         if (selectedComponent) {
@@ -56,7 +93,7 @@ const EditSupplyComponent = ({ role, components, title, error }) => {
         }
     };
 
-    // Автозагрузка артикула из localStorage
+    // подгружается информация по редактируемой номенклатуре
     useEffect(() => {
         const article = localStorage.getItem("edit-article");
         if (article) {
@@ -69,11 +106,16 @@ const EditSupplyComponent = ({ role, components, title, error }) => {
 
             if (filtered.length === 1) {
                 setSelectedComponent(filtered[0]);
+                
             }
         } else {
             setFilteredComponents(components);
         }
     }, [components]);
+
+
+
+
 
     // Отправляем данные на сервер
     const handleSaveComponent = async () => {
@@ -98,7 +140,6 @@ const EditSupplyComponent = ({ role, components, title, error }) => {
             alert("Сетевая ошибка: " + error.message);
         }
     };
-
 
     const onSearchChange = (e) => {
         const value = e.target.value;
@@ -240,6 +281,38 @@ const EditSupplyComponent = ({ role, components, title, error }) => {
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
                                 />
+                                <div className="aca-input-form__manufacturer-block">
+                                    <select
+                                        className="form-select aca-input-form__manufacturer"
+                                        value={selectedManufacturer}
+                                        onChange={(e) => {
+                                            setSelectedManufacturer(e.target.value);
+                                            localStorage.setItem("lastManufacturer", e.target.value);
+                                        }}
+                                    >
+                                        <option value="">Производитель</option>
+                                        {manufacturer.map((item, index) => (
+                                            <option key={index} value={item.guidIdManufacturer}>
+                                                {item.nameManufacturer}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    <select
+                                        className="form-select aca-input-form__unit"
+                                        value={selectedUnit}
+                                        onChange={(e) => {
+                                            setSelectedUnit(e.target.value);
+                                            localStorage.setItem("lastUnit", e.target.value);
+                                        }}
+                                    >
+                                        <option value="">Ед. изм.</option>
+                                        {unitMeasurement.map((item, index) => (
+                                            <option key={index} value={item.guidIdUnitMeasurement}>
+                                                {item.nameUnitMeasurement}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
                                 <button 
                                     type="button" 
                                     class="btn btn-outline-secondary dit-supply-component__save-botton"
