@@ -360,6 +360,9 @@ const AddComponentApplication = (
                                 setSearchTerm(e.target.value);
                                 setCurrentPage(1);
                                 setSelectedIds(new Set()); // Сброс выбранного чекбокса
+                                setName('');
+                                setShowEditPriceBlock(false);
+                                setCombinedOffers([]); // 👈 Очистка предложений
                             }}
                         />
                         <input
