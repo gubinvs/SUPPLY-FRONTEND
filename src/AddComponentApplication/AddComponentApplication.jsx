@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./addComponentApplication.css";
 import ApiUrl from "../js/ApiUrl.js";
 import { handleAnalyzeClick } from "../js/Utilits/handleAnalyzeClick.js";
+import { handleSaveComponent } from "../js/Utilits/handleSaveComponent.js";
 import NavigationBarMin from "../NavigationBar/NavigationBarMin.jsx";
 import NavigationBarMax from "../NavigationBar/NavigationBarMax.jsx";
 import HeaderApplicationPanel from "../ApplicationPanel/Header/HeaderApplicationPanel.jsx";
@@ -138,51 +139,55 @@ const AddComponentApplication = (
     }, []);
 
 
+
+
     // Функция заполнения данных о новой номенклатуре
-    const handleAddComponent = async () => {
-        if (!article || !name) {
-            alert('Заполните оба поля');
-            return;
-        }
+    // const handleAddComponent = async () => {
+    //     if (!article || !name) {
+    //         alert('Заполните оба поля');
+    //         return;
+    //     }
 
-        // Запрос на добавление номенклатуры
-        const request = {
-            vendorCodeComponent: article,
-            nameComponent: name,
-            guidIdManufacturer: selectedManufacturer,
-            guidIdUnitMeasurement: selectedUnit
-        };
+    //     // Запрос на добавление номенклатуры
+    //     const request = {
+    //         vendorCodeComponent: article,
+    //         nameComponent: name,
+    //         guidIdManufacturer: selectedManufacturer,
+    //         guidIdUnitMeasurement: selectedUnit
+    //     };
 
-        try {
-            const response = await fetch(ApiUrl + '/api/AddComponent', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(request)
-            });
+    //     console.log(request);
 
-            if (response.ok) {
-                // const addedComponent = await response.json(); // если backend возвращает добавленный объект
+    //     try {
+    //         const response = await fetch(ApiUrl + '/api/AddComponent', {
+    //             method: 'POST',
+    //             headers: { 'Content-Type': 'application/json' },
+    //             body: JSON.stringify(request)
+    //         });
 
-                // Очистка старого состояния
-                setSelectedIds(new Set());
-                setPrice('');
-                setDeliveryTerm('');
-                setShowEditPriceBlock(false);
+    //         if (response.ok) {
+    //             // const addedComponent = await response.json(); // если backend возвращает добавленный объект
 
-                // Установка нового артикула
-                setSearchTerm(article);       // покажет в списке
-                setName(name);                // оставим имя
-                setArticle(article);          // артикул в input
-                setShowEditPriceBlock(true);  // показать блок цен
-                fetchPrices(article);         // загрузка предложений
-            } else {
-                const errorText = await response.text();
-                alert(`Ошибка при добавлении: ${errorText}`);
-            }
-        } catch (error) {
-            alert(`Ошибка соединения: ${error}`);
-        }
-    };
+    //             // Очистка старого состояния
+    //             setSelectedIds(new Set());
+    //             setPrice('');
+    //             setDeliveryTerm('');
+    //             setShowEditPriceBlock(false);
+
+    //             // Установка нового артикула
+    //             setSearchTerm(article);       // покажет в списке
+    //             setName(name);                // оставим имя
+    //             setArticle(article);          // артикул в input
+    //             setShowEditPriceBlock(true);  // показать блок цен
+    //             fetchPrices(article);         // загрузка предложений
+    //         } else {
+    //             const errorText = await response.text();
+    //             alert(`Ошибка при добавлении: ${errorText}`);
+    //         }
+    //     } catch (error) {
+    //         alert(`Ошибка соединения: ${error}`);
+    //     }
+    // };
 
 
     // Функция записи новых цен
@@ -260,7 +265,6 @@ const AddComponentApplication = (
         const savedProviderId = localStorage.getItem("lastProviderId");
         if (savedProviderId) setProviderId(savedProviderId);
     }, []);
-
 
 
     return (
@@ -373,47 +377,47 @@ const AddComponentApplication = (
                             onChange={(e) => setName(e.target.value)}
                         />
                         <div className="aca-input-form__manufacturer-block">
-                            <select
-                                className="form-select aca-input-form__manufacturer"
-                                value={selectedManufacturer}
-                                onChange={(selectedOption) => {
-                                                    if (selectedOption) {
-                                                        setSelectedManufacturer(selectedOption.value);
-                                                        localStorage.setItem("lastManufacturer", selectedOption.value);
-                                                    } else {
-                                                        setSelectedManufacturer(null);
-                                                        localStorage.removeItem("lastManufacturer"); // или установи значение по умолчанию
-                                                    }
-                                                    }}
+                        <Select
+                                    className="aca-input-form__manufacturer"
+                                    options={manufacturer.map((item) => ({
+                                        value: item.nameManufacturer,
+                                        label: item.nameManufacturer
+                                    }))}
+                                    value={selectedManufacturer ? { value: selectedManufacturer, label: selectedManufacturer } : null}
+                                    onChange={(selectedOption) => {
+                                                if (selectedOption) {
+                                                    setSelectedManufacturer(selectedOption.value);
+                                                    localStorage.setItem("lastManufacturer", selectedOption.value);
+                                                } else {
+                                                    setSelectedManufacturer(null);
+                                                    localStorage.removeItem("lastManufacturer"); // или установи значение по умолчанию
+                                                }
+                                                }}
+                                    placeholder="Выберите производителя..."
+                                    isClearable
+                                    isSearchable
+                                />
+                                <select
+                                    className="form-select aca-input-form__unit"
+                                    value={selectedUnit}
+                                    onChange={(e) => {
+                                        setSelectedUnit(e.target.value);
+                                        localStorage.setItem("lastUnit", e.target.value);
+                                    }}
                                 >
-                                <option value={selectedManufacturer}>{selectedManufacturer !== ""? selectedManufacturer : "Производитель"}</option>
-                                {manufacturer.map((item, index) => (
-                                    <option key={index} value={item.guidIdManufacturer}>
-                                        {item.nameManufacturer}
-                                    </option>
-                                ))}
-                            </select>
-                            <select
-                                className="form-select aca-input-form__unit"
-                                value={selectedUnit}
-                                onChange={(e) => {
-                                    setSelectedUnit(e.target.value);
-                                    localStorage.setItem("lastUnit", e.target.value);
-                                }}
-                            >
-                                <option value={selectedUnit}>{selectedUnit !== "" ? selectedUnit :"Ед. изм."}</option>
-                                {unitMeasurement.map((item, index) => (
-                                    <option key={index} value={item.nameUnitMeasurement}>
-                                        {item.nameUnitMeasurement}
-                                    </option>
-                                ))}
-                            </select>
+                                    <option value={selectedUnit}>{selectedUnit != null ? selectedUnit:"Ед. изм."}</option>
+                                    {unitMeasurement.map((item, index) => (
+                                        <option key={index} value={item.nameUnitMeasurement}>
+                                            {item.nameUnitMeasurement}
+                                        </option>
+                                    ))}
+                                </select>
                         </div>
                         {!showEditPriceBlock && (
                             <button
                                 className="btn btn-outline-secondary"
                                 type="button"
-                                onClick={handleAddComponent}
+                                onClick={()=> handleSaveComponent(article, name, selectedManufacturer, selectedUnit, manufacturer, unitMeasurement)}
                             >
                                 Добавить
                             </button>

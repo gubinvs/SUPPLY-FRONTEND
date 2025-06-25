@@ -93,6 +93,8 @@ const EditSupplyComponent = ({ role, components, title, error }) => {
                                         <th></th>
                                         <th>Артикул</th>
                                         <th>Наименование</th>
+                                        <th scope="col" className="table-borderless__manuf">Производитель</th>
+                                        <th scope="col" className="table-borderless__um">Ед. изм</th>
                                         <th className="table-borderless__th-edit">Edit</th>
                                     </tr>
                                 </thead>
@@ -117,6 +119,8 @@ const EditSupplyComponent = ({ role, components, title, error }) => {
                                             </td>
                                             <td>{item.vendorCodeComponent}</td>
                                             <td>{item.nameComponent}</td>
+                                            <td>{item.manufacturerName}</td>
+                                            <td className="table-borderless__um">{item.unitMeasurementName}</td>
                                             <td className="table-borderless__edit">
                                                 <img
                                                     className="table-borderless__icon-edit"
@@ -180,14 +184,14 @@ const EditSupplyComponent = ({ role, components, title, error }) => {
                                     onChange={(e) => setName(e.target.value)}
                                 />
                                 <div className="aca-input-form__manufacturer-block">
-                                    <Select
-                                        className="aca-input-form__manufacturer"
-                                        options={manufacturer.map((item) => ({
-                                            value: item.nameManufacturer,
-                                            label: item.nameManufacturer
-                                        }))}
-                                        value={selectedManufacturer ? { value: selectedManufacturer, label: selectedManufacturer } : null}
-                                       onChange={(selectedOption) => {
+                                <Select
+                                    className="aca-input-form__manufacturer"
+                                    options={manufacturer.map((item) => ({
+                                        value: item.nameManufacturer,
+                                        label: item.nameManufacturer
+                                    }))}
+                                    value={selectedManufacturer ? { value: selectedManufacturer, label: selectedManufacturer } : null}
+                                    onChange={(selectedOption) => {
                                                 if (selectedOption) {
                                                     setSelectedManufacturer(selectedOption.value);
                                                     localStorage.setItem("lastManufacturer", selectedOption.value);
@@ -196,25 +200,25 @@ const EditSupplyComponent = ({ role, components, title, error }) => {
                                                     localStorage.removeItem("lastManufacturer"); // или установи значение по умолчанию
                                                 }
                                                 }}
-                                        placeholder="Выберите производителя..."
-                                        isClearable
-                                        isSearchable
-                                    />
-                                    <select
-                                        className="form-select aca-input-form__unit"
-                                        value={selectedUnit}
-                                        onChange={(e) => {
-                                            setSelectedUnit(e.target.value);
-                                            localStorage.setItem("lastUnit", e.target.value);
-                                        }}
-                                    >
-                                        <option value={selectedUnit}>{selectedUnit != null ? selectedUnit:"Ед. изм."}</option>
-                                        {unitMeasurement.map((item, index) => (
-                                            <option key={index} value={item.nameUnitMeasurement}>
-                                                {item.nameUnitMeasurement}
-                                            </option>
-                                        ))}
-                                    </select>
+                                    placeholder="Выберите производителя..."
+                                    isClearable
+                                    isSearchable
+                                />
+                                <select
+                                    className="form-select aca-input-form__unit"
+                                    value={selectedUnit}
+                                    onChange={(e) => {
+                                        setSelectedUnit(e.target.value);
+                                        localStorage.setItem("lastUnit", e.target.value);
+                                    }}
+                                >
+                                    <option value={selectedUnit}>{selectedUnit != null ? selectedUnit:"Ед. изм."}</option>
+                                    {unitMeasurement.map((item, index) => (
+                                        <option key={index} value={item.nameUnitMeasurement}>
+                                            {item.nameUnitMeasurement}
+                                        </option>
+                                    ))}
+                                </select>
                                 </div>
                                 <button 
                                     type="button" 

@@ -28,6 +28,13 @@ export const handleSaveComponent = async (vendorCode, name, selectedManufacturer
             }),
         });
 
+        console.log( JSON.stringify({
+            vendorCodeComponent: vendorCode,
+            nameComponent: name,
+            guidIdManufacturer: guidIdManufact,
+            guidIdUnitMeasurement: guidIdUnit
+        }),);
+
         if (response.ok) {
             alert("Компонент успешно записан.");
             window.location.reload();

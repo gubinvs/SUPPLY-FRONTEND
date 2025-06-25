@@ -20,6 +20,10 @@ export const handleDeleteComponent = async (selectedComponent, vendorCode, setSe
             // как передать на верх?
             setSelectedComponent(null);
 
+            // Обнулим ключ в браузере
+            localStorage.setItem("edit-article", "");
+
+
             // Можно либо обновить components вручную, либо перезагрузить:
             window.location.reload();
         } else {

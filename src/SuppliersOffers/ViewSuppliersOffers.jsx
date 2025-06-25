@@ -92,7 +92,7 @@ const ViewSuppliersOffers = (
                                     <th scope="col" className="table-borderless__article">Артикул</th>
                                     <th scope="col" className="table-borderless__name">Наименование</th>
                                     <th scope="col" className="table-borderless__manuf">Производитель</th>
-                                     <th scope="col" className="table-borderless__um">Ед. изм</th>
+                                    <th scope="col" className="table-borderless__um">Ед. изм</th>
                                     <th scope="col" className="table-borderless__th-edit">Edit</th>
                                 </tr>
                             </thead>
