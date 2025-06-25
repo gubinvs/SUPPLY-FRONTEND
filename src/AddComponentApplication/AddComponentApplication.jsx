@@ -453,7 +453,7 @@ const AddComponentApplication = (
                                     localStorage.setItem("lastProviderId", selectedOption?.value || "");
                                 }}
                                 options={providerOptions}
-                                placeholder="Выбери поставщика"
+                                placeholder="Выберите поставщика"
                                 isClearable
                                 isSearchable
                             />
