@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import "../ApplicationPanel/applicationPanel.css";
 import "./viewSuppliersOffers.css";
 import { handleAnalyzeClick } from "../js/Utilits/handleAnalyzeClick.js";
+import NomenclatureTable from "../ElementApplication/NomenclatureTable.jsx";
+import PaginationControls from "../ElementApplication/PaginationControls.jsx";
 
 
 const ViewSuppliersOffers = (
@@ -15,23 +17,6 @@ const ViewSuppliersOffers = (
     const itemsPerPage = 15;
     const navigate = useNavigate();
 
-    const handleCheckboxToggle = (id) => {
-        setSelectedIds(prev => {
-            const newSet = new Set(prev);
-            if (newSet.has(id)) {
-                newSet.delete(id);
-            } else {
-                newSet.add(id);
-            }
-            return newSet;
-        });
-    };
-
-    // Функция обработки клика на иконку редактировать компонент
-    const handleEditClick = (vendorCode) => {
-        localStorage.setItem("edit-article", vendorCode);
-        navigate("/EditSupplyComponent");
-    };
 
     // Начинаем выдавать данные для отображения на странице только после изменения (вводе данных в форму)
     const [filteredComponents, setFilteredComponents] = useState([]);
@@ -49,13 +34,6 @@ const ViewSuppliersOffers = (
     const currentItems = filteredComponents.slice(indexOfFirstItem, indexOfLastItem);
     const totalPages = Math.ceil(filteredComponents.length / itemsPerPage);
 
-    const handleNextPage = () => {
-        if (currentPage < totalPages) setCurrentPage(currentPage + 1);
-    };
-
-    const handlePrevPage = () => {
-        if (currentPage > 1) setCurrentPage(currentPage - 1);
-    };
 
     return (
         <div className="main-application-panel__container">
@@ -85,64 +63,19 @@ const ViewSuppliersOffers = (
 
                 {components.length > 0 ? (
                     <>
-                        <table className="table">
-                            <thead className="table-borderless__theder">
-                                <tr>
-                                    <th scope="col" className="table-borderless__check-coll"></th>
-                                    <th scope="col" className="table-borderless__article">Артикул</th>
-                                    <th scope="col" className="table-borderless__name">Наименование</th>
-                                    <th scope="col" className="table-borderless__manuf">Производитель</th>
-                                    <th scope="col" className="table-borderless__um">Ед. изм</th>
-                                    <th scope="col" className="table-borderless__th-edit">Edit</th>
-                                </tr>
-                            </thead>
-                            <tbody className="table-borderless__tbody">
-                                {/* Заполнение таблицы */}
-                                {currentItems.map((item) => (
-                                    <tr key={item.id} className="ts-tbody__tr">
-                                        <td>
-                                            <input
-                                                className="form-check-input"
-                                                type="checkbox"
-                                                checked={selectedIds.has(item.id)}
-                                                onChange={() => handleCheckboxToggle(item.id)}
-                                            />
-                                        </td>
-                                        <td>{item.vendorCodeComponent}</td>
-                                        <td>{item.nameComponent}</td>
-                                        <td>{item.manufacturerName}</td>
-                                        <td className="table-borderless__um">{item.unitMeasurementName}</td>
-                                        <td className="table-borderless__edit">
-                                            <img
-                                                className="table-borderless__icon-edit"
-                                                src="../images/file-pen-line__table.svg"
-                                                alt="Редактировать"
-                                                onClick={() => handleEditClick(item.vendorCodeComponent)}
-                                                style={{ cursor: "pointer" }}
-                                            />
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                        {/* Таблица выдачи данных о номенклатуре приложения */}
+                        <NomenclatureTable 
+                            currentItems={currentItems}
+                            selectedIds={selectedIds}
+                            setSelectedIds={setSelectedIds}
+                        />
                         <div className="pagination-controls__block">
-                            <div className="pagination-controls">
-                                <button
-                                    className="btn btn-outline-primary me-2 pagination-controls__button"
-                                    onClick={handlePrevPage}
-                                    disabled={currentPage === 1}
-                                >
-                                    &#8592;
-                                </button>
-                                <span>Страница {currentPage} из {totalPages}</span>
-                                <button
-                                    className="btn btn-outline-primary ms-2 pagination-controls__button"
-                                    onClick={handleNextPage}
-                                    disabled={currentPage === totalPages}
-                                >
-                                    &#8594;
-                                </button>
-                            </div>
+                            <PaginationControls
+                                currentPage={currentPage}
+                                setCurrentPage={setCurrentPage}
+                                totalPages={totalPages}
+
+                            />
                         </div>
                     </>
                 ) : (
