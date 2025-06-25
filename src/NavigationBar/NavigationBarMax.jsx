@@ -65,7 +65,7 @@ const NavigationBarMax = () => {
                         onClick={() => navigate(pathAddComponent)}
                     >
                         <img src="../images/add-component-icon.svg" className="nbm-navigation-item__icon" alt="#"/>
-                        <div className="nbm-navigation-item__name">Добавить номенклатуру</div>
+                        <div className="nbm-navigation-item__name">Добавить данные</div>
                     </li>
                 )}
             </ul>

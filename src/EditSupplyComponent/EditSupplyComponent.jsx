@@ -1,5 +1,6 @@
 // EditSupplyComponent.jsx
 import { useState, useEffect } from "react";
+import Select from "react-select";
 import "./editSupplyComponent.css";
 import { handleEditClick } from "../js/Utilits/nandleEditClick.js";
 import { handleSaveComponent } from "../js/Utilits/handleSaveComponent.js";
@@ -179,21 +180,26 @@ const EditSupplyComponent = ({ role, components, title, error }) => {
                                     onChange={(e) => setName(e.target.value)}
                                 />
                                 <div className="aca-input-form__manufacturer-block">
-                                    <select
-                                        className="form-select aca-input-form__manufacturer"
-                                        value={selectedManufacturer}
-                                        onChange={(e) => {
-                                            setSelectedManufacturer(e.target.value);
-                                            localStorage.setItem("lastManufacturer", e.target.value);
-                                        }}
-                                    >
-                                        <option value={selectedManufacturer}>{selectedManufacturer != null ? selectedManufacturer: "Производитель"}</option>
-                                        {manufacturer.map((item, index) => (
-                                            <option key={index} value={item.nameManufacturer}>
-                                                {item.nameManufacturer}
-                                            </option>
-                                        ))}
-                                    </select>
+                                    <Select
+                                        className="aca-input-form__manufacturer"
+                                        options={manufacturer.map((item) => ({
+                                            value: item.nameManufacturer,
+                                            label: item.nameManufacturer
+                                        }))}
+                                        value={selectedManufacturer ? { value: selectedManufacturer, label: selectedManufacturer } : null}
+                                       onChange={(selectedOption) => {
+                                                if (selectedOption) {
+                                                    setSelectedManufacturer(selectedOption.value);
+                                                    localStorage.setItem("lastManufacturer", selectedOption.value);
+                                                } else {
+                                                    setSelectedManufacturer(null);
+                                                    localStorage.removeItem("lastManufacturer"); // или установи значение по умолчанию
+                                                }
+                                                }}
+                                        placeholder="Выберите производителя..."
+                                        isClearable
+                                        isSearchable
+                                    />
                                     <select
                                         className="form-select aca-input-form__unit"
                                         value={selectedUnit}

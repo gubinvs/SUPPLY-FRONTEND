@@ -78,6 +78,8 @@ const AddComponentApplication = (
                     setArticle(selectedItem.vendorCodeComponent);
                     setName(selectedItem.nameComponent);
                     setShowEditPriceBlock(true);
+                    setSelectedManufacturer(selectedItem.manufacturerName);
+                    setSelectedUnit(selectedItem.unitMeasurementName);
                     
                     // Запрос цен поставщиков по выбранному артикулу
                     fetchPrices(selectedItem.vendorCodeComponent);
@@ -376,11 +378,20 @@ const AddComponentApplication = (
                         <div className="aca-input-form__manufacturer-block">
                             <select
                                 className="form-select aca-input-form__manufacturer"
-                                value={selectedManufacturer}
-                                onChange={(e) => {
-                                    setSelectedManufacturer(e.target.value);
-                                    localStorage.setItem("lastManufacturer", e.target.value);
-                                }}
+                                value={selectedManufacturer ? { value: selectedManufacturer, label: selectedManufacturer } : null}
+                                onChange={(selectedOption) => {
+                                                    if (selectedOption) {
+                                                        setSelectedManufacturer(selectedOption.value);
+                                                        localStorage.setItem("lastManufacturer", selectedOption.value);
+                                                    } else {
+                                                        setSelectedManufacturer(null);
+                                                        localStorage.removeItem("lastManufacturer"); // или установи значение по умолчанию
+                                                    }
+                                                    }}
+                                // onChange={(e) => {
+                                //     setSelectedManufacturer(e.target.value);
+                                //     localStorage.setItem("lastManufacturer", e.target.value);
+                                // }}
                             >
                                 <option value="">Производитель</option>
                                 {manufacturer.map((item, index) => (

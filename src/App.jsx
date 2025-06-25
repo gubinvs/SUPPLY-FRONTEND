@@ -107,8 +107,9 @@ const App = () => {
           <PrivateRoute allowedRoles={[ROLE_CUSTOMER, ROLE_PROVIDER, ROLE_ADMIN]}>
             <AddComponentApplication 
               role={role} 
-              title="Добавление номенклатуры в базу данных"
+              title="Добавить номенклатуру или цену"
               components={components} 
+              
             />
           </PrivateRoute>
         } />
