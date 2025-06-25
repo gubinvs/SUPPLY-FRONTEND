@@ -32,6 +32,19 @@ const AddComponentApplication = (
     const [selectedUnit, setSelectedUnit] = useState(''); // данные из выбранного списка по единицам измерения
     const navigate = useNavigate();
 
+
+
+
+console.log(unitMeasurement);
+
+
+
+
+
+
+
+
+
     // Преобразуй данные поставщиков в формат, понятный React Select
     const providerOptions = providers.map((item) => ({
                             value: item.guidIdProvider,
@@ -80,7 +93,7 @@ const AddComponentApplication = (
                     setShowEditPriceBlock(true);
                     setSelectedManufacturer(selectedItem.manufacturerName);
                     setSelectedUnit(selectedItem.unitMeasurementName);
-                    
+                
                     // Запрос цен поставщиков по выбранному артикулу
                     fetchPrices(selectedItem.vendorCodeComponent);
                 }
@@ -378,7 +391,7 @@ const AddComponentApplication = (
                         <div className="aca-input-form__manufacturer-block">
                             <select
                                 className="form-select aca-input-form__manufacturer"
-                                value={selectedManufacturer ? { value: selectedManufacturer, label: selectedManufacturer } : null}
+                                value={selectedManufacturer}
                                 onChange={(selectedOption) => {
                                                     if (selectedOption) {
                                                         setSelectedManufacturer(selectedOption.value);
@@ -388,12 +401,8 @@ const AddComponentApplication = (
                                                         localStorage.removeItem("lastManufacturer"); // или установи значение по умолчанию
                                                     }
                                                     }}
-                                // onChange={(e) => {
-                                //     setSelectedManufacturer(e.target.value);
-                                //     localStorage.setItem("lastManufacturer", e.target.value);
-                                // }}
-                            >
-                                <option value="">Производитель</option>
+                                >
+                                <option value={selectedManufacturer}>{selectedManufacturer != null? selectedManufacturer : "Производитель"}</option>
                                 {manufacturer.map((item, index) => (
                                     <option key={index} value={item.guidIdManufacturer}>
                                         {item.nameManufacturer}
@@ -408,7 +417,7 @@ const AddComponentApplication = (
                                     localStorage.setItem("lastUnit", e.target.value);
                                 }}
                             >
-                                <option value="">Ед. изм.</option>
+                                <option value={selectedUnit}>{selectedUnit != null ? selectedUnit :"Ед. изм."}</option>
                                 {unitMeasurement.map((item, index) => (
                                     <option key={index} value={item.guidIdUnitMeasurement}>
                                         {item.nameUnitMeasurement}
@@ -452,17 +461,17 @@ const AddComponentApplication = (
                             </select>
                             {/* // Преобразуй данные поставщиков в формат, понятный React Select */}
                             <Select
-                            className="basic-single"
-                            classNamePrefix="select"
-                            value={providerOptions.find(option => option.value === providerId) || null}
-                            onChange={(selectedOption) => {
-                                setProviderId(selectedOption?.value || "");
-                                localStorage.setItem("lastProviderId", selectedOption?.value || "");
-                            }}
-                            options={providerOptions}
-                            placeholder="Выбери поставщика"
-                            isClearable
-                            isSearchable
+                                className="basic-single"
+                                classNamePrefix="select"
+                                value={providerOptions.find(option => option.value === providerId) || null}
+                                onChange={(selectedOption) => {
+                                    setProviderId(selectedOption?.value || "");
+                                    localStorage.setItem("lastProviderId", selectedOption?.value || "");
+                                }}
+                                options={providerOptions}
+                                placeholder="Выбери поставщика"
+                                isClearable
+                                isSearchable
                             />
 
                             <button
