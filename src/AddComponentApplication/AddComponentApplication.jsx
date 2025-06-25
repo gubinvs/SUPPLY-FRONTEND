@@ -32,19 +32,6 @@ const AddComponentApplication = (
     const [selectedUnit, setSelectedUnit] = useState(''); // данные из выбранного списка по единицам измерения
     const navigate = useNavigate();
 
-
-
-
-console.log(unitMeasurement);
-
-
-
-
-
-
-
-
-
     // Преобразуй данные поставщиков в формат, понятный React Select
     const providerOptions = providers.map((item) => ({
                             value: item.guidIdProvider,
@@ -82,6 +69,8 @@ console.log(unitMeasurement);
                 setName('');
                 setShowEditPriceBlock(false);
                 setCombinedOffers([]); // очистка цен при снятии выбора
+                setSelectedManufacturer('');
+                setSelectedUnit('');
             } else {
                 newSet.clear();
                 newSet.add(id);
@@ -272,11 +261,11 @@ console.log(unitMeasurement);
         const savedProviderId = localStorage.getItem("lastProviderId");
         if (savedProviderId) setProviderId(savedProviderId);
 
-        const savedManufacturer = localStorage.getItem("lastManufacturer");
-        if (savedManufacturer) setSelectedManufacturer(savedManufacturer);
+        // const savedManufacturer = localStorage.getItem("lastManufacturer");
+        // if (savedManufacturer) setSelectedManufacturer(savedManufacturer);
 
-        const savedUnit = localStorage.getItem("lastUnit");
-        if (savedUnit) setSelectedUnit(savedUnit);
+        // const savedUnit = localStorage.getItem("lastUnit");
+        // if (savedUnit) setSelectedUnit(savedUnit);
     }, []);
 
 
@@ -364,11 +353,7 @@ console.log(unitMeasurement);
                 </div>
 
                 <div className="add-component-application__right-block">
-                    <div className="add-component-application__add-provider-block">
-                        <AddCompanyProvider />
-                    </div>
-                    
-                    <h6><b>Артикул не найден — добавьте новый:</b></h6>
+                    <h6><b>{article == ""? "Артикул не найден — добавьте новый":"Артикул найден — внесите изменения"}</b></h6>
                     <div className="add-component-application__input-form">
                         <input
                             type="text"
@@ -402,7 +387,7 @@ console.log(unitMeasurement);
                                                     }
                                                     }}
                                 >
-                                <option value={selectedManufacturer}>{selectedManufacturer != null? selectedManufacturer : "Производитель"}</option>
+                                <option value={selectedManufacturer}>{selectedManufacturer != ""? selectedManufacturer : "Производитель"}</option>
                                 {manufacturer.map((item, index) => (
                                     <option key={index} value={item.guidIdManufacturer}>
                                         {item.nameManufacturer}
@@ -417,9 +402,9 @@ console.log(unitMeasurement);
                                     localStorage.setItem("lastUnit", e.target.value);
                                 }}
                             >
-                                <option value={selectedUnit}>{selectedUnit != null ? selectedUnit :"Ед. изм."}</option>
+                                <option value={selectedUnit}>{selectedUnit != "" ? selectedUnit :"Ед. изм."}</option>
                                 {unitMeasurement.map((item, index) => (
-                                    <option key={index} value={item.guidIdUnitMeasurement}>
+                                    <option key={index} value={item.nameUnitMeasurement}>
                                         {item.nameUnitMeasurement}
                                     </option>
                                 ))}
@@ -485,27 +470,33 @@ console.log(unitMeasurement);
                     )}
 
                     {/* Выводим имеющиеся предложения */}
-                   <div className="offers-list">
-                        {combinedOffers.length === 0 ? "" : (
-                            <>
-                                <button
-                                    className="btn btn-outline-secondary aca__analyze-offers-button"
-                                    onClick={() => handleAnalyzeClick(components, selectedIds, navigate)}
-                                    disabled={selectedIds.size === 0}
-                                >
-                                    Анализировать предложения
-                                </button>
-                                {combinedOffers.map((offer, index) => (
-                                    <div key={index} className="offer-item border rounded p-2 mb-2">
-                                        <p><strong>Поставщик:</strong> {offer.nameProvider}</p>
-                                        <p><strong>Цена:</strong> {offer.priceComponent > 0 ? `${offer.priceComponent} ₽` : '—'}</p>
-                                        <p><strong>Срок поставки:</strong> {offer.deliveryTimeComponent}</p>
-                                        <p><strong>Обновлено:</strong> {new Date(offer.saveDataPrice).toLocaleDateString()}</p>
-                                    </div>
-                                ))}
-                            </>
-                        )}
-                    </div>
+                    <div className="offers-list">
+                            {combinedOffers.length === 0 ? "" : (
+                                <>
+                                    <button
+                                        className="btn btn-outline-secondary aca__analyze-offers-button"
+                                        onClick={() => handleAnalyzeClick(components, selectedIds, navigate)}
+                                        disabled={selectedIds.size === 0}
+                                    >
+                                        Анализировать предложения
+                                    </button>
+                                    {combinedOffers.map((offer, index) => (
+                                        <div key={index} className="offer-item border rounded p-2 mb-2">
+                                            <p><strong>Поставщик:</strong> {offer.nameProvider}</p>
+                                            <p><strong>Цена:</strong> {offer.priceComponent > 0 ? `${offer.priceComponent} ₽` : '—'}</p>
+                                            <p><strong>Срок поставки:</strong> {offer.deliveryTimeComponent}</p>
+                                            <p><strong>Обновлено:</strong> {new Date(offer.saveDataPrice).toLocaleDateString()}</p>
+                                        </div>
+                                    ))}
+                                </>
+                            )}
+                        </div>
+                        {article != ""?
+                        <>
+                            <div className="add-component-application__add-provider-block">
+                                <AddCompanyProvider />
+                            </div>
+                        </>:""}
                 </div>
             </div>
         </div>
