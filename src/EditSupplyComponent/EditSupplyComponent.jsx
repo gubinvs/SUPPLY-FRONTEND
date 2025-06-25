@@ -12,7 +12,9 @@ import NavigationBarMin from "../NavigationBar/NavigationBarMin.jsx";
 import NavigationBarMax from "../NavigationBar/NavigationBarMax.jsx";
 import HeaderApplicationPanel from "../ApplicationPanel/Header/HeaderApplicationPanel.jsx";
 
-const EditSupplyComponent = ({ role, components, title, error }) => {
+const EditSupplyComponent = (
+    { role, components, title, error }
+) => {
     const [isNavMaxVisible, setIsNavMaxVisible] = useState(false);
     const handleShowMax = () => setIsNavMaxVisible(true);
     const handleHideMax = () => setIsNavMaxVisible(false);
@@ -62,8 +64,6 @@ const EditSupplyComponent = ({ role, components, title, error }) => {
         }
     }, [selectedComponent]);
 
-
-    console.log(selectedUnit);
 
     return (
         <div className="main-application-panel">
