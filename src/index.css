@@ -145,9 +145,19 @@ a:hover {
   display: flex;
 }
 
+.mb-10 {
+  margin-bottom: 10px
+}
+
+.mb-20 {
+  margin-bottom: 20px
+}
+
 .mb-40 {
   margin-bottom: 40px;
 }
+
+
 
 #button-link:hover {
   color: #1D252C;

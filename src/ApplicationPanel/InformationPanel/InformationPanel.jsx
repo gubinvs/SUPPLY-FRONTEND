@@ -7,6 +7,7 @@ import ApiUrl from "../../js/ApiUrl";
 import InformationCompanyCard from "./InformationCompanyCard.jsx";
 import DataCollaborator from "./DataCollaborator.jsx";
 import AddCompanyProvider from "./AddCompanyProvider.jsx";
+import Manufacturer from "../../Manufacturer/Manufacturer.jsx";
 
 
 // Основной блок информационной панели, вводит информацию для 
@@ -70,22 +71,27 @@ const InformationPanel = ({ role }) => {
                         company={company} 
                         guidIdCollaborator={guidIdCollaborator} 
                     />
-
-                    {/* Форма для добавления новой компании поставщика, Если роль пользователя в системе заказчик, то выводим эту форму */}
-                    {role === "Заказчик"?
-                    <AddCompanyProvider />
-                    :""}
-
                 </div>
                 <div className="main-application-panel__right-block">
-                    <DataCollaborator 
-                        guidIdCollaborator={guidIdCollaborator}
-                        role={role}
-                        nameCollaborator={nameCollaborator} 
-                        emailCollaborator={emailCollaborator}
-                        phoneCollaborator={phoneCollaborator}
-                        addressDiliveryCollaborator={addressDiliveryCollaborator}
-                    />
+                    <div className="mb-10">
+                      {/* Форма редактирования данных о пользователе */}
+                      <DataCollaborator 
+                          guidIdCollaborator={guidIdCollaborator}
+                          role={role}
+                          nameCollaborator={nameCollaborator} 
+                          emailCollaborator={emailCollaborator}
+                          phoneCollaborator={phoneCollaborator}
+                          addressDiliveryCollaborator={addressDiliveryCollaborator}
+                      />
+                    </div>
+                    {/* Форма для добавления новой компании поставщика, Если роль пользователя в системе заказчик или администратор, то выводим эту форму */}
+                    {role === "Заказчик" || role === "Администратор"?
+                    <div className="mb-10">
+                      <AddCompanyProvider />
+                    </div>
+                    :""}
+                    {/* Форма добавления и изменения наименования производинеля */}
+                    <Manufacturer />
                 </div>
             </div>
         </>
