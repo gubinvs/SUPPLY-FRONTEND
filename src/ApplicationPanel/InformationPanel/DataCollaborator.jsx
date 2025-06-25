@@ -26,7 +26,7 @@ const DataCollaborator = ({
             {!state?
                 <>
                     <div className="add-company-provider__section">
-                        <h5>Данные пользователя в системе:</h5>
+                        <h5>Данные пользователя:</h5>
                         <img
                             src={!visibilityCard ? "../images/slider.svg" : "../images/close-slider.svg"}
                             alt={!visibilityCard ? "Раскрыть форму" : "Скрыть форму"}

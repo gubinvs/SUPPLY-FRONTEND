@@ -11,7 +11,7 @@ const Manufacturer = () => {
     return (
         <>
             <div className="add-company-provider__section">
-                <h5>Добавить наименование производителя:</h5>
+                <h5>Добавить производителя:</h5>
                 <img
                     src={form ? "../images/slider.svg" : "../images/close-slider.svg"}
                     alt={form ? "Раскрыть форму" : "Скрыть форму"}

@@ -120,7 +120,7 @@ const AddCompanyProvider = () => {
     return (
         <>
             <div className="add-company-provider__section">
-                <h5>Добавить компанию поставщика:</h5>
+                <h5>Добавить поставщика:</h5>
                 <img
                     src={addForm ? "../images/slider.svg" : "../images/close-slider.svg"}
                     alt={addForm ? "Раскрыть форму" : "Скрыть форму"}

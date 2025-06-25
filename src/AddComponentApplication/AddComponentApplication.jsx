@@ -7,7 +7,6 @@ import NavigationBarMin from "../NavigationBar/NavigationBarMin.jsx";
 import NavigationBarMax from "../NavigationBar/NavigationBarMax.jsx";
 import HeaderApplicationPanel from "../ApplicationPanel/Header/HeaderApplicationPanel.jsx";
 import Select from 'react-select'; // установка в проект = npm install react-select
-import AddCompanyProvider from "../ApplicationPanel/InformationPanel/AddCompanyProvider.jsx";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -260,12 +259,6 @@ const AddComponentApplication = (
         loadProviders();
         const savedProviderId = localStorage.getItem("lastProviderId");
         if (savedProviderId) setProviderId(savedProviderId);
-
-        // const savedManufacturer = localStorage.getItem("lastManufacturer");
-        // if (savedManufacturer) setSelectedManufacturer(savedManufacturer);
-
-        // const savedUnit = localStorage.getItem("lastUnit");
-        // if (savedUnit) setSelectedUnit(savedUnit);
     }, []);
 
 
@@ -353,7 +346,7 @@ const AddComponentApplication = (
                 </div>
 
                 <div className="add-component-application__right-block">
-                    <h6><b>{article == ""? "Артикул не найден — добавьте новый":"Артикул найден — внесите изменения"}</b></h6>
+                    <h6><b>{article === ""? "Артикул не найден — добавьте новый":"Артикул найден — внесите изменения"}</b></h6>
                     <div className="add-component-application__input-form">
                         <input
                             type="text"
@@ -364,6 +357,9 @@ const AddComponentApplication = (
                                 setArticle(e.target.value);
                                 setSelectedManufacturer("");
                                 setSelectedUnit("");
+                                setSearchTerm(e.target.value);
+                                setCurrentPage(1);
+                                setSelectedIds(new Set()); // Сброс выбранного чекбокса
                             }}
                         />
                         <input
@@ -387,7 +383,7 @@ const AddComponentApplication = (
                                                     }
                                                     }}
                                 >
-                                <option value={selectedManufacturer}>{selectedManufacturer != ""? selectedManufacturer : "Производитель"}</option>
+                                <option value={selectedManufacturer}>{selectedManufacturer !== ""? selectedManufacturer : "Производитель"}</option>
                                 {manufacturer.map((item, index) => (
                                     <option key={index} value={item.guidIdManufacturer}>
                                         {item.nameManufacturer}
@@ -402,7 +398,7 @@ const AddComponentApplication = (
                                     localStorage.setItem("lastUnit", e.target.value);
                                 }}
                             >
-                                <option value={selectedUnit}>{selectedUnit != "" ? selectedUnit :"Ед. изм."}</option>
+                                <option value={selectedUnit}>{selectedUnit !== "" ? selectedUnit :"Ед. изм."}</option>
                                 {unitMeasurement.map((item, index) => (
                                     <option key={index} value={item.nameUnitMeasurement}>
                                         {item.nameUnitMeasurement}
@@ -491,12 +487,6 @@ const AddComponentApplication = (
                                 </>
                             )}
                         </div>
-                        {article != ""?
-                        <>
-                            <div className="add-component-application__add-provider-block">
-                                <AddCompanyProvider />
-                            </div>
-                        </>:""}
                 </div>
             </div>
         </div>
