@@ -1,9 +1,9 @@
-import "./paginationControls.css";
+import "./pagination.css";
 
 
-// Блок пагинации страниц
+// Блок пагинации страниц кнопками вперед назад
 
-const PaginationControls = (
+const PaginationNext = (
     {currentPage, setCurrentPage, totalPages}
 ) => {
 
@@ -39,4 +39,4 @@ const PaginationControls = (
     );
 };
 
-export default PaginationControls;
+export default PaginationNext;

@@ -6,7 +6,8 @@ import NavigationBarMax from "../NavigationBar/NavigationBarMax.jsx";
 import HeaderApplicationPanel from "../ApplicationPanel/Header/HeaderApplicationPanel.jsx";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
-import FullDataCompanyAndCollaborators from "./FullDataCompanyAndCollaborators.jsx";
+import PaginationPage from "../ElementApplication/PaginationPage.jsx";
+
 
 const AllOffersForSelected = ({ role, title }) => {
   const [isNavMaxVisible, setIsNavMaxVisible] = useState(false);
@@ -17,7 +18,7 @@ const AllOffersForSelected = ({ role, title }) => {
   const [showBestByProvider, setShowBestByProvider] = useState(false);
   const [selectedVendorCodes, setSelectedVendorCodes] = useState(new Set());
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 14;
+  const rowsPerPage = 8;
 
   const handleShowMax = () => setIsNavMaxVisible(true);
   const handleHideMax = () => setIsNavMaxVisible(false);
@@ -268,11 +269,17 @@ const AllOffersForSelected = ({ role, title }) => {
                     </button>
                 </div>
                 <div>
+                  
+                  {!showBestByProvider ? 
+                    <>
+                      <button className="btn btn-outline-secondary mr-10" onClick={()=> window.location.href="/SuppliersOffers"}>Назад</button>
+                    </>:""
+                  }
                   <button
                     className={`btn ml-2 ${showBestByProvider ? "btn-outline-secondary" : "btn-secondary"}`}
                     onClick={() => setShowBestByProvider(!showBestByProvider)}
                   >
-                    {showBestByProvider ? "Вернуться к полному списку" : "Лучшие предложения поставщиков"}
+                    {showBestByProvider ? "< К полному списку" : "Лучшие предложения >"}
                   </button>
                 </div>
               </div>
@@ -292,20 +299,14 @@ const AllOffersForSelected = ({ role, title }) => {
                     </thead>
                     <tbody>{renderRows()}</tbody>
                   </table>
+                  {/* Пагинация страниц */}
+                  <PaginationPage
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
+                    rowsPerPage={rowsPerPage}
+                    getFilteredOffers={getFilteredOffers}
 
-                  <div className="d-flex justify-content-between align-items-center mt-3">
-                    <div>
-                      {Array.from({ length: Math.ceil(getFilteredOffers().length / rowsPerPage) }, (_, i) => (
-                        <button
-                          key={i}
-                          className={`btn btn-sm mx-1 ${currentPage === i + 1 ? "btn-primary" : "btn-outline-primary"}`}
-                          onClick={() => setCurrentPage(i + 1)}
-                        >
-                          {i + 1}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
+                  />
                 </>
               ) : (
                 Object.entries(bestOffersByProvider).map(([provider, offers], index) => {

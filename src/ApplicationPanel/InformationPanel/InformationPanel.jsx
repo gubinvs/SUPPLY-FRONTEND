@@ -6,8 +6,6 @@ import "./informationCompanyCard.css";
 import ApiUrl from "../../js/ApiUrl";
 import InformationCompanyCard from "./InformationCompanyCard.jsx";
 import DataCollaborator from "./DataCollaborator.jsx";
-import AddCompanyProvider from "./AddCompanyProvider.jsx";
-import Manufacturer from "../../Manufacturer/Manufacturer.jsx";
 
 
 // Основной блок информационной панели, вводит информацию для 
@@ -84,14 +82,6 @@ const InformationPanel = ({ role }) => {
                           addressDiliveryCollaborator={addressDiliveryCollaborator}
                       />
                     </div>
-                    {/* Форма для добавления новой компании поставщика, Если роль пользователя в системе заказчик или администратор, то выводим эту форму */}
-                    {role === "Заказчик" || role === "Администратор"?
-                    <div className="mb-10">
-                      <AddCompanyProvider />
-                    </div>
-                    :""}
-                    {/* Форма добавления и изменения наименования производинеля */}
-                    <Manufacturer />
                 </div>
             </div>
         </>

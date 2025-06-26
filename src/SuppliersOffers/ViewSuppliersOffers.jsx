@@ -4,7 +4,7 @@ import "../ApplicationPanel/applicationPanel.css";
 import "./viewSuppliersOffers.css";
 import { handleAnalyzeClick } from "../js/Utilits/handleAnalyzeClick.js";
 import NomenclatureTable from "../ElementApplication/NomenclatureTable.jsx";
-import PaginationControls from "../ElementApplication/PaginationControls.jsx";
+import PaginationNext from "../ElementApplication/PaginationNext.jsx";
 
 
 const ViewSuppliersOffers = (
@@ -14,7 +14,7 @@ const ViewSuppliersOffers = (
     const [selectedIds, setSelectedIds] = useState(new Set());
     const [currentPage, setCurrentPage] = useState(1); 
     const [searchTerm, setSearchTerm] = useState("");
-    const itemsPerPage = 15;
+    const itemsPerPage = 10;
     const navigate = useNavigate();
 
 
@@ -69,12 +69,17 @@ const ViewSuppliersOffers = (
                             selectedIds={selectedIds}
                             setSelectedIds={setSelectedIds}
                         />
-                        <div className="pagination-controls__block">
-                            <PaginationControls
+                       
+                        <div className="pagination-controls__block"> 
+                            {/* <PaginationPage 
                                 currentPage={currentPage}
                                 setCurrentPage={setCurrentPage}
                                 totalPages={totalPages}
-
+                            /> */}
+                            <PaginationNext
+                                currentPage={currentPage}
+                                setCurrentPage={setCurrentPage}
+                                totalPages={totalPages}
                             />
                         </div>
                     </>
