@@ -15,7 +15,7 @@ services:
       - "1020:3000"
 
   service3:
-    image: 6fb020dde51b
+    image: cfc558c87aa7
     container_name: SUPPLY-HANDY__API
     ports:
       - "1030:8080"
@@ -23,8 +23,7 @@ services:
     #   - ./appsettings.json:/app/appsettings.json
 
   service4:
-    image: 250f2bbbba58
+    image: 61d30c5011bc
     container_name: SUPPLY-HANDY__FRONTEND
     ports:
       - "1040:3000"
-

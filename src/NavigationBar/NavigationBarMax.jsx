@@ -56,7 +56,7 @@ const NavigationBarMax = () => {
                             onClick={() => navigate(pathEditSupplyComponent)}
                         >
                             <img src="../images/file-pen-line.svg" className="nbm-navigation-item__icon" alt="#" />
-                            <div className="nbm-navigation-item__name">Редактировать номенлатуру</div>
+                            <div className="nbm-navigation-item__name">Редактировать номенклатуру</div>
                         </li>
                     </>
                 )}
