@@ -19,6 +19,8 @@ services:
     container_name: SUPPLY-HANDY__API
     ports:
       - "1030:8080"
+    # volumes:
+    #   - ./appsettings.json:/app/appsettings.json
 
   service4:
     image: 250f2bbbba58
