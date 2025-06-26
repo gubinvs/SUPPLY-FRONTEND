@@ -31,13 +31,13 @@ services:
     container_name: SUPPLY-ENCOMP__API
     ports:
       - "1050:8080"
-    volumes:
-    - ./appsettings.json:/app/appsettings.json
+    # volumes:
+    # - ./appsettings.json:/app/appsettings.json
 
   service6:
     image: 
     container_name: SUPPLY-ENCOMP__FRONTEND
     ports:
       - "1060:3000"
-    volumes:
-    - ./appsettings.json:/app/appsettings.json
+    # volumes:
+    # - ./appsettings.json:/app/appsettings.json
