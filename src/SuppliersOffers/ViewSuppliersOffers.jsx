@@ -14,7 +14,7 @@ const ViewSuppliersOffers = (
     const [selectedIds, setSelectedIds] = useState(new Set());
     const [currentPage, setCurrentPage] = useState(1); 
     const [searchTerm, setSearchTerm] = useState("");
-    const itemsPerPage = 10;
+    const itemsPerPage = 14;
     const navigate = useNavigate();
 
 
@@ -71,11 +71,6 @@ const ViewSuppliersOffers = (
                         />
                        
                         <div className="pagination-controls__block"> 
-                            {/* <PaginationPage 
-                                currentPage={currentPage}
-                                setCurrentPage={setCurrentPage}
-                                totalPages={totalPages}
-                            /> */}
                             <PaginationNext
                                 currentPage={currentPage}
                                 setCurrentPage={setCurrentPage}

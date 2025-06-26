@@ -20,6 +20,7 @@ const AllOffersForSelected = ({ role, title }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 8;
 
+
   const handleShowMax = () => setIsNavMaxVisible(true);
   const handleHideMax = () => setIsNavMaxVisible(false);
 
