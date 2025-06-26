@@ -8,8 +8,10 @@ import NavigationBarMin from "../NavigationBar/NavigationBarMin.jsx";
 import NavigationBarMax from "../NavigationBar/NavigationBarMax.jsx";
 import HeaderApplicationPanel from "../ApplicationPanel/Header/HeaderApplicationPanel.jsx";
 import Select from 'react-select'; // установка в проект = npm install react-select
+import AddCompanyProvider from "../ApplicationPanel/InformationPanel/AddCompanyProvider.jsx";
+import Manufacturer from "../Manufacturer/Manufacturer.jsx";
 
-const ITEMS_PER_PAGE = 10;
+const ITEMS_PER_PAGE = 8;
 
 const AddComponentApplication = (
     {role, title, components}
@@ -139,57 +141,6 @@ const AddComponentApplication = (
     }, []);
 
 
-
-
-    // Функция заполнения данных о новой номенклатуре
-    // const handleAddComponent = async () => {
-    //     if (!article || !name) {
-    //         alert('Заполните оба поля');
-    //         return;
-    //     }
-
-    //     // Запрос на добавление номенклатуры
-    //     const request = {
-    //         vendorCodeComponent: article,
-    //         nameComponent: name,
-    //         guidIdManufacturer: selectedManufacturer,
-    //         guidIdUnitMeasurement: selectedUnit
-    //     };
-
-    //     console.log(request);
-
-    //     try {
-    //         const response = await fetch(ApiUrl + '/api/AddComponent', {
-    //             method: 'POST',
-    //             headers: { 'Content-Type': 'application/json' },
-    //             body: JSON.stringify(request)
-    //         });
-
-    //         if (response.ok) {
-    //             // const addedComponent = await response.json(); // если backend возвращает добавленный объект
-
-    //             // Очистка старого состояния
-    //             setSelectedIds(new Set());
-    //             setPrice('');
-    //             setDeliveryTerm('');
-    //             setShowEditPriceBlock(false);
-
-    //             // Установка нового артикула
-    //             setSearchTerm(article);       // покажет в списке
-    //             setName(name);                // оставим имя
-    //             setArticle(article);          // артикул в input
-    //             setShowEditPriceBlock(true);  // показать блок цен
-    //             fetchPrices(article);         // загрузка предложений
-    //         } else {
-    //             const errorText = await response.text();
-    //             alert(`Ошибка при добавлении: ${errorText}`);
-    //         }
-    //     } catch (error) {
-    //         alert(`Ошибка соединения: ${error}`);
-    //     }
-    // };
-
-
     // Функция записи новых цен
     const handleSavePrice = async () => {
         if (!article || !price || !providerId || !deliveryTerm) {
@@ -274,10 +225,24 @@ const AddComponentApplication = (
                 onHideMax={handleHideMax}
                 isNavMaxVisible={isNavMaxVisible}
             />
+
             {isNavMaxVisible && <NavigationBarMax />}
+
             <HeaderApplicationPanel role={role} title={title} />
+            
             <div className="main-application-panel__container">
                 <div className="add-component-application__left-block">
+                    {/* Форма для добавления новой компании поставщика, Если роль пользователя в системе заказчик или администратор, то выводим эту форму */}
+                    {role === "Заказчик" || role === "Администратор"?
+                    <div className="mb-10">
+                      <AddCompanyProvider />
+                    </div>
+                    :""}
+                    {/* Форма добавления и изменения наименования производинеля */}
+                    <div className="mb-40">
+                        <Manufacturer />
+                    </div>
+                    
                     <h6><b>Поиск артикула в базе данных:</b></h6>
                     <input
                         className="form-control aca-searh-form"
@@ -348,7 +313,7 @@ const AddComponentApplication = (
                         <div className="mt-3 text-muted">Ничего не найдено по запросу.</div>
                     )}
                 </div>
-
+                {/* Правый блок с данными */}
                 <div className="add-component-application__right-block">
                     <h6><b>{article === ""? "Артикул не найден — добавьте новый":"Артикул найден — внесите изменения"}</b></h6>
                     <div className="add-component-application__input-form">
