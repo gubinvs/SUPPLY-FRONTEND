@@ -31,6 +31,11 @@
     color: #342F2C;
 }
 
+.nbm-logo-block__title_handy {
+    font-size: 24px;
+    font-weight: 800;
+}
+
 .navigation-bar-max__top-block__line {
     width: 100%;
 }

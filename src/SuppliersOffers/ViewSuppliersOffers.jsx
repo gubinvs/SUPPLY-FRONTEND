@@ -5,7 +5,7 @@ import "./viewSuppliersOffers.css";
 import { handleAnalyzeClick } from "../js/Utilits/handleAnalyzeClick.js";
 import NomenclatureTable from "../ElementApplication/NomenclatureTable.jsx";
 import PaginationNext from "../ElementApplication/PaginationNext.jsx";
-
+import PaginationPage from "../ElementApplication/PaginationPage.jsx";
 
 const ViewSuppliersOffers = (
     {components, error}
@@ -71,11 +71,16 @@ const ViewSuppliersOffers = (
                         />
                        
                         <div className="pagination-controls__block"> 
-                            <PaginationNext
+                          <PaginationPage 
                                 currentPage={currentPage}
                                 setCurrentPage={setCurrentPage}
                                 totalPages={totalPages}
                             />
+                            {/* <PaginationNext
+                                currentPage={currentPage}
+                                setCurrentPage={setCurrentPage}
+                                totalPages={totalPages}
+                            /> */}
                         </div>
                     </>
                 ) : (

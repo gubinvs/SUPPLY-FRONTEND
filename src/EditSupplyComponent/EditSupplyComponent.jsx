@@ -15,10 +15,15 @@ import HeaderApplicationPanel from "../ApplicationPanel/Header/HeaderApplication
 const EditSupplyComponent = (
     { role, components, title, error }
 ) => {
+    
+    // Компонент который только что меняли
+    const hsc = localStorage.getItem("handleSaveComponent");
     const [isNavMaxVisible, setIsNavMaxVisible] = useState(false);
     const handleShowMax = () => setIsNavMaxVisible(true);
     const handleHideMax = () => setIsNavMaxVisible(false);
-
+    // Предупреждение при смене компонента и не сохранении измененых данных
+    const [isDirty, setIsDirty] = useState(false);
+    
     const [vendorCode, setVendorCode] = useState("");
     const [name, setName] = useState("");
     const [manufacturer, setManufacturer] = useState([]);
@@ -31,24 +36,52 @@ const EditSupplyComponent = (
     const [selectedComponent, setSelectedComponent] = useState(null);
 
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 15;
+
+    const itemsPerPage = 15000000000;
+    
     const currentItems = filteredComponents.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
+    // Отслеживание изменения данных
     useEffect(() => {
-        const article = localStorage.getItem("edit-article");
+        if (selectedComponent) {
+            const isChanged =
+                name !== selectedComponent.nameComponent ||
+                selectedManufacturer !== selectedComponent.manufacturerName ||
+                selectedUnit !== selectedComponent.unitMeasurementName;
+
+            setIsDirty(isChanged);
+        }
+    }, [name, selectedManufacturer, selectedUnit, selectedComponent]);
+
+
+    useEffect(() => {
+        const article = hsc || localStorage.getItem("edit-article");
 
         if (article) {
             setSearchQuery(article);
+
             const filtered = components.filter(c =>
                 c.vendorCodeComponent?.toLowerCase().includes(article.toLowerCase()) ||
                 c.nameComponent?.toLowerCase().includes(article.toLowerCase())
             );
+
             setFilteredComponents(filtered);
-            if (filtered.length === 1) setSelectedComponent(filtered[0]);
+
+            // Явно выбрать по точному совпадению артикула
+            const exactMatch = filtered.find(c =>
+                c.vendorCodeComponent?.toLowerCase() === article.toLowerCase()
+            );
+
+            if (exactMatch) {
+                setSelectedComponent(exactMatch);
+            } else if (filtered.length === 1) {
+                setSelectedComponent(filtered[0]);
+            }
+
         } else {
             setFilteredComponents(components);
         }
-    }, [components]);
+    }, [components, hsc]);
 
     useEffect(() => {
         loadUnitMeasurement(setUnitMeasurement);
@@ -59,8 +92,22 @@ const EditSupplyComponent = (
         if (selectedComponent) {
             setVendorCode(selectedComponent.vendorCodeComponent);
             setName(selectedComponent.nameComponent);
-            setSelectedManufacturer(selectedComponent.manufacturerName);
-            setSelectedUnit(selectedComponent.unitMeasurementName);
+
+            // Производитель
+            if (selectedComponent.manufacturerName) {
+                setSelectedManufacturer(selectedComponent.manufacturerName);
+            } else {
+                const lastManufacturer = localStorage.getItem("lastManufacturer");
+                setSelectedManufacturer(lastManufacturer || '');
+            }
+
+            // Единица измерения
+            if (selectedComponent.unitMeasurementName) {
+                setSelectedUnit(selectedComponent.unitMeasurementName);
+            } else {
+                const lastUnit = localStorage.getItem("lastUnit");
+                setSelectedUnit(lastUnit || '');
+            }
         }
     }, [selectedComponent]);
 
@@ -107,14 +154,21 @@ const EditSupplyComponent = (
                                                     type="checkbox"
                                                     checked={selectedComponent?.vendorCodeComponent === item.vendorCodeComponent}
                                                     onChange={() => {
-                                                        if (selectedComponent?.vendorCodeComponent === item.vendorCodeComponent) {
-                                                            setSelectedComponent(null);
-                                                            setSearchQuery('');
-                                                            setFilteredComponents(components);
-                                                        } else {
-                                                            setSelectedComponent(item);
-                                                        }
-                                                    }}
+                                                            const isSame = selectedComponent?.vendorCodeComponent === item.vendorCodeComponent;
+
+                                                            if (!isSame && isDirty) {
+                                                                const confirmSwitch = window.confirm("Вы не сохранили изменения. Перейти без сохранения?");
+                                                                if (!confirmSwitch) return;
+                                                            }
+
+                                                            if (isSame) {
+                                                                setSelectedComponent(null);
+                                                                setSearchQuery('');
+                                                                setFilteredComponents(components);
+                                                            } else {
+                                                                setSelectedComponent(item);
+                                                            }
+                                                        }}
                                                 />
                                             </td>
                                             <td>{item.vendorCodeComponent}</td>
@@ -223,7 +277,10 @@ const EditSupplyComponent = (
                                 <button 
                                     type="button" 
                                     className="btn btn-outline-secondary dit-supply-component__save-botton"
-                                    onClick={() => handleSaveComponent(vendorCode, name, selectedManufacturer, selectedUnit, manufacturer, unitMeasurement)}
+                                    onClick={() => {
+                                            handleSaveComponent(vendorCode, name, selectedManufacturer, selectedUnit, manufacturer, unitMeasurement);
+                                            setIsDirty(false);
+                                        }}
                                 >
                                     Сохранить изменения
                                 </button>
