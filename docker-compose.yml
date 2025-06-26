@@ -27,3 +27,15 @@ services:
     container_name: SUPPLY-HANDY__FRONTEND
     ports:
       - "1040:3000"
+  
+  service5:
+    image: 
+    container_name: SUPPLY-ENCOMP__API
+    ports:
+      - "1050:8080"
+
+  service6:
+    image: 
+    container_name: SUPPLY-ENCOMP__FRONTEND
+    ports:
+      - "1060:3000"
