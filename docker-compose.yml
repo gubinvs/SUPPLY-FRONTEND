@@ -15,13 +15,15 @@ services:
       - "1020:3000"
 
   service3:
-    image: cfc558c87aa7
+    image: 920c4e1de9f1
     container_name: SUPPLY-HANDY__API
     ports:
       - "1030:8080"
+    volumes:
+      - ./appsettings-handy.json:/app/appsettings.json
 
   service4:
-    image: 61d30c5011bc
+    image: 261c3ff13607
     container_name: SUPPLY-HANDY__FRONTEND
     ports:
       - "1040:3000"
@@ -31,13 +33,9 @@ services:
     container_name: SUPPLY-ENCOMP__API
     ports:
       - "1050:8080"
-    # volumes:
-    # - ./appsettings.json:/app/appsettings.json
 
   service6:
     image: 
     container_name: SUPPLY-ENCOMP__FRONTEND
     ports:
       - "1060:3000"
-    # volumes:
-    # - ./appsettings.json:/app/appsettings.json

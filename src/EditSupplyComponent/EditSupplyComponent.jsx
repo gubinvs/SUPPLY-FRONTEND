@@ -60,32 +60,33 @@ const EditSupplyComponent = (
 
     useEffect(() => {
         const article = hsc || localStorage.getItem("edit-article");
-
+    
         if (article) {
             setSearchQuery(article);
-
+    
             const filtered = components.filter(c =>
                 c.vendorCodeComponent?.toLowerCase().includes(article.toLowerCase()) ||
                 c.nameComponent?.toLowerCase().includes(article.toLowerCase())
             );
-
+    
             setFilteredComponents(filtered);
-
-            // Явно выбрать по точному совпадению артикула
-            const exactMatch = filtered.find(c =>
-                c.vendorCodeComponent?.toLowerCase() === hscChech.toLowerCase()
-            );
-
+    
+            const exactMatch = hscChech &&
+                filtered.find(c =>
+                    c.vendorCodeComponent?.toLowerCase() === hscChech.toLowerCase()
+                );
+    
             if (exactMatch) {
                 setSelectedComponent(exactMatch);
             } else if (filtered.length === 1) {
                 setSelectedComponent(filtered[0]);
             }
-
+    
         } else {
             setFilteredComponents(components);
         }
     }, [components, hsc, hscChech]);
+    
 
     useEffect(() => {
         loadUnitMeasurement(setUnitMeasurement);
