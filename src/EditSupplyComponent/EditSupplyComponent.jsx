@@ -41,7 +41,7 @@ const EditSupplyComponent = (
 
     const [currentPage, setCurrentPage] = useState(1);
 
-    const itemsPerPage = 50;
+    const itemsPerPage = 100;
     
     const currentItems = filteredComponents.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 

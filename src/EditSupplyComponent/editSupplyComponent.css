@@ -6,15 +6,25 @@
 
 }
 
+.edit-supply-component {
+    display: flex;
+}
+
 .edit-supply-component__left-block {
     width: 70%;
     margin-right: 10px;
 }
 
 .edit-supply-component__right-block {
-    position: relative;
+    
     width: 30%;
+    height: 80vh; /* или другое значение */
+    overflow-y: auto;
+    position: sticky;
+    top: 0; /* например, или 10px, в зависимости от отступа */
+    z-index: 10;
 }
+
 
 .edit-supply-component__search {
     width: 100%;
