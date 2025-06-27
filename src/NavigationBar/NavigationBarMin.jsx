@@ -29,14 +29,22 @@ const NavigationBarMin = (
                     <li className="navigation-icon-block__item" onClick={linkPageApplicationPanel}>
                         <img className="navigation-icon__icon-img" src="../images/dachbord_icon.svg" alt="Иконка на главную панель" />
                     </li>
-                    {/* Если роль пользователя заказчик! */}
-                    {roleCustomer || roleUser || roleAdmin ?
+                    {/* Если роль пользователя заказчик и администратор */}
+                    {roleCustomer || roleAdmin ?
                         <>
                             <li className="navigation-icon-block__item" onClick={suppliersOffers}>
                                 <img className="navigation-icon__icon-img" src="../images/specifications-icon.svg" alt="Иконка на страницу со списком номенклатуры" />
                             </li>
                             <li className="navigation-icon-block__item" onClick={linkPageEditSupplyComponent}>
                                 <img className="navigation-icon__icon-img" src="../images/file-pen-line.svg" alt="Иконка на страницу с редактированием номенклатуры" />
+                            </li>
+                        </>:""
+                    }
+                    {/* Если роль пользователя заказчик и администратор */}
+                    {roleUser?
+                        <>
+                            <li className="navigation-icon-block__item" onClick={suppliersOffers}>
+                                <img className="navigation-icon__icon-img" src="../images/specifications-icon.svg" alt="Иконка на страницу со списком номенклатуры" />
                             </li>
                         </>:""
                     }

@@ -17,11 +17,6 @@ import AddComponentApplication from "./AddComponentApplication/AddComponentAppli
 import ExcelPasteInput from "./ExcelPasteInput.jsx";
 import EditSupplyComponent from "./EditSupplyComponent/EditSupplyComponent.jsx";
 
-// // Константы ролей пользователей
-// const ROLE_ADMIN = "b5aff5b0-c3ac-4f1e-9467-fe13a14f6de3"; // Роль администратора системы
-// const ROLE_PROVIDER = "a5219e2b-12f3-490e-99f5-1be54c55cc6d"; // Роль поставщика
-// const ROLE_CUSTOMER = "52910536-2b8a-47e7-9d5a-8cca0a0b865a"; // Роль заказчика
-
 
 const App = () => {
   const [roleId] = useState(() => localStorage.getItem("roleId")); // ✅ кэшируем значение

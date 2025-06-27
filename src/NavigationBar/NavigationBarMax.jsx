@@ -42,7 +42,7 @@ const NavigationBarMax = () => {
                     <div className="nbm-navigation-item__name">Информационная панель</div>
                 </li>
 
-                {(roleCustomer || roleUser || roleAdmin) && (
+                {(roleCustomer || roleAdmin) && (
                     <>
                         <li
                             className={`navigation-bar-max__navigation-item ${location.pathname === pathSuppliersOffers ? 'navigation-bar-max__navigation-item_active' : ''}`}
@@ -57,6 +57,17 @@ const NavigationBarMax = () => {
                         >
                             <img src="../images/file-pen-line.svg" className="nbm-navigation-item__icon" alt="#" />
                             <div className="nbm-navigation-item__name">Редактировать номенклатуру</div>
+                        </li>
+                    </>
+                )}
+                {(roleUser) && (
+                    <>
+                        <li
+                            className={`navigation-bar-max__navigation-item ${location.pathname === pathSuppliersOffers ? 'navigation-bar-max__navigation-item_active' : ''}`}
+                            onClick={() => navigate(pathSuppliersOffers)}
+                        >
+                            <img src="../images/specifications-icon.svg" className="nbm-navigation-item__icon" alt="#"/>
+                            <div className="nbm-navigation-item__name">Предложения поставщиков</div>
                         </li>
                     </>
                 )}

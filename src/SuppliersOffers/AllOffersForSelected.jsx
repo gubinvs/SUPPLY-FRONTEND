@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import ApiUrl from "../js/ApiUrl.js";
+import { useRoleId } from "../js/Utilits/roleId.js";
 import "./allOffersForSelected.css";
 import NavigationBarMin from "../NavigationBar/NavigationBarMin.jsx";
 import NavigationBarMax from "../NavigationBar/NavigationBarMax.jsx";
@@ -9,7 +10,10 @@ import { saveAs } from "file-saver";
 import PaginationPage from "../ElementApplication/PaginationPage.jsx";
 
 
-const AllOffersForSelected = ({ role, title }) => {
+const AllOffersForSelected = (
+  { role, title }
+) => {
+  const { roleCustomer, roleProvider, roleAdmin, roleUser } = useRoleId();
   const [isNavMaxVisible, setIsNavMaxVisible] = useState(false);
   const [analyzedComponents, setAnalyzedComponents] = useState([]);
   const [combinedOffers, setCombinedOffers] = useState([]);
@@ -19,6 +23,7 @@ const AllOffersForSelected = ({ role, title }) => {
   const [selectedVendorCodes, setSelectedVendorCodes] = useState(new Set());
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 8;
+ 
 
 
   const handleShowMax = () => setIsNavMaxVisible(true);

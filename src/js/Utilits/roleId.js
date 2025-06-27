@@ -53,11 +53,3 @@ export function useRoleId() {
   return { roleCustomer, roleProvider, roleAdmin, roleUser, error };
 }
 
-
-
-
-// Реализация в компоненте
-
-//  const { roleCustomer, roleProvider, roleAdmin, roleUser, error } = useRoleId();
-
-//  if (error) return <p>Ошибка: {error.message}</p>;
