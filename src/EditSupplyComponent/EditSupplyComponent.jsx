@@ -16,8 +16,12 @@ const EditSupplyComponent = (
     { role, components, title, error }
 ) => {
     
-    // Компонент который только что меняли
-    const hsc = localStorage.getItem("handleSaveComponent");
+    // Артикул который меняли
+    const hscChech = localStorage.getItem("handleSaveComponent");
+
+    // Сочетание символов который вводили в поисковую форму, чтобы выдать окно как было
+    const hsc = localStorage.getItem("searchQuery");
+
     const [isNavMaxVisible, setIsNavMaxVisible] = useState(false);
     const handleShowMax = () => setIsNavMaxVisible(true);
     const handleHideMax = () => setIsNavMaxVisible(false);
@@ -69,7 +73,7 @@ const EditSupplyComponent = (
 
             // Явно выбрать по точному совпадению артикула
             const exactMatch = filtered.find(c =>
-                c.vendorCodeComponent?.toLowerCase() === article.toLowerCase()
+                c.vendorCodeComponent?.toLowerCase() === hscChech.toLowerCase()
             );
 
             if (exactMatch) {
@@ -81,7 +85,7 @@ const EditSupplyComponent = (
         } else {
             setFilteredComponents(components);
         }
-    }, [components, hsc]);
+    }, [components, hsc, hscChech]);
 
     useEffect(() => {
         loadUnitMeasurement(setUnitMeasurement);

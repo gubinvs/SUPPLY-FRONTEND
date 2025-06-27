@@ -10,26 +10,33 @@ export const handleDeleteComponent = async (selectedComponent, vendorCode, setSe
     if (!confirmDelete) return;
 
     try {
-        const response = await fetch(ApiUrl+`/api/AddComponent/${vendorCode}`, {
+        const encodedVendorCode = encodeURIComponent(vendorCode);
+        
+        const response = await fetch(ApiUrl + `/api/AddComponent/${encodedVendorCode}`, {
             method: "DELETE",
         });
 
         if (response.ok) {
             alert("Компонент успешно удалён.");
-
-            // как передать на верх?
             setSelectedComponent(null);
-
-            // Обнулим ключ в браузере
             localStorage.setItem("edit-article", "");
-
-
-            // Можно либо обновить components вручную, либо перезагрузить:
             window.location.reload();
         } else {
-            const err = await response.json();
-            alert("Ошибка при удалении: " + (err.message || response.status));
+            let errMessage = response.status;
+
+            try {
+                const contentType = response.headers.get("content-type");
+                if (contentType && contentType.includes("application/json")) {
+                    const err = await response.json();
+                    errMessage = err.message || response.status;
+                }
+            } catch (e) {
+                // Просто оставим статус, если не получилось прочитать JSON
+            }
+
+            alert("Ошибка при удалении: " + errMessage);
         }
+
     } catch (error) {
         alert("Сетевая ошибка: " + error.message);
     }

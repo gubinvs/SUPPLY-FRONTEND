@@ -3,7 +3,8 @@
 export const onSearchChange = (e, components, setSearchQuery, setFilteredComponents, setCurrentPage) => {
 
     const value = e.target.value;
-
+    localStorage.setItem('searchQuery', value); // ← сохраняем в localStorage
+    
     setSearchQuery(value);
 
     const filtered = components.filter(c =>

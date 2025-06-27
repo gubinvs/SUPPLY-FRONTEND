@@ -32,6 +32,11 @@ export const handleSaveComponent = (
     //Записываем последнее значение в браузер
     localStorage.setItem("handleSaveComponent", vendorCode);
 
+    if (vendorCode.includes("/")) {
+        alert("Артикул не должен содержать символ '/'. Пожалуйста, используйте другой.");
+        return;
+    }
+
     fetch(ApiUrl + "/api/AddComponent", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
