@@ -1,6 +1,7 @@
 import "./nomenclatureTable.css";
 import {handleCheckboxToggle} from "../js/Utilits/handleCheckboxToggle.js";
 import {handleEditClick} from "../js/Utilits/handleEditClick.js";
+import { useRoleId } from "../js/Utilits/roleId.js";
 
 
 
@@ -9,6 +10,9 @@ import {handleEditClick} from "../js/Utilits/handleEditClick.js";
 const NomenclatureTable = (
     {currentItems, selectedIds, setSelectedIds}
 ) => {
+
+    const { roleCustomer, roleProvider, roleAdmin, roleUser } = useRoleId();
+
     return (
         <>
             <table className="table">
@@ -19,7 +23,8 @@ const NomenclatureTable = (
                         <th scope="col" className="table-borderless__name">Наименование</th>
                         <th scope="col" className="table-borderless__manuf">Производитель</th>
                         <th scope="col" className="table-borderless__um">Ед. изм</th>
-                        <th scope="col" className="table-borderless__th-edit">Edit</th>
+                         {/* Если free user то не показываем */}
+                        {!roleUser?<th scope="col" className="table-borderless__th-edit">Edit</th>:""}
                     </tr>
                 </thead>
                 <tbody className="table-borderless__tbody">
@@ -38,15 +43,20 @@ const NomenclatureTable = (
                             <td>{item.nameComponent}</td>
                             <td>{item.manufacturerName}</td>
                             <td className="table-borderless__um">{item.unitMeasurementName}</td>
-                            <td className="table-borderless__edit">
-                                <img
-                                    className="table-borderless__icon-edit"
-                                    src="../images/file-pen-line__table.svg"
-                                    alt="Редактировать"
-                                    onClick={() => handleEditClick(item.vendorCodeComponent)}
-                                    style={{ cursor: "pointer" }}
-                                />
-                            </td>
+                            {/* Если free user то не показываем */}
+                            {!roleUser?
+                                <>
+                            
+                                    <td className="table-borderless__edit">
+                                        <img
+                                            className="table-borderless__icon-edit"
+                                            src="../images/file-pen-line__table.svg"
+                                            alt="Редактировать"
+                                            onClick={() => handleEditClick(item.vendorCodeComponent)}
+                                            style={{ cursor: "pointer" }}
+                                        />
+                                    </td>
+                                </>:""}
                         </tr>
                     ))}
                 </tbody>

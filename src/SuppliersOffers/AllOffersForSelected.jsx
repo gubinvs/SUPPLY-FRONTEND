@@ -10,6 +10,7 @@ import { saveAs } from "file-saver";
 import PaginationPage from "../ElementApplication/PaginationPage.jsx";
 
 
+
 const AllOffersForSelected = (
   { role, title }
 ) => {
@@ -230,7 +231,7 @@ const AllOffersForSelected = (
           </td>
           <td>{isFirstOccurrence ? offer.vendorCode : ""}</td>
           <td>{isFirstOccurrence ? offer.nameComponent : ""}</td>
-          <td>{offer.nameProvider}</td>
+          {!roleUser?<td>{offer.nameProvider}</td>:<td style={{fontSize: '14px', color: "red"}}>скрыто от пользователя</td>}
           <td>{offer.priceComponent.toLocaleString("ru-RU")} ₽</td>
           <td>{offer.deliveryTimeComponent}</td>
           <td>{new Date(offer.saveDataPrice).toLocaleDateString("ru-RU")}</td>
@@ -261,18 +262,44 @@ const AllOffersForSelected = (
             <>
               <div className="mb-4 all-offers-selected__button-block d-flex justify-content-between align-items-center">
                 <div>
-                    <button
-                      className="btn btn-sm btn-outline-success mx-2"
-                      onClick={exportToExcel}
-                    >
-                      Скачать все предложения (Excel)
-                    </button>
-                    <button
-                      className="btn btn-sm btn-outline-success"
-                      onClick={exportBestByProviderToExcel}
-                    >
-                      Скачать файл заказа поставщикам (Excel)
-                    </button>
+                    {!roleUser?
+                    <>
+                      <button
+                          className="btn btn-sm btn-outline-success mx-2"
+                          onClick={exportToExcel}
+                        >
+                          Скачать все предложения (Excel)
+                        </button>
+                    </>
+                    :
+                    <>
+                      <button
+                        className="btn btn-sm btn-outline-success mx-2"
+                        onClick={() => alert("Недоступно в данной роли")}
+                      >
+                        Скачать все предложения (Excel)
+                      </button>
+                    </>
+                  }
+                  {!roleUser?
+                    <>
+                      <button
+                        className="btn btn-sm btn-outline-success"
+                        onClick={exportBestByProviderToExcel}
+                      >
+                        Скачать файл заказа поставщикам (Excel)
+                      </button>
+                    </>
+                    :
+                    <>
+                      <button
+                          className="btn btn-sm btn-outline-success"
+                          onClick={() => alert("Недоступно в данной роли")}
+                        >
+                          Скачать файл заказа поставщикам (Excel)
+                        </button>
+                    </>
+                  }
                 </div>
                 <div>
                   
@@ -322,7 +349,8 @@ const AllOffersForSelected = (
                   
                   return (
                     <div key={index} className="mb-5">
-                      <h6 className="text-primary mb-2"><strong>{provider}</strong> предлагает лучшие цены на:</h6>
+                      <h6 className="text-primary mb-2">
+                        {!roleUser? <strong>{provider}</strong>:<div style={{ fontSize: '14px', color: 'red', fontWeight: 'bold' }}>"КОМПАНИЯ СКРЫТА ОТ ПОЛЬЗОВАТЕЛЯ"</div>} предлагает лучшие цены на:</h6>
                       
                       {/* Это всплывающее окно карточки компании */}
                       {/* <FullDataCompanyAndCollaborators dataCompany={""}/> */}
@@ -332,7 +360,6 @@ const AllOffersForSelected = (
                           <tr>
                             <th className="aos-table__th-article">Артикул</th>
                             <th>Наименование</th>
-                            
                             <th className="aos-table__th-price">Цена</th>
                             <th className="aos-table__th-term">Срок</th>
                             <th className="aos-table__th-data">Актуальность</th>
