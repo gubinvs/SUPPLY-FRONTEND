@@ -11,8 +11,8 @@ const RegistrationForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   // const [guidIdRoleSystem, setGuidIdRoleSystem] = useState(""); // Состояние для роли если полная версия программы
-  // если урезанная для локального деплоя, то пользователь всегда заказчик
-  const guidIdRoleSystem =  "52910536-2b8a-47e7-9d5a-8cca0a0b865a";
+  // если урезанная для локального деплоя, то пользователь всегда free
+  const guidIdRoleSystem =  "ba246092-47bf-4bcc-9e97-5b59969c8976"; // по умолчанию пользователь на просмотр FREE 
   const [honeypot, setHoneypot] = useState("");
   const [message, setMessage] = useState("");
 
