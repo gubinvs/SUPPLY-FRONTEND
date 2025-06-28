@@ -23,7 +23,7 @@ services:
       - ./appsettings-handy.json:/app/appsettings.json
 
   service4:
-    image: 261c3ff13607
+    image: 2fba55e9928b
     container_name: SUPPLY-HANDY__FRONTEND
     ports:
       - "1040:3000"
