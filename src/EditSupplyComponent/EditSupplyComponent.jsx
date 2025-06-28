@@ -35,6 +35,8 @@ const EditSupplyComponent = (
     const [selectedManufacturer, setSelectedManufacturer] = useState('');
     const [selectedUnit, setSelectedUnit] = useState('');
 
+    console.log(selectedUnit);
+
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredComponents, setFilteredComponents] = useState(components);
     const [selectedComponent, setSelectedComponent] = useState(null);
@@ -271,7 +273,7 @@ const EditSupplyComponent = (
                                         localStorage.setItem("lastUnit", e.target.value);
                                     }}
                                 >
-                                    <option value={selectedUnit}>{selectedUnit != null ? selectedUnit:"Ед. изм."}</option>
+                                    <option value={selectedUnit}>{selectedUnit !== null ? selectedUnit: "Ед. изм."}</option>
                                     {unitMeasurement.map((item, index) => (
                                         <option key={index} value={item.nameUnitMeasurement}>
                                             {item.nameUnitMeasurement}

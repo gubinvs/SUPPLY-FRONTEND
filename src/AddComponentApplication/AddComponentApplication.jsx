@@ -4,6 +4,7 @@ import "./addComponentApplication.css";
 import ApiUrl from "../js/ApiUrl.js";
 import { handleAnalyzeClick } from "../js/Utilits/handleAnalyzeClick.js";
 import { handleSaveComponent } from "../js/Utilits/handleSaveComponent.js";
+import { useRoleId } from "../js/Utilits/roleId.js";
 import NavigationBarMin from "../NavigationBar/NavigationBarMin.jsx";
 import NavigationBarMax from "../NavigationBar/NavigationBarMax.jsx";
 import HeaderApplicationPanel from "../ApplicationPanel/Header/HeaderApplicationPanel.jsx";
@@ -16,6 +17,8 @@ const ITEMS_PER_PAGE = 8;
 const AddComponentApplication = (
     {role, title, components}
 ) => {
+     // состояни роли пользователя в системе
+    const { roleCustomer, roleAdmin} = useRoleId();
     const [isNavMaxVisible, setIsNavMaxVisible] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [searchTerm, setSearchTerm] = useState(localStorage.getItem("handleSaveComponent") || '');
@@ -33,6 +36,11 @@ const AddComponentApplication = (
     const [selectedManufacturer, setSelectedManufacturer] = useState(''); // данные из выбранного списка про производителя
     const [selectedUnit, setSelectedUnit] = useState(''); // данные из выбранного списка по единицам измерения
     const navigate = useNavigate();
+
+
+    
+console.log(selectedUnit);
+
 
     // Преобразуй данные поставщиков в формат, понятный React Select
     const providerOptions = providers.map((item) => ({
@@ -233,16 +241,18 @@ const AddComponentApplication = (
             <div className="main-application-panel__container">
                 <div className="add-component-application__left-block">
                     {/* Форма для добавления новой компании поставщика, Если роль пользователя в системе заказчик или администратор, то выводим эту форму */}
-                    {role === "Заказчик" || role === "Администратор"?
+                    {roleCustomer || roleAdmin?
                     <div className="mb-10">
                       <AddCompanyProvider />
                     </div>
                     :""}
                     {/* Форма добавления и изменения наименования производинеля */}
+                    {roleCustomer || roleAdmin ? 
+                    <>
                     <div className="mb-40">
                         <Manufacturer />
                     </div>
-                    
+                    </>:""}
                     <h6><b>Поиск артикула в базе данных:</b></h6>
                     <input
                         className="form-control aca-searh-form"
@@ -342,41 +352,44 @@ const AddComponentApplication = (
                             onChange={(e) => setName(e.target.value)}
                         />
                         <div className="aca-input-form__manufacturer-block">
-                        <Select
-                                    className="aca-input-form__manufacturer"
-                                    options={manufacturer.map((item) => ({
-                                        value: item.nameManufacturer,
-                                        label: item.nameManufacturer
-                                    }))}
-                                    value={selectedManufacturer ? { value: selectedManufacturer, label: selectedManufacturer } : null}
-                                    onChange={(selectedOption) => {
-                                                if (selectedOption) {
-                                                    setSelectedManufacturer(selectedOption.value);
-                                                    localStorage.setItem("lastManufacturer", selectedOption.value);
-                                                } else {
-                                                    setSelectedManufacturer(null);
-                                                    localStorage.removeItem("lastManufacturer"); // или установи значение по умолчанию
-                                                }
-                                                }}
-                                    placeholder="Выберите производителя..."
-                                    isClearable
-                                    isSearchable
-                                />
-                                <select
-                                    className="form-select aca-input-form__unit"
-                                    value={selectedUnit}
-                                    onChange={(e) => {
-                                        setSelectedUnit(e.target.value);
-                                        localStorage.setItem("lastUnit", e.target.value);
-                                    }}
+                            <Select
+                                className="aca-input-form__manufacturer"
+                                options={manufacturer.map((item) => ({
+                                    value: item.nameManufacturer,
+                                    label: item.nameManufacturer
+                                }))}
+                                value={selectedManufacturer ? { value: selectedManufacturer, label: selectedManufacturer } : null}
+                                onChange={(selectedOption) => {
+                                            if (selectedOption) {
+                                                setSelectedManufacturer(selectedOption.value);
+                                                localStorage.setItem("lastManufacturer", selectedOption.value);
+                                            } else {
+                                                setSelectedManufacturer(null);
+                                                localStorage.removeItem("lastManufacturer"); // или установи значение по умолчанию
+                                            }
+                                            }}
+                                placeholder="Выберите производителя..."
+                                isClearable
+                                isSearchable
+                            />
+                            <select
+                                className="form-select aca-input-form__unit"
+                                value={selectedUnit || ""} // Управляем значение через state
+                                style={{ color: selectedUnit ? "#342F2C" : "#959697" }}
+                                onChange={(e) => {
+                                    setSelectedUnit(e.target.value);
+                                    localStorage.setItem("lastUnit", e.target.value);
+                                }}
                                 >
-                                    <option value={selectedUnit}>{selectedUnit != null ? selectedUnit:"Ед. изм."}</option>
-                                    {unitMeasurement.map((item, index) => (
-                                        <option key={index} value={item.nameUnitMeasurement}>
-                                            {item.nameUnitMeasurement}
-                                        </option>
-                                    ))}
-                                </select>
+                                <option value="" disabled>
+                                    Ед. изм.
+                                </option>
+                                {unitMeasurement.map((item, index) => (
+                                    <option key={index} value={item.nameUnitMeasurement}>
+                                    {item.nameUnitMeasurement}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
                         {!showEditPriceBlock && (
                             <button

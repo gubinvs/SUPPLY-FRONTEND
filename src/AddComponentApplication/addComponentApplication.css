@@ -73,6 +73,7 @@
 }
 .aca-input-form__manufacturer {
     width: 100%;
+    margin-right: 10px;
 }
 
 .aca-input-form__unit {
