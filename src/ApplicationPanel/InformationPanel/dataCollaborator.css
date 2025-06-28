@@ -34,8 +34,25 @@
     position: absolute;
     bottom: 20px;
     right: 20px;
+    width: 418px;
 }
 
 .information-user-card__item_discr {
     margin-bottom: 10px;
+}
+
+.check-box {
+    display: flex;
+    align-items: flex-start;
+}
+
+.check-box__input {
+    margin: 10px;
+}
+
+.check-box__pp-page {
+    cursor: pointer;
+}
+.check-box__pp-page:hover {
+    color: red;
 }

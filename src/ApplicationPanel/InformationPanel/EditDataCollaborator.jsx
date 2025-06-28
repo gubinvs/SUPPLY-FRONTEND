@@ -142,13 +142,17 @@ const EditDataCollaborator = ({
                     </button>
                 </li>
             </ul>
-            <button
+            <div class="check-box information-user-card__edit-botton">
+              <input className="check-box__input" type="checkbox" name="chekBox" checked required />
+              <div className="check-box__pp-page" onClick={()=> {window.location.href="https://encomponent.ru/pp-page.html"}}>Соглашаюсь на обработку персональных данных.</div>
+              <button
                 type="button"
-                className="btn btn-success information-user-card__edit-botton"
+                className="btn btn-success"
                 onClick={handleSubmit}
             >
                 Записать
             </button>
+            </div>
             {/* Выйти из редактирования */}
             <button type="button" class="btn btn-outline-danger information-user-card__exit-botton" onClick={exitEdit}>Х</button>
         </div>
