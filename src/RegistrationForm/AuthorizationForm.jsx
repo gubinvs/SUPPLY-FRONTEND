@@ -71,7 +71,7 @@ const AuthorizationForm = () => {
         <div className="form-block form block-message">
           <h4 className="form-block__message">{message}</h4>
 
-          {message === "Пожалуйста, подтвердите свой адрес электронной почты. В противном случае, ваш аккаунт может быть удалён в ближайшее время." ? (
+          {message === "Пожалуйста, подтвердите email — иначе аккаунт будет удалён." ? (
             <button
               onClick={() => redirectToEmailActivation(email, setMessage)}
               type="button"
