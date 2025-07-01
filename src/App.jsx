@@ -146,7 +146,7 @@ const App = () => {
           <PrivateRoute allowedRoles={[ROLE_CUSTOMER, ROLE_ADMIN]}>
             <PurchasePage
               role={role} 
-              title="Данные о процессе закупок"
+              title="Данные о закупках"
               components={components}
               error={error}
             />

@@ -25,8 +25,14 @@ const PurchasePage =(
                 {isNavMaxVisible && <NavigationBarMax />}
                 <HeaderApplicationPanel role={role} title={title} />
                 <div className="main-application-panel__container">
-
-                    
+                    <div className="purchase-page-left-block">d</div>
+                    <div className="purchase-page-right-block">
+                        <div className="purchase-page__create-purchase-block">
+                            <h6 className="create-purchase-block__title">Создайте новую закупку:</h6>
+                            <input className="form-control create-purchase-block__create-form-purchaseId" type="text" placeholder="Идентификатор закупки" aria-label="purchaseId"/>
+                            <button type="button" className="btn btn-outline-secondary create-purchase-block__create-form-button">Создать</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </>

@@ -1,0 +1,16 @@
+.purchase-page-left-block {
+    width: 100%
+}
+
+
+.purchase-page-right-block {
+    width: 500px;
+}
+
+.create-purchase-block__create-form-purchaseId {
+    margin-bottom: 10px;
+}
+
+.create-purchase-block__create-form-button {
+    width: 100%;
+}
