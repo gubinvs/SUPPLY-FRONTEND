@@ -139,7 +139,13 @@ const App = () => {
             />
           </PrivateRoute>
         } />
-        
+
+        {/* Страница c данными о закупках */}
+          <Route path="/Purchase" element={
+          <PrivateRoute allowedRoles={[ROLE_CUSTOMER, ROLE_ADMIN]}>
+    
+          </PrivateRoute>
+        } />
 
       </Routes>
     </Router>
