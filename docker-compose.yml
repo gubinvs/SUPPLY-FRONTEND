@@ -29,7 +29,7 @@ services:
       - "1040:3000"
   
   service5:
-    image: a0ca51267bb1
+    image: b0fcd47599a4
     container_name: SUPPLY-ENCOMPONENT__API
     ports:
       - "1050:8080"

@@ -32,6 +32,14 @@ export const handleSaveComponent = (
     //Записываем последнее значение в браузер
     localStorage.setItem("handleSaveComponent", vendorCode);
 
+    // Удаляем из браузера записи последних вводимых символов в поля артикул и наименование
+    localStorage.removeItem("articlePreviousEntry");
+    localStorage.removeItem("namePreviousEntry");
+    localStorage.removeItem("selectedManufacturerPreviousEntry");
+    localStorage.removeItem("selectedUnitPreviousEntry");
+
+
+
     if (vendorCode.includes("/")) {
         alert("Артикул не должен содержать символ '/'. Пожалуйста, используйте другой.");
         return;

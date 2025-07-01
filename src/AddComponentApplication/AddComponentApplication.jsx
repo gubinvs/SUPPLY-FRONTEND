@@ -23,8 +23,8 @@ const AddComponentApplication = (
     const [currentPage, setCurrentPage] = useState(1);
     const [searchTerm, setSearchTerm] = useState(localStorage.getItem("handleSaveComponent") || '');
     const [selectedIds, setSelectedIds] = useState(new Set());
-    const [article, setArticle] = useState('');
-    const [name, setName] = useState('');
+    const [article, setArticle] = useState(localStorage.getItem("articlePreviousEntry") || '');
+    const [name, setName] = useState(localStorage.getItem("namePreviousEntry") || '');
     const [price, setPrice] = useState('');
     const [deliveryTerm, setDeliveryTerm] = useState('');
     const [providerId, setProviderId] = useState('');
@@ -33,13 +33,11 @@ const AddComponentApplication = (
     const [manufacturer, setManufacturer] = useState([]); // Данные о наименовании производителей
     const [unitMeasurement, setUnitMeasurement] = useState([]); // Данные о единицах измерения
     const [combinedOffers, setCombinedOffers] = useState([]); // для цен поставщиков
-    const [selectedManufacturer, setSelectedManufacturer] = useState(''); // данные из выбранного списка про производителя
-    const [selectedUnit, setSelectedUnit] = useState(''); // данные из выбранного списка по единицам измерения
+    const [selectedManufacturer, setSelectedManufacturer] = useState(localStorage.getItem("selectedManufacturerPreviousEntry") || ''); // данные из выбранного списка про производителя
+    const [selectedUnit, setSelectedUnit] = useState( localStorage.getItem("selectedUnitPreviousEntry") ||''); // данные из выбранного списка по единицам измерения
     const navigate = useNavigate();
 
 
-    
-console.log(selectedUnit);
 
 
     // Преобразуй данные поставщиков в формат, понятный React Select
@@ -115,6 +113,16 @@ console.log(selectedUnit);
     useEffect(() => {
         loadProviders();
     }, []);
+
+    // Следим за изменением данных в поле артикул и записываем в память браузера, 
+    // для того чтобы при обновлении страницы сохранялись данные
+    useEffect(() => {
+        localStorage.setItem("articlePreviousEntry", article);
+        localStorage.setItem("namePreviousEntry", name)
+        localStorage.setItem("selectedManufacturerPreviousEntry", selectedManufacturer)
+        localStorage.setItem("selectedUnitPreviousEntry", selectedUnit)
+    }, [article, name, selectedManufacturer, selectedUnit]);
+
 
 
     // Загрузка списка наименований производителей
@@ -327,30 +335,71 @@ console.log(selectedUnit);
                 <div className="add-component-application__right-block">
                     <h6><b>{article === ""? "Артикул не найден — добавьте новый":"Артикул найден — внесите изменения"}</b></h6>
                     <div className="add-component-application__input-form">
-                        <input
-                            type="text"
-                            className="form-control aca-input-form__article"
-                            placeholder="Артикул"
-                            value={article}
-                            onChange={(e) => {
-                                setArticle(e.target.value);
-                                setSelectedManufacturer("");
-                                setSelectedUnit("");
-                                setSearchTerm(e.target.value);
-                                setCurrentPage(1);
-                                setSelectedIds(new Set()); // Сброс выбранного чекбокса
-                                setName('');
-                                setShowEditPriceBlock(false);
-                                setCombinedOffers([]); // 👈 Очистка предложений
-                            }}
-                        />
-                        <input
-                            type="text"
-                            className="form-control aca-input-form__name"
-                            placeholder="Наименование"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                        />
+                         {/* Если выбран артикул для добавления цены, запретим редактирование поля наименование */}
+                         {showEditPriceBlock ?
+                            <>
+                                <input
+                                    type="text"
+                                    className="form-control aca-input-form__article"
+                                    placeholder="Артикул"
+                                    value={article}
+                                    onChange={(e) => {
+                                        setArticle(e.target.value);
+                                        setSelectedManufacturer("");
+                                        setSelectedUnit("");
+                                        setSearchTerm(e.target.value);
+                                        setCurrentPage(1);
+                                        setSelectedIds(new Set()); // Сброс выбранного чекбокса
+                                        setName('');
+                                        setShowEditPriceBlock(false);
+                                        setCombinedOffers([]); // 👈 Очистка предложений
+                                    }}
+                                    readOnly
+                                />
+                            </>:
+                            <>
+                                <input
+                                    type="text"
+                                    className="form-control aca-input-form__article"
+                                    placeholder="Артикул"
+                                    value={article}
+                                    onChange={(e) => {
+                                        setArticle(e.target.value);
+                                        setSelectedManufacturer("");
+                                        setSelectedUnit("");
+                                        setSearchTerm(e.target.value);
+                                        setCurrentPage(1);
+                                        setSelectedIds(new Set()); // Сброс выбранного чекбокса
+                                        setName('');
+                                        setShowEditPriceBlock(false);
+                                        setCombinedOffers([]); // 👈 Очистка предложений
+                                    }}
+                                />
+                            </>
+                            }
+                               
+                        {/* Если выбран артикул для добавления цены, запретим редактирование поля наименование */}
+                        {showEditPriceBlock ?
+                            <>
+                                <input
+                                    type="text"
+                                    className="form-control aca-input-form__name"
+                                    placeholder="Наименование"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    readOnly
+                                />
+                            </>:
+                            <>
+                                <input
+                                    type="text"
+                                    className="form-control aca-input-form__name"
+                                    placeholder="Наименование"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                />
+                            </>
+                            }
                         <div className="aca-input-form__manufacturer-block">
                             <Select
                                 className="aca-input-form__manufacturer"
