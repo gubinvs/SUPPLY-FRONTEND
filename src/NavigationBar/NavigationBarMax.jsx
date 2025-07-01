@@ -73,13 +73,22 @@ const NavigationBarMax = () => {
                 )}
 
                 {!roleUser && (
-                    <li
-                        className={`navigation-bar-max__navigation-item ${location.pathname === pathAddComponent ? 'navigation-bar-max__navigation-item_active' : ''}`}
-                        onClick={() => navigate(pathAddComponent)}
-                    >
-                        <img src="../images/add-component-icon.svg" className="nbm-navigation-item__icon" alt="#"/>
-                        <div className="nbm-navigation-item__name">Добавить данные</div>
-                    </li>
+                    <>
+                        <li
+                            className={`navigation-bar-max__navigation-item ${location.pathname === pathAddComponent ? 'navigation-bar-max__navigation-item_active' : ''}`}
+                            onClick={() => navigate(pathAddComponent)}
+                        >
+                            <img src="../images/add-component-icon.svg" className="nbm-navigation-item__icon" alt="#"/>
+                            <div className="nbm-navigation-item__name">Добавить данные</div>
+                        </li>
+                            <li
+                            className={`navigation-bar-max__navigation-item ${location.pathname === pathAddComponent ? 'navigation-bar-max__navigation-item_active' : ''}`}
+                            onClick={() => navigate(pathAddComponent)}
+                        >
+                            <img src="../images/add-component-icon.svg" className="nbm-navigation-item__icon" alt="#"/>
+                            <div className="nbm-navigation-item__name">Добавить данные</div>
+                        </li>
+                    </>
                 )}
             </ul>
         </div>

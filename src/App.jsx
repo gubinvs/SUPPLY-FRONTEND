@@ -16,6 +16,7 @@ import AllOffersForSelected from "./SuppliersOffers/AllOffersForSelected.jsx";
 import AddComponentApplication from "./AddComponentApplication/AddComponentApplication.jsx";
 import ExcelPasteInput from "./ExcelPasteInput.jsx";
 import EditSupplyComponent from "./EditSupplyComponent/EditSupplyComponent.jsx";
+import PurchasePage from "./PurchasePage/PurchasePage.jsx";
 
 
 const App = () => {
@@ -143,7 +144,12 @@ const App = () => {
         {/* Страница c данными о закупках */}
           <Route path="/Purchase" element={
           <PrivateRoute allowedRoles={[ROLE_CUSTOMER, ROLE_ADMIN]}>
-    
+            <PurchasePage
+              role={role} 
+              title="Данные о процессе закупок"
+              components={components}
+              error={error}
+            />
           </PrivateRoute>
         } />
 
