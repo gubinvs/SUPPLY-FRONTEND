@@ -12,7 +12,8 @@ const ListPurchaseBlock = (
         <>
             <div className="list-purchase-block__form-block">
                 <input 
-                    className="form-control lp-form-block__input" 
+                
+                    className={createPurchase?"form-control lp-form-block__input" :"form-control lp-form-block__input mr-10"}
                     type="text" 
                     placeholder="Поиск закупки по идентификатору" 
                     aria-label="purchaseId"
@@ -32,7 +33,17 @@ const ListPurchaseBlock = (
                     </button>
                 :""}
             </div>
-            </>
+            <div className="list-purchase-block__list-block">
+                <ul className="list-purchase">
+                    <li className="list-purchase__item">
+                        <input 
+                            type="checkbox" 
+                            className="form-check-input"
+                        />
+                    </li>
+                </ul>
+            </div>
+        </>
     );
 };
 
