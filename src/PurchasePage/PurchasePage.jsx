@@ -17,6 +17,11 @@ const PurchasePage =(
     const handleHideMax = () => setIsNavMaxVisible(false);
     const [createPurchase, setCreatePurchase] = useState(false);
 
+    // Загрузить данные о закупках
+    const downloadListPurchase =()=> {
+        
+    };
+
     return(
         <>
             <div className="main-application-panel">
