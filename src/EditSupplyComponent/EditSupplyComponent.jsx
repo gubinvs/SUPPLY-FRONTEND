@@ -35,7 +35,6 @@ const EditSupplyComponent = (
     const [selectedManufacturer, setSelectedManufacturer] = useState('');
     const [selectedUnit, setSelectedUnit] = useState('');
 
-    console.log(selectedUnit);
 
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredComponents, setFilteredComponents] = useState(components);
@@ -43,7 +42,8 @@ const EditSupplyComponent = (
 
     const [currentPage, setCurrentPage] = useState(1);
 
-    const itemsPerPage = 100;
+    
+    const itemsPerPage = 15;
     
     const currentItems = filteredComponents.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
