@@ -3,6 +3,8 @@ import "./purchasePage.css";
 import NavigationBarMax from "../NavigationBar/NavigationBarMax";
 import NavigationBarMin from "../NavigationBar/NavigationBarMin";
 import HeaderApplicationPanel from "../ApplicationPanel/Header/HeaderApplicationPanel";
+import CreatePurchaseBlock from "./CreatePurchaseBlock.jsx";
+import ListPurchaseBlock from "./ListPurchaseBlock.jsx";
 
 
 // Страница с данными о закупках
@@ -13,6 +15,7 @@ const PurchasePage =(
     const [isNavMaxVisible, setIsNavMaxVisible] = useState(false);
     const handleShowMax = () => setIsNavMaxVisible(true);
     const handleHideMax = () => setIsNavMaxVisible(false);
+    const [createPurchase, setCreatePurchase] = useState(false);
 
     return(
         <>
@@ -25,14 +28,20 @@ const PurchasePage =(
                 {isNavMaxVisible && <NavigationBarMax />}
                 <HeaderApplicationPanel role={role} title={title} />
                 <div className="main-application-panel__container">
-                    <div className="purchase-page-left-block">d</div>
-                    <div className="purchase-page-right-block">
-                        <div className="purchase-page__create-purchase-block">
-                            <h6 className="create-purchase-block__title">Создайте новую закупку:</h6>
-                            <input className="form-control create-purchase-block__create-form-purchaseId" type="text" placeholder="Идентификатор закупки" aria-label="purchaseId"/>
-                            <button type="button" className="btn btn-outline-secondary create-purchase-block__create-form-button">Создать</button>
-                        </div>
+                    <div className="purchase-page-left-block">
+                        <ListPurchaseBlock 
+                            createPurchase={createPurchase} 
+                            setCreatePurchase={setCreatePurchase}
+                        />
                     </div>
+                    {createPurchase?
+                        <div className="purchase-page-right-block">
+                            <CreatePurchaseBlock
+                                createPurchase={createPurchase} 
+                                setCreatePurchase={setCreatePurchase}
+                            />
+                        </div>
+                    :""}
                 </div>
             </div>
         </>

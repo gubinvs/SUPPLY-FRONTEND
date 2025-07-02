@@ -1,0 +1,14 @@
+
+
+.list-purchase-block__form-block {
+    display: flex;
+}
+.lp-form-block__input {
+    margin-bottom: 20px;
+    margin-right: 10px;
+}
+
+.lp-form-block__button {
+    width: 300px;
+    height: 36px;
+}

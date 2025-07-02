@@ -1,0 +1,11 @@
+.create-purchase-block__title {
+    padding-left: 2px;
+}
+
+.create-purchase-block__create-form-purchaseId {
+    margin-bottom: 10px;
+}
+
+.create-purchase-block__create-form-button {
+    width: 100%;
+}
