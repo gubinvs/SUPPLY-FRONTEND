@@ -29,6 +29,7 @@ const CreatePurchaseBlock = (
                     type="text" 
                     placeholder="Наименование новой закупки" 
                     name="purchaseName"
+                    maxLength={100}
                     aria-label="purchaseId"
                 />
                 <button 

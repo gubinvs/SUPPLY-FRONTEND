@@ -15,10 +15,39 @@
     margin-right: 40px;
 }
 
+.lp-item__context-block {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
 .list-purchase__item {
-    height: 34px;
+    display: flex;
     border-radius: 4px;
     padding: 4px 4px 4px 8px;
     background-color: #E0E5F8;
     margin-bottom: 2px;
 }
+
+.lp-item__check {
+    width: 40px;
+}
+
+.lp-item__purchaseId {
+    width: 250px;
+}
+
+.lp-item__purchaseName {
+    width: 100%;
+}
+
+.lp-item__purchasePrice {
+    width: 250px;
+}
+
+.lp-item__purchaseSave {
+    width: 220px;
+    height: 34px;
+    padding: 4px 8px 4px 8px;
+}
+

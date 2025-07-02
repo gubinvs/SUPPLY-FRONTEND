@@ -1,12 +1,14 @@
 import { useState } from "react";
 import "./listPurchaseBlock.css";
+import ListPurchaseComponent from "./ListPurchaseComponent.jsx";
 
 
 
 const ListPurchaseBlock = (
     {createPurchase, setCreatePurchase}
 ) => {
-    const [search, setSearch]= useState('');
+    const [search, setSearch] = useState('');
+    const [cheked, setCheced] = useState(false);
 
     return (
         <>
@@ -36,14 +38,23 @@ const ListPurchaseBlock = (
             <div className="list-purchase-block__list-block">
                 <ul className="list-purchase">
                     <li className="list-purchase__item">
-                        <input 
-                            type="checkbox" 
-                            className="form-check-input"
-                        />
+                        <div className="lp-item__context-block">
+                            <div className="lp-item__check">
+                            <input 
+                                type="checkbox" 
+                                className="form-check-input"
+                            />
+                            </div>
+                            <div className="lp-item__purchaseId">Идентификатор</div>
+                            <div className="lp-item__purchaseName">Наименование закупки </div>
+                            <div className="lp-item__purchasePrice">92 500 444 р.</div> 
+                        </div>
+                        <button className=" btn btn-outline-warning lp-item__purchaseSave">Сохранить изменения</button>
                     </li>
                 </ul>
             </div>
-        </>
+            <ListPurchaseComponent />
+        </> 
     );
 };
 
