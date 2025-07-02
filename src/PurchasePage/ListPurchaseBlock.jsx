@@ -22,7 +22,15 @@ const ListPurchaseBlock = (
                         setSearch(e.target.value);
                     }}
                 />  
-                {!createPurchase?<button type="button" className="btn btn-outline-secondary lp-form-block__button" onClick={()=>{setCreatePurchase(true)}}>Создать закупку</button>:""}
+                {!createPurchase?
+                    <button 
+                        type="button" 
+                        className="btn btn-outline-secondary lp-form-block__button" 
+                        onClick={()=>{setCreatePurchase(true)}}
+                    >
+                        Создать закупку
+                    </button>
+                :""}
             </div>
             </>
     );
