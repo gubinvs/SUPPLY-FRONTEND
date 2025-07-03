@@ -46,8 +46,9 @@ const ListPurchaseBlock = (
                             />
                             </div>
                             <div className="lp-item__purchaseId">Идентификатор</div>
-                            <div className="lp-item__purchaseName">Наименование закупки </div>
-                            <div className="lp-item__purchasePrice">92 500 444 р.</div> 
+                            <div className="lp-item__purchaseName">Наименование закупки</div>
+                            <div className="lp-item__purchasePrice">92 500 444 р.</div>
+                            <div className="lp-item__purchaseName">Заказчик</div>
                         </div>
                         <button className=" btn btn-outline-warning lp-item__purchaseSave">Сохранить изменения</button>
                     </li>

@@ -23,9 +23,9 @@ const App = () => {
   const [roleId] = useState(() => localStorage.getItem("roleId")); // ✅ кэшируем значение
   const [role, setRole] = useState("");
   const [title, setTitle] = useState("");
-
   const [components, setComponents] = useState([]);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
 
 
@@ -55,13 +55,14 @@ const App = () => {
             })
             .then((data) => {
                 setComponents(data || []);
+                setLoading(false);
             })
             .catch((error) => {
                 console.error("Ошибка получения данных:", error);
                 setError("Ошибка загрузки данных: " + error.message);
+                setLoading(false);
             });
     }, []);
-
 
   return (
     <Router>
@@ -117,6 +118,7 @@ const App = () => {
               role={role} 
               title="Предложения поставщиков" 
               components={components}
+              loading={loading}
               error={error}
             />
           </PrivateRoute>

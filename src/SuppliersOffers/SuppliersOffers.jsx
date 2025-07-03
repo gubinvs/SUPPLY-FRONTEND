@@ -1,5 +1,6 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import "./suppliersOffers.css";
+import Spinners from "../ElementApplication/Spinners.jsx";
 import ViewSuppliersOffers from "./ViewSuppliersOffers.jsx";
 import NavigationBarMin from "../NavigationBar/NavigationBarMin.jsx";
 import NavigationBarMax from "../NavigationBar/NavigationBarMax.jsx";
@@ -14,10 +15,10 @@ import GroopSearchSuppliersOffers from "./GroopSearchSuppliersOffers.jsx";
 
 
 const SuppliersOffers = (
-    {role, title, components, error}
+    {role, title, components, loading, error}
 ) => {
     // Состояние страницы поиска по артикулам, групповое или одиночное. по умолчанию одиночное
-    const [groopSearchArticle, setGroopSearchArticle] = useState(false);
+    const [groupSearchArticle, setGroupSearchArticle] = useState(false);
 
   
     // Переключатель состояния боковой навигационной панели
@@ -27,48 +28,50 @@ const SuppliersOffers = (
     
     // Переключатель состояния поисковой формы по одному или группой
     const editSearchState = () => {
-        if (groopSearchArticle === false) {
-            setGroopSearchArticle(true);
+        if (groupSearchArticle === false) {
+            setGroupSearchArticle(true);
         } else {
-            setGroopSearchArticle(false);
+            setGroupSearchArticle(false);
         }
     }
 
+
     return (
         <>
-            <div className="main-application-panel">
-                <NavigationBarMin
-                    onShowMax={handleShowMax}
-                    onHideMax={handleHideMax}
-                    isNavMaxVisible={isNavMaxVisible}
-                />
+            {!loading?
+                <div className="main-application-panel">
+                    <NavigationBarMin
+                        onShowMax={handleShowMax}
+                        onHideMax={handleHideMax}
+                        isNavMaxVisible={isNavMaxVisible}
+                    />
 
-                {isNavMaxVisible && <NavigationBarMax />}
-                <HeaderApplicationPanel role={role} title={title} />
-                {/* Кнопка изменения состояния ввода данных */}
-                <button
-                    className="btn btn-outline-secondary suppliers-offers__groop-search-button"
-                    onClick={editSearchState}
-                >
-                    {groopSearchArticle?"-> Одиночный поиск":"-> Групповой поиск"}
-                </button>
-                {!groopSearchArticle?
-                    // Поисковая форма одиночного запроса
-                    <ViewSuppliersOffers 
-                        components={components}
-                        error={error}
-                    />
-                    :
-                    // Поисковая форма группового запроса
-                    <GroopSearchSuppliersOffers 
-                        components={components}
-                        error={error}
-                    />
-                }
-            </div>
+                    {isNavMaxVisible && <NavigationBarMax />}
+                    <HeaderApplicationPanel role={role} title={title} />
+                    {/* Кнопка изменения состояния ввода данных */}
+                    <button
+                        className="btn btn-outline-secondary suppliers-offers__groop-search-button"
+                        onClick={editSearchState}
+                    >
+                        {groupSearchArticle?"-> Одиночный поиск":"-> Групповой поиск"}
+                    </button>
+                    {!groupSearchArticle?
+                        // Поисковая форма одиночного запроса
+                        <ViewSuppliersOffers 
+                            components={components}
+                            error={error}
+                        />
+                        :
+                        // Поисковая форма группового запроса
+                        <GroopSearchSuppliersOffers 
+                            components={components}
+                            error={error}
+                        />
+                    }
+                </div>
+            :<Spinners/>}
         </>
     );
-
 };
 
 export default SuppliersOffers;
