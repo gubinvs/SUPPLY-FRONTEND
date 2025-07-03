@@ -21,6 +21,7 @@ const CreatePurchaseBlock = (
                     className="form-control create-purchase-block__create-form-purchaseId" 
                     type="text" 
                     name="guidId"
+                    maxLength={20}
                     placeholder="Идентификатор новой закупки" 
                     aria-label="purchaseId"
                 />
@@ -29,12 +30,12 @@ const CreatePurchaseBlock = (
                     type="text" 
                     placeholder="Наименование новой закупки" 
                     name="purchaseName"
-                    maxLength={100}
+                    maxLength={60}
                     aria-label="purchaseId"
                 />
                 <button 
                     type="button" 
-                    className="btn btn-outline-secondary create-purchase-block__create-form-button" 
+                    className="btn btn-outline-secondary cpb__create-form-button" 
                     onClick={()=>addPurchase()}
                     >
                     Записать

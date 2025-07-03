@@ -1,6 +1,7 @@
 .list-purchase-block__form-block {
     display: flex;
 }
+
 .lp-form-block__input {
     margin-bottom: 20px;
 }
@@ -29,24 +30,39 @@
     margin-bottom: 2px;
 }
 
+.lp-item__purchase-id,
+.lp-item__check,
+.lp-item__purchase-id,
+.lp-item__purchase-name,
+.lp-item__purchase-price {
+    border-right: 1px solid #F5F6FA;
+}
+
 .lp-item__check {
-    width: 40px;
+    width: 24px;
 }
 
-.lp-item__purchaseId {
-    width: 250px;
+.lp-item__purchase-id {
+    width: 200px;
+    text-align: center;
 }
 
-.lp-item__purchaseName {
-    width: 100%;
+.lp-item__purchase-name {
+    width: 50%;
+    padding-left: 10px;
 }
 
-.lp-item__purchasePrice {
-    width: 250px;
+.lp-item__purchase-price {
+    width: 150px;
+    text-align: center;
 }
 
-.lp-item__purchaseSave {
-    width: 220px;
+.lp-item__purchase-name-costomer {
+    padding-left: 10px;
+}
+
+.lp-item__purchase-save {
+    width: 214px;
     height: 34px;
     padding: 4px 8px 4px 8px;
 }

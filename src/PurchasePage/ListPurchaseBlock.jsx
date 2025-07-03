@@ -45,12 +45,12 @@ const ListPurchaseBlock = (
                                 className="form-check-input"
                             />
                             </div>
-                            <div className="lp-item__purchaseId">Идентификатор</div>
-                            <div className="lp-item__purchaseName">Наименование закупки</div>
-                            <div className="lp-item__purchasePrice">92 500 444 р.</div>
-                            <div className="lp-item__purchaseName">Заказчик</div>
+                            <div className="lp-item__purchase-id">DG12-002 шэу-сэу-01щ</div>
+                            <div className="lp-item__purchase-name">Наименование закупки mmmmmmmmmm mmmmmmmm mmmmmmmmm .lfgllvlr</div>
+                            <div className="lp-item__purchase-price">92 500 444 р.</div>
+                            <div className="lp-item__purchase-name-costomer">Компания заказчик</div>
                         </div>
-                        <button className=" btn btn-outline-warning lp-item__purchaseSave">Сохранить изменения</button>
+                        <button className="btn btn-outline-warning lp-item__purchase-save">Сохранить изменения</button>
                     </li>
                 </ul>
             </div>
