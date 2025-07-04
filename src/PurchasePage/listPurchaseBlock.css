@@ -43,8 +43,9 @@
 }
 
 .lp-item__purchase-id {
+    padding-left: 10px;
     width: 200px;
-    text-align: center;
+    text-align: left;
 }
 
 .lp-item__purchase-name {

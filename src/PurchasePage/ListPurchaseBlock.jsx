@@ -5,7 +5,7 @@ import ListPurchaseComponent from "./ListPurchaseComponent.jsx";
 
 
 const ListPurchaseBlock = (
-    {createPurchase, setCreatePurchase}
+    {createPurchase, setCreatePurchase, purchase, purchaseItem}
 ) => {
     const [search, setSearch] = useState('');
     const [cheked, setCheced] = useState(false);
@@ -37,24 +37,34 @@ const ListPurchaseBlock = (
             </div>
             <div className="list-purchase-block__list-block">
                 <ul className="list-purchase">
-                    <li className="list-purchase__item">
-                        <div className="lp-item__context-block">
-                            <div className="lp-item__check">
-                            <input 
-                                type="checkbox" 
-                                className="form-check-input"
-                            />
-                            </div>
-                            <div className="lp-item__purchase-id">DG12-002 шэу-сэу-01щ</div>
-                            <div className="lp-item__purchase-name">Наименование закупки mmmmmmmmmm mmmmmmmm mmmmmmmmm .lfgllvlr</div>
-                            <div className="lp-item__purchase-price">92 500 444 р.</div>
-                            <div className="lp-item__purchase-name-costomer">Компания заказчик</div>
-                        </div>
-                        <button className="btn btn-outline-warning lp-item__purchase-save">Сохранить изменения</button>
-                    </li>
+                    {purchase.map((item)=>{
+                        return(
+                            <>
+                                <li className="list-purchase__item">
+                                    <div className="lp-item__context-block">
+                                        <div className="lp-item__check">
+                                        <input 
+                                            type="checkbox" 
+                                            className="form-check-input"
+                                        />
+                                        </div>
+                                        <div className="lp-item__purchase-id">{item.purchaseId}</div>
+                                        <div className="lp-item__purchase-name">{item.purchaseName}</div>
+                                        <div className="lp-item__purchase-price">{Intl.NumberFormat("ru").format(item.purchasePrice)} р.</div>
+                                        <div className="lp-item__purchase-name-costomer">{item.purchaseCostomer}</div>
+                                    </div>
+                                    <button className="btn btn-outline-warning lp-item__purchase-save">Сохранить изменения</button>
+                                </li>
+                            </>
+                        );
+                    })}
+                    <ListPurchaseComponent 
+                        purchaseItem = {purchaseItem}
+                    />
+          
                 </ul>
             </div>
-            <ListPurchaseComponent />
+            
         </> 
     );
 };

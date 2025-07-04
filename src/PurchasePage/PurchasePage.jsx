@@ -17,6 +17,26 @@ const PurchasePage =(
     const handleHideMax = () => setIsNavMaxVisible(false);
     const [createPurchase, setCreatePurchase] = useState(false);
 
+    // Временные массива данных для отладки
+    const purchase = [{
+        guidIdPurchase : "f0e61c84-7c57-46d0-897b-b0843af0ce80",
+        purchaseId : "ВП25-008",
+        purchaseName: "Шкаф управления (ШУ) балластными насосоми",
+        purchasePrice: 92500444,
+        purchaseCostomer: "ООО \"Кронштадт\""
+    }]; // Закупки
+
+    const purchaseItem = [{
+        guidIdPurchase : "f0e61c84-7c57-46d0-897b-b0843af0ce80",
+        guidIdComponent: "87127a71-a08f-44f4-9fcb-6b72fd7539fa",
+        vendorCodeComponent:"LC1D32BD",
+        nameComponent:"Пускатель магнитный 32А катушка управления 24В DС 1НО+1НЗ LC1D (LC1D32BD)",
+        requiredQuantityItem: 2, // Требуемое количество
+        purchaseItemPrice: 23000,
+        bestComponentProvider: "ООО '\"Паритет\""
+        
+    }]; // Закупки
+
     // Загрузить данные о закупках
     const downloadListPurchase =()=> {
         
@@ -37,6 +57,8 @@ const PurchasePage =(
                         <ListPurchaseBlock 
                             createPurchase={createPurchase} 
                             setCreatePurchase={setCreatePurchase}
+                            purchase = {purchase}
+                            purchaseItem ={purchaseItem}
                         />
                     </div>
                     {createPurchase?
