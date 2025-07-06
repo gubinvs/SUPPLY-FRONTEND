@@ -1,0 +1,19 @@
+.lpc-item__quantity,
+.lpc-item__price {
+    text-align: center;
+}
+
+.lpc-item__provider {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.lpc-item__button-delete {
+    width: 30px;
+    text-align: center;
+    border: 0.5px solid red;
+    border-radius: 4px;
+    color: red;
+    background-color: #FFF;
+}

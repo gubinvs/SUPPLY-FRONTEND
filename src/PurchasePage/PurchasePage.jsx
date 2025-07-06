@@ -21,7 +21,7 @@ const PurchasePage =(
     const purchase = [{
         guidIdPurchase : "f0e61c84-7c57-46d0-897b-b0843af0ce80",
         purchaseId : "ВП25-008",
-        purchaseName: "Шкаф управления (ШУ) балластными насосоми",
+        purchaseName: "Шкаф управления (ШУ) балластными насосами",
         purchasePrice: 92500444,
         purchaseCostomer: "ООО \"Кронштадт\""
     }]; // Закупки

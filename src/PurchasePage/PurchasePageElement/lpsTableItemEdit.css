@@ -1,0 +1,12 @@
+.lpc-item__quantity_input {
+    width: 60px;
+    
+    text-align: center;
+    border: 0.5px solid #FAC855;
+}
+
+.lpc-item__provider_select {
+    width: 100%;
+    border: 0.5px solid #FAC855;
+    margin-right: 10px;
+}

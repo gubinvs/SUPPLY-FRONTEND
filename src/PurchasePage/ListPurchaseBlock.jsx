@@ -58,11 +58,10 @@ const ListPurchaseBlock = (
                             </>
                         );
                     })}
-                    <ListPurchaseComponent 
-                        purchaseItem = {purchaseItem}
-                    />
-          
                 </ul>
+                <ListPurchaseComponent 
+                    purchaseItem = {purchaseItem}
+                />
             </div>
             
         </> 

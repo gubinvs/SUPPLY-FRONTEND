@@ -1,54 +1,96 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./listPurchaseComponent.css";
+import LpsTableItemEdit from "./PurchasePageElement/LpsTableItemEdit.jsx";
 
+const ListPurchaseComponent = ({ purchaseItem }) => {
+    const [checkedRows, setCheckedRows] = useState({});
+    const [quantities, setQuantities] = useState(
+        Object.fromEntries(purchaseItem.map((item, i) => [i, item.requiredQuantityItem]))
+    );
 
+    const handleCheckboxChange = (index) => {
+        setCheckedRows((prev) => ({
+            ...prev,
+            [index]: !prev[index],
+        }));
+    };
 
-const ListPurchaseComponent = (
-    {purchaseItem}
-) => {
+    const handleQuantityChange = (index, newQuantity) => {
+        setQuantities((prev) => ({
+            ...prev,
+            [index]: newQuantity,
+        }));
+    };
 
- 
+    useEffect(() => {
+        setQuantities(
+            Object.fromEntries(purchaseItem.map((item, i) => [i, item.requiredQuantityItem]))
+        );
+    }, [purchaseItem]);
+    
 
     return (
-        <>
-            <table className="table">
-                <thead className="table-borderless__theder">
-                    <tr>
-                        <th scope="col"></th>
-                        <th scope="col">Артикул</th>
-                        <th scope="col">Наименование</th>
-                        <th scope="col">Кол-во</th>
-                        <th scope="col">Цена</th>
-                        <th scope="col">Стоимость</th>
-                        <th scope="col">Поставщик</th>
+        <table className="table">
+            <thead className="table-borderless__theder">
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Артикул</th>
+                    <th scope="col">Наименование</th>
+                    <th scope="col" className="lpc-item__quantity">Кол-во</th>
+                    <th scope="col" className="lpc-item__price">Цена</th>
+                    <th scope="col" className="lpc-item__price">Стоимость</th>
+                    <th scope="col">Поставщик</th>
+                </tr>
+            </thead>
+            <tbody>
+                {purchaseItem.map((item, index) => {
+                    const isChecked = checkedRows[index];
+                    const quantity = quantities[index];
+
+                    return (
+                    <tr key={index}>
+                        <td>
+                        <input
+                            className="form-check-input"
+                            type="checkbox"
+                            checked={!!isChecked}
+                            onChange={() => handleCheckboxChange(index)}
+                        />
+                        </td>
+
+                        {isChecked ? (
+                        <LpsTableItemEdit
+                            index={index}
+                            quantity={quantity}
+                            vendorCodeComponent={item.vendorCodeComponent}
+                            nameComponent={item.nameComponent}
+                            purchaseItemPrice={item.purchaseItemPrice}
+                            bestComponentProvider={item.bestComponentProvider}
+                            onQuantityChange={handleQuantityChange}
+                        />
+                        ) : (
+                        <>
+                            <td>{item.vendorCodeComponent}</td>
+                            <td>{item.nameComponent}</td>
+                            <td className="lpc-item__quantity">{quantity}</td>
+                            <td className="lpc-item__price">
+                            {Intl.NumberFormat("ru").format(item.purchaseItemPrice)}
+                            </td>
+                            <td className="lpc-item__price">
+                            {Intl.NumberFormat("ru").format(Number(quantity) * Number(item.purchaseItemPrice))}
+                            </td>
+                            <td className="lpc-item__provider">
+                                {item.bestComponentProvider}
+                                <button className="lpc-item__button-delete">X</button>
+                            </td>
+                            
+                        </>
+                        )}
                     </tr>
-                </thead>
-                <tbody>
-                   {purchaseItem.map((item)=>{
-                        return(
-                                <>
-                                    <tr>
-                                        <td>
-                                            <input
-                                                className="form-check-input"
-                                                type="checkbox"
-                                            />
-                                        </td>
-                                        <td>{item.vendorCodeComponent}</td>
-                                        <td>{item.nameComponent}</td>
-                                        <td>{item.requiredQuantityItem}</td>
-                                        <td>{Intl.NumberFormat("ru").format(item.purchaseItemPrice)}</td>
-                                        <td>{Intl.NumberFormat("ru").format(Number(item.requiredQuantityItem) * Number(item.purchaseItemPrice))}</td>
-                                        <td>{item.bestComponentProvider}</td>
-                                    </tr>
-                                </>
-                            );
-                    })}
-                        
-                  
+                    );
+                })}
                 </tbody>
-            </table>
-        </>
+        </table>
     );
 };
 
