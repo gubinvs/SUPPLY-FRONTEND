@@ -53,7 +53,7 @@ const SuppliersOffers = (
                         className="btn btn-outline-secondary suppliers-offers__groop-search-button"
                         onClick={editSearchState}
                     >
-                        {groupSearchArticle?"-> Одиночный поиск":"-> Групповой поиск"}
+                        {groupSearchArticle?"<- Одиночный поиск":"-> Групповой поиск"}
                     </button>
                     {!groupSearchArticle?
                         // Поисковая форма одиночного запроса

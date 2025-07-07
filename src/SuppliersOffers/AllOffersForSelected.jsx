@@ -23,7 +23,10 @@ const AllOffersForSelected = (
   const [showBestByProvider, setShowBestByProvider] = useState(false);
   const [selectedVendorCodes, setSelectedVendorCodes] = useState(new Set());
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 8;
+  const rowsPerPage = 10;
+  
+  
+  const [totalPages, setTotalPage]= useState(1)
  
 
 
@@ -34,8 +37,6 @@ const AllOffersForSelected = (
     const analyzeData = JSON.parse(localStorage.getItem("analyzeData") || "{}");
     const selected = analyzeData.selectedComponents || [];
     setAnalyzedComponents(selected);
-
-  
 
     const fetchData = async () => {
       setLoading(true);
@@ -203,42 +204,48 @@ const AllOffersForSelected = (
     };
 
 
-  const renderRows = () => {
-    const offers = getFilteredOffers();
-    const startIndex = (currentPage - 1) * rowsPerPage;
-    const paginated = offers.slice(startIndex, startIndex + rowsPerPage);
+      const offers = getFilteredOffers(); // вызываем 1 раз
 
-    let prevVendor = null;
-    let prevName = null;
+    useEffect(() => {
+      setTotalPage(Math.ceil(offers.length / rowsPerPage));
+    }, [offers.length, rowsPerPage]);
+    // Выдает результат о найденной номенклатуре согласно запросу пользователя
+    const renderRows = () => {
+  
+      const startIndex = (currentPage - 1) * rowsPerPage;
+      const paginated = offers.slice(startIndex, startIndex + rowsPerPage);
 
-    return paginated.map((offer, index) => {
-      const isFirstOccurrence = offer.vendorCode !== prevVendor || offer.nameComponent !== prevName;
-      if (isFirstOccurrence) {
-        prevVendor = offer.vendorCode;
-        prevName = offer.nameComponent;
-      }
+      let prevVendor = null;
+      let prevName = null;
 
-      return (
-        <tr key={index}>
-          <td>
-            {isFirstOccurrence && (
-              <input
-                type="checkbox"
-                checked={selectedVendorCodes.has(offer.vendorCode)}
-                onChange={() => toggleVendorSelection(offer.vendorCode)}
-              />
-            )}
-          </td>
-          <td>{isFirstOccurrence ? offer.vendorCode : ""}</td>
-          <td>{isFirstOccurrence ? offer.nameComponent : ""}</td>
-          {!roleUser?<td>{offer.nameProvider}</td>:<td style={{fontSize: '14px', color: "red"}}>скрыто от пользователя</td>}
-          <td>{offer.priceComponent.toLocaleString("ru-RU")} ₽</td>
-          <td>{offer.deliveryTimeComponent}</td>
-          <td>{new Date(offer.saveDataPrice).toLocaleDateString("ru-RU")}</td>
-        </tr>
-      );
-    });
-  };
+      return paginated.map((offer, index) => {
+        const isFirstOccurrence = offer.vendorCode !== prevVendor || offer.nameComponent !== prevName;
+        if (isFirstOccurrence) {
+          prevVendor = offer.vendorCode;
+          prevName = offer.nameComponent;
+        }
+
+        return (
+          <tr key={index}>
+            <td>
+              {isFirstOccurrence && (
+                <input
+                  type="checkbox"
+                  checked={selectedVendorCodes.has(offer.vendorCode)}
+                  onChange={() => toggleVendorSelection(offer.vendorCode)}
+                />
+              )}
+            </td>
+            <td>{isFirstOccurrence ? offer.vendorCode : ""}</td>
+            <td>{isFirstOccurrence ? offer.nameComponent : ""}</td>
+            {!roleUser?<td>{offer.nameProvider}</td>:<td style={{fontSize: '14px', color: "red"}}>скрыто от пользователя</td>}
+            <td>{offer.priceComponent.toLocaleString("ru-RU")} ₽</td>
+            <td>{offer.deliveryTimeComponent}</td>
+            <td>{new Date(offer.saveDataPrice).toLocaleDateString("ru-RU")}</td>
+          </tr>
+        );
+      });
+    };
 
   return (
     <>
@@ -336,9 +343,7 @@ const AllOffersForSelected = (
                   <PaginationPage
                     currentPage={currentPage}
                     setCurrentPage={setCurrentPage}
-                    rowsPerPage={rowsPerPage}
-                    getFilteredOffers={getFilteredOffers}
-
+                    totalPages={totalPages}
                   />
                 </>
               ) : (
@@ -346,7 +351,7 @@ const AllOffersForSelected = (
                   const sortedOffers = offers.sort((a, b) => a.priceComponent - b.priceComponent);
                   const totalPrice = sortedOffers.reduce((sum, o) => sum + o.priceComponent, 0);
 
-                  
+                  // Это выдача таблицы с лучшими результатами отфильтрованными по лучшей цене
                   return (
                     <div key={index} className="mb-5">
                       <h6 className="text-primary mb-2">
