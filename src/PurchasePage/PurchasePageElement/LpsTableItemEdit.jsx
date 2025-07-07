@@ -8,7 +8,8 @@ const LpsTableItemEdit = ({
   nameComponent,
   purchaseItemPrice,
   bestComponentProvider,
-  onQuantityChange
+  onQuantityChange,
+
 }) => {
   const [localQuantity, setLocalQuantity] = useState(quantity);
 
