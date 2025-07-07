@@ -17,25 +17,59 @@ const PurchasePage =(
     const handleHideMax = () => setIsNavMaxVisible(false);
     const [createPurchase, setCreatePurchase] = useState(false);
 
-    // Временные массива данных для отладки
+    // Временные массива данных для отладки в нем собрана информация о самой закупке, в которой находятся элементы
     const purchase = [{
         guidIdPurchase : "f0e61c84-7c57-46d0-897b-b0843af0ce80",
         purchaseId : "ВП25-008",
         purchaseName: "Шкаф управления (ШУ) балластными насосами",
         purchasePrice: 92500444,
-        purchaseCostomer: "ООО \"Кронштадт\""
+        purchaseCostomer: "ООО \"Кронштадт\"", //Заказчик
+        // Содержимое закупки
+        purchaseItem: [
+            {
+                guidIdPurchase : "f0e61c84-7c57-46d0-897b-b0843af0ce80",
+                guidIdComponent: "87127a71-a08f-44f4-9fcb-6b72fd7539fa",
+                vendorCodeComponent:"LC1D32BD",
+                nameComponent:"Пускатель магнитный 32А катушка управления 24В DС 1НО+1НЗ LC1D (LC1D32BD)",
+                requiredQuantityItem: 2, // Требуемое количество
+                purchaseItemPrice: 23000,
+                bestComponentProvider: "ООО '\"Паритет\""
+            },
+            {
+                guidIdPurchase : "f0e61c84-7c57-46d0-897b-b0843af0ce80",
+                guidIdComponent: "e2d1c40d-b744-4188-a5b5-ec324880c7e5",
+                vendorCodeComponent:"A9V41263",
+                nameComponent:"Блок дифференциальной защиты Vigi iC60 2П 63A 30mA  AC",
+                requiredQuantityItem: 4, // Требуемое количество
+                purchaseItemPrice: 26000,
+                bestComponentProvider: "ООО '\"ПТЦ\""
+            }
+        ],
+        // Другие предложения
+        otherOffers: [{
+                guidIdComponent: "e2d1c40d-b744-4188-a5b5-ec324880c7e5",
+                purchaseItemPrice: 26000,
+                bestComponentProvider: "ООО '\"ПТЦ\""
+            },
+            {
+                guidIdComponent: "e2d1c40d-b744-4188-a5b5-ec324880c7e5",
+                purchaseItemPrice: 24000,
+                bestComponentProvider: "ООО '\"ЭЛЕКТРО-ПРОФИ\""
+            }
+        ] 
+
     }]; // Закупки
 
-    const purchaseItem = [{
-        guidIdPurchase : "f0e61c84-7c57-46d0-897b-b0843af0ce80",
-        guidIdComponent: "87127a71-a08f-44f4-9fcb-6b72fd7539fa",
-        vendorCodeComponent:"LC1D32BD",
-        nameComponent:"Пускатель магнитный 32А катушка управления 24В DС 1НО+1НЗ LC1D (LC1D32BD)",
-        requiredQuantityItem: 2, // Требуемое количество
-        purchaseItemPrice: 23000,
-        bestComponentProvider: "ООО '\"Паритет\""
+    // const purchaseItem = [{
+    //     guidIdPurchase : "f0e61c84-7c57-46d0-897b-b0843af0ce80",
+    //     guidIdComponent: "87127a71-a08f-44f4-9fcb-6b72fd7539fa",
+    //     vendorCodeComponent:"LC1D32BD",
+    //     nameComponent:"Пускатель магнитный 32А катушка управления 24В DС 1НО+1НЗ LC1D (LC1D32BD)",
+    //     requiredQuantityItem: 2, // Требуемое количество
+    //     purchaseItemPrice: 23000,
+    //     bestComponentProvider: "ООО '\"Паритет\""
         
-    }]; // Закупки
+    // }]; // Закупки
 
     // Загрузить данные о закупках
     const downloadListPurchase =()=> {
@@ -58,7 +92,7 @@ const PurchasePage =(
                             createPurchase={createPurchase} 
                             setCreatePurchase={setCreatePurchase}
                             purchase = {purchase}
-                            purchaseItem ={purchaseItem}
+                            // purchaseItem ={purchaseItem}
                         />
                     </div>
                     {createPurchase?

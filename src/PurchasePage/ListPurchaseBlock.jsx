@@ -2,7 +2,9 @@ import { useState } from "react";
 import "./listPurchaseBlock.css";
 import ListPurchaseComponent from "./ListPurchaseComponent.jsx";
 
-const ListPurchaseBlock = ({ createPurchase, setCreatePurchase, purchase, purchaseItem }) => {
+const ListPurchaseBlock = (
+    { createPurchase, setCreatePurchase, purchase}
+) => {
     const [search, setSearch] = useState('');
     const [checkedPurchaseId, setCheckedPurchaseId] = useState(null);
 
@@ -66,7 +68,7 @@ const ListPurchaseBlock = ({ createPurchase, setCreatePurchase, purchase, purcha
 
                 {/* Показываем компонент, если какая-то закупка выбрана */}
                 {checkedPurchaseId !== null && (
-                    <ListPurchaseComponent purchaseItem={purchaseItem} />
+                    <ListPurchaseComponent purchase={purchase} />
                 )}
             </div>
         </>
