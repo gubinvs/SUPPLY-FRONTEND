@@ -41,6 +41,8 @@ const allOffersResponse = async (components) => {
           }
         });
 
+      
+
     } catch (error) {
         console.error("Ошибка:", error);
     }
