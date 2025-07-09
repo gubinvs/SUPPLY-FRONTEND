@@ -12,7 +12,7 @@ const NomenclatureTable = (
 ) => {
 
     const { roleCustomer, roleProvider, roleAdmin, roleUser } = useRoleId();
-
+    
     return (
         <>
             <table className="table">

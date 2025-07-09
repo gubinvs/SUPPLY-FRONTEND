@@ -17,6 +17,7 @@ const ViewSuppliersOffers = (
     const [searchTerm, setSearchTerm] = useState("");
     const itemsPerPage = 14;
     const navigate = useNavigate();
+    const [bestOffers, setBestOffers] = useState("");
 
     // Начинаем выдавать данные для отображения на странице только после изменения (вводе данных в форму)
     const [filteredComponents, setFilteredComponents] = useState([]);
@@ -34,12 +35,19 @@ const ViewSuppliersOffers = (
     const currentItems = filteredComponents.slice(indexOfFirstItem, indexOfLastItem);
     const totalPages = Math.ceil(filteredComponents.length / itemsPerPage);
 
-    // Отфильтровано по артикулу и лучшей цене
-    const  bestOffersByArticle = allOffersResponse(components);
-    console.log(bestOffersByArticle);
- 
-    
 
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const { bestOffers } = await allOffersResponse(components);
+            // console.log(bestOffers["1SAM201901R1001"].deliveryTimeComponent);
+        };
+
+        fetchData();
+    }, [components]);
+   
+    
+    
     return (
         <div className="main-application-panel__container">
             <div className="view-suppliers-offers__block">

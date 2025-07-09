@@ -41,7 +41,7 @@ const allOffersResponse = async (components) => {
           }
         });
 
-      
+        return { bestOffers: Object.fromEntries(bestOffersByArticle) };
 
     } catch (error) {
         console.error("Ошибка:", error);
