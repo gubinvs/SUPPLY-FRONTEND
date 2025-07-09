@@ -60,6 +60,7 @@ const SuppliersOffers = (
                         <ViewSuppliersOffers 
                             components={components}
                             error={error}
+                            loading={loading}
                         />
                         :
                         // Поисковая форма группового запроса

@@ -2,16 +2,16 @@ import "./nomenclatureTable.css";
 import { handleCheckboxToggle } from "../js/Utilits/handleCheckboxToggle.js";
 import { handleEditClick } from "../js/Utilits/handleEditClick.js";
 import { useRoleId } from "../js/Utilits/roleId.js";
+import Spinners from "./Spinners.jsx";
 
 const NomenclatureTable = (
-    { currentItems, selectedIds, setSelectedIds, offers }
+    { currentItems, selectedIds, setSelectedIds, offers}
 ) => {
     const { roleCustomer, roleProvider, roleAdmin, roleUser } = useRoleId();
 
     if (!offers || Object.keys(offers).length === 0) {
-        return <div>Загрузка цен и сроков поставки...</div>;
+        return <Spinners />;
     }
-    console.log(offers);
 
     return (
         <>
@@ -49,10 +49,10 @@ const NomenclatureTable = (
 
                                 {/* 👉 Добавляем цену и срок поставки */}
                                 <td className="table-borderless__price">
-                                    {offer ? `${offer.priceComponent} ₽` : <span style={{ color: "#aaa" }}>—</span>}
+                                    {offer ? `${new Intl.NumberFormat('ru-RU').format(offer.priceComponent)} ₽`  : <div className="spinner-border text-secondary" role="status"><span className="visually-hidden">Loading...</span></div>}
                                 </td>
                                 <td>
-                                    {offer ? offer.deliveryTimeComponent : <span style={{ color: "#aaa" }}>—</span>}
+                                    {offer ? offer.deliveryTimeComponent : <div className="spinner-border text-secondary" role="status"><span className="visually-hidden">Loading...</span></div>}
                                 </td>
                                 <td>{item.manufacturerName}</td>
                                 <td className="table-borderless__um">{item.unitMeasurementName}</td>

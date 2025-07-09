@@ -41,3 +41,10 @@ services:
     container_name: SUPPLY-ENCOMPONENT__FRONTEND
     ports:
       - "1060:3000"
+
+  logging:
+  driver: "json-file"
+
+  options:
+    max-size: "10m"
+    max-file: "10"

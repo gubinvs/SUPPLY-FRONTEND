@@ -9,7 +9,7 @@ import PaginationPage from "../ElementApplication/PaginationPage.jsx";
 import allOffersResponse from "../js/Utilits/allOffersResponse.js";
 
 const ViewSuppliersOffers = (
-    {components, error}
+    {components, error, loading}
 ) => {
 
     const [selectedIds, setSelectedIds] = useState(new Set());
@@ -17,7 +17,7 @@ const ViewSuppliersOffers = (
     const [searchTerm, setSearchTerm] = useState("");
     const itemsPerPage = 14;
     const navigate = useNavigate();
-    const [offers, setOffers] = useState('');
+    const [offers, setOffers] = useState(localStorage.getItem("bestOffers"));
 
     // Начинаем выдавать данные для отображения на странице только после изменения (вводе данных в форму)
     const [filteredComponents, setFilteredComponents] = useState([]);
@@ -42,6 +42,7 @@ const ViewSuppliersOffers = (
             const { bestOffers } = await allOffersResponse(components);
             //console.log(bestOffers["1SAM201901R1001"].deliveryTimeComponent);
             setOffers(bestOffers);
+            localStorage.setItem("bestOffers", bestOffers);
         };
 
         fetchData();
