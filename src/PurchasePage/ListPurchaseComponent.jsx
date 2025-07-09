@@ -89,6 +89,7 @@ const ListPurchaseComponent = (
                                     nameComponent={item.nameComponent}
                                     purchaseItemPrice={item.purchaseItemPrice}
                                     bestComponentProvider={item.bestComponentProvider}
+                                    otherOffers={item.otherOffers}
                                     onQuantityChange={handleQuantityChange}
                                 />
                             ) : (

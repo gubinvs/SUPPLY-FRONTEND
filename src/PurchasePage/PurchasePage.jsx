@@ -33,7 +33,18 @@ const PurchasePage =(
                 nameComponent:"Пускатель магнитный 32А катушка управления 24В DС 1НО+1НЗ LC1D (LC1D32BD)",
                 requiredQuantityItem: 2, // Требуемое количество
                 purchaseItemPrice: 23000,
-                bestComponentProvider: "ООО '\"Паритет\""
+                bestComponentProvider: "ООО '\"Паритет\"",
+                // Другие предложения
+                otherOffers: [{
+                        guidIdComponent: "e2d1c40d-b744-4188-a5b5-ec324880c7e5",
+                        purchaseItemPrice: 100000,
+                        bestComponentProvider: "ООО '\"ПТЦ\""
+                    },
+                    {
+                        guidIdComponent: "e2d1c40d-b744-4188-a5b5-ec324880c7e5",
+                        purchaseItemPrice: 4000,
+                        bestComponentProvider: "ООО '\"ЭЛЕКТРО-ПРОФИ\""
+                    }]
             },
             {
                 guidIdPurchase : "f0e61c84-7c57-46d0-897b-b0843af0ce80",
@@ -42,34 +53,22 @@ const PurchasePage =(
                 nameComponent:"Блок дифференциальной защиты Vigi iC60 2П 63A 30mA  AC",
                 requiredQuantityItem: 4, // Требуемое количество
                 purchaseItemPrice: 26000,
-                bestComponentProvider: "ООО '\"ПТЦ\""
+                bestComponentProvider: "ООО '\"ПТЦ\"",
+                // Другие предложения
+                otherOffers: [{
+                        guidIdComponent: "e2d1c40d-b744-4188-a5b5-ec324880c7e5",
+                        purchaseItemPrice: 1000,
+                        bestComponentProvider: "ООО '\"ПТЦ\""
+                    },
+                    {
+                        guidIdComponent: "e2d1c40d-b744-4188-a5b5-ec324880c7e5",
+                        purchaseItemPrice: 2000,
+                        bestComponentProvider: "ООО '\"ЭЛЕКТРО-ПРОФИ\""
+                    }]
             }
         ],
-        // Другие предложения
-        otherOffers: [{
-                guidIdComponent: "e2d1c40d-b744-4188-a5b5-ec324880c7e5",
-                purchaseItemPrice: 26000,
-                bestComponentProvider: "ООО '\"ПТЦ\""
-            },
-            {
-                guidIdComponent: "e2d1c40d-b744-4188-a5b5-ec324880c7e5",
-                purchaseItemPrice: 24000,
-                bestComponentProvider: "ООО '\"ЭЛЕКТРО-ПРОФИ\""
-            }
-        ] 
 
-    }]; // Закупки
-
-    // const purchaseItem = [{
-    //     guidIdPurchase : "f0e61c84-7c57-46d0-897b-b0843af0ce80",
-    //     guidIdComponent: "87127a71-a08f-44f4-9fcb-6b72fd7539fa",
-    //     vendorCodeComponent:"LC1D32BD",
-    //     nameComponent:"Пускатель магнитный 32А катушка управления 24В DС 1НО+1НЗ LC1D (LC1D32BD)",
-    //     requiredQuantityItem: 2, // Требуемое количество
-    //     purchaseItemPrice: 23000,
-    //     bestComponentProvider: "ООО '\"Паритет\""
-        
-    // }]; // Закупки
+    }];
 
     // Загрузить данные о закупках
     const downloadListPurchase =()=> {
@@ -92,7 +91,6 @@ const PurchasePage =(
                             createPurchase={createPurchase} 
                             setCreatePurchase={setCreatePurchase}
                             purchase = {purchase}
-                            // purchaseItem ={purchaseItem}
                         />
                     </div>
                     {createPurchase?
