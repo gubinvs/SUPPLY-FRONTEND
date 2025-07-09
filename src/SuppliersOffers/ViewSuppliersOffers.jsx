@@ -6,6 +6,7 @@ import { handleAnalyzeClick } from "../js/Utilits/handleAnalyzeClick.js";
 import NomenclatureTable from "../ElementApplication/NomenclatureTable.jsx";
 import PaginationNext from "../ElementApplication/PaginationNext.jsx";
 import PaginationPage from "../ElementApplication/PaginationPage.jsx";
+import allOffersResponse from "../js/Utilits/allOffersResponse.js";
 
 const ViewSuppliersOffers = (
     {components, error}
@@ -16,7 +17,6 @@ const ViewSuppliersOffers = (
     const [searchTerm, setSearchTerm] = useState("");
     const itemsPerPage = 14;
     const navigate = useNavigate();
-
 
     // Начинаем выдавать данные для отображения на странице только после изменения (вводе данных в форму)
     const [filteredComponents, setFilteredComponents] = useState([]);
@@ -34,6 +34,11 @@ const ViewSuppliersOffers = (
     const currentItems = filteredComponents.slice(indexOfFirstItem, indexOfLastItem);
     const totalPages = Math.ceil(filteredComponents.length / itemsPerPage);
 
+    // Отфильтровано по артикулу и лучшей цене
+    const  bestOffersByArticle = allOffersResponse(components);
+    console.log(bestOffersByArticle);
+ 
+    
 
     return (
         <div className="main-application-panel__container">
