@@ -17,7 +17,9 @@ const ViewSuppliersOffers = (
     const [searchTerm, setSearchTerm] = useState("");
     const itemsPerPage = 14;
     const navigate = useNavigate();
-    const [offers, setOffers] = useState(localStorage.getItem("bestOffers"));
+    
+    const bestOffers = JSON.parse(localStorage.getItem("bestOffers"));
+    const [offers, setOffers] = useState(bestOffers===null? "" : bestOffers);
 
     // Начинаем выдавать данные для отображения на странице только после изменения (вводе данных в форму)
     const [filteredComponents, setFilteredComponents] = useState([]);
@@ -35,20 +37,16 @@ const ViewSuppliersOffers = (
     const currentItems = filteredComponents.slice(indexOfFirstItem, indexOfLastItem);
     const totalPages = Math.ceil(filteredComponents.length / itemsPerPage);
 
-
-
+   
     useEffect(() => {
         const fetchData = async () => {
             const { bestOffers } = await allOffersResponse(components);
-            //console.log(bestOffers["1SAM201901R1001"].deliveryTimeComponent);
             setOffers(bestOffers);
-            localStorage.setItem("bestOffers", bestOffers);
+            localStorage.setItem("bestOffers", JSON.stringify(bestOffers));
         };
-
         fetchData();
     }, [components]);
-    
-    
+
     return (
         <div className="main-application-panel__container">
             <div className="view-suppliers-offers__block">

@@ -49,7 +49,7 @@ const NomenclatureTable = (
 
                                 {/* 👉 Добавляем цену и срок поставки */}
                                 <td className="table-borderless__price">
-                                    {offer ? `${new Intl.NumberFormat('ru-RU').format(offer.priceComponent)} ₽`  : <div className="spinner-border text-secondary" role="status"><span className="visually-hidden">Loading...</span></div>}
+                                    {offer ? `${new Intl.NumberFormat('ru-RU').format(offer.priceComponent)} ₽` : <div className="spinner-border text-secondary" role="status"><span className="visually-hidden">Loading...</span></div>}
                                 </td>
                                 <td>
                                     {offer ? offer.deliveryTimeComponent : <div className="spinner-border text-secondary" role="status"><span className="visually-hidden">Loading...</span></div>}
