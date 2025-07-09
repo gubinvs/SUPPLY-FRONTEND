@@ -17,7 +17,7 @@ const ViewSuppliersOffers = (
     const [searchTerm, setSearchTerm] = useState("");
     const itemsPerPage = 14;
     const navigate = useNavigate();
-    const [bestOffers, setBestOffers] = useState("");
+    const [offers, setOffers] = useState('');
 
     // Начинаем выдавать данные для отображения на странице только после изменения (вводе данных в форму)
     const [filteredComponents, setFilteredComponents] = useState([]);
@@ -40,12 +40,12 @@ const ViewSuppliersOffers = (
     useEffect(() => {
         const fetchData = async () => {
             const { bestOffers } = await allOffersResponse(components);
-            // console.log(bestOffers["1SAM201901R1001"].deliveryTimeComponent);
+            //console.log(bestOffers["1SAM201901R1001"].deliveryTimeComponent);
+            setOffers(bestOffers);
         };
 
         fetchData();
     }, [components]);
-   
     
     
     return (
@@ -81,6 +81,7 @@ const ViewSuppliersOffers = (
                             currentItems={currentItems}
                             selectedIds={selectedIds}
                             setSelectedIds={setSelectedIds}
+                            offers={offers}
                         />
                        
                         <div className="pagination-controls__block"> 
