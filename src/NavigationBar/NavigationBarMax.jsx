@@ -32,7 +32,7 @@ const NavigationBarMax = () => {
                      <img src="../../images/logo/header-logo_sa.svg" alt="Логотип системы" className="navigation-bar-min__logo" />
                 </picture>
                 {/* <div className="nbm-logo-block__title">Компоненты<br /> энергии</div> */}
-                <div className="nbm-logo-block__title nbm-logo-block__title_handy">Системная автоматизация</div>
+                <div className="nbm-logo-block__title">Системная автоматизация</div>
             </div>
             <div className="top-block__line navigation-bar-max__top-block__line"></div>
             <ul className="navigation-bar-max__navigation-list">
