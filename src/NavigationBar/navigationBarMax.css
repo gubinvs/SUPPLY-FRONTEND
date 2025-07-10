@@ -15,9 +15,9 @@
 .navigation-bar-max__logo-block {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
     margin-bottom: 20px;
-}
+} 
 
 .navigation-bar-max__logo {
     width: 80px;
@@ -32,6 +32,7 @@
 }
 
 .nbm-logo-block__title_handy {
+    padding-left: 40px;
     font-size: 24px;
     font-weight: 600;
 }
@@ -70,7 +71,6 @@
 
 .navigation-bar-max__navigation-item_active {
     border: 1px solid #D5DAE0;
-    
 }
 
 .nbm-navigation-item__icon {

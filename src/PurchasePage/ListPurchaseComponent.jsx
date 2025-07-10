@@ -107,18 +107,18 @@ const ListPurchaseComponent = (
                                         {Intl.NumberFormat("ru").format(Number(quantity) * Number(item.purchaseItemPrice))}
                                     </td>
                                     {!roleUser?
-                                    <>
+                                        <>
+                                            <td className="lpc-item__provider">
+                                                {item.bestComponentProvider}
+                                                <button className="lpc-item__button-delete">X</button>
+                                            </td>
+                                        </>:
+                                        <>
                                         <td className="lpc-item__provider">
-                                            {item.bestComponentProvider}
-                                            <button className="lpc-item__button-delete">X</button>
-                                        </td>
-                                    </>:
-                                    <>
-                                     <td className="lpc-item__provider">
-                                            <span className="lpc-item__provider_select_ban">Скрыто от пользователя</span>
-                                            <button className="lpc-item__button-delete">X</button>
-                                        </td>
-                                    </>}
+                                                <span className="lpc-item__provider_select_ban">Скрыто от пользователя</span>
+                                                <button className="lpc-item__button-delete">X</button>
+                                            </td>
+                                        </>}
                                 </>
                             )}
                         </tr>
