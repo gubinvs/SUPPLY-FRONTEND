@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
 import "./listPurchaseComponent.css";
 import LpsTableItemEdit from "./PurchasePageElement/LpsTableItemEdit.jsx";
+import { useRoleId } from "../js/Utilits/roleId.js";
 
 const ListPurchaseComponent = (
     { purchase }
 ) => {
+      // состояни роли пользователя в системе
+      const { roleUser} = useRoleId();
 
     // Индексация закупок и номенклатуры
     const indexedItems = [];
@@ -103,10 +106,19 @@ const ListPurchaseComponent = (
                                     <td className="lpc-item__price">
                                         {Intl.NumberFormat("ru").format(Number(quantity) * Number(item.purchaseItemPrice))}
                                     </td>
-                                    <td className="lpc-item__provider">
-                                        {item.bestComponentProvider}
-                                        <button className="lpc-item__button-delete">X</button>
-                                    </td>
+                                    {!roleUser?
+                                    <>
+                                        <td className="lpc-item__provider">
+                                            {item.bestComponentProvider}
+                                            <button className="lpc-item__button-delete">X</button>
+                                        </td>
+                                    </>:
+                                    <>
+                                     <td className="lpc-item__provider">
+                                            <span className="lpc-item__provider_select_ban">Скрыто от пользователя</span>
+                                            <button className="lpc-item__button-delete">X</button>
+                                        </td>
+                                    </>}
                                 </>
                             )}
                         </tr>

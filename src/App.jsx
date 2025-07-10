@@ -145,7 +145,7 @@ const App = () => {
 
         {/* Страница c данными о закупках */}
           <Route path="/Purchase" element={
-          <PrivateRoute allowedRoles={[ROLE_CUSTOMER, ROLE_ADMIN]}>
+          <PrivateRoute allowedRoles={[ROLE_CUSTOMER, ROLE_ADMIN, ROLE_USER]}>
             <PurchasePage
               role={role} 
               title="Данные о закупках"

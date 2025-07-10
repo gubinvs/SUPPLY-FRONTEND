@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import "./lpsTableItemEdit.css";
+import { useRoleId } from "../../js/Utilits/roleId.js";
 
 const LpsTableItemEdit = ({
   index,
@@ -19,6 +20,9 @@ const LpsTableItemEdit = ({
   // измениемое и сохраняемое значение стоимости в зависимости от выбранного поставщика
   const [itemPrice, setItemPrice] = useState(purchaseItemPrice);
 
+  // состояни роли пользователя в системе
+  const { roleUser} = useRoleId();
+
 
   useEffect(() => {
     setLocalQuantity(quantity);
@@ -34,39 +38,42 @@ const LpsTableItemEdit = ({
       <td>{vendorCodeComponent}</td>
       <td>{nameComponent}</td>
       <td className="lpc-item__quantity">
-        <input
-          type="number"
-          value={localQuantity}
-          className="lpc-item__quantity_input"
-          onChange={(e) => handleQuantityChange(e.target.value)}
-        />
+          <input
+            type="number"
+            value={localQuantity}
+            className="lpc-item__quantity_input"
+            onChange={(e) => handleQuantityChange(e.target.value)}
+          />
       </td>
       <td className="lpc-item__price">
-        {Intl.NumberFormat("ru").format(itemPrice)}
+          {Intl.NumberFormat("ru").format(itemPrice)}
       </td>
       <td className="lpc-item__price">
-        {Intl.NumberFormat("ru").format(Number(localQuantity) * Number(purchaseItemPrice))}
+          {Intl.NumberFormat("ru").format(Number(localQuantity) * Number(purchaseItemPrice))}
       </td>
-      <td>
-      <select
-          className="lpc-item__provider_select"
-          onChange={(e) => {
-            const selectedProvider = e.target.value;
-            const selected = otherOffers.find(i => i.bestComponentProvider === selectedProvider);
-            if (selected) {
-              setItemPrice(selected.purchaseItemPrice);
-            } else {
-              setItemPrice(purchaseItemPrice);
-            }
-          }}
-        >
-          <option value="">{bestComponentProvider}</option>
-          {otherOffers.map((i, index) => (
-            <option key={index} value={i.bestComponentProvider}>
-              {i.bestComponentProvider}
-            </option>
-          ))}
-        </select>
+
+      <td>{!roleUser?
+          <>
+            <select
+              className="lpc-item__provider_select"
+              onChange={(e) => {
+                const selectedProvider = e.target.value;
+                const selected = otherOffers.find(i => i.bestComponentProvider === selectedProvider);
+                if (selected) {
+                  setItemPrice(selected.purchaseItemPrice);
+                } else {
+                  setItemPrice(purchaseItemPrice);
+                }
+              }}
+            >
+              <option value="">{bestComponentProvider}</option>
+              {otherOffers.map((i, index) => (
+                <option key={index} value={i.bestComponentProvider}>
+                  {i.bestComponentProvider}
+                </option>
+              ))}
+            </select>
+          </>:<span className="lpc-item__provider_select_ban">Скрыто от пользователя</span>}
       </td>
     </>
   );

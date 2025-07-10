@@ -10,3 +10,8 @@
     border: 0.5px solid #FAC855;
     margin-right: 10px;
 }
+
+.lpc-item__provider_select_ban {
+    color: red;
+    font-size: 12px;
+}
