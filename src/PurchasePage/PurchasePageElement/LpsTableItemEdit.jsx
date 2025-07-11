@@ -25,50 +25,57 @@ const LpsTableItemEdit = ({
   // измениемое и сохраняемое значение стоимости в зависимости от выбранного поставщика
   const [itemPrice, setItemPrice] = useState(purchaseItemPrice);
 
-  // Суммарная стоимость
+  // Суммарная стоимость номенклатуры
   const [sumPriseItem, setSumPriseItem] = useState(localQuantity * itemPrice);
 
   // следим за изменениями общей стоимости, может кто в другой номенклатуре чего меняет
   const prevPurchasePriceRef = useRef(purchasePrice);
+ 
 
   // Сохраненят предыдущее значение количества, для контроля в какую сторону произошло изменение в большую или меньшую
   const prevQuantityRef = useRef();
   const prevPriceItemRef = useRef();
 
+  // ..................................................
   useEffect(() => {
-  if (prevPurchasePriceRef.current !== purchasePrice) {
-      // Значение purchasePrice изменилось извне
-      console.log('purchasePrice изменился:', {
-        было: prevPurchasePriceRef.current,
-        стало: purchasePrice,
-    });
+    if (prevPurchasePriceRef.current !== purchasePrice) {
+        // Значение purchasePrice изменилось извне
+        console.log('purchasePrice изменился:', {
+          было: prevPurchasePriceRef.current,
+          стало: purchasePrice,
+      });
 
-    // пересчитать стоимость
-    setSumPriseItem(localQuantity * itemPrice);
-    // Обновляем сохраненное значение
-    prevPurchasePriceRef.current = purchasePrice;
-  }
-}, [purchasePrice]);
+      // пересчитать стоимость
+      setSumPriseItem();
 
+      // Обновляем сохраненное значение
+      prevPurchasePriceRef.current = purchasePrice;
+    }
+  }, [purchasePrice]);
+
+
+  // ..................................................
   useEffect(()=>{
     setSumPriseItem(localQuantity * itemPrice);
   },[itemPrice, localQuantity])
 
+
+  // ..................................................
   useEffect(()=>{
     const price = localQuantity*itemPrice;
     
     if (prevQuantityRef.current !== undefined || prevPriceItemRef.current !== undefined) {
       if (localQuantity > prevQuantityRef.current) {
-        setPurchasePrice(purchasePrice+itemPrice);
+        setPurchasePrice(prevPurchasePriceRef+itemPrice);
         // console.log('localQuantity увеличилось');
 
       } else if (localQuantity < prevQuantityRef.current) {
-        setPurchasePrice(purchasePrice-itemPrice);
+        setPurchasePrice(prevPurchasePriceRef-itemPrice);
         // console.log('localQuantity уменьшилось');
       } else if (itemPrice > prevPriceItemRef.current) {
-        setPurchasePrice(purchasePrice+price);
+        setPurchasePrice(prevPurchasePriceRef+price);
       } else if (itemPrice < prevPriceItemRef.current) {
-        setPurchasePrice(purchasePrice-price);
+        setPurchasePrice(prevPurchasePriceRef-price);
       }
     }
 
@@ -77,12 +84,12 @@ const LpsTableItemEdit = ({
 
   },[localQuantity, itemPrice]);
 
-
+  // ...............................................
   useEffect(() => {
     setLocalQuantity(quantity);
   }, [quantity]);
 
-
+  // ................................................
   const handleQuantityChange = (newValue) => {
     setLocalQuantity(newValue);
     onQuantityChange(index, newValue);
