@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import "./listPurchaseComponent.css";
 import LpsTableItemEdit from "./PurchasePageElement/LpsTableItemEdit.jsx";
 import { useRoleId } from "../js/Utilits/roleId.js";
@@ -8,6 +8,7 @@ const ListPurchaseComponent = (
 ) => {
     // состояни роли пользователя в системе
     const { roleUser} = useRoleId();
+    // Общая стоимость с учетом количества элементов
 
 
 
@@ -69,17 +70,19 @@ const ListPurchaseComponent = (
     }, [purchase]);
 
     // Удаление номенклатуры из закупки
-    const deletePurchaseItem = (purchaseGuid, componentGuid) => {
+    const deletePurchaseItem = (purchaseGuid, componentGuid, purchasePriceItem) => {
         setPurchase(prev =>
             prev.map(p =>
                 p.guidIdPurchase === purchaseGuid
-                    ? {
-                        ...p,
-                        purchaseItem: p.purchaseItem.filter(item => item.guidIdComponent !== componentGuid)
-                    }
-                    : p
+                ? {
+                    ...p,
+                    purchaseItem: p.purchaseItem.filter(item => item.guidIdComponent !== componentGuid)
+                }
+                : p
             )
         );
+        // Вычитаем общую стоимость удаленной номенклатуры
+        setPurchasePrice(purchasePrice-purchasePriceItem);
     };
 
 
@@ -100,6 +103,8 @@ const ListPurchaseComponent = (
                 {indexedItems.map(({ item }, index) => {
                     const isChecked = checkedRows[index];
                     const quantity = quantities[index];
+                    // Общая стоимость с учетом количества элементов
+                    const purchasePriceItem = quantity*item.purchaseItemPrice;
                  
                     return (
                         <tr key={index}>
@@ -132,7 +137,7 @@ const ListPurchaseComponent = (
                                         {Intl.NumberFormat("ru").format(item.purchaseItemPrice)}
                                     </td>
                                     <td className="lpc-item__price">
-                                        {Intl.NumberFormat("ru").format(Number(quantity) * Number(item.purchaseItemPrice))}
+                                        {Intl.NumberFormat("ru").format(Number(purchasePriceItem))}
                                     </td>
                                     {!roleUser?
                                         <>
@@ -140,7 +145,7 @@ const ListPurchaseComponent = (
                                                 {item.bestComponentProvider}
                                                 <button 
                                                     className="lpc-item__button-delete" 
-                                                    onClick={()=>deletePurchaseItem(item.guidIdPurchase, item.guidIdComponent)}
+                                                    onClick={()=>deletePurchaseItem(item.guidIdPurchase, item.guidIdComponent, purchasePriceItem)}
                                                 >X</button>
                                             </td>
                                         </>:
@@ -149,7 +154,7 @@ const ListPurchaseComponent = (
                                                 <span className="lpc-item__provider_select_ban">Скрыто от пользователя</span>
                                                 <button 
                                                     className="lpc-item__button-delete"
-                                                    onClick={()=>deletePurchaseItem(item.guidIdPurchase, item.guidIdComponent)}
+                                                    onClick={()=>deletePurchaseItem(item.guidIdPurchase, item.guidIdComponent, purchasePriceItem)}
                                                 >X</button>
                                             </td>
                                         </>}
