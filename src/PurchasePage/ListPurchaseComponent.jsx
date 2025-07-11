@@ -4,11 +4,12 @@ import LpsTableItemEdit from "./PurchasePageElement/LpsTableItemEdit.jsx";
 import { useRoleId } from "../js/Utilits/roleId.js";
 
 const ListPurchaseComponent = (
-    { purchase }
+    { purchase, setPurchase }
 ) => {
-      // состояни роли пользователя в системе
-      const { roleUser} = useRoleId();
+    // состояни роли пользователя в системе
+    const { roleUser} = useRoleId();
 
+    
     // Индексация закупок и номенклатуры
     const indexedItems = [];
     purchase.forEach((p, purchaseIndex) => {
@@ -55,6 +56,21 @@ const ListPurchaseComponent = (
         );
     }, [purchase]);
 
+    // Удаление номенклатуры из закупки
+    const deletePurchaseItem = (purchaseGuid, componentGuid) => {
+        setPurchase(prev =>
+            prev.map(p =>
+            p.guidIdPurchase === purchaseGuid
+                ? {
+                    ...p,
+                    purchaseItem: p.purchaseItem.filter(item => item.guidIdComponent !== componentGuid)
+                }
+                : p
+            )
+        );
+    };
+
+
     return (
         <table className="table">
             <thead className="table-borderless__theder">
@@ -72,7 +88,7 @@ const ListPurchaseComponent = (
                 {indexedItems.map(({ item }, index) => {
                     const isChecked = checkedRows[index];
                     const quantity = quantities[index];
-
+                 
                     return (
                         <tr key={index}>
                             <td>
@@ -110,13 +126,19 @@ const ListPurchaseComponent = (
                                         <>
                                             <td className="lpc-item__provider">
                                                 {item.bestComponentProvider}
-                                                <button className="lpc-item__button-delete">X</button>
+                                                <button 
+                                                    className="lpc-item__button-delete" 
+                                                    onClick={()=>deletePurchaseItem(item.guidIdPurchase, item.guidIdComponent)}
+                                                >X</button>
                                             </td>
                                         </>:
                                         <>
                                         <td className="lpc-item__provider">
                                                 <span className="lpc-item__provider_select_ban">Скрыто от пользователя</span>
-                                                <button className="lpc-item__button-delete">X</button>
+                                                <button 
+                                                    className="lpc-item__button-delete"
+                                                    onClick={()=>deletePurchaseItem(item.guidIdPurchase, item.guidIdComponent)}
+                                                >X</button>
                                             </td>
                                         </>}
                                 </>

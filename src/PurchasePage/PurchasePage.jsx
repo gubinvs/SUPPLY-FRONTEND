@@ -16,9 +16,9 @@ const PurchasePage =(
     const handleShowMax = () => setIsNavMaxVisible(true);
     const handleHideMax = () => setIsNavMaxVisible(false);
     const [createPurchase, setCreatePurchase] = useState(false);
-
-    // Временные массива данных для отладки в нем собрана информация о самой закупке, в которой находятся элементы
-    const purchase = [{
+    const [purchase, setPurchase] = useState(
+        // Временные массива данных для отладки в нем собрана информация о самой закупке, в которой находятся элементы
+        [{
         guidIdPurchase : "f0e61c84-7c57-46d0-897b-b0843af0ce80",
         purchaseId : "ВП25-008",
         purchaseName: "Шкаф управления (ШУ) балластными насосами",
@@ -68,11 +68,18 @@ const PurchasePage =(
             }
         ],
 
-    }];
+    }]);
+
+    
 
     // Загрузить данные о закупках
     const downloadListPurchase =()=> {
         
+    };
+
+    // Метод удаление закупки
+    const deletePurchase = (guidId) => {
+        setPurchase(prev => prev.filter(p => p.guidIdPurchase !== guidId));
     };
 
     return(
@@ -91,6 +98,7 @@ const PurchasePage =(
                             createPurchase={createPurchase} 
                             setCreatePurchase={setCreatePurchase}
                             purchase = {purchase}
+                            setPurchase={setPurchase}
                         />
                     </div>
                     {createPurchase?

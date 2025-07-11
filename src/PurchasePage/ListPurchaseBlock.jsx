@@ -3,7 +3,7 @@ import "./listPurchaseBlock.css";
 import ListPurchaseComponent from "./ListPurchaseComponent.jsx";
 
 const ListPurchaseBlock = (
-    { createPurchase, setCreatePurchase, purchase}
+    { createPurchase, setCreatePurchase, purchase, setPurchase}
 ) => {
     const [search, setSearch] = useState('');
     const [checkedPurchaseId, setCheckedPurchaseId] = useState(null);
@@ -68,7 +68,10 @@ const ListPurchaseBlock = (
 
                 {/* Показываем компонент, если какая-то закупка выбрана */}
                 {checkedPurchaseId !== null && (
-                    <ListPurchaseComponent purchase={purchase} />
+                    <ListPurchaseComponent 
+                        purchase={purchase} 
+                        setPurchase={setPurchase}
+                    />
                 )}
             </div>
         </>
