@@ -5,7 +5,6 @@ import { useRoleId } from "../../js/Utilits/roleId.js";
 const LpsTableItemEdit = ({
   index,
   quantity,
-  purchasePrice,
   setPurchasePrice,
   vendorCodeComponent,
   nameComponent,

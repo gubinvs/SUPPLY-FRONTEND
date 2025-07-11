@@ -107,7 +107,6 @@ const ListPurchaseComponent = (
                                 <LpsTableItemEdit
                                     index={index}
                                     quantity={quantity}
-                                    purchasePrice={purchasePrice}
                                     setPurchasePrice={setPurchasePrice}
                                     vendorCodeComponent={item.vendorCodeComponent}
                                     nameComponent={item.nameComponent}
