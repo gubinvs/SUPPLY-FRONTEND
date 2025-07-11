@@ -5,6 +5,7 @@ import { useRoleId } from "../../js/Utilits/roleId.js";
 const LpsTableItemEdit = ({
   index,
   quantity,
+  purchasePrice,
   setPurchasePrice,
   vendorCodeComponent,
   nameComponent,
@@ -12,10 +13,11 @@ const LpsTableItemEdit = ({
   bestComponentProvider,
   onQuantityChange,
   otherOffers
+
 }) => {
   
   // состояни роли пользователя в системе
-  const { roleUser } = useRoleId();
+  const { roleUser} = useRoleId();
   
   // измениемое и сохраняемое значение количества компоненов, для локального хранения
   const [localQuantity, setLocalQuantity] = useState(quantity);
@@ -26,46 +28,55 @@ const LpsTableItemEdit = ({
   // Сохраненят предыдущее значение количества, для контроля в какую сторону произошло изменение в большую или меньшую
   const prevQuantityRef = useRef();
 
-  // Обновляем localQuantity, если снаружи изменилось количество
+  useEffect(()=>{
+
+    if (prevQuantityRef.current !== undefined) {
+      if (localQuantity > prevQuantityRef.current) {
+        setPurchasePrice(purchasePrice+itemPrice);
+        // console.log('localQuantity увеличилось');
+      } else if (localQuantity < prevQuantityRef.current) {
+        setPurchasePrice(purchasePrice-itemPrice);
+        // console.log('localQuantity уменьшилось');
+      }
+    }
+
+    prevQuantityRef.current = localQuantity;
+
+  },[localQuantity]);
+
+
   useEffect(() => {
     setLocalQuantity(quantity);
   }, [quantity]);
 
-  // Отслеживаем изменения количества или цены компонента, и пересчитываем стоимость
-  useEffect(() => {
-    if (prevQuantityRef.current !== undefined) {
-      setPurchasePrice(Number(localQuantity) * Number(itemPrice));
-    }
-    prevQuantityRef.current = localQuantity;
-  }, [localQuantity, itemPrice]);
 
-  // Обработчик изменения количества
   const handleQuantityChange = (newValue) => {
     setLocalQuantity(newValue);
     onQuantityChange(index, newValue);
   };
+
 
   return (
     <>
       <td>{vendorCodeComponent}</td>
       <td>{nameComponent}</td>
       <td className="lpc-item__quantity">
-        <input
-          type="number"
-          min={0}
-          value={localQuantity}
-          className="lpc-item__quantity_input"
-          onChange={(e) => handleQuantityChange(e.target.value)}
-        />
+          <input
+            type="number"
+            min={0}
+            value={localQuantity}
+            className="lpc-item__quantity_input"
+            onChange={(e) => handleQuantityChange(e.target.value)}
+          />
       </td>
       <td className="lpc-item__price">
-        {Intl.NumberFormat("ru").format(itemPrice)}
+          {Intl.NumberFormat("ru").format(itemPrice)}
       </td>
       <td className="lpc-item__price">
-        {Intl.NumberFormat("ru").format(Number(localQuantity) * Number(itemPrice))}
+          {Intl.NumberFormat("ru").format(Number(localQuantity) * Number(purchaseItemPrice))}
       </td>
-      <td>
-        {!roleUser ? (
+
+      <td>{!roleUser?
           <>
             <select
               className="lpc-item__provider_select"
@@ -87,13 +98,10 @@ const LpsTableItemEdit = ({
               ))}
             </select>
           </>
-        ) : (
-          <span className="lpc-item__provider_select_ban">Скрыто от пользователя</span>
-        )}
+          :<span className="lpc-item__provider_select_ban">Скрыто от пользователя</span>}
       </td>
     </>
   );
 };
 
 export default LpsTableItemEdit;
-
