@@ -59,7 +59,9 @@ const NavigationBarMin = (
                             <li className="navigation-icon-block__item" onClick={linkPageAddComponent}>
                                 <img className="navigation-icon__icon-img" src="../images/add-component-icon.svg" alt="Иконка на страницу добавления артикулов" />
                             </li>
-                            
+                            <li className="navigation-icon-block__item" onClick={linkPagePurchase}>
+                                <img className="navigation-icon__icon-img" src="../images/purchase-icon.svg" alt="Иконка на страницу с данными о закупках" />
+                            </li>
                         </>
                     :""}
                     
