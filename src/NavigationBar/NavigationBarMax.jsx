@@ -90,6 +90,13 @@ const NavigationBarMax = () => {
                             <img src="../images/add-component-icon.svg" className="nbm-navigation-item__icon" alt="#"/>
                             <div className="nbm-navigation-item__name">Добавить данные</div>
                         </li>
+                        <li
+                            className={`navigation-bar-max__navigation-item ${location.pathname === pathPurchase ? 'navigation-bar-max__navigation-item_active' : ''}`}
+                            onClick={() => navigate(pathPurchase)}
+                        >
+                            <img src="../images/purchase-icon.svg" className="nbm-navigation-item__icon" alt="#"/>
+                            <div className="nbm-navigation-item__name">Данные о закупках</div>
+                        </li>
                     
                     </>
                 )}
