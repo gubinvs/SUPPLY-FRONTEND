@@ -8,20 +8,6 @@ const ListPurchaseComponent = (
 ) => {
     // состояни роли пользователя в системе
     const { roleUser} = useRoleId();
-    // Общая стоимость с учетом количества элементов
-
-
-
-
-
-
-
-
-
-
-
-
-
     
     // Индексация закупок и номенклатуры
     const indexedItems = [];
@@ -121,6 +107,8 @@ const ListPurchaseComponent = (
                                 <LpsTableItemEdit
                                     index={index}
                                     quantity={quantity}
+                                    purchasePrice={purchasePrice}
+                                    setPurchasePrice={setPurchasePrice}
                                     vendorCodeComponent={item.vendorCodeComponent}
                                     nameComponent={item.nameComponent}
                                     purchaseItemPrice={item.purchaseItemPrice}
