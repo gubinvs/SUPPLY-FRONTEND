@@ -4,10 +4,22 @@ import LpsTableItemEdit from "./PurchasePageElement/LpsTableItemEdit.jsx";
 import { useRoleId } from "../js/Utilits/roleId.js";
 
 const ListPurchaseComponent = (
-    { purchase, setPurchase }
+    { purchase, setPurchase, purchasePrice, setPurchasePrice }
 ) => {
     // состояни роли пользователя в системе
     const { roleUser} = useRoleId();
+
+
+
+
+
+
+
+
+
+
+
+
 
     
     // Индексация закупок и номенклатуры
@@ -60,12 +72,12 @@ const ListPurchaseComponent = (
     const deletePurchaseItem = (purchaseGuid, componentGuid) => {
         setPurchase(prev =>
             prev.map(p =>
-            p.guidIdPurchase === purchaseGuid
-                ? {
-                    ...p,
-                    purchaseItem: p.purchaseItem.filter(item => item.guidIdComponent !== componentGuid)
-                }
-                : p
+                p.guidIdPurchase === purchaseGuid
+                    ? {
+                        ...p,
+                        purchaseItem: p.purchaseItem.filter(item => item.guidIdComponent !== componentGuid)
+                    }
+                    : p
             )
         );
     };

@@ -7,6 +7,8 @@ const ListPurchaseBlock = (
 ) => {
     const [search, setSearch] = useState('');
     const [checkedPurchaseId, setCheckedPurchaseId] = useState(null);
+    // Общая стоимость закупки
+    const [purchasePrice, setPurchasePrice] = useState(purchase[0].purchasePrice || 0);
 
     const handleCheck = (purchaseId) => {
         setCheckedPurchaseId(prev =>
@@ -55,7 +57,7 @@ const ListPurchaseBlock = (
                                 <div className="lp-item__purchase-id">{item.purchaseId}</div>
                                 <div className="lp-item__purchase-name">{item.purchaseName}</div>
                                 <div className="lp-item__purchase-price">
-                                    {Intl.NumberFormat("ru").format(item.purchasePrice)} р.
+                                    {Intl.NumberFormat("ru").format(purchasePrice)} р.
                                 </div>
                                 <div className="lp-item__purchase-name-costomer">{item.purchaseCostomer}</div>
                             </div>
@@ -71,6 +73,8 @@ const ListPurchaseBlock = (
                     <ListPurchaseComponent 
                         purchase={purchase} 
                         setPurchase={setPurchase}
+                        purchasePrice={purchasePrice}
+                        setPurchasePrice={setPurchasePrice}
                     />
                 )}
             </div>
