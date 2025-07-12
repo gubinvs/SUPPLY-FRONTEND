@@ -35,16 +35,19 @@ const PurchasePage =(
                 requiredQuantityItem: 2, // Требуемое количество
                 purchaseItemPrice: 23000,
                 bestComponentProvider: "ООО '\"Паритет\"",
+                deliveryTimeComponent: "от 24 до 28 нед",
                 // Другие предложения
                 otherOffers: [{
                         guidIdComponent: "e2d1c40d-b744-4188-a5b5-ec324880c7e5",
                         purchaseItemPrice: 100000,
-                        bestComponentProvider: "ООО '\"ПТЦ\""
+                        bestComponentProvider: "ООО '\"ПТЦ\"",
+                        deliveryTimeComponent: "от 20 до 24 нед"
                     },
                     {
                         guidIdComponent: "e2d1c40d-b744-4188-a5b5-ec324880c7e5",
                         purchaseItemPrice: 4000,
-                        bestComponentProvider: "ООО '\"ЭЛЕКТРО-ПРОФИ\""
+                        bestComponentProvider: "ООО '\"ЭЛЕКТРО-ПРОФИ\"",
+                        deliveryTimeComponent: "от 16 до 20 нед"
                     }]
             },
             {
@@ -55,16 +58,19 @@ const PurchasePage =(
                 requiredQuantityItem: 4, // Требуемое количество
                 purchaseItemPrice: 26000,
                 bestComponentProvider: "ООО '\"ПТЦ\"",
+                deliveryTimeComponent: "от 8 до 16 нед",
                 // Другие предложения
                 otherOffers: [{
                         guidIdComponent: "e2d1c40d-b744-4188-a5b5-ec324880c7e5",
                         purchaseItemPrice: 1000,
-                        bestComponentProvider: "ООО '\"ПТЦ\""
+                        bestComponentProvider: "ООО '\"ПТЦ\"",
+                        deliveryTimeComponent: "от 4 до 8 нед"
                     },
                     {
                         guidIdComponent: "e2d1c40d-b744-4188-a5b5-ec324880c7e5",
                         purchaseItemPrice: 2000,
-                        bestComponentProvider: "ООО '\"ЭЛЕКТРО-ПРОФИ\""
+                        bestComponentProvider: "ООО '\"ЭЛЕКТРО-ПРОФИ\"",
+                        deliveryTimeComponent: "от 1 до 4 нед"
                     }]
             }
         ],

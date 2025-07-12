@@ -5,12 +5,12 @@ import { useRoleId } from "../../js/Utilits/roleId.js";
 const LpsTableItemEdit = ({
   index,
   quantity,
-  purchasePrice,
   setPurchasePrice,
   vendorCodeComponent,
   nameComponent,
   purchaseItemPrice,
   bestComponentProvider,
+  deliveryTimeComponent,
   onQuantityChange,
   otherOffers
 }) => {
@@ -21,6 +21,7 @@ const LpsTableItemEdit = ({
   // Локальное состояние количества и цены
   const [localQuantity, setLocalQuantity] = useState(quantity);
   const [itemPrice, setItemPrice] = useState(purchaseItemPrice);
+  const [itemDeliveryTime, setItemDeliveryTime] = useState(deliveryTimeComponent);
 
   // Сумма по данной строке
   const [sumPriceItem, setSumPriceItem] = useState(quantity * purchaseItemPrice);
@@ -58,8 +59,10 @@ const LpsTableItemEdit = ({
     const selected = otherOffers.find(i => i.bestComponentProvider === selectedProvider);
     if (selected) {
       setItemPrice(selected.purchaseItemPrice);
+      setItemDeliveryTime(selected.deliveryTimeComponent);
     } else {
       setItemPrice(purchaseItemPrice);
+      setItemDeliveryTime(deliveryTimeComponent);
     }
   };
 
@@ -82,6 +85,9 @@ const LpsTableItemEdit = ({
       <td className="lpc-item__price">
         {Intl.NumberFormat("ru").format(sumPriceItem)}
       </td>
+      <td className="lpc-item__price">
+        {itemDeliveryTime}
+      </td>
       <td>
         {!roleUser ? (
           <select
@@ -98,7 +104,7 @@ const LpsTableItemEdit = ({
             ))}
           </select>
         ) : (
-          <span className="lpc-item__provider_select_ban">Скрыто от пользователя</span>
+          <span className="lpc-item__provider_select_ban">по подписке</span>
         )}
       </td>
     </>

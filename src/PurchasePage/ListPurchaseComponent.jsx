@@ -82,6 +82,7 @@ const ListPurchaseComponent = (
                     <th scope="col" className="lpc-item__quantity">Кол-во</th>
                     <th scope="col" className="lpc-item__price">Цена</th>
                     <th scope="col" className="lpc-item__price">Стоимость</th>
+                    <th scope="col">Доставка</th>
                     <th scope="col">Поставщик</th>
                 </tr>
             </thead>
@@ -107,12 +108,12 @@ const ListPurchaseComponent = (
                                 <LpsTableItemEdit
                                     index={index}
                                     quantity={quantity}
-                                    purchasePrice={purchasePrice}
                                     setPurchasePrice={setPurchasePrice}
                                     vendorCodeComponent={item.vendorCodeComponent}
                                     nameComponent={item.nameComponent}
                                     purchaseItemPrice={item.purchaseItemPrice}
                                     bestComponentProvider={item.bestComponentProvider}
+                                    deliveryTimeComponent={item.deliveryTimeComponent}
                                     otherOffers={item.otherOffers}
                                     onQuantityChange={handleQuantityChange}
                                 />
@@ -127,6 +128,9 @@ const ListPurchaseComponent = (
                                     <td className="lpc-item__price">
                                         {Intl.NumberFormat("ru").format(Number(purchasePriceItem))}
                                     </td>
+                                    <td className="lpc-item__price">
+                                        {item.deliveryTimeComponent}
+                                    </td>
                                     {!roleUser?
                                         <>
                                             <td className="lpc-item__provider">
@@ -139,7 +143,7 @@ const ListPurchaseComponent = (
                                         </>:
                                         <>
                                         <td className="lpc-item__provider">
-                                                <span className="lpc-item__provider_select_ban">Скрыто от пользователя</span>
+                                                <span className="lpc-item__provider_select_ban">по подписке</span>
                                                 <button 
                                                     className="lpc-item__button-delete"
                                                     onClick={()=>deletePurchaseItem(item.guidIdPurchase, item.guidIdComponent, purchasePriceItem)}
