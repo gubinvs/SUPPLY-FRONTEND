@@ -61,9 +61,6 @@ const ListPurchaseBlock = (
                                 </div>
                                 <div className="lp-item__purchase-name-costomer">{item.purchaseCostomer}</div>
                             </div>
-                            <button className="btn btn-outline-warning lp-item__purchase-save">
-                                Сохранить изменения
-                            </button>
                         </li>
                     ))}
                 </ul>
