@@ -5,7 +5,7 @@ import { useRoleId } from "../js/Utilits/roleId.js";
 import AddItemPurchase from "./PurchasePageElement/AddItemPurchase.jsx";
 
 const ListPurchaseComponent = (
-    { purchase, setPurchase, purchasePrice, setPurchasePrice }
+    { components, purchase, setPurchase, purchasePrice, setPurchasePrice }
 ) => {
     // состояни роли пользователя в системе
     const { roleUser} = useRoleId();
@@ -75,7 +75,9 @@ const ListPurchaseComponent = (
 
     return (
         <>
-            <AddItemPurchase />
+            <AddItemPurchase
+                components={components}
+            />
             <table className="table">
                 <thead className="table-borderless__theder">
                     <tr>

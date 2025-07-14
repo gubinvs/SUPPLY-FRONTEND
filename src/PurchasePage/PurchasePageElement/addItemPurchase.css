@@ -1,4 +1,8 @@
-.add-item-purchase-block {
+.add-item-purchase-section {
+    position: relative;
+}
+
+.add-item-purchase__form-block {
     display: flex;
     padding: 20px 0px 0px 0px;
     margin-bottom: 20px;
@@ -15,4 +19,13 @@
 
 .aip-block__purchase-save {
     width: 300px;
+}
+
+.add-item-purchase__result-search {
+    position: absolute;
+    top: 70px;
+    width: 100%;
+    min-height: 100px;
+    border-radius: 10px;
+    background-color: aqua;
 }

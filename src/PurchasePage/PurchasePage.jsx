@@ -101,6 +101,7 @@ const PurchasePage =(
                 <div className="main-application-panel__container">
                     <div className="purchase-page-left-block">
                         <ListPurchaseBlock 
+                            components={components}
                             createPurchase={createPurchase} 
                             setCreatePurchase={setCreatePurchase}
                             purchase = {purchase}
