@@ -44,25 +44,25 @@ const App = () => {
 
 
   // Запрос полного списка номенклатуры в базе данных
-    useEffect(() => {
-        fetch(ApiUrl + "/api/ReturnListDataComponent", {
-            method: "GET",
-            headers: { "Content-Type": "application/json" },
-        })
-            .then((response) => {
-                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                return response.json();
-            })
-            .then((data) => {
-                setComponents(data || []);
-                setLoading(false);
-            })
-            .catch((error) => {
-                console.error("Ошибка получения данных:", error);
-                setError("Ошибка загрузки данных: " + error.message);
-                setLoading(false);
-            });
-    }, []);
+  useEffect(() => {
+      fetch(ApiUrl + "/api/ReturnListDataComponent", {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+      })
+          .then((response) => {
+              if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+              return response.json();
+          })
+          .then((data) => {
+              setComponents(data || []);
+              setLoading(false);
+          })
+          .catch((error) => {
+              console.error("Ошибка получения данных:", error);
+              setError("Ошибка загрузки данных: " + error.message);
+              setLoading(false);
+          });
+  }, []);
 
   return (
     <Router>

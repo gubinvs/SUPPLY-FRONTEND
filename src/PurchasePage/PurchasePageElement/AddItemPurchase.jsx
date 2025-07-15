@@ -1,6 +1,7 @@
 
 import { useState, useEffect } from "react";
 import "./addItemPurchase.css"
+import ApiUrl from "../../js/ApiUrl";
 
 
 // Блок с формой выбора номенклатуры для добавления ее в закупку
@@ -37,7 +38,6 @@ const AddItemPurchase = (
 
     // Метод добавления номенклатуры в закупку
     const handleAddItem = (item) => {
-
         const newItem = {
             guidIdPurchase: listItem[0].guidIdPurchase,
             guidIdComponent: item.guidIdComponent,
@@ -53,16 +53,48 @@ const AddItemPurchase = (
         setListItem((listItem) => [...listItem, newItem]);
 
         setPurchase((prev) =>
-        prev.map((p, index) =>
-            index === 0
-                ? {
-                    ...p,
-                    purchaseItem: [...p.purchaseItem, newItem]
-                }
-                : p
-        )
-    );
+            prev.map((p, index) =>
+                index === 0
+                    ? {
+                        ...p,
+                        purchaseItem: [...p.purchaseItem, newItem]
+                    }
+                    : p
+            )
+        );
         
+    };
+
+    // Функция обновления цен и предложений поставщиков
+    const priceUpdate = () => {
+        const bodyRequest = listItem.map((item) => item.vendorCodeComponent);
+
+        fetch(ApiUrl + "/api/ReturnPriceProviderListArticle", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ articles: bodyRequest })
+        })
+        .then((response) => {
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            return response.json();
+        })
+        .then((data) => {
+            
+            setListItem((prev) =>
+                prev.map((item) => {
+                    const regust = data.found.find((d) => d.article === item.vendorCodeComponent);
+                    if (regust) {
+                        return {
+                            ...item,
+                            otherOffers: regust.offers
+                        };
+                    }
+                })
+            );
+        })
+        .catch((error) => {
+            console.error("Ошибка получения данных:", error);
+        });
     };
 
     return(
@@ -84,7 +116,9 @@ const AddItemPurchase = (
                             }}
                         /> 
                     </div>
-                    <button type="button" className="btn btn-outline-secondary aip-block__button">Обновить цены</button> 
+                    <button type="button" className="btn btn-outline-secondary aip-block__button"
+                        onClick={()=>priceUpdate()}
+                    >Обновить цены</button> 
                     <button className="btn btn-outline-success aip-block__purchase-save">Сохранить изменения</button>
                 </div>
                 {resultSearch?

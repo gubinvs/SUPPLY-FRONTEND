@@ -9,7 +9,7 @@ const ListPurchaseComponent = (
 ) => {
     // состояни роли пользователя в системе
     const { roleUser} = useRoleId();
-    
+
     // Индексация закупок и номенклатуры
     const indexedItems = [];
     (purchase ?? []).forEach((p, purchaseIndex) => {
