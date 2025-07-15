@@ -16,6 +16,8 @@ const PurchasePage =(
     const handleShowMax = () => setIsNavMaxVisible(true);
     const handleHideMax = () => setIsNavMaxVisible(false);
     const [createPurchase, setCreatePurchase] = useState(false);
+
+    
     //  Закупки с раскладкой по номенклатуре
     const [purchase, setPurchase] = useState(
         // Временные массива данных для отладки в нем собрана информация о самой закупке, в которой находятся элементы

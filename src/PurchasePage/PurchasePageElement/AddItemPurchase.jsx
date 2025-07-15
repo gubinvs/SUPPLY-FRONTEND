@@ -79,19 +79,23 @@ const AddItemPurchase = (
             return response.json();
         })
         .then((data) => {
-            
-            setListItem((prev) =>
-                prev.map((item) => {
-                    const regust = data.found.find((d) => d.article === item.vendorCodeComponent);
-                    if (regust) {
+            // Обновляем purchase
+            const updatedPurchase = purchase.map(p => ({
+                ...p,
+                purchaseItem: p.purchaseItem.map(item => {
+                    const match = data.found.find(d => d.article === item.vendorCodeComponent);
+                    if (match) {
                         return {
                             ...item,
-                            otherOffers: regust.offers
+                            otherOffers: match.offers
                         };
                     }
+                    return item;
                 })
-            );
-        })
+            }));
+
+            setPurchase(updatedPurchase);
+    })
         .catch((error) => {
             console.error("Ошибка получения данных:", error);
         });

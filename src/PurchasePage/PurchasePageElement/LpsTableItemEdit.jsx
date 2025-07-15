@@ -95,13 +95,16 @@ const LpsTableItemEdit = ({
             onChange={(e) => handleProviderChange(e.target.value)}
           >
             <option value={bestComponentProvider}>{bestComponentProvider}</option>
-            {otherOffers.map((i, idx) => (
-              i.bestComponentProvider !== bestComponentProvider && (
-                <option key={idx} value={i.bestComponentProvider}>
-                  {i.bestComponentProvider}
-                </option>
-              )
-            ))}
+            {otherOffers
+                .filter(i => i.bestComponentProvider !== bestComponentProvider)
+                .map(i => (
+                  <option
+                    key={`${i.bestComponentProvider}-${i.guidIdComponent ?? Math.random()}`}
+                    value={i.bestComponentProvider}
+                  >
+                    {i.bestComponentProvider}
+                  </option>
+                ))}
           </select>
         ) : (
           <span className="lpc-item__provider_select_ban">по подписке</span>

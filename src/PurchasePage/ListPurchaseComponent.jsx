@@ -72,7 +72,7 @@ const ListPurchaseComponent = (
         setPurchasePrice(purchasePrice-purchasePriceItem);
     };
 
-
+console.log(purchase);
     return (
         <>
             <AddItemPurchase
@@ -101,7 +101,7 @@ const ListPurchaseComponent = (
                         const purchasePriceItem = quantity*item.purchaseItemPrice;
                     
                         return (
-                            <tr key={index}>
+                            <tr key={`${item.guidIdPurchase}-${item.guidIdComponent}`}>
                                 <td>
                                     <input
                                         className="form-check-input"
