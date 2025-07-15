@@ -12,8 +12,8 @@ const ListPurchaseComponent = (
     
     // Индексация закупок и номенклатуры
     const indexedItems = [];
-    purchase.forEach((p, purchaseIndex) => {
-        p.purchaseItem.forEach((item, itemIndex) => {
+    (purchase ?? []).forEach((p, purchaseIndex) => {
+        (p?.purchaseItem ?? []).forEach((item, itemIndex) => {
             indexedItems.push({
                 purchaseIndex,
                 itemIndex,
@@ -77,6 +77,8 @@ const ListPurchaseComponent = (
         <>
             <AddItemPurchase
                 components={components}
+                purchase={purchase}
+                setPurchase={setPurchase}
             />
             <table className="table">
                 <thead className="table-borderless__theder">

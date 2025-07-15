@@ -5,39 +5,85 @@ import "./addItemPurchase.css"
 
 // Блок с формой выбора номенклатуры для добавления ее в закупку
 const AddItemPurchase = (
-    {components}
+    {components, purchase, setPurchase}
 ) => {
 
     // Отфильтрованные данные о номенклатуре на основании соответствия введенных данных в input
     const [searchTerm, setSearchTerm] = useState("");
     // Состояние блока выдачи результата поискового запроса
-    const [resultSearch, setResultSearch] = useState(true)
+    const [resultSearch, setResultSearch] = useState(false)
     // Начинаем выдавать данные для отображения на странице только после изменения (вводе данных в форму)
     const [filteredComponents, setFilteredComponents] = useState([]);
+    // Состав закупки по номенклатуре
+    const [listItem, setListItem] = useState(purchase[0].purchaseItem);
+  
+
     useEffect(() => {
         const filtered = components.filter(item =>
             item.vendorCodeComponent?.toLowerCase().includes(searchTerm.toLowerCase()) ||
             item.nameComponent?.toLowerCase().includes(searchTerm.toLowerCase())
         )
         .slice(0, 25); // Ограничение до ......;
+
         setFilteredComponents(filtered);
-        if (filtered.length === 0) {
+
+        if (searchTerm === "") {
             setResultSearch(false)
-        } else if (filtered.length > 0) {
+        } else {
              setResultSearch(true)
         }
     }, [searchTerm, components]);
+
+
+    // Метод добавления номенклатуры в закупку
+    const handleAddItem = (item) => {
+
+        const newItem = {
+            guidIdPurchase: listItem[0].guidIdPurchase,
+            guidIdComponent: item.guidIdComponent,
+            vendorCodeComponent: item.vendorCodeComponent,
+            nameComponent: item.nameComponent,
+            requiredQuantityItem: 1,
+            purchaseItemPrice:0,
+            bestComponentProvider: "нет данных",
+            deliveryTimeComponent: "нет данных",
+            otherOffers:[]
+        };
+
+        setListItem((listItem) => [...listItem, newItem]);
+
+        setPurchase((prev) =>
+        prev.map((p, index) =>
+            index === 0
+                ? {
+                    ...p,
+                    purchaseItem: [...p.purchaseItem, newItem]
+                }
+                : p
+        )
+    );
+        
+    };
 
     return(
         <>
             <div className="add-item-purchase-section">
                 <div className="add-item-purchase__form-block">
-                    <input className="form-control aip-block__input" type="text" placeholder="Добавить номенклатуру" aria-label="default input example" 
-                            value={searchTerm}
-                            onChange={(e) => {
-                            setSearchTerm(e.target.value);
-                        }}
-                    /> 
+                    <div className="aip-block__input-block">
+                        <div className="aip-block__input_closed"
+                            onClick={()=>{setResultSearch(false)}}
+                        >X</div>
+                        <input 
+                                className="form-control aip-block__input" 
+                                type="text" 
+                                placeholder="Добавить номенклатуру" 
+                                aria-label="default input example" 
+                                value={searchTerm}
+                                onChange={(e) => {
+                                setSearchTerm(e.target.value);
+                            }}
+                        /> 
+                    </div>
                     <button type="button" className="btn btn-outline-secondary aip-block__button">Обновить цены</button> 
                     <button className="btn btn-outline-success aip-block__purchase-save">Сохранить изменения</button>
                 </div>
@@ -45,12 +91,17 @@ const AddItemPurchase = (
                 <>
                     <div className="add-item-purchase__result-search">
                         <ul className="aip-result-search__list">
-                            {filteredComponents.map((item)=>{
+                            {filteredComponents.map((item, index)=>{
                                 return(
                                     <>
-                                        <li className="aip-result-search__item">
-                                            <div className="aip-rs-item_vendor">{item.vendorCodeComponent}</div>
-                                            <div className="aip-rs-item_name">{item.nameComponent}</div>
+                                        <li key={index} className="aip-result-search__item">
+                                            <div className="aip-rs-item__content-block">
+                                                <div className="aip-rs-item_vendor">{item.vendorCodeComponent}</div>
+                                                <div className="aip-rs-item_name">{item.nameComponent}</div> 
+                                            </div>
+                                            <div className="aip-rs-item_button"
+                                                onClick={() => handleAddItem(item)}
+                                            >+</div>
                                         </li> 
                                     </>
                                 );
