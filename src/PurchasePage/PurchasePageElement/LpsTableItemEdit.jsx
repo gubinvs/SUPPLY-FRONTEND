@@ -3,31 +3,32 @@ import "./lpsTableItemEdit.css";
 import { useRoleId } from "../../js/Utilits/roleId.js";
 
 const LpsTableItemEdit = ({
-  index,
-  quantity,
-  setPurchasePrice,
-  vendorCodeComponent,
-  nameComponent,
-  purchaseItemPrice,
-  bestComponentProvider,
-  deliveryTimeComponent,
-  onQuantityChange,
-  otherOffers
-}) => {
+    index,
+    quantity,
+    setPurchasePrice,
+    vendorCodeComponent,
+    nameComponent,
+    purchaseItemPrice,
+    bestComponentProvider,
+    deliveryTimeComponent,
+    onQuantityChange,
+    otherOffers
+  }) => {
 
-  // Получаем роль пользователя
-  const { roleUser } = useRoleId();
+    // Получаем роль пользователя
+    const { roleUser } = useRoleId();
 
-  // Локальное состояние количества и цены
-  const [localQuantity, setLocalQuantity] = useState(quantity);
-  const [itemPrice, setItemPrice] = useState(purchaseItemPrice);
-  const [itemDeliveryTime, setItemDeliveryTime] = useState(deliveryTimeComponent);
 
-  // Сумма по данной строке
-  const [sumPriceItem, setSumPriceItem] = useState(quantity * purchaseItemPrice);
+    // Локальное состояние количества и цены
+    const [localQuantity, setLocalQuantity] = useState(quantity);
+    const [itemPrice, setItemPrice] = useState(purchaseItemPrice);
+    const [itemDeliveryTime, setItemDeliveryTime] = useState(deliveryTimeComponent);
 
-  // Сохраняем предыдущую сумму строки, чтобы сравнивать и менять purchasePrice
-  const prevSumPriceItemRef = useRef(quantity * purchaseItemPrice);
+    // Сумма по данной строке
+    const [sumPriceItem, setSumPriceItem] = useState(quantity * purchaseItemPrice);
+
+    // Сохраняем предыдущую сумму строки, чтобы сравнивать и менять purchasePrice
+    const prevSumPriceItemRef = useRef(quantity * purchaseItemPrice);
 
   // Обновляем сумму и общую закупочную стоимость при изменении количества или цены
   useEffect(() => {
@@ -71,31 +72,31 @@ const LpsTableItemEdit = ({
       <td>{vendorCodeComponent}</td>
       <td>{nameComponent}</td>
       <td className="lpc-item__quantity">
-        <input
-          type="number"
-          min={0}
-          value={localQuantity}
-          className="lpc-item__quantity_input"
-          onChange={(e) => handleQuantityChange(e.target.value)}
-        />
+          <input
+            type="number"
+            min={0}
+            value={localQuantity}
+            className="lpc-item__quantity_input"
+            onChange={(e) => handleQuantityChange(e.target.value)}
+          />
       </td>
       <td className="lpc-item__price">
-        {Intl.NumberFormat("ru").format(itemPrice)}
+          {Intl.NumberFormat("ru").format(itemPrice)}
       </td>
       <td className="lpc-item__price">
-        {Intl.NumberFormat("ru").format(sumPriceItem)}
+          {Intl.NumberFormat("ru").format(sumPriceItem)}
       </td>
       <td className="lpc-item__price">
-        {itemDeliveryTime}
+          {itemDeliveryTime}
       </td>
       <td>
         {!roleUser ? (
-          <select
-            className="lpc-item__provider_select"
-            onChange={(e) => handleProviderChange(e.target.value)}
-          >
-            <option value={bestComponentProvider}>{bestComponentProvider}</option>
-            {otherOffers
+            <select
+              className="lpc-item__provider_select"
+              onChange={(e) => handleProviderChange(e.target.value)}
+            >
+              <option value={bestComponentProvider}>{bestComponentProvider}</option>
+              {(otherOffers || [])
                 .filter(i => i.bestComponentProvider !== bestComponentProvider)
                 .map(i => (
                   <option
@@ -105,10 +106,11 @@ const LpsTableItemEdit = ({
                     {i.bestComponentProvider}
                   </option>
                 ))}
-          </select>
-        ) : (
-          <span className="lpc-item__provider_select_ban">по подписке</span>
-        )}
+            </select>
+          ) : (
+            <span className="lpc-item__provider_select_ban">по подписке</span>
+          )}
+
       </td>
     </>
   );

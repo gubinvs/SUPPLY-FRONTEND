@@ -47,7 +47,7 @@ const ListPurchaseComponent = (
         }));
     };
 
-    // Обновление количеств при изменении `purchase`
+    // Обновление количества при изменении `purchase`
     useEffect(() => {
         setQuantities(
             Object.fromEntries(
@@ -55,6 +55,27 @@ const ListPurchaseComponent = (
             )
         );
     }, [purchase]);
+
+    // Пересчет стоимости при изменении  purchase
+    useEffect(() => {
+        if (!purchase[0] || !Array.isArray(purchase[0].purchaseItem)) {
+            setPurchasePrice(0);
+            return;
+        }
+
+        const summa = purchase[0].purchaseItem.reduce((acc, i) => {
+            const qty = Number(i.requiredQuantityItem);
+            const price = Number(i.purchaseItemPrice);
+            if (isNaN(qty) || isNaN(price)) {
+                console.warn('Некорректное значение', i);
+                return acc;
+            }
+            return acc + qty * price;
+        }, 0);
+
+        setPurchasePrice(summa);
+    }, [purchase]);
+
 
     // Удаление номенклатуры из закупки
     const deletePurchaseItem = (purchaseGuid, componentGuid, purchasePriceItem) => {
@@ -68,6 +89,7 @@ const ListPurchaseComponent = (
                 : p
             )
         );
+
         // Вычитаем общую стоимость удаленной номенклатуры
         setPurchasePrice(purchasePrice-purchasePriceItem);
     };

@@ -62,7 +62,6 @@ const AddItemPurchase = (
                     : p
             )
         );
-        
     };
 
     // Функция обновления цен и предложений поставщиков
@@ -86,7 +85,6 @@ const AddItemPurchase = (
 
                     if (match && Array.isArray(match.offers) && match.offers.length > 0) {
                         const bestOffer = match.offers[0]; // Можно заменить на сортировку по цене или сроку при необходимости
-
                         return {
                             guidIdPurchase: item.guidIdPurchase,
                             guidIdComponent: item.guidIdComponent,
@@ -96,13 +94,25 @@ const AddItemPurchase = (
                             purchaseItemPrice: item.purchaseItemPrice === 0 ? bestOffer.priceComponent : item.purchaseItemPrice,
                             bestComponentProvider: item.bestComponentProvider === "нет данных" ? bestOffer.nameProvider : item.bestComponentProvider,
                             deliveryTimeComponent: item.deliveryTimeComponent === "нет данных" ? bestOffer.deliveryTimeComponent : item.deliveryTimeComponent,
-                            otherOffers: item.otherOffers === null ? match.offers : item.otherOffers 
+                            otherOffers: !item.otherOffers || item.otherOffers.length === 0 ? 
+                                    match.offers.map((x)=>{
+                                        return {
+                                            guidIdComponent:  item.guidIdComponent,
+                                            purchaseItemPrice: x.priceComponent,
+                                            bestComponentProvider: x.nameProvider,
+                                            deliveryTimeComponent: x.deliveryTimeComponent
+                                        };
+                                        
+                                    })
+                                : item.otherOffers
                         };
                     }
 
                     return item;
                 })
             }));
+
+
 
             setPurchase(updatedPurchase);
             setResultSearch(false);
