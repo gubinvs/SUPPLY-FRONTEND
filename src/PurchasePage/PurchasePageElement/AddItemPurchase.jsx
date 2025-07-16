@@ -31,7 +31,7 @@ const AddItemPurchase = (
         if (searchTerm === "") {
             setResultSearch(false)
         } else {
-             setResultSearch(true)
+            setResultSearch(true)
         }
     }, [searchTerm, components]);
 
@@ -105,6 +105,7 @@ const AddItemPurchase = (
             }));
 
             setPurchase(updatedPurchase);
+            setResultSearch(false);
         })
 
         .catch((error) => {
@@ -134,7 +135,9 @@ const AddItemPurchase = (
                     <button type="button" className="btn btn-outline-secondary aip-block__button"
                         onClick={()=>priceUpdate()}
                     >Обновить цены</button> 
-                    <button className="btn btn-outline-success aip-block__purchase-save">Сохранить изменения</button>
+                    <button className="btn btn-outline-success aip-block__purchase-save"
+                        onClick={()=> setResultSearch(false)}
+                    >Сохранить изменения</button>
                 </div>
                 {resultSearch?
                 <>

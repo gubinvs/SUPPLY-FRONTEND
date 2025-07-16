@@ -72,7 +72,7 @@ const ListPurchaseComponent = (
         setPurchasePrice(purchasePrice-purchasePriceItem);
     };
 
-console.log(purchase);
+
     return (
         <>
             <AddItemPurchase
@@ -89,8 +89,8 @@ console.log(purchase);
                         <th scope="col" className="lpc-item__quantity">Кол-во</th>
                         <th scope="col" className="lpc-item__price">Цена</th>
                         <th scope="col" className="lpc-item__price">Стоимость</th>
-                        <th scope="col">Доставка</th>
-                        <th scope="col">Поставщик</th>
+                        <th scope="col" className="lpc-item__delivery">Доставка</th>
+                        <th scope="col" className="lpc-item__price">Поставщик</th>
                     </tr>
                 </thead>
                 <tbody>

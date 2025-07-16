@@ -1,8 +1,11 @@
 .lpc-item__quantity,
 .lpc-item__price {
     text-align: center;
+    min-width: 100px;
 }
-
+.lpc-item__delivery {
+    min-width: 150px;
+}
 .lpc-item__provider {
     display: flex;
     justify-content: space-between;
@@ -11,6 +14,7 @@
 
 .lpc-item__button-delete {
     width: 30px;
+    height: 30px;
     text-align: center;
     border: 0.5px solid red;
     border-radius: 4px;
