@@ -44,7 +44,7 @@ const AddItemPurchase = (
             vendorCodeComponent: item.vendorCodeComponent,
             nameComponent: item.nameComponent,
             requiredQuantityItem: 1,
-            purchaseItemPrice:0,
+            purchaseItemPrice: 0,
             bestComponentProvider: "нет данных",
             deliveryTimeComponent: "нет данных",
             otherOffers:[]
@@ -79,23 +79,34 @@ const AddItemPurchase = (
             return response.json();
         })
         .then((data) => {
-            // Обновляем purchase
             const updatedPurchase = purchase.map(p => ({
                 ...p,
                 purchaseItem: p.purchaseItem.map(item => {
                     const match = data.found.find(d => d.article === item.vendorCodeComponent);
-                    if (match) {
+
+                    if (match && Array.isArray(match.offers) && match.offers.length > 0) {
+                        const bestOffer = match.offers[0]; // Можно заменить на сортировку по цене или сроку при необходимости
+
                         return {
-                            ...item,
-                            otherOffers: match.offers
+                            guidIdPurchase: item.guidIdPurchase,
+                            guidIdComponent: item.guidIdComponent,
+                            vendorCodeComponent: item.vendorCodeComponent,
+                            nameComponent: item.nameComponent,
+                            requiredQuantityItem: item.requiredQuantityItem > 1 ? item.requiredQuantityItem : 1,
+                            purchaseItemPrice: item.purchaseItemPrice === 0 ? bestOffer.priceComponent : item.purchaseItemPrice,
+                            bestComponentProvider: item.bestComponentProvider === "нет данных" ? bestOffer.nameProvider : item.bestComponentProvider,
+                            deliveryTimeComponent: item.deliveryTimeComponent === "нет данных" ? bestOffer.deliveryTimeComponent : item.deliveryTimeComponent,
+                            otherOffers: item.otherOffers === null ? match.offers : item.otherOffers 
                         };
                     }
+
                     return item;
                 })
             }));
 
             setPurchase(updatedPurchase);
-    })
+        })
+
         .catch((error) => {
             console.error("Ошибка получения данных:", error);
         });
