@@ -102,17 +102,18 @@ const ListPurchaseComponent = (
                 purchase={purchase}
                 setPurchase={setPurchase}
             />
-            <table className="table">
+            <table className="table list-purchase-component__table">
                 <thead className="table-borderless__theder">
                     <tr>
                         <th scope="col"></th>
-                        <th scope="col">Артикул</th>
-                        <th scope="col">Наименование</th>
+                        <th scope="col" className="lpc-item__article">Артикул</th>
+                        <th scope="col" className="lpc-item__name">Наименование</th>
                         <th scope="col" className="lpc-item__quantity">Кол-во</th>
                         <th scope="col" className="lpc-item__price">Цена</th>
                         <th scope="col" className="lpc-item__price">Стоимость</th>
                         <th scope="col" className="lpc-item__delivery">Доставка</th>
-                        <th scope="col" className="lpc-item__price">Поставщик</th>
+                        <th scope="col" className="lpc-item__provider">Поставщик</th>
+                        <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -164,6 +165,8 @@ const ListPurchaseComponent = (
                                             <>
                                                 <td className="lpc-item__provider">
                                                     {item.bestComponentProvider}
+                                                </td>
+                                                <td>
                                                     <button 
                                                         className="lpc-item__button-delete" 
                                                         onClick={()=>deletePurchaseItem(item.guidIdPurchase, item.guidIdComponent, purchasePriceItem)}
@@ -171,10 +174,12 @@ const ListPurchaseComponent = (
                                                 </td>
                                             </>:
                                             <>
-                                            <td className="lpc-item__provider">
+                                                <td className="lpc-item__provider">
                                                     <span className="lpc-item__provider_select_ban">по подписке</span>
+                                                </td>
+                                                <td>
                                                     <button 
-                                                        className="lpc-item__button-delete"
+                                                        className="lpc-item__button-delete" 
                                                         onClick={()=>deletePurchaseItem(item.guidIdPurchase, item.guidIdComponent, purchasePriceItem)}
                                                     >X</button>
                                                 </td>
