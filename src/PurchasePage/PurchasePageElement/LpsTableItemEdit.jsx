@@ -110,8 +110,8 @@ const LpsTableItemEdit = ({
           ) : (
             <span className="lpc-item__provider_select_ban">по подписке</span>
           )}
-
       </td>
+      <td></td>
     </>
   );
 };

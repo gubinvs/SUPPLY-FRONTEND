@@ -21,6 +21,22 @@
     width: 300px;
 }
 
+.add-item-purchase__result-search_close {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 15px;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    right: 0px;
+    width: 406px;
+    height: 59px;
+    font-size: 22px;
+    background-color: #FAC855;
+    cursor: pointer;
+}
+
 .add-item-purchase__result-search {
     position: absolute;
     top: 70px;
@@ -82,5 +98,9 @@
 .aip-rs-item_button:hover {
     border: 1px solid #FAC855;
     background-color: #FAC855;
- 
+}
+
+.aip-rs-item_button_add {
+    border: 1px solid #FAC855;
+    background-color: #FAC855;
 }
