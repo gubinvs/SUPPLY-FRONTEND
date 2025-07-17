@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import "./addItemPurchase.css"
 import ApiUrl from "../../js/ApiUrl";
+import { toast } from 'react-toastify';
 
 
 // Блок с формой выбора номенклатуры для добавления ее в закупку
@@ -151,21 +152,29 @@ const AddItemPurchase = (
                 </div>
                 {resultSearch?
                 <>
+                    <div className="add-item-purchase__result-search_close" onClick={()=> setResultSearch(false)}>Свернуть список</div>
                     <div className="add-item-purchase__result-search">
                         <ul className="aip-result-search__list">
-                            {filteredComponents.map((item, index)=>{
-                                return(
-                                    <>
-                                        <li key={index} className="aip-result-search__item">
-                                            <div className="aip-rs-item__content-block">
-                                                <div className="aip-rs-item_vendor">{item.vendorCodeComponent}</div>
-                                                <div className="aip-rs-item_name">{item.nameComponent}</div> 
-                                            </div>
-                                            <div className="aip-rs-item_button"
-                                                onClick={() => handleAddItem(item)}
-                                            >+</div>
-                                        </li> 
-                                    </>
+                            {filteredComponents.map((item, index) => {
+                                const isAlreadyInPurchase = purchase[0]?.purchaseItem?.some(p => p.guidIdComponent === item.guidIdComponent);
+                               
+                                return (
+                                    <li key={index} className="aip-result-search__item">
+                                        <div className="aip-rs-item__content-block">
+                                            <div className="aip-rs-item_vendor">{item.vendorCodeComponent}</div>
+                                            <div className="aip-rs-item_name">{item.nameComponent}</div> 
+                                        </div>
+                                        <div
+                                            className={
+                                                isAlreadyInPurchase
+                                                    ? "aip-rs-item_button aip-rs-item_button_add"
+                                                    : "aip-rs-item_button"
+                                            }
+                                            onClick={() => !isAlreadyInPurchase && handleAddItem(item)}
+                                        >
+                                            +
+                                        </div>
+                                    </li>
                                 );
                             })}
                         </ul>
