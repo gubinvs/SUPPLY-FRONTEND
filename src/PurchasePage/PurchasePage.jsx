@@ -80,7 +80,7 @@ const PurchasePage =(
     }]);
 
 
-    // Загрузить данные о закупках
+    // Загрузить данные о закупках 
     const downloadListPurchase =()=> {
         
     };

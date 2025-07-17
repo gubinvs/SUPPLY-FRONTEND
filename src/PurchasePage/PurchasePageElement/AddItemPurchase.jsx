@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import "./addItemPurchase.css"
 import ApiUrl from "../../js/ApiUrl";
-import { toast } from 'react-toastify';
+
 
 
 // Блок с формой выбора номенклатуры для добавления ее в закупку
@@ -113,8 +113,6 @@ const AddItemPurchase = (
                 })
             }));
 
-
-
             setPurchase(updatedPurchase);
             setResultSearch(false);
         })
@@ -122,6 +120,11 @@ const AddItemPurchase = (
         .catch((error) => {
             console.error("Ошибка получения данных:", error);
         });
+    };
+
+    // Запрос на схранение данных о составе номенклатуры в закупке в базе данных
+    const reguustAddItemPurchaseData = () => {
+
     };
 
     return(
@@ -147,7 +150,7 @@ const AddItemPurchase = (
                         onClick={()=>priceUpdate()}
                     >Обновить цены</button> 
                     <button className="btn btn-outline-success aip-block__purchase-save"
-                        onClick={()=> setResultSearch(false)}
+                        onClick={()=> reguustAddItemPurchaseData()}
                     >Сохранить изменения</button>
                 </div>
                 {resultSearch?
