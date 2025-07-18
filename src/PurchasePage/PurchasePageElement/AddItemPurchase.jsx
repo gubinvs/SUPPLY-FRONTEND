@@ -18,8 +18,9 @@ const AddItemPurchase = (
     const [filteredComponents, setFilteredComponents] = useState([]);
     // Состав закупки по номенклатуре
     const [listItem, setListItem] = useState(purchase[0].purchaseItem);
+    // Достаем guidIdCollaborator
+    const guidIdCollaborator = localStorage.getItem("guidIdCollaborator");
   
-
     useEffect(() => {
         const filtered = components.filter(item =>
             item.vendorCodeComponent?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -122,9 +123,43 @@ const AddItemPurchase = (
         });
     };
 
+ 
     // Запрос на схранение данных о составе номенклатуры в закупке в базе данных
-    const reguustAddItemPurchaseData = () => {
+    const requestAddItemPurchaseData = () => {
+        const requestData = purchase.map(i => ({
+            guidIdCollaborator: guidIdCollaborator,
+            guidIdPurchase: i.guidIdPurchase,
+            purchaseId: i.purchaseId,
+            purchaseName: i.purchaseName,
+            purchasePrice: i.purchasePrice,
+            purchaseCostomer: i.purchaseCostomer,
+            purchaseItem: i.purchaseItem.map(x => ({
+                guidIdComponent: x.guidIdComponent,
+                vendorCodeComponent: x.vendorCodeComponent,
+                nameComponent: x.nameComponent,
+                requiredQuantityItem: x.requiredQuantityItem,
+                purchaseItemPrice: x.purchaseItemPrice,
+                bestComponentProvider: x.bestComponentProvider,
+                deliveryTimeComponent: x.deliveryTimeComponent
+            }))
+        }));
 
+        const jsonData = JSON.stringify(requestData)
+
+console.log(jsonData)
+
+        fetch(ApiUrl + "/api/SaveSupplyPurchase", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: jsonData
+        })
+        .then((response) => {
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            return response.json();
+        })
+        .catch((error) => {
+            console.error("Ошибка при отправке данных:", error);
+        });
     };
 
     return(
@@ -150,7 +185,7 @@ const AddItemPurchase = (
                         onClick={()=>priceUpdate()}
                     >Обновить цены</button> 
                     <button className="btn btn-outline-success aip-block__purchase-save"
-                        onClick={()=> reguustAddItemPurchaseData()}
+                        onClick={()=> requestAddItemPurchaseData()}
                     >Сохранить изменения</button>
                 </div>
                 {resultSearch?
