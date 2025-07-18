@@ -126,7 +126,9 @@ const AddItemPurchase = (
  
     // Запрос на схранение данных о составе номенклатуры в закупке в базе данных
     const requestAddItemPurchaseData = () => {
-        const requestData = purchase.map(i => ({
+       const i = purchase[0]; // первый объект
+
+        const requestData = {
             guidIdCollaborator: guidIdCollaborator,
             guidIdPurchase: i.guidIdPurchase,
             purchaseId: i.purchaseId,
@@ -142,11 +144,10 @@ const AddItemPurchase = (
                 bestComponentProvider: x.bestComponentProvider,
                 deliveryTimeComponent: x.deliveryTimeComponent
             }))
-        }));
+        };
 
         const jsonData = JSON.stringify(requestData)
-
-console.log(jsonData)
+console.log(jsonData);
 
         fetch(ApiUrl + "/api/SaveSupplyPurchase", {
             method: "POST",
@@ -155,10 +156,12 @@ console.log(jsonData)
         })
         .then((response) => {
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            alert("Данные успешно записаны!");
             return response.json();
         })
         .catch((error) => {
             console.error("Ошибка при отправке данных:", error);
+            alert("Ошибка при сохранении данных!");
         });
     };
 
