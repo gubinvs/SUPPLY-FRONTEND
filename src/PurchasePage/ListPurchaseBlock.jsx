@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./listPurchaseBlock.css";
 import ListPurchaseComponent from "./ListPurchaseComponent.jsx";
 
@@ -15,6 +15,12 @@ const ListPurchaseBlock = (
             prev === purchaseId ? null : purchaseId
         );
     };
+
+
+    // Обновляем цену закупки в массиве при ее изменении
+    useEffect(()=>{
+        purchase[0].purchasePrice = purchasePrice;
+    },[purchasePrice]);
 
     return (
         <>
