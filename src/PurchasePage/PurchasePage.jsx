@@ -56,7 +56,6 @@ const PurchasePage =(
         setPurchase(prev => prev.filter(p => p.guidIdPurchase !== guidId));
     };
 
-
     return(
         <>
             <div className="main-application-panel">

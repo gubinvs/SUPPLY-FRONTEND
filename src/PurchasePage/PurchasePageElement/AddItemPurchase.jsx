@@ -148,6 +148,8 @@ const AddItemPurchase = (
 
         const jsonData = JSON.stringify(requestData)
 
+        // console.log(jsonData);
+
 
         fetch(ApiUrl + "/api/SaveSupplyPurchase", {
             method: "POST",
