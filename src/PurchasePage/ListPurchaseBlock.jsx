@@ -8,7 +8,11 @@ const ListPurchaseBlock = (
     const [search, setSearch] = useState('');
     const [checkedPurchaseId, setCheckedPurchaseId] = useState(null);
     // Общая стоимость закупки
-    const [purchasePrice, setPurchasePrice] = useState(purchase[0].purchasePrice || 0);
+    const [purchasePrice, setPurchasePrice] = useState(
+        Array.isArray(purchase) && purchase.length > 0 && purchase[0].purchasePrice
+            ? purchase[0].purchasePrice
+            : 0
+        );
 
     const handleCheck = (purchaseId) => {
         setCheckedPurchaseId(prev =>
@@ -18,9 +22,12 @@ const ListPurchaseBlock = (
 
 
     // Обновляем цену закупки в массиве при ее изменении
-    useEffect(()=>{
-        purchase[0].purchasePrice = purchasePrice;
-    },[purchasePrice]);
+    useEffect(() => {
+        if (purchase.length > 0) {
+            purchase[0].purchasePrice = purchasePrice;
+        }
+    }, [purchasePrice, purchase]);
+
 
     return (
         <>
@@ -63,7 +70,7 @@ const ListPurchaseBlock = (
                                 <div className="lp-item__purchase-id">{item.purchaseId}</div>
                                 <div className="lp-item__purchase-name">{item.purchaseName}</div>
                                 <div className="lp-item__purchase-price">
-                                    {Intl.NumberFormat("ru").format(purchasePrice)} р.
+                                    {purchasePrice? Intl.NumberFormat("ru").format(purchasePrice):"нет данных"} р.
                                 </div>
                                 <div className="lp-item__purchase-name-costomer">{item.purchaseCostomer}</div>
                             </div>
