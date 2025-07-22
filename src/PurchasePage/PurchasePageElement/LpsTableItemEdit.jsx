@@ -11,8 +11,11 @@ const LpsTableItemEdit = ({
     purchaseItemPrice,
     bestComponentProvider,
     deliveryTimeComponent,
-    onQuantityChange,
-    otherOffers
+    purchase, 
+    setPurchase,
+    otherOffers,
+    onQuantityChange
+    
   }) => {
 
     // Получаем роль пользователя

@@ -144,6 +144,8 @@ const ListPurchaseComponent = (
                                         purchaseItemPrice={item.purchaseItemPrice}
                                         bestComponentProvider={item.bestComponentProvider}
                                         deliveryTimeComponent={item.deliveryTimeComponent}
+                                        purchase={purchase} 
+                                        setPurchase={setPurchase}
                                         otherOffers={item.otherOffers}
                                         onQuantityChange={handleQuantityChange}
                                     />
