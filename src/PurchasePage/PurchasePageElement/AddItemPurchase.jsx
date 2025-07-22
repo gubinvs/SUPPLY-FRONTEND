@@ -195,7 +195,7 @@ const AddItemPurchase = (
                 </div>
                 {resultSearch?
                 <>
-                    <div className="add-item-purchase__result-search_close" onClick={()=> setResultSearch(false)}>Свернуть список</div>
+                    <div className="add-item-purchase__result-search_close" onClick={()=> setResultSearch(false)}>Скрыть панель поиска</div>
                     <div className="add-item-purchase__result-search">
                         <ul className="aip-result-search__list">
                             {filteredComponents.map((item, index) => {

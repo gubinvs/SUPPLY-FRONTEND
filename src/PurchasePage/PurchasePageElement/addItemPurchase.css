@@ -23,18 +23,23 @@
 
 .add-item-purchase__result-search_close {
     position: absolute;
-    display: flex;
+    display: flex;  
     align-items: center;
     justify-content: center;
-    top: 15px;
-    border-top-right-radius: 10px;
-    border-top-left-radius: 10px;
+    top: 12px;
+    border-top-right-radius: 4px;
+    border-top-left-radius: 4px;
+    border-top: 1px solid #FAC855;
+    border-left: 1px solid #FAC855;
+    border-right: 1px solid #FAC855;
     right: 0px;
-    width: 406px;
+    width: 400px;
     height: 59px;
     font-size: 22px;
-    background-color: #FAC855;
+    background-color: #F5F6FA;
     cursor: pointer;
+    color: red;
+    z-index: 1;
 }
 
 .add-item-purchase__result-search {
@@ -43,8 +48,9 @@
     width: 100%;
     padding: 10px;
     border: 1px solid #FAC855;
-    border-radius: 8px;
-    background-color: #ffffff;
+    border-radius: 4px;
+    border-top-right-radius: 0px;
+    background-color: #F5F6FA;
 }
 
 .aip-result-search__list {
