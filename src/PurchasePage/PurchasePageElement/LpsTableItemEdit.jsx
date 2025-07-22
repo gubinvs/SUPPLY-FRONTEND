@@ -19,10 +19,11 @@ const LpsTableItemEdit = ({
     const { roleUser } = useRoleId();
 
 
-    // Локальное состояние количества и цены
+    // Локальное состояние количества, цены и поставщика
     const [localQuantity, setLocalQuantity] = useState(quantity);
     const [itemPrice, setItemPrice] = useState(purchaseItemPrice);
     const [itemDeliveryTime, setItemDeliveryTime] = useState(deliveryTimeComponent);
+    
 
     // Сумма по данной строке
     const [sumPriceItem, setSumPriceItem] = useState(quantity * purchaseItemPrice);
