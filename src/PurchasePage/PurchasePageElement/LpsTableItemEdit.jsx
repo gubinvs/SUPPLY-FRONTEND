@@ -26,6 +26,7 @@ const LpsTableItemEdit = ({
     const [localQuantity, setLocalQuantity] = useState(quantity);
     const [itemPrice, setItemPrice] = useState(purchaseItemPrice);
     const [itemDeliveryTime, setItemDeliveryTime] = useState(deliveryTimeComponent);
+    const [itemBestComponentProvider, setItemBestComponentProvider] = useState(bestComponentProvider);
     
 
     // Сумма по данной строке
@@ -62,60 +63,53 @@ const LpsTableItemEdit = ({
   // Обработчик изменения поставщика
   const handleProviderChange = (selectedProvider) => {
     const selected = otherOffers.find(i => i.bestComponentProvider === selectedProvider);
+    
     console.log("selected", selected)
+
     if (selected) {
       setItemPrice(selected.purchaseItemPrice);
       setItemDeliveryTime(selected.deliveryTimeComponent);
-      updatePurchaseItem(
-        selected.guidIdComponent, 
-        selected.purchaseItemPrice,
-        selected.bestComponentProvider,
-        selected.deliveryTimeComponent
-      );
+      setItemBestComponentProvider(selected.bestComponentProvider);
     } else {
       setItemPrice(purchaseItemPrice);
       setItemDeliveryTime(deliveryTimeComponent);
+      setItemBestComponentProvider(bestComponentProvider);
     }
   };
 
 
   console.log(purchase);
 
-  const updatePurchaseItem = (
-    guidIdComponent, 
-    purchaseItemPrice, 
-    bestComponentProvider, 
-    deliveryTimeComponent
-  ) => {
-    const newPurchaseItem = {
-        guidIdPurchase: purchase[0].guidIdPurchase,
-        purchaseId: purchase[0].purchaseId,
-        purchaseName: purchase[0].purchaseName,
-        purchasePrice: purchase[0].purchasePrice,
-        purchaseCostomer: purchase[0].purchaseCostomer,
-        purchaseItem: purchase[0].purchaseItem.map((i) => ({
-              guidIdPurchase: i.guidIdPurchase,
-              guidIdComponent: i.guidIdComponent,
-              vendorCodeComponent: i.vendorCodeComponent,
-              nameComponent: i.nameComponent,
-              requiredQuantityItem: i.requiredQuantityItem,
-              purchaseItemPrice: guidIdComponent === i.guidIdComponent? purchaseItemPrice : i.purchaseItemPrice,
-              bestComponentProvider: guidIdComponent === i.guidIdComponent? bestComponentProvider : i.bestComponentProvider,
-              deliveryTimeComponent: guidIdComponent === i.guidIdComponent? deliveryTimeComponent : i.deliveryTimeComponent,
-              otherOffers: i.otherOffers.map((x) => ({
-                  guidIdComponent: x.guidIdComponent,
-                  purchaseItemPrice: x.purchaseItemPrice,
-                  bestComponentProvider: x.bestComponentProvider,
-                  deliveryTimeComponent: x.deliveryTimeComponent
-            }))
-        }))
-    };
+  // Перезаписываем данные закупки при изменении данных
+  useEffect(()=>{
+          const newPurchaseItem = [{
+              guidIdPurchase: purchase[0].guidIdPurchase,
+              purchaseId: purchase[0].purchaseId,
+              purchaseName: purchase[0].purchaseName,
+              purchasePrice: purchase[0].purchasePrice,
+              purchaseCostomer: purchase[0].purchaseCostomer,
+              purchaseItem: purchase[0].purchaseItem.map((i, count) => ({
+                    guidIdPurchase: i.guidIdPurchase,
+                    guidIdComponent: i.guidIdComponent,
+                    vendorCodeComponent: i.vendorCodeComponent,
+                    nameComponent: i.nameComponent,
+                    requiredQuantityItem: count === index? localQuantity : i.requiredQuantityItem,
+                    purchaseItemPrice: count === index? itemPrice : i.purchaseItemPrice,
+                    bestComponentProvider: count === index? itemBestComponentProvider : i.bestComponentProvider,
+                    deliveryTimeComponent: count === index? itemDeliveryTime : i.deliveryTimeComponent,
+                    otherOffers: i.otherOffers.map((x) => ({
+                        guidIdComponent: x.guidIdComponent,
+                        purchaseItemPrice: x.purchaseItemPrice,
+                        bestComponentProvider: x.bestComponentProvider,
+                        deliveryTimeComponent: x.deliveryTimeComponent
+                  }))
+              }))
+          }];
 
     setPurchase(newPurchaseItem);
 
     console.log("newPurchaseItem",newPurchaseItem); // Optional: log or do something with it
-  };
-
+  }, [localQuantity, itemPrice, itemBestComponentProvider])
 
   return (
     <>
