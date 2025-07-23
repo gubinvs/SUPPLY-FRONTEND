@@ -134,7 +134,7 @@ const AddItemPurchase = (
                                 className="form-control aip-block__input" 
                                 type="text" 
                                 placeholder="Добавить номенклатуру" 
-                                aria-label="default input example" 
+                                aria-label="default" 
                                 value={searchTerm}
                                 onChange={(e) => {
                                 setSearchTerm(e.target.value);

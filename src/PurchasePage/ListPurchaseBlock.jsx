@@ -8,7 +8,10 @@ const ListPurchaseBlock = (
 ) => {
     const [search, setSearch] = useState('');
     const [checkedPurchaseId, setCheckedPurchaseId] = useState(null);
+    // Состояние редактирования наименования закупки
     const [editPurchaseName, setEditPurchaseName] = useState([]);
+    // Данные о idНаименованиях закупки
+    const [mapPurchaseId, setMapPurchaseId] = useState([]);
 
     useEffect(() => {
         // Инициализируем массив значениями false, если он ещё не инициализирован
@@ -124,6 +127,7 @@ const ListPurchaseBlock = (
                                     {/* Название закупки */}
                                     {editPurchaseName[index] ? 
                                         <input 
+                                            className="lp-item__purchase-id lp-item__purchase-id_input"
                                             type="text" 
                                             value={item.purchaseId}
                                         />
@@ -132,6 +136,7 @@ const ListPurchaseBlock = (
                                     }
                                     {editPurchaseName[index] ? 
                                         <input 
+                                            className="lp-item__purchase-name lp-item__purchase-name_input"
                                             type="text" 
                                             value={item.purchaseName}
                                         />
@@ -143,6 +148,7 @@ const ListPurchaseBlock = (
                                     </div>
                                     {editPurchaseName[index] ? 
                                         <input 
+                                            className="lp-item__purchase-name-costomer lp-item__purchase-name-costomer_input"
                                             type="text" 
                                             value={item.purchaseCostomer}
                                         />

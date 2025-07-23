@@ -76,3 +76,16 @@
     height: 20px;
     cursor: pointer;
 }
+
+.lp-item__purchase-id_input,
+.lp-item__purchase-name_input,
+.lp-item__purchase-name-costomer_input {
+    border: 0px;
+    margin-right: 4px;
+}
+
+.lp-item__purchase-id_input:focus,
+.lp-item__purchase-name_input:focus,
+.lp-item__purchase-name-costomer_input:focus {
+    outline: none;
+}
