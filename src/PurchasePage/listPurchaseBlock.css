@@ -25,7 +25,7 @@
 .list-purchase__item {
     display: flex;
     border-radius: 4px;
-    padding: 4px 4px 4px 8px;
+    padding: 4px 10px 4px 8px;
     background-color: #E0E5F8;
     margin-bottom: 2px;
 }
@@ -62,3 +62,17 @@
     padding-left: 10px;
 }
 
+.lp-item__purchase__icon-groop {
+    display: flex;
+    padding-top: 2px;
+}
+
+.lp-item__purchase__icon-groop img:not(:last-of-type) {
+    margin-right: 10px;
+}
+
+.lp-item__purchase__icon-groop img {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}

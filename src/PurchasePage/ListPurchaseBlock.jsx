@@ -73,6 +73,12 @@ const ListPurchaseBlock = (
                                     {purchasePrice? Intl.NumberFormat("ru").format(purchasePrice):"нет данных"} р.
                                 </div>
                                 <div className="lp-item__purchase-name-costomer">{item.purchaseCostomer}</div>
+                                
+                            </div>
+                            <div className="lp-item__purchase__icon-groop">
+                                <img className="lpip-icon-groop__edit" src="../images/edit-icon.svg" alt="Иконка редактировать" />
+                                <img className="lpip-icon-groop__share" src="../images/share-icon.svg" alt="Иконка поделиться" />
+                                <img className="lpip-icon-groop__save" src="../images/save-icon.svg" alt="Иконка сохранить изменения" />
                             </div>
                         </li>
                     ))}
