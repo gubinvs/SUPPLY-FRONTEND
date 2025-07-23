@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "./listPurchaseBlock.css";
+import ApiUrl from "../js/ApiUrl";
 import ListPurchaseComponent from "./ListPurchaseComponent.jsx";
 
 const ListPurchaseBlock = (
@@ -7,6 +8,8 @@ const ListPurchaseBlock = (
 ) => {
     const [search, setSearch] = useState('');
     const [checkedPurchaseId, setCheckedPurchaseId] = useState(null);
+    // Достаем guidIdCollaborator
+    const guidIdCollaborator = localStorage.getItem("guidIdCollaborator");
     // Общая стоимость закупки
     const [purchasePrice, setPurchasePrice] = useState(
         Array.isArray(purchase) && purchase.length > 0 && purchase[0].purchasePrice
@@ -27,6 +30,48 @@ const ListPurchaseBlock = (
             purchase[0].purchasePrice = purchasePrice;
         }
     }, [purchasePrice, purchase]);
+
+
+    // Запрос на схранение данных о составе номенклатуры в закупке в базе данных
+    const requestAddItemPurchaseData = () => {
+       const i = purchase[0]; // первый объект
+
+        const requestData = {
+            guidIdCollaborator: guidIdCollaborator,
+            guidIdPurchase: i.guidIdPurchase,
+            purchaseId: i.purchaseId,
+            purchaseName: i.purchaseName,
+            purchasePrice: i.purchasePrice,
+            purchaseCostomer: i.purchaseCostomer,
+            purchaseItem: i.purchaseItem.map(x => ({
+                guidIdComponent: x.guidIdComponent,
+                vendorCodeComponent: x.vendorCodeComponent,
+                nameComponent: x.nameComponent,
+                requiredQuantityItem: x.requiredQuantityItem,
+                purchaseItemPrice: x.purchaseItemPrice,
+                bestComponentProvider: x.bestComponentProvider,
+                deliveryTimeComponent: x.deliveryTimeComponent
+            }))
+        };
+
+        const jsonData = JSON.stringify(requestData)
+
+
+        fetch(ApiUrl + "/api/SaveSupplyPurchase", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: jsonData
+        })
+        .then((response) => {
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            alert("Данные успешно записаны!");
+            return response.json();
+        })
+        .catch((error) => {
+            console.error("Ошибка при отправке данных:", error);
+            alert("Ошибка при сохранении данных!");
+        });
+    };
 
 
     return (
@@ -78,7 +123,12 @@ const ListPurchaseBlock = (
                             <div className="lp-item__purchase__icon-groop">
                                 <img className="lpip-icon-groop__edit" src="../images/edit-icon.svg" alt="Иконка редактировать" />
                                 <img className="lpip-icon-groop__share" src="../images/share-icon.svg" alt="Иконка поделиться" />
-                                <img className="lpip-icon-groop__save" src="../images/save-icon.svg" alt="Иконка сохранить изменения" />
+                                <img 
+                                    className="lpip-icon-groop__save" 
+                                    src="../images/save-icon.svg" 
+                                    alt="Иконка сохранить изменения" 
+                                    onClick={()=> requestAddItemPurchaseData()}
+                                />
                             </div>
                         </li>
                     ))}
@@ -92,6 +142,7 @@ const ListPurchaseBlock = (
                         setPurchase={setPurchase}
                         purchasePrice={purchasePrice}
                         setPurchasePrice={setPurchasePrice}
+                        requestAddItemPurchaseData={requestAddItemPurchaseData}
                     />
                 )}
             </div>

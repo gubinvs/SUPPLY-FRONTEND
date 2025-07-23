@@ -23,24 +23,29 @@
 
 .add-item-purchase__result-search_close {
     position: absolute;
-    display: flex;  
+    display: flex;
     align-items: center;
     justify-content: center;
     top: 12px;
-    border-top-right-radius: 4px;
-    border-top-left-radius: 4px;
+    border-top-right-radius: 14px;
+    border-top-left-radius: 14px;
     border-top: 1px solid #FAC855;
     border-left: 1px solid #FAC855;
     border-right: 1px solid #FAC855;
     right: 0px;
-    width: 400px;
-    height: 59px;
+    width: 80px;
+    height: 60px;
     font-size: 22px;
     background-color: #F5F6FA;
     cursor: pointer;
     color: red;
     z-index: 1;
 }
+
+.add-item-purchase__result-search_close img {
+    width: 40px;
+    height: 40px;
+} 
 
 .add-item-purchase__result-search {
     position: absolute;

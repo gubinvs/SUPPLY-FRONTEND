@@ -35,50 +35,46 @@ const LpsTableItemEdit = ({
     // Сохраняем предыдущую сумму строки, чтобы сравнивать и менять purchasePrice
     const prevSumPriceItemRef = useRef(quantity * purchaseItemPrice);
 
-  // Обновляем сумму и общую закупочную стоимость при изменении количества или цены
-  useEffect(() => {
-    const newSum = localQuantity * itemPrice;
+    // Обновляем сумму и общую закупочную стоимость при изменении количества или цены
+    useEffect(() => {
+      const newSum = localQuantity * itemPrice;
 
-    if (prevSumPriceItemRef.current !== undefined) {
-      const diff = newSum - prevSumPriceItemRef.current;
-      setPurchasePrice(prev => prev + diff);
-    }
+      if (prevSumPriceItemRef.current !== undefined) {
+        const diff = newSum - prevSumPriceItemRef.current;
+        setPurchasePrice(prev => prev + diff);
+      }
 
-    setSumPriceItem(newSum);
-    prevSumPriceItemRef.current = newSum;
-  }, [localQuantity, itemPrice]);
+      setSumPriceItem(newSum);
+      prevSumPriceItemRef.current = newSum;
+    }, [localQuantity, itemPrice]);
 
-  // Обновляем локальное количество при внешнем изменении
-  useEffect(() => {
-    setLocalQuantity(quantity);
-  }, [quantity]);
+    // Обновляем локальное количество при внешнем изменении
+    useEffect(() => {
+      setLocalQuantity(quantity);
+    }, [quantity]);
 
-  // Обработчик изменения количества
-  const handleQuantityChange = (newValue) => {
-    const parsedValue = parseFloat(newValue) || 0;
-    setLocalQuantity(parsedValue);
-    onQuantityChange(index, parsedValue);
-  };
+    // Обработчик изменения количества
+    const handleQuantityChange = (newValue) => {
+      const parsedValue = parseFloat(newValue) || 0;
+      setLocalQuantity(parsedValue);
+      onQuantityChange(index, parsedValue);
+    };
 
-  // Обработчик изменения поставщика
-  const handleProviderChange = (selectedProvider) => {
-    const selected = otherOffers.find(i => i.bestComponentProvider === selectedProvider);
-    
-    console.log("selected", selected)
+    // Обработчик изменения поставщика
+    const handleProviderChange = (selectedProvider) => {
+      const selected = otherOffers.find(i => i.bestComponentProvider === selectedProvider);
 
-    if (selected) {
-      setItemPrice(selected.purchaseItemPrice);
-      setItemDeliveryTime(selected.deliveryTimeComponent);
-      setItemBestComponentProvider(selected.bestComponentProvider);
-    } else {
-      setItemPrice(purchaseItemPrice);
-      setItemDeliveryTime(deliveryTimeComponent);
-      setItemBestComponentProvider(bestComponentProvider);
-    }
-  };
+      if (selected) {
+        setItemPrice(selected.purchaseItemPrice);
+        setItemDeliveryTime(selected.deliveryTimeComponent);
+        setItemBestComponentProvider(selected.bestComponentProvider);
+      } else {
+        setItemPrice(purchaseItemPrice);
+        setItemDeliveryTime(deliveryTimeComponent);
+        setItemBestComponentProvider(bestComponentProvider);
+      }
+    };
 
-
-  console.log(purchase);
 
   // Перезаписываем данные закупки при изменении данных
   useEffect(()=>{
