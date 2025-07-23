@@ -8,8 +8,16 @@ const ListPurchaseBlock = (
 ) => {
     const [search, setSearch] = useState('');
     const [checkedPurchaseId, setCheckedPurchaseId] = useState(null);
+
     // Состояние редактирования наименования закупки
     const [editPurchaseName, setEditPurchaseName] = useState([]);
+     useEffect(() => {
+        // Инициализируем массив значениями false, если он ещё не инициализирован
+        if (purchase.length > 0 && editPurchaseName.length !== purchase.length) {
+            setEditPurchaseName(new Array(purchase.length).fill(false));
+        }
+    }, [purchase]); // сработает при изменении purchase
+
     // Данные о idНаименованиях закупки
     const [mapPurchaseId, setMapPurchaseId] = useState([]);
     useEffect(() => {
@@ -22,12 +30,32 @@ const ListPurchaseBlock = (
         }
     }, [purchase]); // вызывается только при изменении purchase
 
+    // Обновляем описание закупки
+    const [mapPurchaseName, setMapPurchaseName] = useState([]);
     useEffect(() => {
-        // Инициализируем массив значениями false, если он ещё не инициализирован
-        if (purchase.length > 0 && editPurchaseName.length !== purchase.length) {
-            setEditPurchaseName(new Array(purchase.length).fill(false));
+        if (purchase.length > 0) {
+            const newMap = [...mapPurchaseName];
+            purchase.forEach((item, index) => {
+                newMap[index] = item.purchaseName;
+            });
+            setMapPurchaseName(newMap);
         }
-    }, [purchase]); // сработает при изменении purchase
+    }, [purchase]); // вызывается только при изменении purchase
+
+
+    // Обновляем название компании заказчика закупки
+    const [mapPurchaseCostomer, setMapPurchaseCostomer] = useState([]);
+    useEffect(() => {
+        if (purchase.length > 0) {
+            const newMap = [...mapPurchaseCostomer];
+            purchase.forEach((item, index) => {
+                newMap[index] = item.purchaseCostomer;
+            });
+            setMapPurchaseCostomer(newMap);
+        }
+    }, [purchase]); // вызывается только при изменении purchase
+
+
 
     // Достаем guidIdCollaborator
     const guidIdCollaborator = localStorage.getItem("guidIdCollaborator");
@@ -153,7 +181,12 @@ const ListPurchaseBlock = (
                                         <input 
                                             className="lp-item__purchase-name lp-item__purchase-name_input"
                                             type="text" 
-                                            value={item.purchaseName}
+                                            value={mapPurchaseName[index] || ""}
+                                            onChange={(e) => {
+                                                const newMap = [...mapPurchaseName];
+                                                newMap[index] = e.target.value;
+                                                setMapPurchaseName(newMap);
+                                            }}
                                         />
                                         : 
                                         <div className="lp-item__purchase-name">{item.purchaseName}</div>
@@ -165,7 +198,12 @@ const ListPurchaseBlock = (
                                         <input 
                                             className="lp-item__purchase-name-costomer lp-item__purchase-name-costomer_input"
                                             type="text" 
-                                            value={item.purchaseCostomer}
+                                            value={mapPurchaseCostomer[index] || ""}
+                                            onChange={(e) => {
+                                                const newMap = [...mapPurchaseCostomer];
+                                                newMap[index] = e.target.value;
+                                                setMapPurchaseCostomer(newMap);
+                                            }}
                                         />
                                         : 
                                         <div className="lp-item__purchase-name-costomer">{item.purchaseCostomer}</div>
