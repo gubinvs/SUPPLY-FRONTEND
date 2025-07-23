@@ -42,7 +42,6 @@ const ListPurchaseBlock = (
         }
     }, [purchase]); // вызывается только при изменении purchase
 
-
     // Обновляем название компании заказчика закупки
     const [mapPurchaseCostomer, setMapPurchaseCostomer] = useState([]);
     useEffect(() => {
@@ -54,8 +53,6 @@ const ListPurchaseBlock = (
             setMapPurchaseCostomer(newMap);
         }
     }, [purchase]); // вызывается только при изменении purchase
-
-
 
     // Достаем guidIdCollaborator
     const guidIdCollaborator = localStorage.getItem("guidIdCollaborator");
@@ -71,7 +68,6 @@ const ListPurchaseBlock = (
             prev === purchaseId ? null : purchaseId
         );
     };
-
 
     // Обновляем цену закупки в массиве при ее изменении
     useEffect(() => {
@@ -122,6 +118,20 @@ const ListPurchaseBlock = (
         });
     };
 
+    // Запрос на изменение данных о названии закупки
+    const saveNewNamePurchase = (index) => {
+        const newNamePurchase = {
+            guidIdPurchase : purchase[0].guidIdPurchase,
+            purchaseId : mapPurchaseId[index],
+            purchaseName : mapPurchaseName[index],
+            purchasePrice : purchase[0].purchasePrice,
+            purchaseCostomer : mapPurchaseCostomer[index]
+        };
+
+       // Отправляем на api сервер для изменения данных
+       
+
+    };
 
     return (
         <>
@@ -216,11 +226,12 @@ const ListPurchaseBlock = (
                                             src="../images/save-icon.svg" 
                                             alt="Иконка сохранить изменения" 
                                             // Заменить на отправку запроса для редактирования в базе данных
-                                             onClick={() => {
-                                                    const updated = [...editPurchaseName];
-                                                    updated[index] = !updated[index]; // переключаем true/false
-                                                    setEditPurchaseName(updated);
-                                                }}
+                                            onClick={() => {
+                                                const updated = [...editPurchaseName];
+                                                updated[index] = !updated[index]; // переключаем true/false
+                                                setEditPurchaseName(updated);
+                                                saveNewNamePurchase(index);
+                                            }}
                                         />
                                     </div>
                                     :
