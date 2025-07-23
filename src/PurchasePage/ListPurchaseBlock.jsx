@@ -12,6 +12,15 @@ const ListPurchaseBlock = (
     const [editPurchaseName, setEditPurchaseName] = useState([]);
     // Данные о idНаименованиях закупки
     const [mapPurchaseId, setMapPurchaseId] = useState([]);
+    useEffect(() => {
+        if (purchase.length > 0) {
+            const newMap = [...mapPurchaseId];
+            purchase.forEach((item, index) => {
+                newMap[index] = item.purchaseId;
+            });
+            setMapPurchaseId(newMap);
+        }
+    }, [purchase]); // вызывается только при изменении purchase
 
     useEffect(() => {
         // Инициализируем массив значениями false, если он ещё не инициализирован
@@ -113,6 +122,7 @@ const ListPurchaseBlock = (
 
             <div className="list-purchase-block__list-block">
                 <ul className="list-purchase">
+                        {/* // Список доступных для просмотра закупок */}
                         {purchase.map((item, index) => (
                             <li key={item.purchaseId} className="list-purchase__item">
                                 <div className="lp-item__context-block">
@@ -129,7 +139,12 @@ const ListPurchaseBlock = (
                                         <input 
                                             className="lp-item__purchase-id lp-item__purchase-id_input"
                                             type="text" 
-                                            value={item.purchaseId}
+                                            value={mapPurchaseId[index] || ""}
+                                            onChange={(e) => {
+                                                const newMap = [...mapPurchaseId];
+                                                newMap[index] = e.target.value;
+                                                setMapPurchaseId(newMap);
+                                            }}
                                         />
                                         : 
                                         <div className="lp-item__purchase-id">{item.purchaseId}</div>
