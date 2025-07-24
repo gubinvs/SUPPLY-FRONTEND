@@ -17,8 +17,6 @@ const ListPurchaseComponent = (
     // состояни роли пользователя в системе
     const { roleUser} = useRoleId();
 
-    console.log("purchase", purchase[count])
-
 // Индексация закупок и номенклатуры
 const indexedItems = [];
 
