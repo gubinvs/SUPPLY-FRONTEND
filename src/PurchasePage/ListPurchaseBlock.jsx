@@ -119,19 +119,53 @@ const ListPurchaseBlock = (
     };
 
     // Запрос на изменение данных о названии закупки
-    const saveNewNamePurchase = (index) => {
+    const saveNewNamePurchase = async (index) => {
         const newNamePurchase = {
-            guidIdPurchase : purchase[0].guidIdPurchase,
-            purchaseId : mapPurchaseId[index],
-            purchaseName : mapPurchaseName[index],
-            purchasePrice : purchase[0].purchasePrice,
-            purchaseCostomer : mapPurchaseCostomer[index]
+            guidIdPurchase: purchase[0].guidIdPurchase,
+            purchaseId: mapPurchaseId[index],
+            purchaseName: mapPurchaseName[index],
+            purchasePrice: purchase[0].purchasePrice,
+            purchaseCostomer: mapPurchaseCostomer[index]
         };
 
-       // Отправляем на api сервер для изменения данных
-       
+        const json = JSON.stringify(newNamePurchase);
 
+        try {
+            const response = await fetch(ApiUrl + "/api/SaveNewDataPurchaseName", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: json
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                // alert(result.message || "Данные успешно сохранены!");
+
+                // 🔄 Обновляем локальное состояние purchase
+                const updatedPurchase = [...purchase];
+                updatedPurchase[index] = {
+                    ...updatedPurchase[index],
+                    purchaseId: newNamePurchase.purchaseId,
+                    purchaseName: newNamePurchase.purchaseName,
+                    purchasePrice: newNamePurchase.purchasePrice,
+                    purchaseCostomer: newNamePurchase.purchaseCostomer
+                };
+                setPurchase(updatedPurchase);
+            } else {
+                const errorText = await response.text();
+                console.error("Ошибка от API:", errorText);
+                alert("Ошибка при сохранении данных!");
+            }
+        } catch (error) {
+            console.error("Ошибка получения данных:", error);
+            alert("Ошибка при отправке запроса!");
+        }
     };
+
+
+
 
     return (
         <>
