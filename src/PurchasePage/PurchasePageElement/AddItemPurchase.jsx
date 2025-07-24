@@ -7,7 +7,13 @@ import ApiUrl from "../../js/ApiUrl";
 
 // Блок с формой выбора номенклатуры для добавления ее в закупку
 const AddItemPurchase = (
-    {components, purchase, setPurchase, requestAddItemPurchaseData}
+    {
+        count,
+        components, 
+        purchase, 
+        setPurchase, 
+        requestAddItemPurchaseData
+    }
 ) => {
 
     // Отфильтрованные данные о номенклатуре на основании соответствия введенных данных в input
@@ -17,7 +23,7 @@ const AddItemPurchase = (
     // Начинаем выдавать данные для отображения на странице только после изменения (вводе данных в форму)
     const [filteredComponents, setFilteredComponents] = useState([]);
     // Состав закупки по номенклатуре
-    const [listItem, setListItem] = useState(purchase[0].purchaseItem);
+    const [listItem, setListItem] = useState(purchase[count].purchaseItem);
 
   
     useEffect(() => {
@@ -39,8 +45,15 @@ const AddItemPurchase = (
 
     // Метод добавления номенклатуры в закупку
     const handleAddItem = (item) => {
+        const guidIdPurchase = purchase[count]?.guidIdPurchase;
+
+        if (!guidIdPurchase) {
+            console.warn('Нет guidIdPurchase у закупки', purchase[count]);
+            return;
+        }
+
         const newItem = {
-            guidIdPurchase: listItem[0].guidIdPurchase,
+            guidIdPurchase: guidIdPurchase,
             guidIdComponent: item.guidIdComponent,
             vendorCodeComponent: item.vendorCodeComponent,
             nameComponent: item.nameComponent,
@@ -48,14 +61,14 @@ const AddItemPurchase = (
             purchaseItemPrice: 0,
             bestComponentProvider: "нет данных",
             deliveryTimeComponent: "нет данных",
-            otherOffers:[]
+            otherOffers: []
         };
 
         setListItem((listItem) => [...listItem, newItem]);
 
         setPurchase((prev) =>
             prev.map((p, index) =>
-                index === 0
+                index === count
                     ? {
                         ...p,
                         purchaseItem: [...p.purchaseItem, newItem]
@@ -64,6 +77,7 @@ const AddItemPurchase = (
             )
         );
     };
+
 
     // Функция обновления цен и предложений поставщиков
     const priceUpdate = () => {

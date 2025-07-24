@@ -6,6 +6,7 @@ import AddItemPurchase from "./PurchasePageElement/AddItemPurchase.jsx";
 
 const ListPurchaseComponent = (
     { 
+        count,
         components, 
         purchase, 
         setPurchase, 
@@ -16,18 +17,23 @@ const ListPurchaseComponent = (
     // состояни роли пользователя в системе
     const { roleUser} = useRoleId();
 
-    // Индексация закупок и номенклатуры
-    const indexedItems = [];
-    (purchase ?? []).forEach((p, purchaseIndex) => {
-        (p?.purchaseItem ?? []).forEach((item, itemIndex) => {
-            indexedItems.push({
-                purchaseIndex,
-                itemIndex,
-                item,
-                purchaseId: p.purchaseId,
-            });
+    console.log("purchase", purchase[count])
+
+// Индексация закупок и номенклатуры
+const indexedItems = [];
+
+const p = purchase[count];
+if (Array.isArray(p?.purchaseItem)) {
+    p.purchaseItem.forEach((item, itemIndex) => {
+        indexedItems.push({
+            purchaseIndex: 0, // так как один объект закупки
+            itemIndex,
+            item,
+            purchaseId: p.purchaseId,
         });
     });
+}
+
 
     // Состояния checkbox'ов и количеств
     const [checkedRows, setCheckedRows] = useState({});
@@ -100,10 +106,10 @@ const ListPurchaseComponent = (
         setPurchasePrice(purchasePrice-purchasePriceItem);
     };
 
-
     return (
         <>
             <AddItemPurchase
+                count={count}
                 components={components}
                 purchase={purchase}
                 setPurchase={setPurchase}

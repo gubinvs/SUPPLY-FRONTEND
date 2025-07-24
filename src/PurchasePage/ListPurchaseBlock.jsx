@@ -183,6 +183,8 @@ const ListPurchaseBlock = (
         }
     };
 
+    console.log(components);
+
     return (
         <>
             <div className="list-purchase-block__form-block">
@@ -315,16 +317,20 @@ const ListPurchaseBlock = (
                                 }
                             </div>
                             {/* Показываем компонент, если какая-то закупка выбрана */}
-                            {checkedPurchaseId[index] && (
-                                <ListPurchaseComponent
-                                    components={components}
-                                    purchase={purchase}
-                                    setPurchase={setPurchase}
-                                    purchasePrice={purchasePrice}
-                                    setPurchasePrice={setPurchasePrice}
-                                    requestAddItemPurchaseData={requestAddItemPurchaseData}
-                                />
-                            )}
+                            {checkedPurchaseId[index]? 
+                                <>
+                                    <ListPurchaseComponent
+                                        count={index}
+                                        components={components}
+                                        purchase={purchase}
+                                        setPurchase={setPurchase}
+                                        purchasePrice={purchasePrice}
+                                        setPurchasePrice={setPurchasePrice}
+                                        requestAddItemPurchaseData={requestAddItemPurchaseData}
+                                    />
+                                </>
+                                :""
+                            }
                         </li>
                     ))}
                 </ul>
