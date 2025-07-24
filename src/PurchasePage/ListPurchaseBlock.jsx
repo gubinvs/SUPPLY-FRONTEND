@@ -292,7 +292,7 @@ const ListPurchaseBlock = (
                                                 className="lpip-icon-groop__save" 
                                                 src="../images/delete-icon.svg" 
                                                 alt="Иконка удалить закупку" 
-                                                
+                                              
                                             />
                                     </div>
                                 }
