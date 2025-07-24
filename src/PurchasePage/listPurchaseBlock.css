@@ -23,11 +23,14 @@
 }
 
 .list-purchase__item {
-    display: flex;
     border-radius: 4px;
     padding: 4px 10px 4px 8px;
     background-color: #E0E5F8;
     margin-bottom: 2px;
+}
+
+.list-purchase__item_title {
+    display: flex;
 }
 
 .lp-item__purchase-id,

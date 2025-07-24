@@ -4,14 +4,44 @@ import ApiUrl from "../js/ApiUrl";
 import ListPurchaseComponent from "./ListPurchaseComponent.jsx";
 
 const ListPurchaseBlock = (
-    { components, createPurchase, setCreatePurchase, purchase, setPurchase}
+    { components, createPurchase, setCreatePurchase, purchase, setPurchase }
 ) => {
     const [search, setSearch] = useState('');
-    const [checkedPurchaseId, setCheckedPurchaseId] = useState(null);
+
+    // Достаем guidIdCollaborator
+    const guidIdCollaborator = localStorage.getItem("guidIdCollaborator");
+
+    // Состояние выбранных чекбоксов (по индексам)
+    const [checkedPurchaseId, setCheckedPurchaseId] = useState([]);
+
+    // Инициализация массива checkedPurchaseId при изменении списка закупок
+    useEffect(() => {
+        if (purchase.length > 0 && checkedPurchaseId.length !== purchase.length) {
+            setCheckedPurchaseId(new Array(purchase.length).fill(false));
+        }
+    }, [purchase]);
+
+    // Сброс чекбокса по индексу
+    const handleResetCheck = (index) => {
+        setCheckedPurchaseId((prev) => {
+            const updated = [...prev];
+            updated[index] = false;
+            return updated;
+        });
+    };
+
+    // Переключение чекбокса
+    const handleCheck = (index) => {
+        setCheckedPurchaseId((prev) => {
+            const updated = [...prev];
+            updated[index] = !updated[index];
+            return updated;
+        });
+    };
 
     // Состояние редактирования наименования закупки
     const [editPurchaseName, setEditPurchaseName] = useState([]);
-     useEffect(() => {
+    useEffect(() => {
         // Инициализируем массив значениями false, если он ещё не инициализирован
         if (purchase.length > 0 && editPurchaseName.length !== purchase.length) {
             setEditPurchaseName(new Array(purchase.length).fill(false));
@@ -54,20 +84,12 @@ const ListPurchaseBlock = (
         }
     }, [purchase]); // вызывается только при изменении purchase
 
-    // Достаем guidIdCollaborator
-    const guidIdCollaborator = localStorage.getItem("guidIdCollaborator");
     // Общая стоимость закупки
     const [purchasePrice, setPurchasePrice] = useState(
         Array.isArray(purchase) && purchase.length > 0 && purchase[0].purchasePrice
             ? purchase[0].purchasePrice
             : 0
-        );
-
-    const handleCheck = (purchaseId) => {
-        setCheckedPurchaseId(prev =>
-            prev === purchaseId ? null : purchaseId
-        );
-    };
+    );
 
     // Обновляем цену закупки в массиве при ее изменении
     useEffect(() => {
@@ -76,10 +98,9 @@ const ListPurchaseBlock = (
         }
     }, [purchasePrice, purchase]);
 
-
     // Запрос на схранение данных о составе номенклатуры в закупке в базе данных
     const requestAddItemPurchaseData = () => {
-       const i = purchase[0]; // первый объект
+        const i = purchase[0]; // первый объект
 
         const requestData = {
             guidIdCollaborator: guidIdCollaborator,
@@ -101,21 +122,20 @@ const ListPurchaseBlock = (
 
         const jsonData = JSON.stringify(requestData)
 
-
         fetch(ApiUrl + "/api/SaveSupplyPurchase", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: jsonData
         })
-        .then((response) => {
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-            alert("Данные успешно записаны!");
-            return response.json();
-        })
-        .catch((error) => {
-            console.error("Ошибка при отправке данных:", error);
-            alert("Ошибка при сохранении данных!");
-        });
+            .then((response) => {
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                alert("Данные успешно записаны!");
+                return response.json();
+            })
+            .catch((error) => {
+                console.error("Ошибка при отправке данных:", error);
+                alert("Ошибка при сохранении данных!");
+            });
     };
 
     // Запрос на изменение данных о названии закупки
@@ -141,7 +161,6 @@ const ListPurchaseBlock = (
 
             if (response.ok) {
                 const result = await response.json();
-                // alert(result.message || "Данные успешно сохранены!");
 
                 // 🔄 Обновляем локальное состояние purchase
                 const updatedPurchase = [...purchase];
@@ -163,9 +182,6 @@ const ListPurchaseBlock = (
             alert("Ошибка при отправке запроса!");
         }
     };
-
-
-
 
     return (
         <>
@@ -194,23 +210,24 @@ const ListPurchaseBlock = (
 
             <div className="list-purchase-block__list-block">
                 <ul className="list-purchase">
-                        {/* // Список доступных для просмотра закупок */}
-                        {purchase.map((item, index) => (
-                            <li key={item.purchaseId} className="list-purchase__item">
+                    {/* // Список доступных для просмотра закупок */}
+                    {purchase.map((item, index) => (
+                        <li key={item.purchaseId} className="list-purchase__item">
+                            <div className="list-purchase__item_title">
                                 <div className="lp-item__context-block">
                                     <div className="lp-item__check">
-                                    <input
-                                        type="checkbox"
-                                        className="form-check-input"
-                                        checked={checkedPurchaseId === item.purchaseId}
-                                        onChange={() => handleCheck(item.purchaseId)}
-                                    />
+                                        <input
+                                            type="checkbox"
+                                            className="form-check-input"
+                                            checked={checkedPurchaseId[index] || false}
+                                            onChange={() => handleCheck(index)}
+                                        />
                                     </div>
                                     {/* Название закупки */}
-                                    {editPurchaseName[index] ? 
-                                        <input 
+                                    {editPurchaseName[index] ?
+                                        <input
                                             className="lp-item__purchase-id lp-item__purchase-id_input"
-                                            type="text" 
+                                            type="text"
                                             value={mapPurchaseId[index] || ""}
                                             onChange={(e) => {
                                                 const newMap = [...mapPurchaseId];
@@ -218,13 +235,13 @@ const ListPurchaseBlock = (
                                                 setMapPurchaseId(newMap);
                                             }}
                                         />
-                                        : 
+                                        :
                                         <div className="lp-item__purchase-id">{item.purchaseId}</div>
                                     }
-                                    {editPurchaseName[index] ? 
-                                        <input 
+                                    {editPurchaseName[index] ?
+                                        <input
                                             className="lp-item__purchase-name lp-item__purchase-name_input"
-                                            type="text" 
+                                            type="text"
                                             value={mapPurchaseName[index] || ""}
                                             onChange={(e) => {
                                                 const newMap = [...mapPurchaseName];
@@ -232,16 +249,16 @@ const ListPurchaseBlock = (
                                                 setMapPurchaseName(newMap);
                                             }}
                                         />
-                                        : 
+                                        :
                                         <div className="lp-item__purchase-name">{item.purchaseName}</div>
                                     }
                                     <div className="lp-item__purchase-price">
                                         {purchasePrice ? Intl.NumberFormat("ru").format(purchasePrice) : "нет данных"} р.
                                     </div>
-                                    {editPurchaseName[index] ? 
-                                        <input 
+                                    {editPurchaseName[index] ?
+                                        <input
                                             className="lp-item__purchase-name-costomer lp-item__purchase-name-costomer_input"
-                                            type="text" 
+                                            type="text"
                                             value={mapPurchaseCostomer[index] || ""}
                                             onChange={(e) => {
                                                 const newMap = [...mapPurchaseCostomer];
@@ -249,20 +266,21 @@ const ListPurchaseBlock = (
                                                 setMapPurchaseCostomer(newMap);
                                             }}
                                         />
-                                        : 
+                                        :
                                         <div className="lp-item__purchase-name-costomer">{item.purchaseCostomer}</div>
-                                    }    
+                                    }
                                 </div>
-                                {editPurchaseName[index] ? 
+
+                                {editPurchaseName[index] ?
                                     <div className="lp-item__purchase__icon-groop">
-                                        <img 
-                                            className="lpip-icon-groop__save" 
-                                            src="../images/save-icon.svg" 
-                                            alt="Иконка сохранить изменения" 
+                                        <img
+                                            className="lpip-icon-groop__save"
+                                            src="../images/save-icon.svg"
+                                            alt="Иконка сохранить изменения"
                                             // Заменить на отправку запроса для редактирования в базе данных
                                             onClick={() => {
                                                 const updated = [...editPurchaseName];
-                                                updated[index] = !updated[index]; // переключаем true/false
+                                                updated[index] = false;
                                                 setEditPurchaseName(updated);
                                                 saveNewNamePurchase(index);
                                             }}
@@ -270,47 +288,46 @@ const ListPurchaseBlock = (
                                     </div>
                                     :
                                     <div className="lp-item__purchase__icon-groop">
-                                            <img 
-                                                key={index}
-                                                className="lpip-icon-groop__edit"
-                                                src="../images/edit-icon.svg"
-                                                alt="Иконка редактировать"
-                                                onClick={() => {
-                                                    const updated = [...editPurchaseName];
-                                                    updated[index] = !updated[index]; // переключаем true/false
-                                                    setEditPurchaseName(updated);
-                                                }}
-                                            />
-                                            <img className="lpip-icon-groop__share" src="../images/share-icon.svg" alt="Иконка поделиться" />
-                                            <img 
-                                                className="lpip-icon-groop__save" 
-                                                src="../images/save-icon.svg" 
-                                                alt="Иконка сохранить изменения" 
-                                                onClick={() => requestAddItemPurchaseData()}
-                                            />
-                                            <img 
-                                                className="lpip-icon-groop__save" 
-                                                src="../images/delete-icon.svg" 
-                                                alt="Иконка удалить закупку" 
-                                              
-                                            />
+                                        <img
+                                            key={index}
+                                            className="lpip-icon-groop__edit"
+                                            src="../images/edit-icon.svg"
+                                            alt="Иконка редактировать"
+                                            onClick={() => {
+                                                const updated = [...editPurchaseName];
+                                                updated[index] = true;
+                                                setEditPurchaseName(updated);
+                                            }}
+                                        />
+                                        <img className="lpip-icon-groop__share" src="../images/share-icon.svg" alt="Иконка поделиться" />
+                                        <img
+                                            className="lpip-icon-groop__save"
+                                            src="../images/save-icon.svg"
+                                            alt="Иконка сохранить изменения"
+                                            onClick={() => requestAddItemPurchaseData()}
+                                        />
+                                        <img
+                                            className="lpip-icon-groop__save"
+                                            src="../images/delete-icon.svg"
+                                            alt="Иконка удалить закупку"
+                                        />
                                     </div>
                                 }
-                            </li>
-                        ))}
+                            </div>
+                            {/* Показываем компонент, если какая-то закупка выбрана */}
+                            {checkedPurchaseId[index] && (
+                                <ListPurchaseComponent
+                                    components={components}
+                                    purchase={purchase}
+                                    setPurchase={setPurchase}
+                                    purchasePrice={purchasePrice}
+                                    setPurchasePrice={setPurchasePrice}
+                                    requestAddItemPurchaseData={requestAddItemPurchaseData}
+                                />
+                            )}
+                        </li>
+                    ))}
                 </ul>
-
-                {/* Показываем компонент, если какая-то закупка выбрана */}
-                {checkedPurchaseId !== null && (
-                    <ListPurchaseComponent 
-                        components={components}
-                        purchase={purchase} 
-                        setPurchase={setPurchase}
-                        purchasePrice={purchasePrice}
-                        setPurchasePrice={setPurchasePrice}
-                        requestAddItemPurchaseData={requestAddItemPurchaseData}
-                    />
-                )}
             </div>
         </>
     );
