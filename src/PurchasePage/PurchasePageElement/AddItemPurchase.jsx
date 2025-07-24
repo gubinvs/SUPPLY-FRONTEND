@@ -11,8 +11,7 @@ const AddItemPurchase = (
         count,
         components, 
         purchase, 
-        setPurchase, 
-        requestAddItemPurchaseData
+        setPurchase
     }
 ) => {
 
@@ -167,7 +166,7 @@ const AddItemPurchase = (
                     <div className="add-item-purchase__result-search">
                         <ul className="aip-result-search__list">
                             {filteredComponents.map((item, index) => {
-                                const isAlreadyInPurchase = purchase[0]?.purchaseItem?.some(p => p.guidIdComponent === item.guidIdComponent);
+                                const isAlreadyInPurchase = purchase[count]?.purchaseItem?.some(p => p.guidIdComponent === item.guidIdComponent);
                                
                                 return (
                                     <li key={index} className="aip-result-search__item">

@@ -99,8 +99,8 @@ const ListPurchaseBlock = (
     }, [purchasePrice, purchase]);
 
     // Запрос на схранение данных о составе номенклатуры в закупке в базе данных
-    const requestAddItemPurchaseData = () => {
-        const i = purchase[0]; // первый объект
+    const requestAddItemPurchaseData = (index) => {
+        const i = purchase[index]; // первый объект
 
         const requestData = {
             guidIdCollaborator: guidIdCollaborator,
@@ -306,7 +306,7 @@ const ListPurchaseBlock = (
                                             className="lpip-icon-groop__save"
                                             src="../images/save-icon.svg"
                                             alt="Иконка сохранить изменения"
-                                            onClick={() => requestAddItemPurchaseData()}
+                                            onClick={() => requestAddItemPurchaseData(index)}
                                         />
                                         <img
                                             className="lpip-icon-groop__save"

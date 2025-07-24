@@ -11,8 +11,8 @@ const ListPurchaseComponent = (
         purchase, 
         setPurchase, 
         purchasePrice, 
-        setPurchasePrice, 
-        requestAddItemPurchaseData }
+        setPurchasePrice
+    }
 ) => {
     // состояни роли пользователя в системе
     const { roleUser} = useRoleId();
@@ -113,7 +113,7 @@ if (Array.isArray(p?.purchaseItem)) {
                 components={components}
                 purchase={purchase}
                 setPurchase={setPurchase}
-                requestAddItemPurchaseData={requestAddItemPurchaseData}
+        
             />
             <table className="table list-purchase-component__table">
                 <thead className="table-borderless__theder">
