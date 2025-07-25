@@ -138,7 +138,7 @@ const ListPurchaseBlock = (
 
             <div className="list-purchase-block__list-block">
                 <ul className="list-purchase">
-                    {purchase.map((item, index) => (
+                    {purchase.slice().reverse().map((item, index) => (
                         <li key={item.purchaseId} className="list-purchase__item">
                             <div className="list-purchase__item_title">
                                 <div className="lp-item__context-block">
