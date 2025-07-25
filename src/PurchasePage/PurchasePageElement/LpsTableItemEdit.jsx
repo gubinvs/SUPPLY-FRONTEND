@@ -21,6 +21,7 @@ const LpsTableItemEdit = ({
 
     // Получаем роль пользователя
     const { roleUser } = useRoleId();
+    const countItem = count;
 
 
     // Локальное состояние количества, цены и поставщика
@@ -80,12 +81,12 @@ const LpsTableItemEdit = ({
   // Перезаписываем данные закупки при изменении данных
   useEffect(()=>{
           const newPurchaseItem = [{
-              guidIdPurchase: purchase[count].guidIdPurchase,
-              purchaseId: purchase[count].purchaseId,
-              purchaseName: purchase[count].purchaseName,
-              purchasePrice: purchase[count].purchasePrice,
-              purchaseCostomer: purchase[count].purchaseCostomer,
-              purchaseItem: purchase[count].purchaseItem.map((i, count) => ({
+              guidIdPurchase: purchase[countItem].guidIdPurchase,
+              purchaseId: purchase[countItem].purchaseId,
+              purchaseName: purchase[countItem].purchaseName,
+              purchasePrice: purchase[countItem].purchasePrice,
+              purchaseCostomer: purchase[countItem].purchaseCostomer,
+              purchaseItem: purchase[countItem].purchaseItem.map((i, count) => ({
                     guidIdPurchase: i.guidIdPurchase,
                     guidIdComponent: i.guidIdComponent,
                     vendorCodeComponent: i.vendorCodeComponent,

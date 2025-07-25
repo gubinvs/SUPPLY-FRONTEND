@@ -147,22 +147,22 @@ const ListPurchaseComponent = (
                                 </td>
 
                                 {isChecked ? (
-                                    // <LpsTableItemEdit
-                                    //     count={count}
-                                    //     index={index}
-                                    //     quantity={quantity}
-                                    //     setPurchasePrice={setPurchasePrice}
-                                    //     vendorCodeComponent={item.vendorCodeComponent}
-                                    //     nameComponent={item.nameComponent}
-                                    //     purchaseItemPrice={item.purchaseItemPrice}
-                                    //     bestComponentProvider={item.bestComponentProvider}
-                                    //     deliveryTimeComponent={item.deliveryTimeComponent}
-                                    //     purchase={purchase} 
-                                    //     setPurchase={setPurchase}
-                                    //     otherOffers={item.otherOffers}
-                                    //     onQuantityChange={handleQuantityChange}
-                                    // />
-                                    ""
+                                    <LpsTableItemEdit
+                                        count={count}
+                                        index={index}
+                                        quantity={quantity}
+                                        setPurchasePrice={setPurchasePrice}
+                                        vendorCodeComponent={item.vendorCodeComponent}
+                                        nameComponent={item.nameComponent}
+                                        purchaseItemPrice={item.purchaseItemPrice}
+                                        bestComponentProvider={item.bestComponentProvider}
+                                        deliveryTimeComponent={item.deliveryTimeComponent}
+                                        purchase={purchase} 
+                                        setPurchase={setPurchase}
+                                        otherOffers={item.otherOffers}
+                                        onQuantityChange={handleQuantityChange}
+                                    />
+                                    
                                 ) : (
                                     <>
                                         <td>{item.vendorCodeComponent}</td>
