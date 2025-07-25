@@ -17,20 +17,22 @@ const ListPurchaseComponent = (
     // состояни роли пользователя в системе
     const { roleUser} = useRoleId();
 
-// Индексация закупок и номенклатуры
-const indexedItems = [];
+    // Индексация закупок и номенклатуры
+    const indexedItems = [];
 
-const p = purchase[count];
-if (Array.isArray(p?.purchaseItem)) {
-    p.purchaseItem.forEach((item, itemIndex) => {
-        indexedItems.push({
-            purchaseIndex: 0, // так как один объект закупки
-            itemIndex,
-            item,
-            purchaseId: p.purchaseId,
+    const countItem = count;
+
+    const p = purchase[count];
+    if (Array.isArray(p?.purchaseItem)) {
+        p.purchaseItem.forEach((item, itemIndex) => {
+            indexedItems.push({
+                purchaseIndex: countItem, // так как один объект закупки
+                itemIndex,
+                item,
+                purchaseId: p.purchaseId,
+            });
         });
-    });
-}
+    }
 
 
     // Состояния checkbox'ов и количеств
@@ -111,7 +113,6 @@ if (Array.isArray(p?.purchaseItem)) {
                 components={components}
                 purchase={purchase}
                 setPurchase={setPurchase}
-        
             />
             <table className="table list-purchase-component__table">
                 <thead className="table-borderless__theder">
@@ -146,20 +147,22 @@ if (Array.isArray(p?.purchaseItem)) {
                                 </td>
 
                                 {isChecked ? (
-                                    <LpsTableItemEdit
-                                        index={index}
-                                        quantity={quantity}
-                                        setPurchasePrice={setPurchasePrice}
-                                        vendorCodeComponent={item.vendorCodeComponent}
-                                        nameComponent={item.nameComponent}
-                                        purchaseItemPrice={item.purchaseItemPrice}
-                                        bestComponentProvider={item.bestComponentProvider}
-                                        deliveryTimeComponent={item.deliveryTimeComponent}
-                                        purchase={purchase} 
-                                        setPurchase={setPurchase}
-                                        otherOffers={item.otherOffers}
-                                        onQuantityChange={handleQuantityChange}
-                                    />
+                                    // <LpsTableItemEdit
+                                    //     count={count}
+                                    //     index={index}
+                                    //     quantity={quantity}
+                                    //     setPurchasePrice={setPurchasePrice}
+                                    //     vendorCodeComponent={item.vendorCodeComponent}
+                                    //     nameComponent={item.nameComponent}
+                                    //     purchaseItemPrice={item.purchaseItemPrice}
+                                    //     bestComponentProvider={item.bestComponentProvider}
+                                    //     deliveryTimeComponent={item.deliveryTimeComponent}
+                                    //     purchase={purchase} 
+                                    //     setPurchase={setPurchase}
+                                    //     otherOffers={item.otherOffers}
+                                    //     onQuantityChange={handleQuantityChange}
+                                    // />
+                                    ""
                                 ) : (
                                     <>
                                         <td>{item.vendorCodeComponent}</td>

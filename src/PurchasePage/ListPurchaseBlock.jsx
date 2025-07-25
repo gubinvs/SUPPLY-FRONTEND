@@ -183,7 +183,6 @@ const ListPurchaseBlock = (
         }
     };
 
-    console.log(components);
 
     return (
         <>

@@ -3,6 +3,7 @@ import "./lpsTableItemEdit.css";
 import { useRoleId } from "../../js/Utilits/roleId.js";
 
 const LpsTableItemEdit = ({
+    count,
     index,
     quantity,
     setPurchasePrice,
@@ -79,12 +80,12 @@ const LpsTableItemEdit = ({
   // Перезаписываем данные закупки при изменении данных
   useEffect(()=>{
           const newPurchaseItem = [{
-              guidIdPurchase: purchase[0].guidIdPurchase,
-              purchaseId: purchase[0].purchaseId,
-              purchaseName: purchase[0].purchaseName,
-              purchasePrice: purchase[0].purchasePrice,
-              purchaseCostomer: purchase[0].purchaseCostomer,
-              purchaseItem: purchase[0].purchaseItem.map((i, count) => ({
+              guidIdPurchase: purchase[count].guidIdPurchase,
+              purchaseId: purchase[count].purchaseId,
+              purchaseName: purchase[count].purchaseName,
+              purchasePrice: purchase[count].purchasePrice,
+              purchaseCostomer: purchase[count].purchaseCostomer,
+              purchaseItem: purchase[count].purchaseItem.map((i, count) => ({
                     guidIdPurchase: i.guidIdPurchase,
                     guidIdComponent: i.guidIdComponent,
                     vendorCodeComponent: i.vendorCodeComponent,
@@ -104,7 +105,6 @@ const LpsTableItemEdit = ({
 
     setPurchase(newPurchaseItem);
 
-    console.log("newPurchaseItem",newPurchaseItem); // Optional: log or do something with it
   }, [localQuantity, itemPrice, itemBestComponentProvider])
 
   return (
