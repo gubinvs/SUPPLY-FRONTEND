@@ -79,34 +79,28 @@ const LpsTableItemEdit = ({
 
 
   // Перезаписываем данные закупки при изменении данных
-  useEffect(()=>{
-          const newPurchaseItem = [{
-              guidIdPurchase: purchase[countItem].guidIdPurchase,
-              purchaseId: purchase[countItem].purchaseId,
-              purchaseName: purchase[countItem].purchaseName,
-              purchasePrice: purchase[countItem].purchasePrice,
-              purchaseCostomer: purchase[countItem].purchaseCostomer,
-              purchaseItem: purchase[countItem].purchaseItem.map((i, count) => ({
-                    guidIdPurchase: i.guidIdPurchase,
-                    guidIdComponent: i.guidIdComponent,
-                    vendorCodeComponent: i.vendorCodeComponent,
-                    nameComponent: i.nameComponent,
-                    requiredQuantityItem: count === index? localQuantity : i.requiredQuantityItem,
-                    purchaseItemPrice: count === index? itemPrice : i.purchaseItemPrice,
-                    bestComponentProvider: count === index? itemBestComponentProvider : i.bestComponentProvider,
-                    deliveryTimeComponent: count === index? itemDeliveryTime : i.deliveryTimeComponent,
-                    otherOffers: i.otherOffers.map((x) => ({
-                        guidIdComponent: x.guidIdComponent,
-                        purchaseItemPrice: x.purchaseItemPrice,
-                        bestComponentProvider: x.bestComponentProvider,
-                        deliveryTimeComponent: x.deliveryTimeComponent
+  useEffect(() => {
+      const updatedPurchase = purchase.map((p, idx) => {
+          if (idx !== countItem) return p;
+
+          return {
+              ...p,
+              purchaseItem: p.purchaseItem.map((i, count) => ({
+                  ...i,
+                  requiredQuantityItem: count === index ? localQuantity : i.requiredQuantityItem,
+                  purchaseItemPrice: count === index ? itemPrice : i.purchaseItemPrice,
+                  bestComponentProvider: count === index ? itemBestComponentProvider : i.bestComponentProvider,
+                  deliveryTimeComponent: count === index ? itemDeliveryTime : i.deliveryTimeComponent,
+                  otherOffers: i.otherOffers.map(x => ({
+                      ...x
                   }))
               }))
-          }];
+          };
+      });
 
-    setPurchase(newPurchaseItem);
+      setPurchase(updatedPurchase);
+  }, [localQuantity, itemPrice, itemBestComponentProvider]);
 
-  }, [localQuantity, itemPrice, itemBestComponentProvider])
 
   return (
     <>
