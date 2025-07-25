@@ -15,6 +15,14 @@ const ListPurchaseBlock = (
     const [mapPurchaseName, setMapPurchaseName] = useState([]);
     const [mapPurchaseCostomer, setMapPurchaseCostomer] = useState([]);
 
+    // Форма отправки данных для предоставления доступа к закупке
+    const [shareForm, setShareForm] = useState([]);
+    useEffect(() => {
+    if (purchase.length > 0) {
+        setShareForm(new Array(purchase.length).fill(false));
+    }
+    }, [purchase]);
+
     useEffect(() => {
         if (purchase.length > 0) {
             if (checkedPurchaseId.length !== purchase.length) {
@@ -38,6 +46,7 @@ const ListPurchaseBlock = (
         });
     };
 
+    // Обновление данных закупки и ее компонентов
     const requestAddItemPurchaseData = (index) => {
         const i = purchase[index];
 
@@ -75,6 +84,7 @@ const ListPurchaseBlock = (
         });
     };
 
+    // Сохранение нового названия закупки
     const saveNewNamePurchase = async (index) => {
         const updatedPurchaseData = {
             guidIdPurchase: purchase[index].guidIdPurchase,
@@ -100,10 +110,36 @@ const ListPurchaseBlock = (
                     ...updatedPurchaseData
                 };
                 setPurchase(updatedPurchase);
+                
             } else {
                 const errorText = await response.text();
                 console.error("Ошибка от API:", errorText);
                 alert("Ошибка при сохранении данных!");
+            }
+        } catch (error) {
+            console.error("Ошибка получения данных:", error);
+            alert("Ошибка при отправке запроса!");
+        }
+    };
+
+
+
+    // Удаление закупки
+    const deletePurchase = async (guidIdPurchase) => {
+                try {
+            const response = await fetch(ApiUrl + "/api/SaveSupplyPurchase/" + guidIdPurchase, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            });
+
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                const errorText = await response.text();
+                console.error("Ошибка от API:", errorText);
+                alert("Ошибка при удалении данных!");
             }
         } catch (error) {
             console.error("Ошибка получения данных:", error);
@@ -138,7 +174,7 @@ const ListPurchaseBlock = (
 
             <div className="list-purchase-block__list-block">
                 <ul className="list-purchase">
-                    {purchase.slice().reverse().map((item, index) => (
+                    {purchase.map((item, index) => (
                         <li key={item.purchaseId} className="list-purchase__item">
                             <div className="list-purchase__item_title">
                                 <div className="lp-item__context-block">
@@ -227,6 +263,11 @@ const ListPurchaseBlock = (
                                             className="lpip-icon-groop__share"
                                             src="../images/share-icon.svg"
                                             alt="Поделиться"
+                                            onClick={() => {
+                                                const updated = [...shareForm];
+                                                updated[index] = true;
+                                                setShareForm(updated);
+                                            }}
                                         />
                                         <img
                                             className="lpip-icon-groop__save"
@@ -238,6 +279,7 @@ const ListPurchaseBlock = (
                                             className="lpip-icon-groop__save"
                                             src="../images/delete-icon.svg"
                                             alt="Удалить"
+                                            onClick={()=>deletePurchase(item.guidIdPurchase)}
                                         />
                                     </div>
                                 }
@@ -251,14 +293,31 @@ const ListPurchaseBlock = (
                                     setPurchase={setPurchase}
                                     purchasePrice={item.purchasePrice}
                                     setPurchasePrice={(newPrice) => {
-                                        const updated = [...purchase];
-                                        updated[index].purchasePrice = newPrice;
-                                        setPurchase(updated);
+                                        const currentPrice = purchase[index].purchasePrice;
+                                        if (currentPrice !== newPrice) {
+                                            const updated = [...purchase];
+                                            updated[index] = { ...updated[index], purchasePrice: newPrice };
+                                            setPurchase(updated);
+                                        }
                                     }}
                                     requestAddItemPurchaseData={requestAddItemPurchaseData}
                                 />
                             }
-                        </li>
+
+                            {/* Форма предоставления доступа к закупке другому пользователю */}
+                            {shareForm[index] ?
+                            <>
+                                <div className="share-form-purchase">
+                                    <div className="share-form-purchase__title">
+                                        Введите email пользователя для предоставления доступа к закупке
+                                    </div>
+                                    <input type="hidden" value="12345-abcde-67890" />
+                                    <input type="email" placeholder="email" />
+                                    <button>Предоставить доступ</button>
+                                </div>
+                            </>:""}
+                            
+                        </li>   
                     ))}
                 </ul>
             </div>

@@ -42,6 +42,7 @@ const CreatePurchaseBlock = (
             if (response.ok) {
                 const result = await response.json();
                 alert(result.message || "Данные успешно сохранены!");
+                window.location.reload();
 
             } else {
                 const errorText = await response.text();

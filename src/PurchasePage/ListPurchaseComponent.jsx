@@ -1,50 +1,81 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import "./listPurchaseComponent.css";
 import LpsTableItemEdit from "./PurchasePageElement/LpsTableItemEdit.jsx";
 import { useRoleId } from "../js/Utilits/roleId.js";
 import AddItemPurchase from "./PurchasePageElement/AddItemPurchase.jsx";
 
-const ListPurchaseComponent = (
-    { 
-        count,
-        components, 
-        purchase, 
-        setPurchase, 
-        purchasePrice, 
-        setPurchasePrice
-    }
-) => {
-    // состояни роли пользователя в системе
-    const { roleUser} = useRoleId();
+const ListPurchaseComponent = ({
+    count,
+    components,
+    purchase,
+    setPurchase,
+    purchasePrice,
+    setPurchasePrice
+}) => {
+    const { roleUser } = useRoleId();
 
-    // Индексация закупок и номенклатуры
-    const indexedItems = [];
+    // Индексация закупок и номенклатуры с useMemo
+    const indexedItems = useMemo(() => {
+        const p = purchase[count];
+        const items = [];
 
-    // Индекс текущей закупки, берется из пропса
-    const countItem = count;
-
-    const p = purchase[count];
-    if (Array.isArray(p?.purchaseItem)) {
-        p.purchaseItem.forEach((item, itemIndex) => {
-            indexedItems.push({
-                purchaseIndex: countItem, // так как один объект закупки
-                itemIndex,
-                item,
-                purchaseId: p.purchaseId,
+        if (Array.isArray(p?.purchaseItem)) {
+            p.purchaseItem.forEach((item, itemIndex) => {
+                items.push({
+                    purchaseIndex: count,
+                    itemIndex,
+                    item,
+                    purchaseId: p.purchaseId,
+                });
             });
-        });
-    }
+        }
 
+        return items;
+    }, [purchase, count]);
 
-    // Состояния checkbox'ов и количеств
     const [checkedRows, setCheckedRows] = useState({});
-    const [quantities, setQuantities] = useState(
-        Object.fromEntries(
-            indexedItems.map((entry, i) => [i, entry.item.requiredQuantityItem])
-        )
-    );
+    const [quantities, setQuantities] = useState({});
 
-    // Обработка переключения чекбокса
+    // Инициализация количеств при монтировании или изменении закупки
+    useEffect(() => {
+        const newQuantities = Object.fromEntries(
+            indexedItems.map((entry, i) => [i, entry.item.requiredQuantityItem])
+        );
+
+        const isEqual = Object.keys(newQuantities).every(
+            (key) => newQuantities[key] === quantities[key]
+        );
+
+        if (!isEqual) {
+            setQuantities(newQuantities);
+        }
+    }, [indexedItems]);
+
+    // Пересчет общей стоимости
+    useEffect(() => {
+        const currentPurchase = purchase[count];
+
+        if (!currentPurchase || !Array.isArray(currentPurchase.purchaseItem)) {
+            setPurchasePrice(0);
+            return;
+        }
+
+        const summa = currentPurchase.purchaseItem.reduce((acc, i) => {
+            const qty = Number(i.requiredQuantityItem);
+            const price = Number(i.purchaseItemPrice);
+
+            if (isNaN(qty) || isNaN(price)) {
+                console.warn("Некорректное значение:", i);
+                return acc;
+            }
+
+            return acc + qty * price;
+        }, 0);
+
+        setPurchasePrice(summa);
+    }, [purchase, count]);
+
+    // Обработка чекбокса
     const handleCheckboxChange = (index) => {
         setCheckedRows((prev) => ({
             ...prev,
@@ -60,57 +91,22 @@ const ListPurchaseComponent = (
         }));
     };
 
-    // Обновление количества при изменении `purchase`
-    useEffect(() => {
-        setQuantities(
-            Object.fromEntries(
-                indexedItems.map((entry, i) => [i, entry.item.requiredQuantityItem])
-            )
-        );
-    }, [purchase]);
-
-    // Пересчет стоимости при изменении  purchase
-    useEffect(() => {
-        const currentPurchase = purchase[count];
-
-        if (!currentPurchase || !Array.isArray(currentPurchase.purchaseItem)) {
-            setPurchasePrice(0);
-            return;
-        }
-
-        const summa = currentPurchase.purchaseItem.reduce((acc, i) => {
-            const qty = Number(i.requiredQuantityItem);
-            const price = Number(i.purchaseItemPrice);
-
-            if (isNaN(qty) || isNaN(price)) {
-                console.warn('Некорректное значение:', i);
-                return acc;
-            }
-
-            return acc + qty * price;
-        }, 0);
-
-        setPurchasePrice(summa);
-
-    }, [purchase, count]);
-
-
-
-    // Удаление номенклатуры из закупки
+    // Удаление номенклатуры
     const deletePurchaseItem = (purchaseGuid, componentGuid, purchasePriceItem) => {
-        setPurchase(prev =>
-            prev.map(p =>
+        setPurchase((prev) =>
+            prev.map((p) =>
                 p.guidIdPurchase === purchaseGuid
-                ? {
-                    ...p,
-                    purchaseItem: p.purchaseItem.filter(item => item.guidIdComponent !== componentGuid)
-                }
-                : p
+                    ? {
+                          ...p,
+                          purchaseItem: p.purchaseItem.filter(
+                              (item) => item.guidIdComponent !== componentGuid
+                          ),
+                      }
+                    : p
             )
         );
 
-        // Вычитаем общую стоимость удаленной номенклатуры
-        setPurchasePrice(purchasePrice-purchasePriceItem);
+        setPurchasePrice(purchasePrice - purchasePriceItem);
     };
 
     return (
@@ -138,10 +134,9 @@ const ListPurchaseComponent = (
                 <tbody>
                     {indexedItems.map(({ item }, index) => {
                         const isChecked = checkedRows[index];
-                        const quantity = quantities[index];
-                        // Общая стоимость с учетом количества элементов
-                        const purchasePriceItem = quantity*item.purchaseItemPrice;
-                    
+                        const quantity = quantities[index] ?? item.requiredQuantityItem;
+                        const purchasePriceItem = quantity * item.purchaseItemPrice;
+
                         return (
                             <tr key={`${item.guidIdPurchase}-${item.guidIdComponent}`}>
                                 <td>
@@ -164,12 +159,11 @@ const ListPurchaseComponent = (
                                         purchaseItemPrice={item.purchaseItemPrice}
                                         bestComponentProvider={item.bestComponentProvider}
                                         deliveryTimeComponent={item.deliveryTimeComponent}
-                                        purchase={purchase} 
+                                        purchase={purchase}
                                         setPurchase={setPurchase}
                                         otherOffers={item.otherOffers}
                                         onQuantityChange={handleQuantityChange}
                                     />
-                                    
                                 ) : (
                                     <>
                                         <td>{item.vendorCodeComponent}</td>
@@ -184,29 +178,29 @@ const ListPurchaseComponent = (
                                         <td className="lpc-item__price">
                                             {item.deliveryTimeComponent}
                                         </td>
-                                        {!roleUser?
-                                            <>
-                                                <td className="lpc-item__provider">
-                                                    {item.bestComponentProvider}
-                                                </td>
-                                                <td>
-                                                    <button 
-                                                        className="lpc-item__button-delete" 
-                                                        onClick={()=>deletePurchaseItem(item.guidIdPurchase, item.guidIdComponent, purchasePriceItem)}
-                                                    >X</button>
-                                                </td>
-                                            </>:
-                                            <>
-                                                <td className="lpc-item__provider">
-                                                    <span className="lpc-item__provider_select_ban">по подписке</span>
-                                                </td>
-                                                <td>
-                                                    <button 
-                                                        className="lpc-item__button-delete" 
-                                                        onClick={()=>deletePurchaseItem(item.guidIdPurchase, item.guidIdComponent, purchasePriceItem)}
-                                                    >X</button>
-                                                </td>
-                                            </>}
+                                        <td className="lpc-item__provider">
+                                            {!roleUser ? (
+                                                item.bestComponentProvider
+                                            ) : (
+                                                <span className="lpc-item__provider_select_ban">
+                                                    по подписке
+                                                </span>
+                                            )}
+                                        </td>
+                                        <td>
+                                            <button
+                                                className="lpc-item__button-delete"
+                                                onClick={() =>
+                                                    deletePurchaseItem(
+                                                        item.guidIdPurchase,
+                                                        item.guidIdComponent,
+                                                        purchasePriceItem
+                                                    )
+                                                }
+                                            >
+                                                X
+                                            </button>
+                                        </td>
                                     </>
                                 )}
                             </tr>
@@ -219,3 +213,4 @@ const ListPurchaseComponent = (
 };
 
 export default ListPurchaseComponent;
+

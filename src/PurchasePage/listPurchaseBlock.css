@@ -23,6 +23,7 @@
 }
 
 .list-purchase__item {
+    position: relative;
     border-radius: 4px;
     padding: 4px 10px 4px 8px;
     background-color: #E0E5F8;
@@ -91,4 +92,18 @@
 .lp-item__purchase-name_input:focus,
 .lp-item__purchase-name-costomer_input:focus {
     outline: none;
+}
+
+
+.share-form-purchase {
+    position: absolute;
+    top: 10px;
+    right: 150px;
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    height: 300px;
+    background-color: #E0E5F8;
+    border-radius: 4px;
+    border: 1px solid red;
 }
