@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 // Компонент вводит форму добавления наименования новой закупки
 const CreatePurchaseBlock = (
-    {createPurchase, setCreatePurchase}
+    {setCreatePurchase}
 ) => {
 
     const [purchaseId, setPurchaseId] = useState("");
@@ -28,7 +28,6 @@ const CreatePurchaseBlock = (
         };
     
         const json = JSON.stringify(newNamePurchase);
-        console.log(json);
 
         try {
             const response = await fetch(ApiUrl + "/api/SaveSupplyPurchase", {
@@ -64,6 +63,12 @@ const CreatePurchaseBlock = (
     return (
         <>
             <div className="purchase-page__create-purchase-block">
+                <img 
+                    src="../images/close-icon.svg" 
+                    alt="Закрыть" 
+                    className="ppcpb__close-icon"
+                    onClick={()=>{setCreatePurchase(false)}}
+                />
                 <h6 className="create-purchase-block__title">Создайте новую закупку:</h6>
                 <input 
                     className="form-control create-purchase-block__create-form-purchaseId" 

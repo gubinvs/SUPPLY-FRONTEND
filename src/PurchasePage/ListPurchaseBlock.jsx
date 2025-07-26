@@ -15,6 +15,9 @@ const ListPurchaseBlock = (
     const [mapPurchaseName, setMapPurchaseName] = useState([]);
     const [mapPurchaseCostomer, setMapPurchaseCostomer] = useState([]);
 
+    const [shareEmail, setShareEmail] = useState([]);
+    const [shareGuidIdPurchase, setShareGuidIdPurchase] = useState([]);
+
     // Форма отправки данных для предоставления доступа к закупке
     const [shareForm, setShareForm] = useState([]);
     useEffect(() => {
@@ -122,11 +125,9 @@ const ListPurchaseBlock = (
         }
     };
 
-
-
     // Удаление закупки
     const deletePurchase = async (guidIdPurchase) => {
-                try {
+        try {
             const response = await fetch(ApiUrl + "/api/SaveSupplyPurchase/" + guidIdPurchase, {
                 method: "DELETE",
                 headers: {
@@ -146,6 +147,41 @@ const ListPurchaseBlock = (
             alert("Ошибка при отправке запроса!");
         }
     };
+
+    // Отправка данных на сервер для записи разрешения на достут к закупке
+    const grantAccess = async (guidId, email)=> {
+       const reguest = {
+        guidIdPurchase: guidId,
+        emailCollaborator : email
+       }
+       const jsonRegust = JSON.stringify(reguest);
+        try {
+            const response = await fetch(ApiUrl + "/api/SharePurchase", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: jsonRegust
+            });
+
+            if (response.ok) {
+                const responseText = await response.text();
+                const responseMessage = JSON.parse(responseText);
+                alert(responseMessage.message);
+
+            } else {
+                const errorText = await response.text();
+                // console.error("Ошибка от API:", errorText);
+                const message = JSON.parse(errorText);
+                alert(message.message);
+            }
+
+        } catch (error) {
+            console.error("Ошибка получения данных:", error);
+            alert("Ошибка при отправке запроса!");
+        }
+    };
+ 
 
     return (
         <>
@@ -311,9 +347,27 @@ const ListPurchaseBlock = (
                                     <div className="share-form-purchase__title">
                                         Введите email пользователя для предоставления доступа к закупке
                                     </div>
-                                    <input type="hidden" value="12345-abcde-67890" />
-                                    <input type="email" placeholder="email" />
-                                    <button>Предоставить доступ</button>
+                                    <input 
+                                        type="email" 
+                                        placeholder="email" 
+                                        value={shareEmail[index]}
+                                        onChange={(e) => {
+                                            const newShareGuidIdPurchase = [...shareGuidIdPurchase];
+                                            newShareGuidIdPurchase[index] = item.guidIdPurchase;
+                                            setShareGuidIdPurchase(newShareGuidIdPurchase);
+                                            const newEmails = [...shareEmail]; // создаём копию
+                                            newEmails[index] = e.target.value; // обновляем нужный элемент
+                                            setShareEmail(newEmails); // сохраняем обновлённый массив
+                                        }}
+                                    />
+                                    <button
+                                        onClick={()=>{
+                                            grantAccess(shareGuidIdPurchase[index] ,shareEmail[index])
+                                            const updatedShareForm = [...shareForm];
+                                            updatedShareForm[index] = false;
+                                            setShareForm(updatedShareForm);
+                                        }}
+                                    >Предоставить доступ</button>
                                 </div>
                             </>:""}
                             

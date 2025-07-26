@@ -79,7 +79,6 @@ const PurchasePage =(
                     {createPurchase?
                         <div className="purchase-page-right-block">
                             <CreatePurchaseBlock
-                                createPurchase={createPurchase} 
                                 setCreatePurchase={setCreatePurchase}
                             />
                         </div>
