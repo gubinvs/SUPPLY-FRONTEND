@@ -16,17 +16,21 @@ const CreatePurchaseBlock = (
 
     // Создаем новую закупку
     const addPurchase = async () => {
+        if (!purchaseId.trim() || !purchaseName.trim()) {
+            alert("Пожалуйста, заполните все поля формы.");
+            return;
+        }
 
         const newNamePurchase = {
-            guidIdCollaborator : guidIdColl,
+            guidIdCollaborator: guidIdColl,
             guidIdPurchase: uuidv4(),
-            purchaseId: purchaseId,
-            purchaseName: purchaseName,
+            purchaseId: purchaseId.trim(),
+            purchaseName: purchaseName.trim(),
             purchasePrice: 0,
             purchaseCostomer: "",
-            purchaseItem : []
+            purchaseItem: []
         };
-    
+
         const json = JSON.stringify(newNamePurchase);
 
         try {
@@ -42,7 +46,6 @@ const CreatePurchaseBlock = (
                 const result = await response.json();
                 alert(result.message || "Данные успешно сохранены!");
                 window.location.reload();
-
             } else {
                 const errorText = await response.text();
                 console.error("Ошибка от API:", errorText);
@@ -53,54 +56,48 @@ const CreatePurchaseBlock = (
             alert("Ошибка при отправке запроса!");
         }
 
-
-        // Убираем форму с экрана
         setCreatePurchase(false);
-
     };
+
 
 
     return (
         <>
-            <div className="purchase-page__create-purchase-block">
-                <img 
-                    src="../images/close-icon.svg" 
-                    alt="Закрыть" 
-                    className="ppcpb__close-icon"
-                    onClick={()=>{setCreatePurchase(false)}}
-                />
+            <div className="purchase-page__create-purchase-bloc__container">
                 <h6 className="create-purchase-block__title">Создайте новую закупку:</h6>
-                <input 
-                    className="form-control create-purchase-block__create-form-purchaseId" 
-                    type="text" 
-                    name="guidId"
-                    maxLength={20}
-                    placeholder="Идентификатор новой закупки" 
-                    aria-label="purchaseId"
-                    value={purchaseId}
-                    onChange={(e)=>{
-                        setPurchaseId(e.target.value);
-                    }}
-                />
-                <input 
-                    className="form-control create-purchase-block__create-form-purchaseId" 
-                    type="text" 
-                    placeholder="Наименование новой закупки" 
-                    name="purchaseName"
-                    maxLength={60}
-                    aria-label="purchaseId"
-                    value={purchaseName}
-                    onChange={(e)=>{
-                        setPurchaseName(e.target.value);
-                    }}
-                />
-                <button 
-                    type="button" 
-                    className="btn btn-outline-secondary cpb__create-form-button" 
-                    onClick={()=>addPurchase()}
-                >
-                    Записать
-                </button>
+                <div className="purchase-page__create-purchase-block">
+                    <input 
+                        className="form-control create-purchase-block__create-form-purchaseId" 
+                        type="text" 
+                        name="guidId"
+                        maxLength={20}
+                        placeholder="Идентификатор новой закупки" 
+                        aria-label="purchaseId"
+                        value={purchaseId}
+                        onChange={(e)=>{
+                            setPurchaseId(e.target.value);
+                        }}
+                    />
+                    <input 
+                        className="form-control create-purchase-block__create-form-name" 
+                        type="text" 
+                        placeholder="Наименование новой закупки" 
+                        name="purchaseName"
+                        maxLength={60}
+                        aria-label="purchaseId"
+                        value={purchaseName}
+                        onChange={(e)=>{
+                            setPurchaseName(e.target.value);
+                        }}
+                    />
+                    <button 
+                        type="button" 
+                        className="btn btn-outline-secondary cpb__create-form-button" 
+                        onClick={()=>addPurchase()}
+                    >
+                        Записать
+                    </button>
+                </div>
             </div>
         </>
     );

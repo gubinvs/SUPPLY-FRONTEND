@@ -1,8 +1,4 @@
-.purchase-page-left-block {
+.purchase-page__container {
     width: 100%;
-}
-
-.purchase-page-right-block {
-    width: 500px;
     padding-left: 10px;
 }

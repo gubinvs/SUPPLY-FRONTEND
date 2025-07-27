@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import "./purchasePage.css";
 import ApiUrl from "../js/ApiUrl.js";
 import NavigationBarMax from "../NavigationBar/NavigationBarMax";
@@ -7,87 +7,56 @@ import HeaderApplicationPanel from "../ApplicationPanel/Header/HeaderApplication
 import CreatePurchaseBlock from "./CreatePurchaseBlock.jsx";
 import ListPurchaseBlock from "./ListPurchaseBlock.jsx";
 
-
-// Страница с данными о закупках
-const PurchasePage =(
-    {role, title, components}
-)=> {
-
+const PurchasePage = ({ role, title, components }) => {
     const [isNavMaxVisible, setIsNavMaxVisible] = useState(false);
     const handleShowMax = () => setIsNavMaxVisible(true);
     const handleHideMax = () => setIsNavMaxVisible(false);
-    const [createPurchase, setCreatePurchase] = useState(false);
-    // Достаем guidIdCollaborator
-    const guidIdCollaborator = localStorage.getItem("guidIdCollaborator");
 
-    //  Закупки с раскладкой по номенклатуре
+    const guidIdCollaborator = localStorage.getItem("guidIdCollaborator");
     const [purchase, setPurchase] = useState([]);
 
-    // Загрузить данные о закупках 
-    useEffect(()=>{
-        downloadListPurchase();
-    },[])
-
-    const downloadListPurchase =()=> {
-        const responsePurchase = [];
-
-        
+    const downloadListPurchase = useCallback(() => {
         fetch(ApiUrl + "/api/ReturnListPurchase/" + guidIdCollaborator, {
             method: "GET",
             headers: { "Content-Type": "application/json" },
         })
-        .then((response) => {
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-     
-            return response.json();
-        })
-        .then((data) => {
-           setPurchase(data);
-        })
+            .then((response) => {
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                return response.json();
+            })
+            .then((data) => {
+                setPurchase(data);
+            })
+            .catch((error) => {
+                console.error("Ошибка получения данных:", error);
+            });
+    }, [guidIdCollaborator]);
 
-        .catch((error) => {
-            console.error("Ошибка получения данных:", error);
-        });
-        
-    };
+    useEffect(() => {
+        downloadListPurchase();
+    }, [downloadListPurchase]);
 
-    // Метод удаление закупки
-    const deletePurchase = (guidId) => {
-        setPurchase(prev => prev.filter(p => p.guidIdPurchase !== guidId));
-    };
-
-    return(
-        <>
-            <div className="main-application-panel">
-                <NavigationBarMin
-                    onShowMax={handleShowMax}
-                    onHideMax={handleHideMax}
-                    isNavMaxVisible={isNavMaxVisible}
-                />
-                {isNavMaxVisible && <NavigationBarMax />}
-                <HeaderApplicationPanel role={role} title={title} />
-                <div className="main-application-panel__container">
-                    <div className="purchase-page-left-block">
-                        <ListPurchaseBlock 
-                            components={components}
-                            createPurchase={createPurchase} 
-                            setCreatePurchase={setCreatePurchase}
-                            purchase = {purchase}
-                            setPurchase={setPurchase}
-                        />
-                    </div>
-                    {createPurchase?
-                        <div className="purchase-page-right-block">
-                            <CreatePurchaseBlock
-                                setCreatePurchase={setCreatePurchase}
-                            />
-                        </div>
-                    :""}
+    return (
+        <div className="main-application-panel">
+            <NavigationBarMin
+                onShowMax={handleShowMax}
+                onHideMax={handleHideMax}
+                isNavMaxVisible={isNavMaxVisible}
+            />
+            {isNavMaxVisible && <NavigationBarMax />}
+            <HeaderApplicationPanel role={role} title={title} />
+            <div className="main-application-panel__container">
+                <div className="purchase-page__container">
+                    <CreatePurchaseBlock />
+                    <ListPurchaseBlock 
+                        components={components}
+                        purchase={purchase}
+                        setPurchase={setPurchase}
+                    />
                 </div>
             </div>
-        </>
+        </div>
     );
-
 };
 
 export default PurchasePage;

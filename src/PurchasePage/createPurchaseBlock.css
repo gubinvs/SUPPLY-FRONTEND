@@ -1,5 +1,7 @@
 .purchase-page__create-purchase-block {
     position: relative;
+    display: flex;
+    margin-bottom: 30px;
 }
 
 .create-purchase-block__title {
@@ -7,11 +9,20 @@
 }
 
 .create-purchase-block__create-form-purchaseId {
+    width: 300px;
+    height: 42px;
     margin-bottom: 10px;
 }
 
+.create-purchase-block__create-form-name {
+    width: 600px;
+    height: 42px;
+    margin-right: 14px;
+}
+
 .cpb__create-form-button {
-    width: 100%;
+    width: 200px;
+    height: 40px;
 }
 
 .ppcpb__close-icon {
