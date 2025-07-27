@@ -39,7 +39,7 @@ const ListPurchaseBlock = (
             setMapPurchaseName(purchase.map(p => p.purchaseName));
             setMapPurchaseCostomer(purchase.map(p => p.purchaseCostomer));
         }
-    }, [purchase]);
+    }, [purchase, checkedPurchaseId, editPurchaseName]);
 
     const handleCheck = (index) => {
         setCheckedPurchaseId((prev) => {
@@ -127,6 +127,9 @@ const ListPurchaseBlock = (
 
     // Удаление закупки
     const deletePurchase = async (guidIdPurchase) => {
+        const isConfirmed = window.confirm("Вы уверены, что хотите удалить эту закупку?");
+        if (!isConfirmed) return;
+
         try {
             const response = await fetch(ApiUrl + "/api/SaveSupplyPurchase/" + guidIdPurchase, {
                 method: "DELETE",
@@ -147,6 +150,7 @@ const ListPurchaseBlock = (
             alert("Ошибка при отправке запроса!");
         }
     };
+
 
     // Отправка данных на сервер для записи разрешения на достут к закупке
     const grantAccess = async (guidId, email)=> {
@@ -344,10 +348,21 @@ const ListPurchaseBlock = (
                             {shareForm[index] ?
                             <>
                                 <div className="share-form-purchase">
+                                    <img 
+                                        className="share-form-purchase__close-icon" 
+                                        src="../images/close-icon.svg" 
+                                        alt="@"
+                                        onClick={()=>{
+                                            const updateShareForm = [...shareForm];
+                                            updateShareForm[index] = false;
+                                            setShareForm(updateShareForm);
+                                        }}
+                                    />
                                     <div className="share-form-purchase__title">
-                                        Введите email пользователя для предоставления доступа к закупке
+                                        Для предоставления доступа к закупке введите email пользователя 
                                     </div>
                                     <input 
+                                        className="form-control share-form-purchase__input"
                                         type="email" 
                                         placeholder="email" 
                                         value={shareEmail[index]}
@@ -361,6 +376,7 @@ const ListPurchaseBlock = (
                                         }}
                                     />
                                     <button
+                                        className="btn btn-outline-warning"
                                         onClick={()=>{
                                             grantAccess(shareGuidIdPurchase[index] ,shareEmail[index])
                                             const updatedShareForm = [...shareForm];

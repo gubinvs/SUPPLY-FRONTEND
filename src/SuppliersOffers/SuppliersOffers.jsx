@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import "./suppliersOffers.css";
 import Spinners from "../ElementApplication/Spinners.jsx";
 import ViewSuppliersOffers from "./ViewSuppliersOffers.jsx";
