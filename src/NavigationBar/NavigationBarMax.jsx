@@ -27,12 +27,12 @@ const NavigationBarMax = () => {
         <div className="navigation-bar-max">
             <div className="navigation-bar-max__logo-block">
                 <picture>
-                    {/* <img src="../images/logo/header-logo__max-bar_1280.svg" alt="Логотип системы" className="navigation-bar-max__logo"/> */}
+                    <img src="../images/logo/header-logo__max-bar_1280.svg" alt="Логотип системы" className="navigation-bar-max__logo"/>
                     {/* <img src="../../images/logo/logo-ha.png" alt="Логотип системы" className="navigation-bar-min__logo mr-20" /> */}
-                     <img src="../../images/logo/header-logo_sa.svg" alt="Логотип системы" className="navigation-bar-min__logo" />
+                    {/* <img src="../../images/logo/header-logo_sa.svg" alt="Логотип системы" className="navigation-bar-min__logo" /> */}
                 </picture>
-                {/* <div className="nbm-logo-block__title">Компоненты<br /> энергии</div> */}
-                <div className="nbm-logo-block__title">Системная автоматизация</div>
+                <div className="nbm-logo-block__title">Компоненты<br /> энергии</div>
+                {/* <div className="nbm-logo-block__title">Системная автоматизация</div> */}
             </div>
             <div className="top-block__line navigation-bar-max__top-block__line"></div>
             <ul className="navigation-bar-max__navigation-list">
