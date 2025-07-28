@@ -81,3 +81,16 @@
     font-size: 20px;
     font-weight: 400;
 }   
+
+.nbm-navigation-item__name_free {
+    font-size: 20px;
+    font-weight: 200;
+    color: #D5DAE0;
+}
+
+.nbm-navigation-item__name_free:hover {
+    font-size: 20px;
+    font-weight: 200;
+    color: #D5DAE0 !important;
+}
+

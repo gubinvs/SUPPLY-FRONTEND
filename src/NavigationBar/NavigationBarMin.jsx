@@ -47,10 +47,17 @@ const NavigationBarMin = (
                         <>
                             <li className="navigation-icon-block__item" onClick={suppliersOffers}>
                                 <img className="navigation-icon__icon-img" src="../images/specifications-icon.svg" alt="Иконка на страницу со списком номенклатуры" />
+                            </li> 
+                            <li className="navigation-icon-block__item">
+                                <img className="navigation-icon__icon-img" src="../images/file-pen-line.svg" alt="Иконка на страницу с редактированием номенклатуры" title="По подписке"/>
+                            </li>
+                            <li className="navigation-icon-block__item">
+                                <img className="navigation-icon__icon-img" src="../images/add-component-icon.svg" alt="Иконка на страницу добавления артикулов" title="По подписке" />
                             </li>
                             <li className="navigation-icon-block__item" onClick={linkPagePurchase}>
                                 <img className="navigation-icon__icon-img" src="../images/purchase-icon.svg" alt="Иконка на страницу с данными о закупках" />
                             </li>
+                           
                         </>:""
                     }
                     {/* Если роль не пользователь (просто наблюдатель) откроем добавление артикулов */}
