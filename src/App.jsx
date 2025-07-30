@@ -26,6 +26,7 @@ const App = () => {
   const [components, setComponents] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const profitability = 1.1; // Рентабельность по которой работает сервис
 
 
 
@@ -150,6 +151,7 @@ const App = () => {
               role={role} 
               title="Данные о закупках"
               components={components}
+              profitability={profitability}
               error={error}
             />
           </PrivateRoute>

@@ -4,7 +4,7 @@ import ApiUrl from "../js/ApiUrl";
 import ListPurchaseComponent from "./ListPurchaseComponent.jsx";
 
 const ListPurchaseBlock = (
-    { components, purchase, setPurchase }
+    { components, purchase, setPurchase, profitability }
 ) => {
     const guidIdCollaborator = localStorage.getItem("guidIdCollaborator");
 
@@ -16,6 +16,8 @@ const ListPurchaseBlock = (
 
     const [shareEmail, setShareEmail] = useState([]);
     const [shareGuidIdPurchase, setShareGuidIdPurchase] = useState([]);
+    // Состояние кнопки запросить счет, при сохраненной закупке в базе данных
+    const [purchaseState, setPurchaseState] = useState([]); 
 
     // Форма отправки данных для предоставления доступа к закупке
     const [shareForm, setShareForm] = useState([]);
@@ -305,8 +307,11 @@ const ListPurchaseBlock = (
                                 <ListPurchaseComponent
                                     count={index}
                                     components={components}
+                                    profitability={profitability}
                                     purchase={purchase}
                                     setPurchase={setPurchase}
+                                    purchaseState={purchaseState}
+                                    setPurchaseState={setPurchaseState}
                                     purchasePrice={item.purchasePrice}
                                     setPurchasePrice={(newPrice) => {
                                         const currentPrice = purchase[index].purchasePrice;

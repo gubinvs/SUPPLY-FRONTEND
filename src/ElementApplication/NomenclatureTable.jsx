@@ -24,7 +24,7 @@ const NomenclatureTable = (
                         <th scope="col" className="table-borderless__price">Лучшая цена</th>
                         <th scope="col" className="table-borderless__manuf">Срок поставки</th>
                         <th scope="col" className="table-borderless__manuf">Производитель</th>
-                        <th scope="col" className="table-borderless__um">Ед. изм</th>
+                        <th scope="col" className="table-borderless__um th-table-right">Ед. изм</th>
                         
                         {!roleUser && <th scope="col" className="table-borderless__th-edit">Edit</th>}
                     </tr>

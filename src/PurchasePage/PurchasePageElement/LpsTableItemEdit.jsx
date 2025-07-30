@@ -124,28 +124,27 @@ const LpsTableItemEdit = ({
       <td className="lpc-item__price">
           {itemDeliveryTime}
       </td>
-      <td>
+      
         {!roleUser ? (
-            <select
-              className="lpc-item__provider_select"
-              onChange={(e) => handleProviderChange(e.target.value)}
-            >
-              <option value={bestComponentProvider}>{bestComponentProvider}</option>
-              {(otherOffers || [])
-                .filter(i => i.bestComponentProvider !== bestComponentProvider)
-                .map(i => (
-                  <option
-                    key={`${i.bestComponentProvider}-${i.guidIdComponent ?? Math.random()}`}
-                    value={i.bestComponentProvider}
-                  >
-                    {i.bestComponentProvider}
-                  </option>
-                ))}
-            </select>
-          ) : (
-            <span className="lpc-item__provider_select_ban">по подписке</span>
-          )}
-      </td>
+          <td>
+              <select
+                className="lpc-item__provider_select"
+                onChange={(e) => handleProviderChange(e.target.value)}
+              >
+                <option value={bestComponentProvider}>{bestComponentProvider}</option>
+                {(otherOffers || [])
+                  .filter(i => i.bestComponentProvider !== bestComponentProvider)
+                  .map(i => (
+                    <option
+                      key={`${i.bestComponentProvider}-${i.guidIdComponent ?? Math.random()}`}
+                      value={i.bestComponentProvider}
+                    >
+                      {i.bestComponentProvider}
+                    </option>
+                  ))}
+              </select>
+            </td>
+          ) : ""}
       <td></td>
     </>
   );

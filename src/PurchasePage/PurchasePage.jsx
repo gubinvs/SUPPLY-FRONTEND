@@ -7,7 +7,9 @@ import HeaderApplicationPanel from "../ApplicationPanel/Header/HeaderApplication
 import CreatePurchaseBlock from "./CreatePurchaseBlock.jsx";
 import ListPurchaseBlock from "./ListPurchaseBlock.jsx";
 
-const PurchasePage = ({ role, title, components }) => {
+const PurchasePage = (
+    { role, title, components, profitability }
+) => {
     const [isNavMaxVisible, setIsNavMaxVisible] = useState(false);
     const handleShowMax = () => setIsNavMaxVisible(true);
     const handleHideMax = () => setIsNavMaxVisible(false);
@@ -52,6 +54,7 @@ const PurchasePage = ({ role, title, components }) => {
                         components={components}
                         purchase={purchase}
                         setPurchase={setPurchase}
+                        profitability={profitability}
                     />
                 </div>
             </div>

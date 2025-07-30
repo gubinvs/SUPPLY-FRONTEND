@@ -7,12 +7,16 @@ import AddItemPurchase from "./PurchasePageElement/AddItemPurchase.jsx";
 const ListPurchaseComponent = ({
     count,
     components,
+    profitability,
     purchase,
     setPurchase,
+    purchaseState,
+    setPurchaseState,
     purchasePrice,
     setPurchasePrice
 }) => {
     const { roleUser } = useRoleId();
+
 
     // Индексация закупок и номенклатуры с useMemo
     const indexedItems = useMemo(() => {
@@ -36,7 +40,7 @@ const ListPurchaseComponent = ({
     const [checkedRows, setCheckedRows] = useState({});
     const [quantities, setQuantities] = useState({});
 
-    // Инициализация количеств при монтировании или изменении закупки
+    // Инициализация количества при монтировании или изменении закупки
     useEffect(() => {
         const newQuantities = Object.fromEntries(
             indexedItems.map((entry, i) => [i, entry.item.requiredQuantityItem])
@@ -49,6 +53,7 @@ const ListPurchaseComponent = ({
         if (!isEqual) {
             setQuantities(newQuantities);
         }
+                            
     }, [indexedItems]);
 
     // Пересчет общей стоимости
@@ -120,23 +125,28 @@ const ListPurchaseComponent = ({
             <table className="table list-purchase-component__table">
                 <thead className="table-borderless__theder">
                     <tr>
-                        <th scope="col"></th>
+                        <th scope="col" className="th-table-left"></th>
                         <th scope="col" className="lpc-item__article">Артикул</th>
                         <th scope="col" className="lpc-item__name">Наименование</th>
                         <th scope="col" className="lpc-item__quantity">Кол-во</th>
                         <th scope="col" className="lpc-item__price">Цена</th>
                         <th scope="col" className="lpc-item__price">Стоимость</th>
                         <th scope="col" className="lpc-item__delivery">Доставка</th>
-                        <th scope="col" className="lpc-item__provider">Поставщик</th>
-                        <th scope="col"></th>
+                        {roleUser?"":<th scope="col" className="lpc-item__provider">Поставщик</th>}
+                        <th scope="col" className="th-table-right"></th>
                     </tr>
                 </thead>
                 <tbody>
                     {indexedItems.map(({ item }, index) => {
+                        // Сначала корректируем цену, если нужно
+                        const adjustedPrice = roleUser === true
+                            ? item.purchaseItemPrice * profitability //  если пользователь free добавляю свою наценку
+                            : item.purchaseItemPrice;
                         const isChecked = checkedRows[index];
                         const quantity = quantities[index] ?? item.requiredQuantityItem;
-                        const purchasePriceItem = quantity * item.purchaseItemPrice;
-
+                        // Затем вычисляем общую цену
+                        const purchasePriceItem = quantity * adjustedPrice;
+                        
                         return (
                             <tr key={`${item.guidIdPurchase}-${item.guidIdComponent}`}>
                                 <td>
@@ -147,7 +157,7 @@ const ListPurchaseComponent = ({
                                         onChange={() => handleCheckboxChange(index)}
                                     />
                                 </td>
-
+                                
                                 {isChecked ? (
                                     <LpsTableItemEdit
                                         count={count}
@@ -170,7 +180,10 @@ const ListPurchaseComponent = ({
                                         <td>{item.nameComponent}</td>
                                         <td className="lpc-item__quantity">{quantity}</td>
                                         <td className="lpc-item__price">
-                                            {Intl.NumberFormat("ru").format(item.purchaseItemPrice)}
+                                        
+                                           {Intl.NumberFormat("ru").format(adjustedPrice)}
+                                            
+                                            
                                         </td>
                                         <td className="lpc-item__price">
                                             {Intl.NumberFormat("ru").format(Number(purchasePriceItem))}
@@ -178,15 +191,12 @@ const ListPurchaseComponent = ({
                                         <td className="lpc-item__price">
                                             {item.deliveryTimeComponent}
                                         </td>
-                                        <td className="lpc-item__provider">
-                                            {!roleUser ? (
-                                                item.bestComponentProvider
-                                            ) : (
-                                                <span className="lpc-item__provider_select_ban">
-                                                    по подписке
-                                                </span>
-                                            )}
-                                        </td>
+                                        {roleUser ? 
+                                            "" 
+                                            : 
+                                            <td className="lpc-item__provider">{item.bestComponentProvider}</td>
+                                        }
+                                        
                                         <td>
                                             <button
                                                 className="lpc-item__button-delete"
@@ -208,6 +218,7 @@ const ListPurchaseComponent = ({
                     })}
                 </tbody>
             </table>
+            {purchaseState?"Кнопка":""}
         </>
     );
 };
