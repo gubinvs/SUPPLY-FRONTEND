@@ -16,13 +16,6 @@ const ListPurchaseComponent = ({
     setPurchasePrice
 }) => {
     const { roleUser } = useRoleId();
-    
-    // Скрываем кнопку запросить счет
-    const hideButton = () => {
-        const updatedPurchaseState = [...purchaseState];
-        updatedPurchaseState[count] = false;
-        setPurchaseState(updatedPurchaseState);
-    };
 
     // Изначально присваиваем значение true, так как загрузка с сервера и закупка без изменений
     useEffect(()=>{
@@ -30,8 +23,6 @@ const ListPurchaseComponent = ({
         updatedPurchaseState[count] = true;
         setPurchaseState(updatedPurchaseState);
     },[]);
-
-   
 
     // Индексация закупок и номенклатуры с useMemo
     const indexedItems = useMemo(() => {
@@ -109,8 +100,6 @@ const ListPurchaseComponent = ({
             ...prev,
             [index]: newQuantity,
         }));
-
-        hideButton();
     };
 
     // Удаление номенклатуры
@@ -129,8 +118,6 @@ const ListPurchaseComponent = ({
         );
 
         setPurchasePrice(purchasePrice - purchasePriceItem);
-        
-        hideButton();
     };
 
     return (
