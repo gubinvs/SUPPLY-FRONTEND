@@ -1,11 +1,14 @@
 import { useState, useEffect, useRef } from "react";
 import "./lpsTableItemEdit.css";
 import { useRoleId } from "../../js/Utilits/roleId.js";
+import {changeProcurementStatusFalse, changeProcurementStatusTrue} from "../../js/Utilits/changeProcurementStatus.js";
 
 const LpsTableItemEdit = ({
     count,
     index,
     quantity,
+    purchaseState,
+    setPurchaseState,
     setPurchasePrice,
     vendorCodeComponent,
     nameComponent,
@@ -70,6 +73,7 @@ const LpsTableItemEdit = ({
         setItemPrice(selected.purchaseItemPrice);
         setItemDeliveryTime(selected.deliveryTimeComponent);
         setItemBestComponentProvider(selected.bestComponentProvider);
+        changeProcurementStatusFalse(count, purchaseState, setPurchaseState);
       } else {
         setItemPrice(purchaseItemPrice);
         setItemDeliveryTime(deliveryTimeComponent);

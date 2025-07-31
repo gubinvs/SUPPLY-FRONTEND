@@ -21,7 +21,6 @@
     min-width: 250px;
 }
 
-
 .lpc-item__button-delete {
     width: 30px;
     height: 30px;
@@ -30,4 +29,10 @@
     border-radius: 4px;
     color: red;
     background-color: #FFF;
+}
+
+.change-procurement-button-block {
+    display: flex;
+    width: 100%;
+    justify-content: end;
 }

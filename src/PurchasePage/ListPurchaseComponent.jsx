@@ -18,9 +18,6 @@ const ListPurchaseComponent = ({
 }) => {
 
 
-console.log(purchaseState[count]);
-
-
     const { roleUser } = useRoleId();
 
     // Изначально присваиваем значение true, так как загрузка с сервера и закупка без изменений
@@ -29,6 +26,12 @@ console.log(purchaseState[count]);
         updatedPurchaseState[count] = true;
         setPurchaseState(updatedPurchaseState);
     },[]);
+
+
+    // Отправка данных (запрос) на предоставление счета на основании закупки
+    const requestInvoice =()=> {
+
+    };
 
 
     // Индексация закупок и номенклатуры с useMemo
@@ -124,6 +127,8 @@ console.log(purchaseState[count]);
 
                 setPurchasePrice(prevPrice => prevPrice - priceToSubtract);
 
+                changeProcurementStatusFalse(count, purchaseState, setPurchaseState);
+
                 return {
                     ...p,
                     purchaseItem: p.purchaseItem.filter(i => i.guidIdComponent !== componentGuid),
@@ -182,6 +187,8 @@ console.log(purchaseState[count]);
                                         count={count}
                                         index={index}
                                         quantity={quantity}
+                                        purchaseState={purchaseState}
+                                        setPurchaseState={setPurchaseState}
                                         setPurchasePrice={setPurchasePrice}
                                         vendorCodeComponent={item.vendorCodeComponent}
                                         nameComponent={item.nameComponent}
@@ -233,12 +240,19 @@ console.log(purchaseState[count]);
                     })}
                 </tbody>
             </table>
-            {purchaseState[count]?
-                <button type="button" class="btn btn-primary change-procurement-button">Запросить счет</button>
-                :
-                // <button type="button" class="btn btn-outline-primary" disabled>Запросить счет</button>
-                ""
-            }
+            <div className="change-procurement-button-block">
+                {purchaseState[count]?
+                    <button 
+                        type="button" 
+                        class="btn btn-primary change-procurement-button"
+                        onClick={requestInvoice()}
+                        >
+                            Запросить счет
+                    </button>
+                    :
+                    ""
+                }
+            </div>
         </>
     );
 };

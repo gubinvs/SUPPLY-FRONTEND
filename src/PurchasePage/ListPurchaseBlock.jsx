@@ -372,7 +372,6 @@ const ListPurchaseBlock = (
                                     >Предоставить доступ</button>
                                 </div>
                             </>:""}
-                            
                         </li>   
                     ))}
                 </ul>
