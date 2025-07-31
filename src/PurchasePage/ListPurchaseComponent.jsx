@@ -3,7 +3,7 @@ import "./listPurchaseComponent.css";
 import LpsTableItemEdit from "./PurchasePageElement/LpsTableItemEdit.jsx";
 import { useRoleId } from "../js/Utilits/roleId.js";
 import AddItemPurchase from "./PurchasePageElement/AddItemPurchase.jsx";
-import { changeProcurementStatusFalse } from "../js/Utilits/changeProcurementStatus.js";
+import {changeProcurementStatusFalse} from "../js/Utilits/changeProcurementStatus.js";
 
 const ListPurchaseComponent = ({
     count,
@@ -16,21 +16,24 @@ const ListPurchaseComponent = ({
     setPurchasePrice
 }) => {
 
+
     const { roleUser } = useRoleId();
 
-    // Изначально устанавливаем статус закупки как "без изменений"
-    useEffect(() => {
+    // Изначально присваиваем значение true, так как загрузка с сервера и закупка без изменений
+    useEffect(()=>{
         const updatedPurchaseState = [...purchaseState];
         updatedPurchaseState[count] = true;
         setPurchaseState(updatedPurchaseState);
-    }, [purchaseState, count, setPurchaseState]);
+    },[]);
 
-    // Заглушка для запроса счёта
-    const requestInvoice = () => {
-        console.log("Запрос счета отправлен");
+
+    // Отправка данных (запрос) на предоставление счета на основании закупки
+    const requestInvoice =()=> {
+
     };
 
-    // Индексация номенклатуры закупки
+
+    // Индексация закупок и номенклатуры с useMemo
     const indexedItems = useMemo(() => {
         const p = purchase[count];
         const items = [];
@@ -52,7 +55,7 @@ const ListPurchaseComponent = ({
     const [checkedRows, setCheckedRows] = useState({});
     const [quantities, setQuantities] = useState({});
 
-    // Инициализация количества при монтировании или изменении
+    // Инициализация количества при монтировании или изменении закупки
     useEffect(() => {
         const newQuantities = Object.fromEntries(
             indexedItems.map((entry, i) => [i, entry.item.requiredQuantityItem])
@@ -65,9 +68,10 @@ const ListPurchaseComponent = ({
         if (!isEqual) {
             setQuantities(newQuantities);
         }
-    }, [indexedItems, quantities]);
+                            
+    }, [indexedItems]);
 
-    // Пересчёт общей стоимости
+    // Пересчет общей стоимости
     useEffect(() => {
         const currentPurchase = purchase[count];
 
@@ -89,7 +93,7 @@ const ListPurchaseComponent = ({
         }, 0);
 
         setPurchasePrice(summa);
-    }, [purchase, count, setPurchasePrice]);
+    }, [purchase, count]);
 
     // Обработка чекбокса
     const handleCheckboxChange = (index) => {
@@ -132,6 +136,7 @@ const ListPurchaseComponent = ({
         );
     };
 
+
     return (
         <>
             <AddItemPurchase
@@ -140,7 +145,6 @@ const ListPurchaseComponent = ({
                 purchase={purchase}
                 setPurchase={setPurchase}
             />
-
             <table className="table list-purchase-component__table">
                 <thead className="table-borderless__theder">
                     <tr>
@@ -151,23 +155,21 @@ const ListPurchaseComponent = ({
                         <th scope="col" className="lpc-item__price">Цена</th>
                         <th scope="col" className="lpc-item__price">Стоимость</th>
                         <th scope="col" className="lpc-item__delivery">Доставка</th>
-                        {!roleUser && (
-                            <th scope="col" className="lpc-item__provider">Поставщик</th>
-                        )}
+                        {roleUser?"":<th scope="col" className="lpc-item__provider">Поставщик</th>}
                         <th scope="col" className="th-table-right"></th>
                     </tr>
                 </thead>
-
                 <tbody>
                     {indexedItems.map(({ item }, index) => {
-                        const adjustedPrice = roleUser
-                            ? item.purchaseItemPrice * profitability
+                        // Сначала корректируем цену, если нужно
+                        const adjustedPrice = roleUser === true
+                            ? item.purchaseItemPrice * profitability //  если пользователь free добавляю свою наценку
                             : item.purchaseItemPrice;
-
                         const isChecked = checkedRows[index];
                         const quantity = quantities[index] ?? item.requiredQuantityItem;
+                        // Затем вычисляем общую цену
                         const purchasePriceItem = quantity * adjustedPrice;
-
+                        
                         return (
                             <tr key={`${item.guidIdPurchase}-${item.guidIdComponent}`}>
                                 <td>
@@ -178,7 +180,7 @@ const ListPurchaseComponent = ({
                                         onChange={() => handleCheckboxChange(index)}
                                     />
                                 </td>
-
+                                
                                 {isChecked ? (
                                     <LpsTableItemEdit
                                         count={count}
@@ -203,7 +205,7 @@ const ListPurchaseComponent = ({
                                         <td>{item.nameComponent}</td>
                                         <td className="lpc-item__quantity">{quantity}</td>
                                         <td className="lpc-item__price">
-                                            {Intl.NumberFormat("ru").format(adjustedPrice)}
+                                           {Intl.NumberFormat("ru").format(adjustedPrice)}
                                         </td>
                                         <td className="lpc-item__price">
                                             {Intl.NumberFormat("ru").format(Number(purchasePriceItem))}
@@ -211,16 +213,19 @@ const ListPurchaseComponent = ({
                                         <td className="lpc-item__price">
                                             {item.deliveryTimeComponent}
                                         </td>
-                                        {!roleUser && (
+                                        {roleUser ? 
+                                            "" 
+                                            : 
                                             <td className="lpc-item__provider">{item.bestComponentProvider}</td>
-                                        )}
+                                        }
                                         <td>
                                             <button
                                                 className="lpc-item__button-delete"
                                                 onClick={() =>
                                                     deletePurchaseItem(
                                                         item.guidIdPurchase,
-                                                        item.guidIdComponent
+                                                        item.guidIdComponent,
+                                                        purchasePriceItem
                                                     )
                                                 }
                                             >
@@ -234,20 +239,22 @@ const ListPurchaseComponent = ({
                     })}
                 </tbody>
             </table>
-
             <div className="change-procurement-button-block">
-                {purchaseState[count] && (
-                    <button
-                        type="button"
-                        className="btn btn-primary change-procurement-button"
-                        onClick={requestInvoice}
-                    >
-                        Запросить счет
+                {purchaseState[count]?
+                    <button 
+                        type="button" 
+                        class="btn btn-primary change-procurement-button"
+                        onClick={requestInvoice()}
+                        >
+                            Запросить счет
                     </button>
-                )}
+                    :
+                    ""
+                }
             </div>
         </>
     );
 };
 
 export default ListPurchaseComponent;
+
