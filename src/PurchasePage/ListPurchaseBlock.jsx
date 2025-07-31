@@ -317,7 +317,6 @@ const ListPurchaseBlock = (
                                     setPurchase={setPurchase}
                                     purchaseState={purchaseState}
                                     setPurchaseState={setPurchaseState}
-                                    purchasePrice={item.purchasePrice}
                                     setPurchasePrice={(newPrice) => {
                                         const currentPrice = purchase[index].purchasePrice;
                                         if (currentPrice !== newPrice) {

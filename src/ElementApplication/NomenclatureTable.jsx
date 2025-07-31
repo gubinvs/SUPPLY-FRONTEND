@@ -7,7 +7,7 @@ import Spinners from "./Spinners.jsx";
 const NomenclatureTable = (
     { currentItems, selectedIds, setSelectedIds, offers}
 ) => {
-    const { roleCustomer, roleProvider, roleAdmin, roleUser } = useRoleId();
+    const { roleUser } = useRoleId();
 
     if (!offers || Object.keys(offers).length === 0) {
         return <Spinners />;
