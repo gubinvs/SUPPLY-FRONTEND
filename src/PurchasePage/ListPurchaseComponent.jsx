@@ -29,7 +29,11 @@ const ListPurchaseComponent = ({
 
     // Отправка данных (запрос) на предоставление счета на основании закупки
     const requestInvoice =()=> {
-        
+        alert("Запрос успешно отправлен");
+    };
+
+    const requestInvoiceFree = () => {
+        alert("Запрос успешно отправлен FREE");
     };
 
 
@@ -241,13 +245,29 @@ const ListPurchaseComponent = ({
             </table>
             <div className="change-procurement-button-block">
                 {purchaseState[count]?
-                    <button 
-                        type="button" 
-                        class="btn btn-primary change-procurement-button"
-                        onClick={requestInvoice()}
-                        >
-                            Запросить счет
-                    </button>
+                        <>
+                            {roleUser?
+                                <>
+                                    <button 
+                                        type="button" 
+                                        class="btn btn-primary change-procurement-button"
+                                        onClick={()=>{requestInvoiceFree()}}
+                                        >
+                                            Запросить счет
+                                    </button>
+                                </>
+                                :
+                                <>
+                                    <button 
+                                        type="button" 
+                                        class="btn btn-primary change-procurement-button"
+                                        onClick={()=>{requestInvoice()}}
+                                        >
+                                            Запросить счет
+                                    </button>
+                                </>
+                            }  
+                        </>
                     :
                     ""
                 }
