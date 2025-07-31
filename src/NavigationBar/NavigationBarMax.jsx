@@ -27,11 +27,17 @@ const NavigationBarMax = () => {
         <div className="navigation-bar-max">
             <div className="navigation-bar-max__logo-block">
                 <picture>
-                    <img src="../images/logo/header-logo__max-bar_1280.svg" alt="Логотип системы" className="navigation-bar-max__logo"/>
+                    <img 
+                    style={{cursor:"pointer"}}
+                        src="../images/banner-shop-min.png" 
+                        alt="Баннер интернет магазина" 
+                        onClick={()=> {window.location.href="https://shop.encomponent.ru/"}}
+                    />
+                    {/* <img src="../images/logo/header-logo__max-bar_1280.svg" alt="Логотип системы" className="navigation-bar-max__logo"/> */}
                     {/* <img src="../../images/logo/logo-ha.png" alt="Логотип системы" className="navigation-bar-min__logo mr-20" /> */}
                     {/* <img src="../../images/logo/header-logo_sa.svg" alt="Логотип системы" className="navigation-bar-min__logo" /> */}
                 </picture>
-                <div className="nbm-logo-block__title">Компоненты<br /> энергии</div>
+                {/* <div className="nbm-logo-block__title">Компоненты<br /> энергии</div> */}
                 {/* <div className="nbm-logo-block__title">Системная автоматизация</div> */}
             </div>
             <div className="top-block__line navigation-bar-max__top-block__line"></div>
@@ -70,21 +76,6 @@ const NavigationBarMax = () => {
                         >
                             <img src="../images/specifications-icon.svg" className="nbm-navigation-item__icon" alt="#"/>
                             <div className="nbm-navigation-item__name">Предложения поставщиков</div>
-                        </li>    
-                        <li
-                            title="По подписке"
-                            className={`navigation-bar-max__navigation-item ${location.pathname === pathEditSupplyComponent ? 'navigation-bar-max__navigation-item_active' : ''}`}
-                        >
-                            <img src="../images/file-pen-line.svg" className="nbm-navigation-item__icon" alt="#" />
-                            <div className="nbm-navigation-item__name_free">Редактировать номенклатуру</div>
-                        </li>
-                        <li
-                            title="По подписке"
-                            className={`navigation-bar-max__navigation-item ${location.pathname === pathAddComponent ? 'navigation-bar-max__navigation-item_active' : ''}`}
-                            
-                        >
-                            <img src="../images/add-component-icon.svg" className="nbm-navigation-item__icon" alt="#"/>
-                            <div className="nbm-navigation-item__name_free">Добавить данные</div>
                         </li>
                         <li
                             className={`navigation-bar-max__navigation-item ${location.pathname === pathPurchase ? 'navigation-bar-max__navigation-item_active' : ''}`}
