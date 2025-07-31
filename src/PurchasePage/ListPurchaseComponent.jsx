@@ -257,4 +257,3 @@ const ListPurchaseComponent = ({
 };
 
 export default ListPurchaseComponent;
-
