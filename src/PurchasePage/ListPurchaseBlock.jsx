@@ -42,6 +42,7 @@ const ListPurchaseBlock = (
         }
     }, [purchase, checkedPurchaseId, editPurchaseName]);
 
+    // 
     const handleCheck = (index) => {
         setCheckedPurchaseId((prev) => {
             const updated = [...prev];
@@ -151,7 +152,6 @@ const ListPurchaseBlock = (
             alert("Ошибка при отправке запроса!");
         }
     };
-
 
     // Отправка данных на сервер для записи разрешения на достут к закупке
     const grantAccess = async (guidId, email)=> {

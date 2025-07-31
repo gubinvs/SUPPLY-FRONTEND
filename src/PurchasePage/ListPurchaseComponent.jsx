@@ -103,22 +103,26 @@ const ListPurchaseComponent = ({
     };
 
     // Удаление номенклатуры
-    const deletePurchaseItem = (purchaseGuid, componentGuid, purchasePriceItem) => {
+    const deletePurchaseItem = (purchaseGuid, componentGuid) => {
         setPurchase((prev) =>
-            prev.map((p) =>
-                p.guidIdPurchase === purchaseGuid
-                    ? {
-                          ...p,
-                          purchaseItem: p.purchaseItem.filter(
-                              (item) => item.guidIdComponent !== componentGuid
-                          ),
-                      }
-                    : p
-            )
-        );
+            prev.map((p) => {
+                if (p.guidIdPurchase !== purchaseGuid) return p;
 
-        setPurchasePrice(purchasePrice - purchasePriceItem);
+                const itemToDelete = p.purchaseItem.find(i => i.guidIdComponent === componentGuid);
+                const priceToSubtract = itemToDelete
+                    ? Number(itemToDelete.requiredQuantityItem) * Number(itemToDelete.purchaseItemPrice)
+                    : 0;
+
+                setPurchasePrice(prevPrice => prevPrice - priceToSubtract);
+
+                return {
+                    ...p,
+                    purchaseItem: p.purchaseItem.filter(i => i.guidIdComponent !== componentGuid),
+                };
+            })
+        );
     };
+
 
     return (
         <>
@@ -186,10 +190,7 @@ const ListPurchaseComponent = ({
                                         <td>{item.nameComponent}</td>
                                         <td className="lpc-item__quantity">{quantity}</td>
                                         <td className="lpc-item__price">
-                                        
                                            {Intl.NumberFormat("ru").format(adjustedPrice)}
-                                            
-                                            
                                         </td>
                                         <td className="lpc-item__price">
                                             {Intl.NumberFormat("ru").format(Number(purchasePriceItem))}
@@ -224,7 +225,11 @@ const ListPurchaseComponent = ({
                     })}
                 </tbody>
             </table>
-            {purchaseState[count]?"Кнопка":""}
+            {purchaseState[count]?
+                <button type="button" class="btn btn-primary" disabled>Запросить счет</button>
+                :
+                <button type="button" class="btn btn-outline-primary" disabled>Запросить счет</button>
+            }
         </>
     );
 };
