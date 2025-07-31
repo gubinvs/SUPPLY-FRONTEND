@@ -28,7 +28,7 @@ const NavigationBarMax = () => {
             <div className="navigation-bar-max__logo-block">
                 <picture>
                     <img 
-                    style={{cursor:"pointer"}}
+                        style={{cursor:"pointer"}}
                         src="../images/banner-shop-min.png" 
                         alt="Баннер интернет магазина" 
                         onClick={()=> {window.location.href="https://shop.encomponent.ru/"}}
