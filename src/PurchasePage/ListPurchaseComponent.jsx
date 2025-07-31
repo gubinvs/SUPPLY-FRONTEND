@@ -20,11 +20,13 @@ const ListPurchaseComponent = ({
     const { roleUser } = useRoleId();
 
     // Изначально присваиваем значение true, так как загрузка с сервера и закупка без изменений
-    useEffect(()=>{
-        const updatedPurchaseState = [...purchaseState];
-        updatedPurchaseState[count] = true;
-        setPurchaseState(updatedPurchaseState);
-    },[]);
+    useEffect(() => {
+    const updatedPurchaseState = [...purchaseState];
+    updatedPurchaseState[count] = true;
+    setPurchaseState(updatedPurchaseState);
+    }, [count, purchaseState, setPurchaseState]);
+
+
 
 
     // Отправка данных (запрос) на предоставление счета на основании закупки

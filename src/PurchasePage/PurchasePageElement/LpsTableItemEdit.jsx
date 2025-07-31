@@ -41,17 +41,18 @@ const LpsTableItemEdit = ({
     const prevSumPriceItemRef = useRef(quantity * purchaseItemPrice);
 
     // Обновляем сумму и общую закупочную стоимость при изменении количества или цены
-    useEffect(() => {
-      const newSum = localQuantity * itemPrice;
+  useEffect(() => {
+    const newSum = localQuantity * itemPrice;
 
-      if (prevSumPriceItemRef.current !== undefined) {
-        const diff = newSum - prevSumPriceItemRef.current;
-        setPurchasePrice(prev => prev + diff);
-      }
+    if (prevSumPriceItemRef.current !== undefined) {
+      const diff = newSum - prevSumPriceItemRef.current;
+      setPurchasePrice(prev => prev + diff);
+    }
 
-      setSumPriceItem(newSum);
-      prevSumPriceItemRef.current = newSum;
-    }, [localQuantity, itemPrice]);
+    setSumPriceItem(newSum);
+    prevSumPriceItemRef.current = newSum;
+  }, [localQuantity, itemPrice, setPurchasePrice]);
+
 
     // Обновляем локальное количество при внешнем изменении
     useEffect(() => {
@@ -95,15 +96,23 @@ const LpsTableItemEdit = ({
                   purchaseItemPrice: count === index ? itemPrice : i.purchaseItemPrice,
                   bestComponentProvider: count === index ? itemBestComponentProvider : i.bestComponentProvider,
                   deliveryTimeComponent: count === index ? itemDeliveryTime : i.deliveryTimeComponent,
-                  otherOffers: i.otherOffers.map(x => ({
-                      ...x
-                  }))
+                  otherOffers: i.otherOffers.map(x => ({ ...x }))
               }))
           };
       });
 
       setPurchase(updatedPurchase);
-  }, [localQuantity, itemPrice, itemBestComponentProvider]);
+  }, [
+      purchase,
+      countItem,
+      index,
+      localQuantity,
+      itemPrice,
+      itemBestComponentProvider,
+      itemDeliveryTime,
+      setPurchase
+  ]);
+
 
 
   return (
