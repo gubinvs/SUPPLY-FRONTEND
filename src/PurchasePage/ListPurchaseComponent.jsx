@@ -108,7 +108,7 @@ console.log(purchaseState[count]);
             [index]: newQuantity,
         }));
 
-        changeProcurementStatusFalse(index, purchaseState, setPurchaseState);
+        changeProcurementStatusFalse(count, purchaseState, setPurchaseState);
     };
 
     // Удаление номенклатуры
