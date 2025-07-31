@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "./listPurchaseBlock.css";
 import ApiUrl from "../js/ApiUrl";
 import ListPurchaseComponent from "./ListPurchaseComponent.jsx";
+import {changeProcurementStatusTrue} from "../js/Utilits/changeProcurementStatus.js";
 
 const ListPurchaseBlock = (
     { components, purchase, setPurchase, profitability }
@@ -18,6 +19,7 @@ const ListPurchaseBlock = (
     const [shareGuidIdPurchase, setShareGuidIdPurchase] = useState([]);
     // Состояние кнопки запросить счет, при сохраненной закупке в базе данных
     const [purchaseState, setPurchaseState] = useState([]); 
+
 
     // Форма отправки данных для предоставления доступа к закупке
     const [shareForm, setShareForm] = useState([]);
@@ -51,7 +53,7 @@ const ListPurchaseBlock = (
         });
     };
 
-    // Обновление данных закупки и ее компонентов
+    // Сохранение на сервере данных о закупке и ее компонентов
     const requestAddItemPurchaseData = (index) => {
         const i = purchase[index];
 
@@ -81,6 +83,9 @@ const ListPurchaseBlock = (
         .then((response) => {
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             alert("Данные успешно записаны!");
+
+            changeProcurementStatusTrue(index, purchaseState, setPurchaseState);
+
             return response.json();
         })
         .catch((error) => {

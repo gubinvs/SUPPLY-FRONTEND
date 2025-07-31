@@ -3,6 +3,7 @@ import "./listPurchaseComponent.css";
 import LpsTableItemEdit from "./PurchasePageElement/LpsTableItemEdit.jsx";
 import { useRoleId } from "../js/Utilits/roleId.js";
 import AddItemPurchase from "./PurchasePageElement/AddItemPurchase.jsx";
+import {changeProcurementStatusFalse} from "../js/Utilits/changeProcurementStatus.js";
 
 const ListPurchaseComponent = ({
     count,
@@ -15,6 +16,11 @@ const ListPurchaseComponent = ({
     purchasePrice,
     setPurchasePrice
 }) => {
+
+
+console.log(purchaseState[count]);
+
+
     const { roleUser } = useRoleId();
 
     // Изначально присваиваем значение true, так как загрузка с сервера и закупка без изменений
@@ -23,6 +29,7 @@ const ListPurchaseComponent = ({
         updatedPurchaseState[count] = true;
         setPurchaseState(updatedPurchaseState);
     },[]);
+
 
     // Индексация закупок и номенклатуры с useMemo
     const indexedItems = useMemo(() => {
@@ -100,6 +107,8 @@ const ListPurchaseComponent = ({
             ...prev,
             [index]: newQuantity,
         }));
+
+        changeProcurementStatusFalse(index, purchaseState, setPurchaseState);
     };
 
     // Удаление номенклатуры
@@ -203,7 +212,6 @@ const ListPurchaseComponent = ({
                                             : 
                                             <td className="lpc-item__provider">{item.bestComponentProvider}</td>
                                         }
-                                        
                                         <td>
                                             <button
                                                 className="lpc-item__button-delete"
@@ -226,9 +234,10 @@ const ListPurchaseComponent = ({
                 </tbody>
             </table>
             {purchaseState[count]?
-                <button type="button" class="btn btn-primary" disabled>Запросить счет</button>
+                <button type="button" class="btn btn-primary change-procurement-button">Запросить счет</button>
                 :
-                <button type="button" class="btn btn-outline-primary" disabled>Запросить счет</button>
+                // <button type="button" class="btn btn-outline-primary" disabled>Запросить счет</button>
+                ""
             }
         </>
     );
