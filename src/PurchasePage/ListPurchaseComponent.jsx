@@ -29,7 +29,7 @@ const ListPurchaseComponent = ({
 
     // Отправка данных (запрос) на предоставление счета на основании закупки
     const requestInvoice =()=> {
-
+        
     };
 
 
