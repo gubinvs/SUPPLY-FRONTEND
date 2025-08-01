@@ -71,7 +71,7 @@ const CreatePurchaseBlock = (
                         type="text" 
                         name="guidId"
                         maxLength={20}
-                        placeholder="Идентификатор новой спецификации" 
+                        placeholder="Идентификатор спецификации" 
                         aria-label="purchaseId"
                         value={purchaseId}
                         onChange={(e)=>{
@@ -81,7 +81,7 @@ const CreatePurchaseBlock = (
                     <input 
                         className="form-control create-purchase-block__create-form-name" 
                         type="text" 
-                        placeholder="Наименование новой спецификации" 
+                        placeholder="Наименование спецификации" 
                         name="purchaseName"
                         maxLength={60}
                         aria-label="purchaseId"
