@@ -64,14 +64,14 @@ const CreatePurchaseBlock = (
     return (
         <>
             <div className="purchase-page__create-purchase-bloc__container">
-                <h6 className="create-purchase-block__title">Создайте новую закупку:</h6>
+                <h6 className="create-purchase-block__title">Создайте новую спецификацию:</h6>
                 <div className="purchase-page__create-purchase-block">
                     <input 
                         className="form-control create-purchase-block__create-form-purchaseId" 
                         type="text" 
                         name="guidId"
                         maxLength={20}
-                        placeholder="Идентификатор новой закупки" 
+                        placeholder="Идентификатор новой спецификации" 
                         aria-label="purchaseId"
                         value={purchaseId}
                         onChange={(e)=>{
@@ -81,7 +81,7 @@ const CreatePurchaseBlock = (
                     <input 
                         className="form-control create-purchase-block__create-form-name" 
                         type="text" 
-                        placeholder="Наименование новой закупки" 
+                        placeholder="Наименование новой спецификации" 
                         name="purchaseName"
                         maxLength={60}
                         aria-label="purchaseId"

@@ -5,7 +5,7 @@ import ApiUrl from "../../js/ApiUrl";
 
 
 
-// Блок с формой выбора номенклатуры для добавления ее в закупку
+// Блок с формой выбора номенклатуры для добавления ее в спецификацию
 const AddItemPurchase = (
     {
         count,
@@ -47,7 +47,7 @@ const AddItemPurchase = (
         const guidIdPurchase = purchase[count]?.guidIdPurchase;
 
         if (!guidIdPurchase) {
-            console.warn('Нет guidIdPurchase у закупки', purchase[count]);
+            console.warn('Нет guidIdPurchase успецификации', purchase[count]);
             return;
         }
 

@@ -81,8 +81,8 @@ const NavigationBarMax = () => {
                             className={`navigation-bar-max__navigation-item ${location.pathname === pathPurchase ? 'navigation-bar-max__navigation-item_active' : ''}`}
                             onClick={() => navigate(pathPurchase)}
                         >
-                            <img src="../images/purchase-icon.svg" className="nbm-navigation-item__icon" alt="#"/>
-                            <div className="nbm-navigation-item__name">Данные о закупках</div>
+                            <img src="../images/specification-icon.svg" className="nbm-navigation-item__icon" alt="#"/>
+                            <div className="nbm-navigation-item__name">Спецификации</div>
                         </li>
                     </>
                 )}
@@ -100,8 +100,8 @@ const NavigationBarMax = () => {
                             className={`navigation-bar-max__navigation-item ${location.pathname === pathPurchase ? 'navigation-bar-max__navigation-item_active' : ''}`}
                             onClick={() => navigate(pathPurchase)}
                         >
-                            <img src="../images/purchase-icon.svg" className="nbm-navigation-item__icon" alt="#"/>
-                            <div className="nbm-navigation-item__name">Данные о закупках</div>
+                            <img src="../images/specification-icon.svg" className="nbm-navigation-item__icon" alt="#"/>
+                            <div className="nbm-navigation-item__name">Спецификации</div>
                         </li>
                     
                     </>

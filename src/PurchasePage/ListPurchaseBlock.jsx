@@ -21,7 +21,7 @@ const ListPurchaseBlock = (
     const [purchaseState, setPurchaseState] = useState([]); 
 
 
-    // Форма отправки данных для предоставления доступа к закупке
+    // Форма отправки данных для предоставления доступа к спецификации
     const [shareForm, setShareForm] = useState([]);
     useEffect(() => {
     if (purchase.length > 0) {
@@ -53,7 +53,7 @@ const ListPurchaseBlock = (
         });
     };
 
-    // Сохранение на сервере данных о закупке и ее компонентов
+    // Сохранение на сервере данных о спецификации и ее компонентах
     const requestAddItemPurchaseData = (index) => {
         const i = purchase[index];
 
@@ -94,7 +94,7 @@ const ListPurchaseBlock = (
         });
     };
 
-    // Сохранение нового названия закупки
+    // Сохранение нового названия спецификации
     const saveNewNamePurchase = async (index) => {
         const updatedPurchaseData = {
             guidIdPurchase: purchase[index].guidIdPurchase,
@@ -132,9 +132,9 @@ const ListPurchaseBlock = (
         }
     };
 
-    // Удаление закупки
+    // Удаление спецификации
     const deletePurchase = async (guidIdPurchase) => {
-        const isConfirmed = window.confirm("Вы уверены, что хотите удалить эту закупку?");
+        const isConfirmed = window.confirm("Вы уверены, что хотите удалить эту спецификацию?");
         if (!isConfirmed) return;
 
         try {
@@ -158,7 +158,7 @@ const ListPurchaseBlock = (
         }
     };
 
-    // Отправка данных на сервер для записи разрешения на достут к закупке
+    // Отправка данных на сервер для записи разрешения на достут к спецификации
     const grantAccess = async (guidId, email)=> {
        const reguest = {
         guidIdPurchase: guidId,
@@ -329,7 +329,7 @@ const ListPurchaseBlock = (
                                 />
                             }
 
-                            {/* Форма предоставления доступа к закупке другому пользователю */}
+                            {/* Форма предоставления доступа к спецификации другому пользователю */}
                             {shareForm[index] ?
                             <>
                                 <div className="share-form-purchase">
@@ -344,7 +344,7 @@ const ListPurchaseBlock = (
                                         }}
                                     />
                                     <div className="share-form-purchase__title">
-                                        Для предоставления доступа к закупке введите email пользователя 
+                                        Для предоставления доступа к спецификации введите email пользователя 
                                     </div>
                                     <input 
                                         className="form-control share-form-purchase__input"
