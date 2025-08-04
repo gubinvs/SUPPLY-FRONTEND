@@ -30,10 +30,21 @@ const ListPurchaseComponent = ({
     // Отправка данных (запрос) на предоставление счета на основании закупки
     const requestInvoice =()=> {
         alert("Запрос успешно отправлен");
+        
     };
 
     const requestInvoiceFree = () => {
+        const reguest = {
+            guidIdCollaborator : "",
+            vendorCodeComponent : "",
+            nameComponent : "",
+            quantityComponent : "",
+            priceComponent : "",
+            deliveryTimeComponent : ""
+        };
+
         alert("Запрос успешно отправлен FREE");
+        //RequestInvoiceController
     };
 
 
