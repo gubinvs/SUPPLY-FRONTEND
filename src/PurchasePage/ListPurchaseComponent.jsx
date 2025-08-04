@@ -35,7 +35,7 @@ const ListPurchaseComponent = ({
 
     const requestInvoiceFree = () => {
         const reguest = {
-            guidIdCollaborator : "",
+            guidIdCollaborator : localStorage.getItem('guidIdCollaborator'),
             vendorCodeComponent : "",
             nameComponent : "",
             quantityComponent : "",
@@ -43,6 +43,7 @@ const ListPurchaseComponent = ({
             deliveryTimeComponent : ""
         };
 
+     
         alert("Запрос успешно отправлен FREE");
         //RequestInvoiceController
     };
