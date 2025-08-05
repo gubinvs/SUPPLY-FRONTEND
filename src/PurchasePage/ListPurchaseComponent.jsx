@@ -43,7 +43,6 @@ const ListPurchaseComponent = ({
             PurchasePrice : purchase[count].purchasePrice,
             PurchaseCostomer : purchase[count].purchaseCostomer,
             purchaseItem : purchase[count].purchaseItem
-
         };
 
         fetch(ApiUrl + "/api/RequestInvoiceController", {
