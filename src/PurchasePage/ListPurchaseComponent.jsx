@@ -43,7 +43,9 @@ const ListPurchaseComponent = ({
             PurchasePrice : purchase[count].purchasePrice,
             PurchaseCostomer : purchase[count].purchaseCostomer,
             purchaseItem : purchase[count].purchaseItem
+
         };
+
 
         fetch(ApiUrl + "/api/RequestInvoiceController", {
             method: "POST",
@@ -57,6 +59,7 @@ const ListPurchaseComponent = ({
         .catch((error) => {
             console.error("Ошибка получения данных:", error);
         });
+
 
         alert("Запрос успешно отправлен");
     };
