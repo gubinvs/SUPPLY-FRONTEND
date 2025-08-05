@@ -17,7 +17,6 @@ const ListPurchaseComponent = ({
     setPurchasePrice
 }) => {
 
-    console.log(purchase);
     const { roleUser } = useRoleId();
 
     // Изначально присваиваем значение true, так как загрузка с сервера и закупка без изменений
@@ -46,6 +45,7 @@ const ListPurchaseComponent = ({
 
         };
 
+        console.log(JSON.stringify(reguest));
 
         fetch(ApiUrl + "/api/RequestInvoiceController", {
             method: "POST",
@@ -54,6 +54,7 @@ const ListPurchaseComponent = ({
         })
         .then((response) => {
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            alert("Запрос успешно отправлен");
             return response.json();
         })
         .catch((error) => {
@@ -61,7 +62,7 @@ const ListPurchaseComponent = ({
         });
 
 
-        alert("Запрос успешно отправлен");
+        
     };
 
 
