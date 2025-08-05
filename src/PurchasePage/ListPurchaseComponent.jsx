@@ -36,12 +36,25 @@ const ListPurchaseComponent = ({
     const requestInvoiceFree = () => {
         const reguest = {
             guidIdCollaborator : localStorage.getItem('guidIdCollaborator'),
-            vendorCodeComponent : "",
-            nameComponent : "",
-            quantityComponent : "",
-            priceComponent : "",
-            deliveryTimeComponent : ""
+            vendorCodeComponent : [],
+            nameComponent : [],
+            quantityComponent : [],
+            priceComponent : [],
+            deliveryTimeComponent : []
         };
+
+        fetch(ApiUrl + "/api/RequestInvoiceController", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(reguest)
+        })
+        .then((response) => {
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            return response.json();
+        })
+        .catch((error) => {
+            console.error("Ошибка получения данных:", error);
+        });
 
      
         alert("Запрос успешно отправлен FREE");
