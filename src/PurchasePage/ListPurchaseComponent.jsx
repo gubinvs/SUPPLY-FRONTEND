@@ -36,6 +36,11 @@ const ListPurchaseComponent = ({
     const requestInvoiceFree = () => {
         const reguest = {
             guidIdCollaborator : localStorage.getItem('guidIdCollaborator'),
+            GuidIdPurchase : "",
+            PurchaseId : "",
+            PurchaseName : "",
+            PurchasePrice : "",
+            PurchaseCostomer : "",
             vendorCodeComponent : [],
             nameComponent : [],
             quantityComponent : [],
