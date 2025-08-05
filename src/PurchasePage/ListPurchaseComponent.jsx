@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import "./listPurchaseComponent.css";
+import ApiUrl from "../js/ApiUrl.js";
 import LpsTableItemEdit from "./PurchasePageElement/LpsTableItemEdit.jsx";
 import { useRoleId } from "../js/Utilits/roleId.js";
 import AddItemPurchase from "./PurchasePageElement/AddItemPurchase.jsx";
@@ -16,7 +17,7 @@ const ListPurchaseComponent = ({
     setPurchasePrice
 }) => {
 
-
+    console.log(purchase);
     const { roleUser } = useRoleId();
 
     // Изначально присваиваем значение true, так как загрузка с сервера и закупка без изменений
@@ -36,16 +37,13 @@ const ListPurchaseComponent = ({
     const requestInvoiceFree = () => {
         const reguest = {
             guidIdCollaborator : localStorage.getItem('guidIdCollaborator'),
-            GuidIdPurchase : "",
-            PurchaseId : "",
-            PurchaseName : "",
-            PurchasePrice : "",
-            PurchaseCostomer : "",
-            vendorCodeComponent : [],
-            nameComponent : [],
-            quantityComponent : [],
-            priceComponent : [],
-            deliveryTimeComponent : []
+            GuidIdPurchase : purchase[count].guidIdPurchase,
+            PurchaseId : purchase[count].purchaseId,
+            PurchaseName : purchase[count].purchaseName,
+            PurchasePrice : purchase[count].purchasePrice,
+            PurchaseCostomer : purchase[count].purchaseCostomer,
+            purchaseItem : purchase[count].purchaseItem
+
         };
 
         fetch(ApiUrl + "/api/RequestInvoiceController", {
@@ -61,9 +59,7 @@ const ListPurchaseComponent = ({
             console.error("Ошибка получения данных:", error);
         });
 
-     
-        alert("Запрос успешно отправлен FREE");
-        //RequestInvoiceController
+        alert("Запрос успешно отправлен");
     };
 
 
