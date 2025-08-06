@@ -47,7 +47,7 @@ const ListPurchaseComponent = ({
 
         console.log(JSON.stringify(reguest));
 
-        fetch(ApiUrl + "/api/RequestInvoiceController", {
+        fetch(ApiUrl + "/api/RequestInvoice", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(reguest)
