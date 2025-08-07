@@ -30,6 +30,6 @@ export function linkPagePurchase() {
 
 // Ссылка на страницу с заказами
 export function linkPageOrders() {
-    window.location = "/Orders";
+    window.location = "/OrdersPage";
 };
 

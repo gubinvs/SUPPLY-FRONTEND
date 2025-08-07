@@ -17,6 +17,7 @@ import AddComponentApplication from "./AddComponentApplication/AddComponentAppli
 import ExcelPasteInput from "./ExcelPasteInput.jsx";
 import EditSupplyComponent from "./EditSupplyComponent/EditSupplyComponent.jsx";
 import PurchasePage from "./PurchasePage/PurchasePage.jsx";
+import OrdersPage from "./OrdersPage/OrdersPage.jsx";
 
 
 const App = () => {
@@ -160,7 +161,11 @@ const App = () => {
         {/* Страница c данными о заказах (закупке) */}
           <Route path="/OrdersPage" element={
           <PrivateRoute allowedRoles={[ROLE_CUSTOMER, ROLE_ADMIN, ROLE_USER]}>
-   
+            <OrdersPage 
+              role={role} 
+              title="Закупки пользователя"
+              loading={loading}
+            />
           </PrivateRoute>
         } />
 
