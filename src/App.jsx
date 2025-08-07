@@ -163,7 +163,7 @@ const App = () => {
           <PrivateRoute allowedRoles={[ROLE_CUSTOMER, ROLE_ADMIN, ROLE_USER]}>
             <OrdersPage 
               role={role} 
-              title="Закупки пользователя"
+              title="Заказы пользователя"
               loading={loading}
             />
           </PrivateRoute>

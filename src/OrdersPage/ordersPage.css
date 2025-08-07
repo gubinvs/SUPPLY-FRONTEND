@@ -1,0 +1,7 @@
+.orders-page-section {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center !important;
+    align-items: center !important;
+}
