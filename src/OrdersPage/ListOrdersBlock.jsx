@@ -41,10 +41,12 @@ const ListOrdersBlock  = (
                                     </tr>
                                     {item.orderComponent.map((comp)=>{  
                                         return(
-                                            <><tr>  
-                                                <td className="obs_td-component"></td>
-                                                <td className="obs_td-component">{comp.vendorCodeComponent}</td>
-                                            </tr></>
+                                            <>
+                                                <tr>  
+                                                    <td className="obs_td-component"></td>
+                                                    <td className="obs_td-component">{comp.vendorCodeComponent}</td>
+                                                </tr>
+                                            </>
                                         );
                                     })}
                                 </>
