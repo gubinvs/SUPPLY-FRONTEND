@@ -16,9 +16,9 @@ const ListOrdersBlock  = (
                             <th scope="col"></th>
                             <th scope="col">Идентификатор</th>
                             <th scope="col">Наименование</th>
-                            <th scope="col">Стоимость</th>
+                            <th scope="col">Стоимость / кол-во</th>
                             <th scope="col">Заказчик</th>
-                            <th scope="col">Статус заказа</th>
+                            <th scope="col">Статус заказа / срок</th>
                         
                         </tr>
                     </thead>
@@ -37,7 +37,7 @@ const ListOrdersBlock  = (
                                         <td>{item.purchaseName}</td>
                                         <td>{item.purchasePrice}</td>
                                         <td>{item.purchaseCostomer}</td>
-                                        <td>{item.supplyOrderUserStatus }</td>
+                                        <td>{item.supplyOrderUserStatus}</td>
                                     </tr>
                                     {item.orderComponent.map((comp)=>{  
                                         return(
@@ -45,6 +45,11 @@ const ListOrdersBlock  = (
                                                 <tr>  
                                                     <td className="obs_td-component"></td>
                                                     <td className="obs_td-component">{comp.vendorCodeComponent}</td>
+                                                    <td className="obs_td-component">{comp.nameComponent}</td>
+                                                    <td className="obs_td-component">{comp.quantityComponent}</td>
+                                                    <td className="obs_td-component">{comp.priceComponent}</td>
+                                                    <td className="obs_td-component">{comp.deliveryTimeComponent}</td>
+                                                   
                                                 </tr>
                                             </>
                                         );
