@@ -39,9 +39,16 @@ const ListOrdersBlock  = (
                                         <td>{item.purchaseCostomer}</td>
                                         <td>{item.supplyOrderUserStatus }</td>
                                     </tr>
+                                    {item.orderComponent.map((comp)=>{  
+                                        return(
+                                            <><tr>  
+                                                <td className="obs_td-component"></td>
+                                                <td className="obs_td-component">{comp.vendorCodeComponent}</td>
+                                            </tr></>
+                                        );
+                                    })}
                                 </>
                             );
-                            
                         })}
                     </tbody>
                 </table>

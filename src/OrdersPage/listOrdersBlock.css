@@ -1,3 +1,7 @@
 .orders-block-section {
     width: 100%;
 }
+
+.obs_td-component {
+    background-color: #F5F6FA !important;
+}
