@@ -5,6 +5,8 @@ const ListOrdersBlock  = (
     {ordersList}
 ) => {
 
+    
+
     return(
         <>
             <div className="orders-block-section">
@@ -21,24 +23,25 @@ const ListOrdersBlock  = (
                         </tr>
                     </thead>
                     <tbody>
-                        {ordersList.map((item)=>{
+                        {ordersList.map((item, count)=>{
                             return(
                                 <>
-                                <tr>
-                                <td>
-                                    <input
-                                        className="form-check-input"
-                                        type="checkbox"
-                                    />
-                                </td>
-                                <td>{item.purchaseId}</td>
-                                <td>{item.purchaseName}</td>
-                                <td>{item.purchasePrice}</td>
-                                <td>{item.purchaseCostomer}</td>
-                                <td>{item.supplyOrderUserStatus }</td>
-                            </tr>
+                                    <tr key={count}>
+                                        <td>
+                                            <input
+                                                className="form-check-input"
+                                                type="checkbox"
+                                            />
+                                        </td>
+                                        <td>{item.purchaseId}</td>
+                                        <td>{item.purchaseName}</td>
+                                        <td>{item.purchasePrice}</td>
+                                        <td>{item.purchaseCostomer}</td>
+                                        <td>{item.supplyOrderUserStatus }</td>
+                                    </tr>
                                 </>
                             );
+                            
                         })}
                     </tbody>
                 </table>
