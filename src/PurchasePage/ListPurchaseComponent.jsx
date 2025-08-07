@@ -45,8 +45,6 @@ const ListPurchaseComponent = ({
 
         };
 
-        console.log(JSON.stringify(reguest));
-
         fetch(ApiUrl + "/api/RequestInvoice", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -62,8 +60,6 @@ const ListPurchaseComponent = ({
             alert("Ошибка отправки данных:");
         });
 
-
-        
     };
 
 
