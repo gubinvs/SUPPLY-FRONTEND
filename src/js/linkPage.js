@@ -23,7 +23,13 @@ export function linkPageEditSupplyComponent() {
     window.location = "/EditSupplyComponent";
 };
 
-// Ссылка на страницу редактирования данных номенклатуры
+// Ссылка на страницу со спецификациями
 export function linkPagePurchase() {
     window.location = "/Purchase";
 };
+
+// Ссылка на страницу с заказами
+export function linkPageOrders() {
+    window.location = "/Orders";
+};
+
