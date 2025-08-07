@@ -58,7 +58,8 @@ const ListPurchaseComponent = ({
             return response.json();
         })
         .catch((error) => {
-            console.error("Ошибка получения данных:", error);
+            console.error("Ошибка отправки данных:", error);
+            alert("Ошибка отправки данных:");
         });
 
 
