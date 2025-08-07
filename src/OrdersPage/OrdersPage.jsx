@@ -26,10 +26,16 @@ const OrdersPage =(
 
                         {isNavMaxVisible && <NavigationBarMax />}
                         <HeaderApplicationPanel role={role} title={title} />
-         
+                        <div className="main-application-panel__container">
+                            
+
+
+
+                            
+                        </div>
                     </div>
                     :<Spinners/>
-                }
+                } 
             </>
 
         );
