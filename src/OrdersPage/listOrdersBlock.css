@@ -2,7 +2,17 @@
     width: 100%;
 }
 
+.filter-section {
+    display: flex;
+    align-items: center;
+}
+
+.filter-section label {
+    width: 300px;
+    font-size: 18px;
+}
+
 .obs_td-component {
-    color: #4F597F !important;
+    color: #374063 !important;
     background-color: #F5F6FA !important;
 }
