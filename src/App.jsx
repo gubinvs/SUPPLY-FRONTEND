@@ -154,6 +154,7 @@ const App = () => {
               components={components}
               profitability={profitability}
               error={error}
+              loading={loading}
             />
           </PrivateRoute>
         } />

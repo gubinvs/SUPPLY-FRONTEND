@@ -6,9 +6,10 @@ import NavigationBarMin from "../NavigationBar/NavigationBarMin";
 import HeaderApplicationPanel from "../ApplicationPanel/Header/HeaderApplicationPanel";
 import CreatePurchaseBlock from "./CreatePurchaseBlock.jsx";
 import ListPurchaseBlock from "./ListPurchaseBlock.jsx";
+import Spinners from "../ElementApplication/Spinners.jsx";
 
 const PurchasePage = (
-    { role, title, components, profitability }
+    { role, title, components, profitability, loading }
 ) => {
     const [isNavMaxVisible, setIsNavMaxVisible] = useState(false);
     const handleShowMax = () => setIsNavMaxVisible(true);
@@ -50,12 +51,15 @@ const PurchasePage = (
             <div className="main-application-panel__container">
                 <div className="purchase-page__container">
                     <CreatePurchaseBlock />
-                    <ListPurchaseBlock 
-                        components={components}
-                        purchase={purchase}
-                        setPurchase={setPurchase}
-                        profitability={profitability}
-                    />
+                    {!loading?
+                        <ListPurchaseBlock 
+                            components={components}
+                            purchase={purchase}
+                            setPurchase={setPurchase}
+                            profitability={profitability}
+                        />
+                        :<Spinners/>
+                    }
                 </div>
             </div>
         </div>
