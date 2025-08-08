@@ -129,3 +129,9 @@
 .share-form-purchase__input {
     margin-bottom: 20px;
 }
+
+.list-purchase__form-select {
+    border-radius: 0px;
+    width: 250px;
+    height: 28px;
+}

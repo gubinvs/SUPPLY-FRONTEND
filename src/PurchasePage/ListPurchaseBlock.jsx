@@ -257,6 +257,7 @@ const ListPurchaseBlock = ({ components, purchase, setPurchase, profitability })
                                             }}
                                         />
                                         <select
+                                            className="form-select form-select-sm list-purchase__form-select"
                                             value={mapPurchaseStatus[index] || ""}
                                             onChange={(e) => {
                                                 const newMap = [...mapPurchaseStatus];
@@ -276,7 +277,7 @@ const ListPurchaseBlock = ({ components, purchase, setPurchase, profitability })
                                             {item.purchasePrice ? Intl.NumberFormat("ru").format(item.purchasePrice) : "нет данных"} р.
                                         </div>
                                         <div className="lp-item__purchase-name-costomer">{item.purchaseCostomer}</div>
-                                        <div className="lp-item__purchase-name-costomer">{item.supplyPurchaseStatus}</div>
+                                        {/* <div className="lp-item__purchase-name-costomer">{item.supplyPurchaseStatus}</div> */}
                                     </>
                                 }
                             </div>
