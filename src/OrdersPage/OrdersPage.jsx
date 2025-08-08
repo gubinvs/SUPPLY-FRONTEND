@@ -83,6 +83,7 @@ const OrdersPage =(
         })
         .then((data) => {
             setOrdersList(data);
+            console.log(data)
         })
         .catch((error) => {
             console.error("Ошибка получения данных:", error);
