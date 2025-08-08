@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./listPurchaseBlock.css";
 import ApiUrl from "../js/ApiUrl";
 import ListPurchaseComponent from "./ListPurchaseComponent.jsx";
-import {changeProcurementStatusTrue} from "../js/Utilits/changeProcurementStatus.js";
+import { changeProcurementStatusTrue } from "../js/Utilits/changeProcurementStatus.js";
 
 const ListPurchaseBlock = (
     { components, purchase, setPurchase, profitability }
@@ -20,13 +20,16 @@ const ListPurchaseBlock = (
     // Состояние кнопки запросить счет, при сохраненной закупке в базе данных
     const [purchaseState, setPurchaseState] = useState([]); 
 
-
     // Форма отправки данных для предоставления доступа к спецификации
     const [shareForm, setShareForm] = useState([]);
+
+    // Новый стейт для фильтрации
+    const [filterStatus, setFilterStatus] = useState("all");
+
     useEffect(() => {
-    if (purchase.length > 0) {
-        setShareForm(new Array(purchase.length).fill(false));
-    }
+        if (purchase.length > 0) {
+            setShareForm(new Array(purchase.length).fill(false));
+        }
     }, [purchase]);
 
     useEffect(() => {
@@ -181,7 +184,6 @@ const ListPurchaseBlock = (
 
             } else {
                 const errorText = await response.text();
-                // console.error("Ошибка от API:", errorText);
                 const message = JSON.parse(errorText);
                 alert(message.message);
             }
@@ -191,13 +193,36 @@ const ListPurchaseBlock = (
             alert("Ошибка при отправке запроса!");
         }
     };
- 
+
+    // Фильтрация по статусу спецификации
+    const filteredPurchase = purchase.filter((p) => {
+        if (filterStatus === "all") return true;
+        return p.supplyPurchaseStatus?.toLowerCase().includes(filterStatus);
+    });
 
     return (
         <>
             <div className="list-purchase-block__list-block">
+
+                {/* Фильтр по статусу */}
+                <div className="filter-section" style={{ marginBottom: "1rem" }}>
+                    <label htmlFor="status-filter" style={{ marginRight: "10px" }}>
+                        Фильтр по статусу спецификации:
+                    </label>
+                    <select 
+                        className="form-select"
+                        id="status-filter"
+                        value={filterStatus}
+                        onChange={(e) => setFilterStatus(e.target.value)}
+                    >
+                        <option value="all">Все</option>
+                        <option value="в работе">В работе</option>
+                        <option value="завершена">В архиве</option>
+                    </select>
+                </div>
+
                 <ul className="list-purchase">
-                    {purchase.map((item, index) => (
+                    {filteredPurchase.map((item, index) => (
                         <li key={item.purchaseId} className="list-purchase__item">
                             <div className="list-purchase__item_title">
                                 <div className="lp-item__context-block">
@@ -355,9 +380,9 @@ const ListPurchaseBlock = (
                                             const newShareGuidIdPurchase = [...shareGuidIdPurchase];
                                             newShareGuidIdPurchase[index] = item.guidIdPurchase;
                                             setShareGuidIdPurchase(newShareGuidIdPurchase);
-                                            const newEmails = [...shareEmail]; // создаём копию
-                                            newEmails[index] = e.target.value; // обновляем нужный элемент
-                                            setShareEmail(newEmails); // сохраняем обновлённый массив
+                                            const newEmails = [...shareEmail];
+                                            newEmails[index] = e.target.value;
+                                            setShareEmail(newEmails);
                                         }}
                                     />
                                     <button
