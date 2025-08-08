@@ -11,9 +11,11 @@ const ListPurchaseBlock = (
 
     const [checkedPurchaseId, setCheckedPurchaseId] = useState([]);
     const [editPurchaseName, setEditPurchaseName] = useState([]);
+    const [editPurchaseStatus, setEditPurchaseStatus] = useState([]);
     const [mapPurchaseId, setMapPurchaseId] = useState([]);
     const [mapPurchaseName, setMapPurchaseName] = useState([]);
     const [mapPurchaseCostomer, setMapPurchaseCostomer] = useState([]);
+    const [mapPurchaseStatus, setMapPurchaseStatus] = useState([]);
 
     const [shareEmail, setShareEmail] = useState([]);
     const [shareGuidIdPurchase, setShareGuidIdPurchase] = useState([]);
@@ -44,6 +46,7 @@ const ListPurchaseBlock = (
             setMapPurchaseId(purchase.map(p => p.purchaseId));
             setMapPurchaseName(purchase.map(p => p.purchaseName));
             setMapPurchaseCostomer(purchase.map(p => p.purchaseCostomer));
+            setMapPurchaseStatus(purchase.map(p => p.supplyPurchaseStatus));
         }
     }, [purchase, checkedPurchaseId, editPurchaseName]);
 
@@ -279,6 +282,21 @@ const ListPurchaseBlock = (
                                         :
                                         <div className="lp-item__purchase-name-costomer">{item.purchaseCostomer}</div>
                                     }
+                                    {editPurchaseStatus[index]?
+                                        <select
+                                            value={mapPurchaseStatus[index] || ""}
+                                                onChange={(e) => {
+                                                    const newMap = [...mapPurchaseStatus];
+                                                    newMap[index] = e.target.value;
+                                                    setMapPurchaseStatus(newMap);
+                                                }}
+                                        >
+                                            <option value="В работе">В работе</option>
+                                            <option value="В архиве">В архиве</option>
+                                        </select>
+                                        :
+                                        <div className="lp-item__purchase-name-costomer">{item.supplyPurchaseStatus}</div>
+                                    }
                                 </div>
 
                                 {editPurchaseName[index] ?
@@ -288,23 +306,37 @@ const ListPurchaseBlock = (
                                             src="../images/save-icon.svg"
                                             alt="Сохранить"
                                             onClick={() => {
+                                                // Сохранияем новый идентификатор
+
+
+                                                // Сохраняем новое название
                                                 const updated = [...editPurchaseName];
                                                 updated[index] = false;
                                                 setEditPurchaseName(updated);
+                                                
+
+
+
                                                 saveNewNamePurchase(index);
                                             }}
                                         />
                                     </div>
                                     :
+                                    // Иконка редактировать спецификацию
                                     <div className="lp-item__purchase__icon-groop">
                                         <img
                                             className="lpip-icon-groop__edit"
                                             src="../images/edit-icon.svg"
                                             alt="Редактировать"
                                             onClick={() => {
-                                                const updated = [...editPurchaseName];
-                                                updated[index] = true;
-                                                setEditPurchaseName(updated);
+                                                // Меняем статус формы идентификатора
+
+
+
+                                                // Меняем состояние формы наименование
+                                                const updatedPurchaseName = [...editPurchaseName];
+                                                updatedPurchaseName[index] = true;
+                                                setEditPurchaseName(updatedPurchaseName);
                                             }}
                                         />
                                         <img
@@ -353,7 +385,7 @@ const ListPurchaseBlock = (
                                     requestAddItemPurchaseData={requestAddItemPurchaseData}
                                 />
                             }
-
+                            
                             {/* Форма предоставления доступа к спецификации другому пользователю */}
                             {shareForm[index] ?
                             <>
