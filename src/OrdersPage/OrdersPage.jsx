@@ -7,7 +7,6 @@ import HeaderApplicationPanel from "../ApplicationPanel/Header/HeaderApplication
 import ListOrdersBlock from "./ListOrdersBlock.jsx";
 
 
-
 const OrdersPage =(
     {role, title, loading}
 )=> {
