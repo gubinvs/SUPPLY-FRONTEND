@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import "./listPurchaseBlock.css";
 import ApiUrl from "../js/ApiUrl";
 import ListPurchaseComponent from "./ListPurchaseComponent.jsx";
@@ -24,26 +24,20 @@ const ListPurchaseBlock = ({ components, purchase, setPurchase, profitability })
         if (purchase.length > 0) {
             setShareForm(new Array(purchase.length).fill(false));
         }
-    }, [purchase]);
+    }, [purchase.length]);
 
     useEffect(() => {
-        if (purchase.length > 0) {
-            if (checkedPurchaseId.length !== purchase.length) {
-                setCheckedPurchaseId(new Array(purchase.length).fill(false));
-            }
-            if (editPurchaseName.length !== purchase.length) {
-                setEditPurchaseName(new Array(purchase.length).fill(false));
-            }
-            if (editPurchaseStatus.length !== purchase.length) {
-                setEditPurchaseStatus(new Array(purchase.length).fill(false));
-            }
-
-            setMapPurchaseId(purchase.map(p => p.purchaseId));
-            setMapPurchaseName(purchase.map(p => p.purchaseName));
-            setMapPurchaseCostomer(purchase.map(p => p.purchaseCostomer));
-            setMapPurchaseStatus(purchase.map(p => p.supplyPurchaseStatus));
+    // Инициализируем purchaseState нужной длины при загрузке purchase
+    if (purchase.length > 0) {
+        setPurchaseState(prev => {
+        // Если длина не совпадает — создаём новый массив
+        if (prev.length !== purchase.length) {
+            return new Array(purchase.length).fill(false);
         }
-    }, [purchase]);
+        return prev; // иначе оставляем без изменений
+        });
+    }
+    }, [purchase.length]);
 
     const handleCheck = (index) => {
         setCheckedPurchaseId((prev) => {
@@ -66,18 +60,13 @@ const ListPurchaseBlock = ({ components, purchase, setPurchase, profitability })
         try {
             const response = await fetch(ApiUrl + "/api/SaveNewDataPurchaseName", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(updatedPurchaseData)
             });
 
             if (response.ok) {
                 const updated = [...purchase];
-                updated[index] = {
-                    ...updated[index],
-                    ...updatedPurchaseData
-                };
+                updated[index] = { ...updated[index], ...updatedPurchaseData };
                 setPurchase(updated);
 
                 const editName = [...editPurchaseName];
@@ -125,29 +114,25 @@ const ListPurchaseBlock = ({ components, purchase, setPurchase, profitability })
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(requestData)
         })
-        .then((response) => {
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-            alert("Данные успешно записаны!");
-
-            changeProcurementStatusTrue(index, purchaseState, setPurchaseState);
-            return response.json();
-        })
-        .catch((error) => {
-            console.error("Ошибка при отправке данных:", error);
-            alert("Ошибка при сохранении данных!");
-        });
+            .then((response) => {
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                alert("Данные успешно записаны!");
+                changeProcurementStatusTrue(index, purchaseState, setPurchaseState);
+                return response.json();
+            })
+            .catch((error) => {
+                console.error("Ошибка при отправке данных:", error);
+                alert("Ошибка при сохранении данных!");
+            });
     };
 
     const deletePurchase = async (guidIdPurchase) => {
-        const isConfirmed = window.confirm("Вы уверены, что хотите удалить эту спецификацию?");
-        if (!isConfirmed) return;
+        if (!window.confirm("Вы уверены, что хотите удалить эту спецификацию?")) return;
 
         try {
             const response = await fetch(ApiUrl + "/api/SaveSupplyPurchase/" + guidIdPurchase, {
                 method: "DELETE",
-                headers: {
-                    "Content-Type": "application/json",
-                }
+                headers: { "Content-Type": "application/json" }
             });
 
             if (response.ok) {
@@ -164,17 +149,11 @@ const ListPurchaseBlock = ({ components, purchase, setPurchase, profitability })
     };
 
     const grantAccess = async (guidId, email) => {
-        const request = {
-            guidIdPurchase: guidId,
-            emailCollaborator: email
-        };
-
+        const request = { guidIdPurchase: guidId, emailCollaborator: email };
         try {
             const response = await fetch(ApiUrl + "/api/SharePurchase", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(request)
             });
 
@@ -186,6 +165,15 @@ const ListPurchaseBlock = ({ components, purchase, setPurchase, profitability })
             alert("Ошибка при отправке запроса!");
         }
     };
+
+    // ✅ мемоизированный обработчик для setPurchasePrice
+    const setPurchasePriceHandler = useCallback((index, newPrice) => {
+        setPurchase(prev => {
+            const updated = [...prev];
+            updated[index] = { ...updated[index], purchasePrice: newPrice };
+            return updated;
+        });
+    }, [setPurchase]);
 
     const filteredPurchase = purchase.filter((p) => {
         if (filterStatus === "all") return true;
@@ -224,7 +212,7 @@ const ListPurchaseBlock = ({ components, purchase, setPurchase, profitability })
                                     />
                                 </div>
 
-                                {editPurchaseName[index] ?
+                                {editPurchaseName[index] ? (
                                     <>
                                         <input
                                             className="lp-item__purchase-id lp-item__purchase-id_input"
@@ -269,7 +257,7 @@ const ListPurchaseBlock = ({ components, purchase, setPurchase, profitability })
                                             <option value="В архиве">В архиве</option>
                                         </select>
                                     </>
-                                    :
+                                ) : (
                                     <>
                                         <div className="lp-item__purchase-id">{item.purchaseId}</div>
                                         <div className="lp-item__purchase-name">{item.purchaseName}</div>
@@ -277,20 +265,19 @@ const ListPurchaseBlock = ({ components, purchase, setPurchase, profitability })
                                             {item.purchasePrice ? Intl.NumberFormat("ru").format(item.purchasePrice) : "нет данных"} р.
                                         </div>
                                         <div className="lp-item__purchase-name-costomer">{item.purchaseCostomer}</div>
-                                        {/* <div className="lp-item__purchase-name-costomer">{item.supplyPurchaseStatus}</div> */}
                                     </>
-                                }
+                                )}
                             </div>
 
                             <div className="lp-item__purchase__icon-groop">
-                                {editPurchaseName[index] ?
+                                {editPurchaseName[index] ? (
                                     <img
                                         className="lpip-icon-groop__save"
                                         src="../images/save-icon.svg"
                                         alt="Сохранить"
                                         onClick={() => saveAllPurchaseData(index)}
                                     />
-                                    :
+                                ) : (
                                     <>
                                         <img
                                             className="lpip-icon-groop__edit"
@@ -328,11 +315,11 @@ const ListPurchaseBlock = ({ components, purchase, setPurchase, profitability })
                                             onClick={() => deletePurchase(item.guidIdPurchase)}
                                         />
                                     </>
-                                }
+                                )}
                             </div>
                         </div>
 
-                        {checkedPurchaseId[index] &&
+                        {checkedPurchaseId[index] && (
                             <ListPurchaseComponent
                                 count={index}
                                 components={components}
@@ -341,16 +328,12 @@ const ListPurchaseBlock = ({ components, purchase, setPurchase, profitability })
                                 setPurchase={setPurchase}
                                 purchaseState={purchaseState}
                                 setPurchaseState={setPurchaseState}
-                                setPurchasePrice={(newPrice) => {
-                                    const updated = [...purchase];
-                                    updated[index] = { ...updated[index], purchasePrice: newPrice };
-                                    setPurchase(updated);
-                                }}
+                                setPurchasePrice={(newPrice) => setPurchasePriceHandler(index, newPrice)}
                                 requestAddItemPurchaseData={requestAddItemPurchaseData}
                             />
-                        }
+                        )}
 
-                        {shareForm[index] &&
+                        {shareForm[index] && (
                             <div className="share-form-purchase">
                                 <img
                                     className="share-form-purchase__close-icon"
@@ -387,9 +370,11 @@ const ListPurchaseBlock = ({ components, purchase, setPurchase, profitability })
                                         updatedShareForm[index] = false;
                                         setShareForm(updatedShareForm);
                                     }}
-                                >Предоставить доступ</button>
+                                >
+                                    Предоставить доступ
+                                </button>
                             </div>
-                        }
+                        )}
                     </li>
                 ))}
             </ul>

@@ -20,17 +20,18 @@ const ListPurchaseComponent = ({
     const { roleUser } = useRoleId();
 
     // Изначально присваиваем значение true, так как загрузка с сервера и закупка без изменений
-    useEffect(()=>{
-        const updatedPurchaseState = [...purchaseState];
-        updatedPurchaseState[count] = true;
-        setPurchaseState(updatedPurchaseState);
-    },[]);
+    useEffect(() => {
+        if (purchaseState[count] !== true) {
+            const updatedPurchaseState = [...purchaseState];
+            updatedPurchaseState[count] = true;
+            setPurchaseState(updatedPurchaseState);
+        }
+    }, [purchaseState, count, setPurchaseState]);
 
 
     // Отправка данных (запрос) на предоставление счета на основании закупки
     const requestInvoice =()=> {
         alert("Запрос успешно отправлен");
-        
     };
 
     const requestInvoiceFree = () => {
@@ -99,7 +100,7 @@ const ListPurchaseComponent = ({
             setQuantities(newQuantities);
         }
                             
-    }, [indexedItems]);
+    }, [indexedItems, quantities]);
 
     // Пересчет общей стоимости
     useEffect(() => {
@@ -123,7 +124,7 @@ const ListPurchaseComponent = ({
         }, 0);
 
         setPurchasePrice(summa);
-    }, [purchase, count]);
+    }, [purchase, count, setPurchasePrice]);
 
     // Обработка чекбокса
     const handleCheckboxChange = (index) => {
