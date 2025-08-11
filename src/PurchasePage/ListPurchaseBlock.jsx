@@ -6,12 +6,11 @@ import { changeProcurementStatusTrue } from "../js/Utilits/changeProcurementStat
 
 const ListPurchaseBlock = ({ components, purchase, setPurchase, profitability }) => {
     const guidIdCollaborator = localStorage.getItem("guidIdCollaborator");
-
     const [checkedPurchaseId, setCheckedPurchaseId] = useState([]);
-    const [mapPurchaseId, setMapPurchaseId] = useState([]);
     const [editPurchaseName, setEditPurchaseName] = useState([]);
     const [editPurchaseStatus, setEditPurchaseStatus] = useState([]);
-    
+
+    const [mapPurchaseId, setMapPurchaseId] = useState([]);
     const [mapPurchaseName, setMapPurchaseName] = useState([]);
     const [mapPurchaseCostomer, setMapPurchaseCostomer] = useState([]);
     const [mapPurchaseStatus, setMapPurchaseStatus] = useState([]);
@@ -52,11 +51,11 @@ const ListPurchaseBlock = ({ components, purchase, setPurchase, profitability })
     const saveAllPurchaseData = async (index) => {
         const updatedPurchaseData = {
             guidIdPurchase: purchase[index].guidIdPurchase,
-            purchaseId: mapPurchaseId[index],
-            purchaseName: mapPurchaseName[index],
+            purchaseId: mapPurchaseId[index] || purchase[index].purchaseId,
+            purchaseName: mapPurchaseName[index] || purchase[index].purchaseName,
             purchasePrice: purchase[index].purchasePrice,
-            purchaseCostomer: mapPurchaseCostomer[index],
-            supplyPurchaseStatus: mapPurchaseStatus[index]
+            purchaseCostomer: mapPurchaseCostomer[index] || purchase[index].purchaseCostomer,
+            supplyPurchaseStatus: mapPurchaseStatus[index] || purchase[index].supplyPurchaseStatus
         };
 
         try {
@@ -217,9 +216,10 @@ const ListPurchaseBlock = ({ components, purchase, setPurchase, profitability })
                                 {editPurchaseName[index] ? (
                                     <>
                                         <input
+                                        
                                             className="lp-item__purchase-id lp-item__purchase-id_input"
                                             type="text"
-                                            value={mapPurchaseId[index] || purchase[index].purchaseId}
+                                            value={mapPurchaseId[index] || ""}
                                             onChange={(e) => {
                                                 const newMap = [...mapPurchaseId];
                                                 newMap[index] = e.target.value;
@@ -229,7 +229,7 @@ const ListPurchaseBlock = ({ components, purchase, setPurchase, profitability })
                                         <input
                                             className="lp-item__purchase-name lp-item__purchase-name_input"
                                             type="text"
-                                            value={mapPurchaseName[index] || purchase[index].purchaseName}
+                                            value={mapPurchaseName[index] || ""}
                                             onChange={(e) => {
                                                 const newMap = [...mapPurchaseName];
                                                 newMap[index] = e.target.value;
@@ -239,7 +239,7 @@ const ListPurchaseBlock = ({ components, purchase, setPurchase, profitability })
                                         <input
                                             className="lp-item__purchase-name-costomer lp-item__purchase-name-costomer_input"
                                             type="text"
-                                            value={mapPurchaseCostomer[index] || purchase[index].purchaseCostomer}
+                                            value={mapPurchaseCostomer[index] || ""}
                                             onChange={(e) => {
                                                 const newMap = [...mapPurchaseCostomer];
                                                 newMap[index] = e.target.value;
@@ -248,7 +248,7 @@ const ListPurchaseBlock = ({ components, purchase, setPurchase, profitability })
                                         />
                                         <select
                                             className="form-select form-select-sm list-purchase__form-select"
-                                            value={mapPurchaseStatus[index] || purchase[index].purchaseState}
+                                            value={mapPurchaseStatus[index] || ""}
                                             onChange={(e) => {
                                                 const newMap = [...mapPurchaseStatus];
                                                 newMap[index] = e.target.value;
@@ -292,6 +292,22 @@ const ListPurchaseBlock = ({ components, purchase, setPurchase, profitability })
                                                 editStatus[index] = true;
                                                 setEditPurchaseName(editName);
                                                 setEditPurchaseStatus(editStatus);
+
+                                                // 📌 Заполняем mapPurchase... начальными данными
+                                                const newMapId = [...mapPurchaseId];
+                                                const newMapName = [...mapPurchaseName];
+                                                const newMapCostomer = [...mapPurchaseCostomer];
+                                                const newMapStatus = [...mapPurchaseStatus];
+
+                                                newMapId[index] = purchase[index].purchaseId;
+                                                newMapName[index] = purchase[index].purchaseName;
+                                                newMapCostomer[index] = purchase[index].purchaseCostomer;
+                                                newMapStatus[index] = purchase[index].supplyPurchaseStatus;
+
+                                                setMapPurchaseId(newMapId);
+                                                setMapPurchaseName(newMapName);
+                                                setMapPurchaseCostomer(newMapCostomer);
+                                                setMapPurchaseStatus(newMapStatus);
                                             }}
                                         />
                                         <img
