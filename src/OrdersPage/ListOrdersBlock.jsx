@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import "./listOrdersBlock.css";
+import { roleMap } from "../js/roleMap";
 
 const ListOrdersBlock = ({ ordersList }) => {
     const [checked, setChecked] = useState({});
@@ -13,6 +14,7 @@ const ListOrdersBlock = ({ ordersList }) => {
         }));
     };
 
+
     // Фильтрация заказов по статусу
     const filteredOrders = ordersList.filter((order) => {
         if (filterStatus === "all") return true;
@@ -21,7 +23,6 @@ const ListOrdersBlock = ({ ordersList }) => {
 
     return (
         <div className="orders-block-section">
-
             {/* Фильтр по статусу */}
             <div className="filter-section" style={{ marginBottom: "1rem" }}>
                 <label htmlFor="status-filter" style={{ marginRight: "10px" }}>
@@ -68,6 +69,7 @@ const ListOrdersBlock = ({ ordersList }) => {
                                 <td>{item.purchaseName}</td>
                                 <td>{item.purchasePrice}</td>
                                 <td>{item.purchaseCostomer}</td>
+                                
                                 <td>{item.supplyOrderUserStatus}</td>
                             </tr>
                             {checked[index] &&

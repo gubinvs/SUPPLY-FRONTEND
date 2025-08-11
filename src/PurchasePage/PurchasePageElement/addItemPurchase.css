@@ -20,7 +20,7 @@
 .aip-block__purchase-save {
     width: 300px;
 }
-
+/* 
 .add-item-purchase__result-search_close {
     position: absolute;
     display: flex;
@@ -40,22 +40,23 @@
     cursor: pointer;
     color: red;
     z-index: 1;
-}
+} */
 
-.add-item-purchase__result-search_close img {
+/* .add-item-purchase__result-search_close img {
     width: 40px;
     height: 40px;
-} 
+}  */
 
 .add-item-purchase__result-search {
-    position: absolute;
-    top: 70px;
+    /* position: absolute;
+    top: 70px; */
     width: 100%;
     padding: 10px;
     border: 1px solid #FAC855;
     border-radius: 4px;
     border-top-right-radius: 0px;
     background-color: #F5F6FA;
+    margin-bottom: 10px;
 }
 
 .aip-result-search__list {

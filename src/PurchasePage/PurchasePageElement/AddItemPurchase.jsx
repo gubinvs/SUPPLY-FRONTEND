@@ -161,9 +161,9 @@ const AddItemPurchase = (
                 </div>
                 {resultSearch?
                 <>
-                    <div className="add-item-purchase__result-search_close" onClick={()=> setResultSearch(false)}>
+                    {/* <div className="add-item-purchase__result-search_close" onClick={()=> setResultSearch(false)}>
                         <img src="../images/close-icon.svg" alt="Закрыть панель" />
-                    </div>
+                    </div> */}
                     <div className="add-item-purchase__result-search">
                         <ul className="aip-result-search__list">
                             {filteredComponents.map((item, index) => {
