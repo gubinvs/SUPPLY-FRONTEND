@@ -8,9 +8,10 @@ const ListPurchaseBlock = ({ components, purchase, setPurchase, profitability })
     const guidIdCollaborator = localStorage.getItem("guidIdCollaborator");
 
     const [checkedPurchaseId, setCheckedPurchaseId] = useState([]);
+    const [mapPurchaseId, setMapPurchaseId] = useState([]);
     const [editPurchaseName, setEditPurchaseName] = useState([]);
     const [editPurchaseStatus, setEditPurchaseStatus] = useState([]);
-    const [mapPurchaseId, setMapPurchaseId] = useState([]);
+    
     const [mapPurchaseName, setMapPurchaseName] = useState([]);
     const [mapPurchaseCostomer, setMapPurchaseCostomer] = useState([]);
     const [mapPurchaseStatus, setMapPurchaseStatus] = useState([]);
@@ -46,6 +47,7 @@ const ListPurchaseBlock = ({ components, purchase, setPurchase, profitability })
             return updated;
         });
     };
+
 
     const saveAllPurchaseData = async (index) => {
         const updatedPurchaseData = {
@@ -217,7 +219,7 @@ const ListPurchaseBlock = ({ components, purchase, setPurchase, profitability })
                                         <input
                                             className="lp-item__purchase-id lp-item__purchase-id_input"
                                             type="text"
-                                            value={mapPurchaseId[index] || ""}
+                                            value={mapPurchaseId[index] || purchase[index].purchaseId}
                                             onChange={(e) => {
                                                 const newMap = [...mapPurchaseId];
                                                 newMap[index] = e.target.value;
@@ -227,7 +229,7 @@ const ListPurchaseBlock = ({ components, purchase, setPurchase, profitability })
                                         <input
                                             className="lp-item__purchase-name lp-item__purchase-name_input"
                                             type="text"
-                                            value={mapPurchaseName[index] || ""}
+                                            value={mapPurchaseName[index] || purchase[index].purchaseName}
                                             onChange={(e) => {
                                                 const newMap = [...mapPurchaseName];
                                                 newMap[index] = e.target.value;
@@ -237,7 +239,7 @@ const ListPurchaseBlock = ({ components, purchase, setPurchase, profitability })
                                         <input
                                             className="lp-item__purchase-name-costomer lp-item__purchase-name-costomer_input"
                                             type="text"
-                                            value={mapPurchaseCostomer[index] || ""}
+                                            value={mapPurchaseCostomer[index] || purchase[index].purchaseCostomer}
                                             onChange={(e) => {
                                                 const newMap = [...mapPurchaseCostomer];
                                                 newMap[index] = e.target.value;
@@ -246,7 +248,7 @@ const ListPurchaseBlock = ({ components, purchase, setPurchase, profitability })
                                         />
                                         <select
                                             className="form-select form-select-sm list-purchase__form-select"
-                                            value={mapPurchaseStatus[index] || ""}
+                                            value={mapPurchaseStatus[index] || purchase[index].purchaseState}
                                             onChange={(e) => {
                                                 const newMap = [...mapPurchaseStatus];
                                                 newMap[index] = e.target.value;
