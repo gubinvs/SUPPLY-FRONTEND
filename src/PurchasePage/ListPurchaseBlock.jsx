@@ -51,11 +51,11 @@ const ListPurchaseBlock = ({ components, purchase, setPurchase, profitability })
     const saveAllPurchaseData = async (index) => {
         const updatedPurchaseData = {
             guidIdPurchase: purchase[index].guidIdPurchase,
-            purchaseId: mapPurchaseId[index] || purchase[index].purchaseId,
-            purchaseName: mapPurchaseName[index] || purchase[index].purchaseName,
+            purchaseId: mapPurchaseId[index],
+            purchaseName: mapPurchaseName[index],
             purchasePrice: purchase[index].purchasePrice,
-            purchaseCostomer: mapPurchaseCostomer[index] || purchase[index].purchaseCostomer,
-            supplyPurchaseStatus: mapPurchaseStatus[index] || purchase[index].supplyPurchaseStatus
+            purchaseCostomer: mapPurchaseCostomer[index],
+            supplyPurchaseStatus: mapPurchaseStatus[index]
         };
 
         try {
@@ -216,7 +216,6 @@ const ListPurchaseBlock = ({ components, purchase, setPurchase, profitability })
                                 {editPurchaseName[index] ? (
                                     <>
                                         <input
-                                        
                                             className="lp-item__purchase-id lp-item__purchase-id_input"
                                             type="text"
                                             value={mapPurchaseId[index] || ""}
