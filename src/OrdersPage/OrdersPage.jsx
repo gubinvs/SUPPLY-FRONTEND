@@ -106,6 +106,7 @@ const OrdersPage =(
             <div className="main-application-panel__container">
                 {!loading?        
                     <ListOrdersBlock 
+                        role={role} 
                         ordersList={ordersList}
                     />
                     :

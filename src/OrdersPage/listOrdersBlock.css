@@ -16,3 +16,19 @@
     color: #374063 !important;
     background-color: #F5F6FA !important;
 }
+
+#edit-status-filter {
+    height: 38px;
+}
+
+.obs-table-td__icon-save {
+    width: 38px;
+    text-align: center;
+}
+
+.orders-block-section__icon-save {
+    margin: 0px;
+    padding: 0px;
+    padding-top: 6px;
+    width: 26px;
+}
