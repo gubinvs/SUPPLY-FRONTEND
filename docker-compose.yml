@@ -29,7 +29,7 @@ services:
       - "1040:3000"
   
   service5:
-    image: b0fcd47599a4
+    image: d1e3e784844f
     container_name: SUPPLY-SISTEMAUTOR__API
     ports:
       - "1050:8080"
@@ -37,7 +37,7 @@ services:
       - ./appsettings-encomponent.json:/app/appsettings.json
 
   service6:
-    image: ef8851a1a5bb
+    image: 480382706adf
     container_name: SUPPLY-SISTEMAUTOR__FRONTEND
     ports:
       - "1060:3000"
