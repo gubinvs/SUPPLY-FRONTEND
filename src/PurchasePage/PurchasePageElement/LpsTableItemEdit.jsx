@@ -33,7 +33,7 @@ const LpsTableItemEdit = ({
     const [itemDeliveryTime, setItemDeliveryTime] = useState(deliveryTimeComponent);
     const [itemBestComponentProvider, setItemBestComponentProvider] = useState(bestComponentProvider);
     
-
+    
     // Сумма по данной строке
     const [sumPriceItem, setSumPriceItem] = useState(quantity * purchaseItemPrice);
 
@@ -57,7 +57,7 @@ const LpsTableItemEdit = ({
     // Обновляем локальное количество при внешнем изменении
     useEffect(() => {
       setLocalQuantity(quantity);
-    }, [quantity]);
+    }, []);
 
     // Обработчик изменения количества
     const handleQuantityChange = (newValue) => {
