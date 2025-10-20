@@ -9,7 +9,7 @@ services:
       - "1010:8080"
 
   service2:
-    image: 6a83744d4137
+    image: 1177d685375c
     container_name: SHOP-ENCOMPONENT__SITE
     ports:
       - "1020:3000"
@@ -41,10 +41,9 @@ services:
     container_name: SUPPLY-SISTEMAUTOR__FRONTEND
     ports:
       - "1060:3000"
-
-  logging:
-  driver: "json-file"
-
-  options:
-    max-size: "10m"
-    max-file: "10"
+  
+  service7:
+    image: 31bcd7a18c2a
+    container_name: EMAIL-MAILER
+    ports:
+      - "1100:8080"
