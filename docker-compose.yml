@@ -30,7 +30,7 @@ services:
   
   service5:
     image: d1e3e784844f
-    container_name: SUPPLY-SISTEMAUTOR__API
+    container_name: SUPPLY-ENCOMPONENT__API
     ports:
       - "1050:8080"
     volumes:
@@ -38,7 +38,7 @@ services:
 
   service6:
     image: 480382706adf
-    container_name: SUPPLY-SISTEMAUTOR__FRONTEND
+    container_name: SUPPLY-ENCOMPONENT__FRONTEND
     ports:
       - "1060:3000"
   
