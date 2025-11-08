@@ -65,6 +65,7 @@ const AuthorizationForm = () => {
             Войти
           </button>
         </form>
+        <div className="registration-form__registration-link" onClick={()=>{window.location.href="/Registration"}}>Регистрация</div>
       </div>
 
       {message && (

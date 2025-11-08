@@ -100,6 +100,15 @@ const RegistrationForm = () => {
             Зарегистрироваться
           </button>
         </form>
+        {/* Политика ОПД */}
+        <div className="check-box">
+        <input className="check-box__input" type="checkbox" name="chekBox" required />
+            <div className="check-box__discr">
+                Даю согласие на обработку персональных данных согласно
+                <a href="https://encomponent.ru/pp-page.html"> Политике ОПД</a>
+            </div>
+            <input type="hidden" name="active-form" value="massage" />
+        </div>
       </div>
 
       {message && (
