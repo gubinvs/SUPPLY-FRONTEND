@@ -67,9 +67,6 @@ const App = () => {
   }, []);
 
 
-const ROLE_ADMIN = "401694e4-1b16-4b8c-b817-f8a37a4f49dc";
-
-
 
 
 return (
@@ -87,7 +84,6 @@ return (
         <PrivateRoute allowedRoles={[ROLE_ADMIN]}>
           <ListComponent />
         </PrivateRoute>} />
-
 
       <Route path="/ApplicationPanelAdmin" element={
         <PrivateRoute allowedRoles={[ROLE_ADMIN]}>
