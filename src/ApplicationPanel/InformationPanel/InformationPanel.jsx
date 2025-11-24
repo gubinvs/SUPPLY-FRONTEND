@@ -62,29 +62,29 @@ const InformationPanel = ({ role }) => {
       
     return (
         <>
-            <div className="main-application-panel__container">
-                <div className="main-application-panel__left-block">
-                    <InformationCompanyCard 
+          <div className="main-application-panel__container">
+              <div className="main-application-panel__left-block">
+                  <InformationCompanyCard 
+                      role={role}
+                      company={company} 
+                      guidIdCollaborator={guidIdCollaborator} 
+                  />
+              </div>
+              <div className="main-application-panel__right-block">
+                  <div className="mb-10">
+                    {/* Форма редактирования данных о пользователе */}
+                    <DataCollaborator 
+                        guidIdCollaborator={guidIdCollaborator}
                         role={role}
-                        company={company} 
-                        guidIdCollaborator={guidIdCollaborator} 
+                        nameCollaborator={nameCollaborator} 
+                        emailCollaborator={emailCollaborator}
+                        phoneCollaborator={phoneCollaborator}
+                        addressDiliveryCollaborator={addressDiliveryCollaborator}
                     />
-                </div>
-                <div className="main-application-panel__right-block">
-                    <div className="mb-10">
-                      {/* Форма редактирования данных о пользователе */}
-                      <DataCollaborator 
-                          guidIdCollaborator={guidIdCollaborator}
-                          role={role}
-                          nameCollaborator={nameCollaborator} 
-                          emailCollaborator={emailCollaborator}
-                          phoneCollaborator={phoneCollaborator}
-                          addressDiliveryCollaborator={addressDiliveryCollaborator}
-                      />
-                    </div>
-                </div>
-            </div>
-        </>
+                  </div>
+              </div>
+          </div>
+      </>
     );
 
 };
