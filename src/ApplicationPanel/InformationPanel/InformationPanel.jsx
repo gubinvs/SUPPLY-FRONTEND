@@ -30,63 +30,62 @@ const InformationPanel = ({ role }) => {
 
   useEffect(() => {
       
-      // Оборачиваем асинхронную функцию внутрь useEffect
-      const fetchData = async () => {
-        try {
-          const response = await fetch(ApiUrl + "/api/DataInfoPanel/" + guidIdCollaborator, {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
-    
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-    
-          const data = await response.json();
-          
-          setNameCollaborator(data.user.nameCollaborator);
-          setEmailCollaborator(data.user.emailCollaborator);
-          setPhoneCollaborator(data.user.phoneCollaborator);
-          setCompany(data.companyInfo);
-          setAddressDiliveryCollaborator(data.deliveryAddress);
-    
-        } catch (error) {
-          console.error("Ошибка при авторизации:", error);
+    // Оборачиваем асинхронную функцию внутрь useEffect
+    const fetchData = async () => {
+      try {
+        const response = await fetch(ApiUrl + "/api/DataInfoPanel/" + guidIdCollaborator, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+  
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
-      };
+  
+        const data = await response.json();
+        
+        setNameCollaborator(data.user.nameCollaborator);
+        setEmailCollaborator(data.user.emailCollaborator);
+        setPhoneCollaborator(data.user.phoneCollaborator);
+        setCompany(data.companyInfo);
+        setAddressDiliveryCollaborator(data.deliveryAddress);
+  
+      } catch (error) {
+        console.error("Ошибка при авторизации:", error);
+      }
+    };
+  
+    fetchData();
+  }, [guidIdCollaborator]);
     
-      fetchData();
-    }, [guidIdCollaborator]);
-      
-    return (
-        <>
-          <div className="main-application-panel__container">
-              <div className="main-application-panel__left-block">
-                  <InformationCompanyCard 
+  return (
+      <>
+        <div className="main-application-panel__container">
+            <div className="main-application-panel__left-block">
+                <InformationCompanyCard 
+                    role={role}
+                    company={company} 
+                    guidIdCollaborator={guidIdCollaborator} 
+                />
+            </div>
+            <div className="main-application-panel__right-block">
+                <div className="mb-10">
+                  {/* Форма редактирования данных о пользователе */}
+                  <DataCollaborator 
+                      guidIdCollaborator={guidIdCollaborator}
                       role={role}
-                      company={company} 
-                      guidIdCollaborator={guidIdCollaborator} 
+                      nameCollaborator={nameCollaborator} 
+                      emailCollaborator={emailCollaborator}
+                      phoneCollaborator={phoneCollaborator}
+                      addressDiliveryCollaborator={addressDiliveryCollaborator}
                   />
-              </div>
-              <div className="main-application-panel__right-block">
-                  <div className="mb-10">
-                    {/* Форма редактирования данных о пользователе */}
-                    <DataCollaborator 
-                        guidIdCollaborator={guidIdCollaborator}
-                        role={role}
-                        nameCollaborator={nameCollaborator} 
-                        emailCollaborator={emailCollaborator}
-                        phoneCollaborator={phoneCollaborator}
-                        addressDiliveryCollaborator={addressDiliveryCollaborator}
-                    />
-                  </div>
-              </div>
-          </div>
-      </>
-    );
-
+                </div>
+            </div>
+        </div>
+    </>
+  );
 };
 
 export default InformationPanel;
