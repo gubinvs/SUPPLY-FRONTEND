@@ -13,8 +13,6 @@ const GroopSearchSuppliersOffers = ({ components, error }) => {
     const normalizeCode = (code) => code?.trim().toLowerCase();
 
     const processInputList = (list) => {
-        
-        
         const parsed = list.map((line) => {
             const parts = line.trim().split(/\s*[\t|,;]\s*/);
             const vendorCode = normalizeCode(parts[0]);
@@ -153,5 +151,6 @@ const GroopSearchSuppliersOffers = ({ components, error }) => {
         </div>
     );
 };
+
 
 export default GroopSearchSuppliersOffers;

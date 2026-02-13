@@ -14,8 +14,6 @@ const FullDataCompanyAndCollaborators =(dataCompany)=> {
             <div className="all-offers-selected__company-card">
 
                         
-
-
             </div>
         </>
     );
