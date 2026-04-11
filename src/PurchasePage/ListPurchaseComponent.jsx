@@ -28,12 +28,6 @@ const ListPurchaseComponent = ({
         }
     }, [purchaseState, count, setPurchaseState]);
 
-
-    // Отправка данных (запрос) на предоставление счета на основании закупки
-    const requestInvoice =()=> {
-        alert("Запрос успешно отправлен");
-    };
-
     const requestInvoiceFree = () => {
         const reguest = {
             guidIdCollaborator : localStorage.getItem('guidIdCollaborator'),
@@ -270,7 +264,7 @@ const ListPurchaseComponent = ({
                     })}
                 </tbody>
             </table>
-            {/* <div className="change-procurement-button-block">
+            <div className="change-procurement-button-block">
                 {purchaseState[count]?
                         <>
                             {roleUser?
@@ -285,20 +279,13 @@ const ListPurchaseComponent = ({
                                 </>
                                 :
                                 <>
-                                    <button 
-                                        type="button" 
-                                        class="btn btn-primary change-procurement-button"
-                                        onClick={()=>{requestInvoice()}}
-                                        >
-                                            Запросить счет
-                                    </button>
                                 </>
                             }  
                         </>
                     :
                     ""
                 }
-            </div> */}
+            </div>
         </>
     );
 };
