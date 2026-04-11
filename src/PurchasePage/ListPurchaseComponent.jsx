@@ -270,7 +270,7 @@ const ListPurchaseComponent = ({
                     })}
                 </tbody>
             </table>
-            <div className="change-procurement-button-block">
+            {/* <div className="change-procurement-button-block">
                 {purchaseState[count]?
                         <>
                             {roleUser?
@@ -298,7 +298,7 @@ const ListPurchaseComponent = ({
                     :
                     ""
                 }
-            </div>
+            </div> */}
         </>
     );
 };

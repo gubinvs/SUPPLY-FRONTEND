@@ -106,7 +106,7 @@ const AddItemPurchase = (
                             vendorCodeComponent: item.vendorCodeComponent,
                             nameComponent: item.nameComponent,
                             requiredQuantityItem: item.requiredQuantityItem > 1 ? item.requiredQuantityItem : 1,
-                            purchaseItemPrice: item.purchaseItemPrice === 0 ? bestOffer.priceComponent : item.purchaseItemPrice,
+                            purchaseItemPrice: bestOffer.priceComponent !== item.purchaseItemPrice ? bestOffer.priceComponent : item.purchaseItemPrice,
                             bestComponentProvider: item.bestComponentProvider === "нет данных" ? bestOffer.nameProvider : item.bestComponentProvider,
                             deliveryTimeComponent: item.deliveryTimeComponent === "нет данных" ? bestOffer.deliveryTimeComponent : item.deliveryTimeComponent,
                             otherOffers: !item.otherOffers || item.otherOffers.length === 0 ? 
