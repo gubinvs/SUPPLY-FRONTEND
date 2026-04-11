@@ -1,3 +1,12 @@
+th {
+    font-size: 12px;
+}
+
+td {
+    font-size: 14px;
+    line-height: 14px;
+}
+
 .lpc-item__article {
     min-width: 200px;
 }
@@ -9,26 +18,25 @@
 .lpc-item__quantity,
 .lpc-item__price {
     text-align: center;
-    min-width: 100px;
+    min-width: 80px;
 }
 
 .lpc-item__delivery {
     text-align: center;
-    min-width: 150px;
+    min-width: 120px;
 }
 
 .lpc-item__provider {
-    min-width: 250px;
+    min-width: 200px;
 }
 
 .lpc-item__button-delete {
-    width: 30px;
-    height: 30px;
+    width: 20px;
+    height: 20px;
     text-align: center;
-    border: 0.5px solid red;
-    border-radius: 4px;
     color: red;
     background-color: #FFF;
+    cursor: pointer;
 }
 
 .change-procurement-button-block {

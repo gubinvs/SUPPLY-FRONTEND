@@ -250,7 +250,7 @@ const ListPurchaseComponent = ({
                                             <td className="lpc-item__provider">{item.bestComponentProvider}</td>
                                         }
                                         <td>
-                                            <button
+                                            <div
                                                 className="lpc-item__button-delete"
                                                 onClick={() =>
                                                     deletePurchaseItem(
@@ -261,7 +261,7 @@ const ListPurchaseComponent = ({
                                                 }
                                             >
                                                 X
-                                            </button>
+                                            </div>
                                         </td>
                                     </>
                                 )}
