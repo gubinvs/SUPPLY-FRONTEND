@@ -23,10 +23,10 @@ const NavigationBarMin = (
         <div className="navigation-bar-min">
             <div className="navigation-bar-min__top-block">
                 <picture>
-                    <img src="../../images/logo/header_logo_1280.svg" alt="Логотип системы" className="navigation-bar-min__logo" />
-                    {/* <img src="../../images/logo/logo-ha.png" alt="Логотип системы" className="navigation-bar-min__logo" /> */}
+                    {/* <img src="../../images/logo/header_logo_1280.svg" alt="Логотип системы" className="navigation-bar-min__logo" /> */}
+                    <img src="../../images/logo/logo-ha.png" alt="Логотип системы" className="navigation-bar-min__logo" />
                     {/* <img src="../../images/logo/header-logo_sa.svg" alt="Логотип системы" className="navigation-bar-min__logo" /> */}
-                </picture>
+                </picture><br/>
                 <div className="top-block__line"></div>
                 <ul className="navigation-icon-block">
                     <li className="navigation-icon-block__item" onClick={linkPageApplicationPanel}>
@@ -64,12 +64,12 @@ const NavigationBarMin = (
                             <li className="navigation-icon-block__item" onClick={linkPageAddComponent}>
                                 <img className="navigation-icon__icon-img" src="../images/add-component-icon.svg" alt="Иконка на страницу добавления артикулов" />
                             </li>
-                            <li className="navigation-icon-block__item" onClick={linkPagePurchase}>
+                            {/* <li className="navigation-icon-block__item" onClick={linkPagePurchase}>
                                 <img className="navigation-icon__icon-img" src="../images/specification-icon.svg" alt="Иконка на страницу с данными о спецификациях" />
                             </li>
                             <li className="navigation-icon-block__item" onClick={linkPageOrders}>
                                 <img className="navigation-icon__icon-img" src="../images/purchase-icon.svg" alt="Иконка на страницу с заказами" />
-                            </li>
+                            </li> */}
                         </>
                     :""}
                     
