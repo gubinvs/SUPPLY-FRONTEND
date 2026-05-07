@@ -79,7 +79,7 @@ const NavigationBarMax = () => {
                             <img src="../images/specifications-icon.svg" className="nbm-navigation-item__icon" alt="#"/>
                             <div className="nbm-navigation-item__name">Предложения поставщиков</div>
                         </li>
-                        <li
+                        {/*<li
                             className={`navigation-bar-max__navigation-item ${location.pathname === pathPurchase ? 'navigation-bar-max__navigation-item_active' : ''}`}
                             onClick={() => navigate(pathPurchase)}
                         >
@@ -92,7 +92,7 @@ const NavigationBarMax = () => {
                         >
                             <img src="../images/purchase-icon.svg" className="nbm-navigation-item__icon" alt="#"/>
                             <div className="nbm-navigation-item__name">Закупки</div>
-                        </li>
+                        </li>*/}
                     </>
                 )}
 

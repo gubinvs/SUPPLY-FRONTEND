@@ -43,18 +43,18 @@ const NavigationBarMin = (
                             </li>
                         </>:""
                     }
-                    {/* Если роль пользователя */}
+                    {/* Если роль пользователя даром*/}
                     {roleUser?
                         <>
                             <li className="navigation-icon-block__item" onClick={suppliersOffers}>
                                 <img className="navigation-icon__icon-img" src="../images/specifications-icon.svg" alt="Иконка на страницу со списком номенклатуры" />
                             </li>
-                            <li className="navigation-icon-block__item" onClick={linkPagePurchase}>
+                            {/*<li className="navigation-icon-block__item" onClick={linkPagePurchase}>
                                 <img className="navigation-icon__icon-img" src="../images/specification-icon.svg" alt="Иконка на страницу с спецификациями" />
                             </li>
                             <li className="navigation-icon-block__item" onClick={linkPageOrders}>
                                 <img className="navigation-icon__icon-img" src="../images/purchase-icon.svg" alt="Иконка на страницу с заказами" />
-                            </li>
+                            </li>*/}
                            
                         </>:""
                     }

@@ -238,7 +238,8 @@ const AllOffersForSelected = (
             </td>
             <td>{isFirstOccurrence ? offer.vendorCode : ""}</td>
             <td>{isFirstOccurrence ? offer.nameComponent : ""}</td>
-            {!roleUser?<td>{offer.nameProvider}</td>:<td style={{fontSize: '14px', color: "green"}}>доступно по подписке</td>}
+            {/*{!roleUser?<td>{offer.nameProvider}</td>:<td style={{fontSize: '14px', color: "green"}}>доступно по подписке</td>}*/}
+            <td>{offer.nameProvider}</td>
             <td>{offer.priceComponent.toLocaleString("ru-RU")} ₽</td>
             <td>{offer.deliveryTimeComponent}</td>
             <td>{new Date(offer.saveDataPrice).toLocaleDateString("ru-RU")}</td>
@@ -269,26 +270,34 @@ const AllOffersForSelected = (
             <>
               <div className="mb-4 all-offers-selected__button-block d-flex justify-content-between align-items-center">
                 <div>
-                    {!roleUser?
-                    <>
-                      <button
+                    {/*{!roleUser?
+                      <>
+                        <button
+                            className="btn btn-sm btn-outline-success mx-2"
+                            onClick={exportToExcel}
+                          >
+                            Скачать все предложения (Excel)
+                          </button>
+                      </>
+                      :
+                      <>
+                        <button
                           className="btn btn-sm btn-outline-success mx-2"
-                          onClick={exportToExcel}
+                          onClick={() => alert("Недоступно в данной роли")}
                         >
                           Скачать все предложения (Excel)
                         </button>
-                    </>
-                    :
-                    <>
-                      <button
-                        className="btn btn-sm btn-outline-success mx-2"
-                        onClick={() => alert("Недоступно в данной роли")}
-                      >
-                        Скачать все предложения (Excel)
-                      </button>
-                    </>
-                  }
-                  {!roleUser?
+                      </>
+                    }*/}
+                  
+                  <button
+                    className="btn btn-sm btn-outline-success mx-2"
+                    onClick={exportToExcel}
+                  >
+                    Скачать все предложения (Excel)
+                  </button>
+                  
+                  {/*{!roleUser?
                     <>
                       <button
                         className="btn btn-sm btn-outline-success"
@@ -306,7 +315,13 @@ const AllOffersForSelected = (
                           Скачать файл заказа поставщикам (Excel)
                         </button>
                     </>
-                  }
+                  }*/}
+                   <button
+                        className="btn btn-sm btn-outline-success"
+                        onClick={exportBestByProviderToExcel}
+                      >
+                        Скачать файл заказа поставщикам (Excel)
+                      </button>
                 </div>
                 <div>
                   
@@ -355,8 +370,10 @@ const AllOffersForSelected = (
                   return (
                     <div key={index} className="mb-5">
                       <h6 className="text-primary mb-2">
-                        {!roleUser? <strong>{provider}</strong>:<div style={{ fontSize: '14px', color: 'green', fontWeight: 'bold' }}>"КОМПАНИЯ ДОСТУПНА ПО ПОДПИСКЕ"</div>} предлагает лучшие цены на:</h6>
-                      
+                        {/*Это если делать ознакомительный режим для бесплатного пользователя*/}
+                        {/*{!roleUser? <strong>{provider}</strong>:<div style={{ fontSize: '14px', color: 'green', fontWeight: 'bold' }}>"КОМПАНИЯ ДОСТУПНА ПО ПОДПИСКЕ"</div>} предлагает лучшие цены на:</h6>*/}
+                      <strong>{provider}</strong>
+                      <br/> предлагает лучшие цены на:</h6>
                       {/* Это всплывающее окно карточки компании */}
                       {/* <FullDataCompanyAndCollaborators dataCompany={""}/> */}
                       
