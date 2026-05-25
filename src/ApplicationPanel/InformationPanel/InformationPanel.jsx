@@ -6,6 +6,7 @@ import "./informationCompanyCard.css";
 import ApiUrl from "../../js/ApiUrl";
 import InformationCompanyCard from "./InformationCompanyCard.jsx";
 import DataCollaborator from "./DataCollaborator.jsx";
+import { filePurchaseUpload} from "../../js/filePurchaseUpload.js";
 
 
 // Основной блок информационной панели, вводит информацию для 
@@ -26,6 +27,16 @@ const InformationPanel = ({ role }) => {
 
   // Достаем GUID из хранилища
   const guidIdCollaborator = localStorage.getItem("guidIdCollaborator");
+
+  // Работа с файлом загрузки оприходованных товаров
+  const [file, setFile] = useState(null);
+  const handleSelect = (e) => {
+    setFile(e.target.files[0]);
+  };
+
+const filePurchaseUpload = () => {
+  console.log(file);
+};
 
   useEffect(() => {
       
@@ -70,16 +81,24 @@ const InformationPanel = ({ role }) => {
                 />
                 {/* Форма загрузки файла с данными о купленной номенклатуре, выгрузка из 1с */}
                 {role === "b5aff5b0-c3ac-4f1e-9467-fe13a14f6de3"?
-                  <>
-          
-                  </>:
+                  <></>
+                  :
                   <>
                     <br/><br/><br/>
                     <h5>Загрузка файла с данными о покупке номенклатуры<br/> из 1С "Выгрузка цен закупки"</h5>
                     <br/>
                     <div className="input-group mb-3 ">
-                        <input type="file" class="form-control" id="inputGroupFile02" />
-                        <label class="input-group-text" for="inputGroupFile02">Загрузить</label>
+                        <input 
+                          type="file" 
+                          className="form-control" 
+                          id="inputGroupFile02" 
+                          onChange={handleSelect}
+                        />
+                        <button 
+                          className="input-group-text" 
+                          for="inputGroupFile02"
+                          onClick={()=>filePurchaseUpload(file)}
+                        >Загрузить</button>
                     </div>
                   </>
                 }
