@@ -6,7 +6,8 @@ import "./informationCompanyCard.css";
 import ApiUrl from "../../js/ApiUrl";
 import InformationCompanyCard from "./InformationCompanyCard.jsx";
 import DataCollaborator from "./DataCollaborator.jsx";
-import { filePurchaseUpload} from "../../js/filePurchaseUpload.js";
+import { SpinnersMin } from "../../ElementApplication/Spinners.jsx";
+
 
 
 // Основной блок информационной панели, вводит информацию для 
@@ -18,6 +19,7 @@ const InformationPanel = ({ role }) => {
   const [nameCollaborator, setNameCollaborator] = useState("");
   const [emailCollaborator, setEmailCollaborator] = useState("");
   const [phoneCollaborator, setPhoneCollaborator] = useState("");
+  const [loanding, setLoanding] = useState(false);
 
   // Собираем данные о компаниях в таблице SupplyCompany информацию о компаниях пользователей
   const [company, setCompany] = useState([]);
@@ -30,13 +32,12 @@ const InformationPanel = ({ role }) => {
 
   // Работа с файлом загрузки оприходованных товаров
   const [file, setFile] = useState(null);
+  
   const handleSelect = (e) => {
     setFile(e.target.files[0]);
   };
 
-const filePurchaseUpload = () => {
-  console.log(file);
-};
+
 
   useEffect(() => {
       
@@ -69,6 +70,43 @@ const filePurchaseUpload = () => {
   
     fetchData();
   }, [guidIdCollaborator]);
+
+
+  /// Скрипт принимает файл с данными о купленной за период номенклатуре
+  /// и отправляет его на сервер
+
+  const filePurchaseUpload = async (file) => {
+        setLoanding(true);
+                      
+        const formData = new FormData();
+
+        // ВАЖНО: имя поля должно совпадать с backend
+        formData.append("formFile", file);
+
+        const response = await fetch(
+          ApiUrl + "/api/AddRecordingPurchasePrice",
+          {
+            method: "POST",
+            body: formData,
+            headers: {
+              accept: "*/*",
+            },
+          }
+        );
+
+         
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`HTTP ${response.status}: ${errorText}`);
+        } else {
+          setLoanding(false);
+        }
+        
+        
+      return await response.text();
+    };
+
     
   return (
       <>
@@ -83,23 +121,30 @@ const filePurchaseUpload = () => {
                 {role === "b5aff5b0-c3ac-4f1e-9467-fe13a14f6de3"?
                   <></>
                   :
-                  <>
+                  <> 
                     <br/><br/><br/>
                     <h5>Загрузка файла с данными о покупке номенклатуры<br/> из 1С "Выгрузка цен закупки"</h5>
                     <br/>
-                    <div className="input-group mb-3 ">
-                        <input 
-                          type="file" 
-                          className="form-control" 
-                          id="inputGroupFile02" 
-                          onChange={handleSelect}
-                        />
-                        <button 
-                          className="input-group-text" 
-                          for="inputGroupFile02"
-                          onClick={()=>filePurchaseUpload(file)}
-                        >Загрузить</button>
-                    </div>
+                    {!loanding?
+                      <>
+                       
+                        <div className="input-group mb-3 ">
+                            <input 
+                              type="file" 
+                              className="form-control" 
+                              id="inputGroupFile02" 
+                              onChange={handleSelect}
+                            />
+                            <button 
+                              className="input-group-text" 
+                              for="inputGroupFile02"
+                              onClick={()=>filePurchaseUpload(file)}
+                            >Загрузить</button>
+                        </div>
+                      </>
+                      :
+                      <SpinnersMin />
+                    }
                   </>
                 }
             </div>
