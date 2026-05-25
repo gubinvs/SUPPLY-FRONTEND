@@ -118,9 +118,8 @@ const InformationPanel = ({ role }) => {
                     guidIdCollaborator={guidIdCollaborator} 
                 />
                 {/* Форма загрузки файла с данными о купленной номенклатуре, выгрузка из 1с */}
-                {role === "b5aff5b0-c3ac-4f1e-9467-fe13a14f6de3"?
-                  <></>
-                  :
+                {console.log(role)}
+                {role === "Администратор системы"?
                   <> 
                     <br/><br/><br/>
                     <h5>Загрузка файла с данными о покупке номенклатуры<br/> из 1С "Выгрузка цен закупки"</h5>
@@ -146,6 +145,9 @@ const InformationPanel = ({ role }) => {
                       <SpinnersMin />
                     }
                   </>
+                  :
+                  <></>
+              
                 }
             </div>
             <div className="main-application-panel__right-block">
