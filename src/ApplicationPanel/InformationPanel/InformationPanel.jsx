@@ -68,14 +68,21 @@ const InformationPanel = ({ role }) => {
                     company={company} 
                     guidIdCollaborator={guidIdCollaborator} 
                 />
-                <br/><br/><br/>
                 {/* Форма загрузки файла с данными о купленной номенклатуре, выгрузка из 1с */}
-                <h5>Загрузка файла с данными о покупке номенклатуры<br/> из 1С "Выгрузка цен закупки"</h5>
-                <br/>
-                <div className="input-group mb-3 ">
-                    <input type="file" class="form-control" id="inputGroupFile02" />
-                    <label class="input-group-text" for="inputGroupFile02">Загрузить</label>
-                </div>
+                {role === "b5aff5b0-c3ac-4f1e-9467-fe13a14f6de3"?
+                  <>
+          
+                  </>:
+                  <>
+                    <br/><br/><br/>
+                    <h5>Загрузка файла с данными о покупке номенклатуры<br/> из 1С "Выгрузка цен закупки"</h5>
+                    <br/>
+                    <div className="input-group mb-3 ">
+                        <input type="file" class="form-control" id="inputGroupFile02" />
+                        <label class="input-group-text" for="inputGroupFile02">Загрузить</label>
+                    </div>
+                  </>
+                }
             </div>
             <div className="main-application-panel__right-block">
                 <div className="mb-10">
