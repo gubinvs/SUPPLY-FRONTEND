@@ -316,12 +316,12 @@ const AllOffersForSelected = (
                         </button>
                     </>
                   }*/}
-                   <button
+                   {/* <button
                         className="btn btn-sm btn-outline-success"
                         onClick={exportBestByProviderToExcel}
                       >
                         Скачать файл заказа поставщикам (Excel)
-                      </button>
+                    </button> */}
                 </div>
                 <div>
                   
@@ -330,12 +330,12 @@ const AllOffersForSelected = (
                       <button className="btn btn-outline-secondary mr-10" onClick={()=> window.location.href="/SuppliersOffers"}>Назад</button>
                     </>:""
                   }
-                  <button
+                  {/* <button
                     className={`btn ml-2 ${showBestByProvider ? "btn-outline-secondary" : "btn-secondary"}`}
                     onClick={() => setShowBestByProvider(!showBestByProvider)}
                   >
                     {showBestByProvider ? "< К полному списку" : "Лучшие предложения >"}
-                  </button>
+                  </button> */}
                 </div>
               </div>
               {!showBestByProvider ? (
