@@ -8,6 +8,7 @@ import HeaderApplicationPanel from "../ApplicationPanel/Header/HeaderApplication
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import PaginationPage from "../ElementApplication/PaginationPage.jsx";
+import { within } from "@testing-library/react";
 
 
 
@@ -23,7 +24,7 @@ const AllOffersForSelected = (
   const [showBestByProvider, setShowBestByProvider] = useState(false);
   const [selectedVendorCodes, setSelectedVendorCodes] = useState(new Set());
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 10;
+  const rowsPerPage = 1000000000;
   
   
   const [totalPages, setTotalPage]= useState(1)
@@ -111,9 +112,9 @@ const AllOffersForSelected = (
         setBestOffersByProvider(bestGroupedByProvider);
 
       } catch (error) {
-        console.error("Ошибка:", error);
+          console.error("Ошибка:", error);
       } finally {
-        setLoading(false);
+          setLoading(false);
       }
     };
 
@@ -226,24 +227,42 @@ const AllOffersForSelected = (
         }
 
         return (
-          <tr key={index}>
-            <td>
-              {isFirstOccurrence && (
-                <input
-                  type="checkbox"
-                  checked={selectedVendorCodes.has(offer.vendorCode)}
-                  onChange={() => toggleVendorSelection(offer.vendorCode)}
-                />
-              )}
-            </td>
-            <td>{isFirstOccurrence ? offer.vendorCode : ""}</td>
-            <td>{isFirstOccurrence ? offer.nameComponent : ""}</td>
-            {/*{!roleUser?<td>{offer.nameProvider}</td>:<td style={{fontSize: '14px', color: "green"}}>доступно по подписке</td>}*/}
-            <td>{offer.nameProvider}</td>
-            <td>{offer.priceComponent.toLocaleString("ru-RU")} ₽</td>
-            <td>{offer.deliveryTimeComponent}</td>
-            <td>{new Date(offer.saveDataPrice).toLocaleDateString("ru-RU")}</td>
-          </tr>
+          <>
+            {isFirstOccurrence && (
+              <tr>
+                <td>   
+                    {isFirstOccurrence && (
+                      <input
+                        type="checkbox"
+                        checked={selectedVendorCodes.has(offer.vendorCode)}
+                        onChange={() => toggleVendorSelection(offer.vendorCode)}
+                      />
+                    )}</td>
+                <td>{offer.vendorCode}</td>
+                <td colSpan={5}>{offer.nameComponent}</td>
+              </tr>
+            )}
+            <tr key={index}>
+                <td style={{width: "20px"}}>
+                    {/* {isFirstOccurrence && (
+                      <input
+                        type="checkbox"
+                        checked={selectedVendorCodes.has(offer.vendorCode)}
+                        onChange={() => toggleVendorSelection(offer.vendorCode)}
+                      />
+                    )} */}
+                </td>
+                {/* <td>{isFirstOccurrence ? offer.vendorCode : ""}</td>
+                <td>{isFirstOccurrence ? offer.nameComponent : ""}</td> */}
+                
+                <td colSpan={2} style={{ textAlign: "right" }}>предложение</td>
+                {/*{!roleUser?<td>{offer.nameProvider}</td>:<td style={{fontSize: '14px', color: "green"}}>доступно по подписке</td>}*/}
+                <td>{offer.nameProvider}</td>
+                <td>{offer.priceComponent.toLocaleString("ru-RU")} ₽</td>
+                <td>{offer.deliveryTimeComponent}</td>
+                <td>{new Date(offer.saveDataPrice).toLocaleDateString("ru-RU")}</td>
+            </tr>
+          </>
         );
       });
     };
@@ -352,14 +371,16 @@ const AllOffersForSelected = (
                         <th className="aos-table__th-data">Актуальность</th>
                       </tr>
                     </thead>
-                    <tbody>{renderRows()}</tbody>
+                    <tbody>
+                        {renderRows()}
+                    </tbody>
                   </table>
                   {/* Пагинация страниц */}
-                  <PaginationPage
+                  {/* <PaginationPage
                     currentPage={currentPage}
                     setCurrentPage={setCurrentPage}
                     totalPages={totalPages}
-                  />
+                  /> */}
                 </>
               ) : (
                 Object.entries(bestOffersByProvider).map(([provider, offers], index) => {
