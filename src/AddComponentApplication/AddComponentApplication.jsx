@@ -181,6 +181,13 @@ const AddComponentApplication = (
                 // alert("Цена успешно записана!");
                 setPrice('');
                 setDeliveryTerm('');
+                // Очистим данные автозаполнения полей после добавления нового артикула
+                localStorage.removeItem("handleSaveComponent");
+                localStorage.removeItem("articlePreviousEntry");
+                localStorage.removeItem("namePreviousEntry");
+                localStorage.removeItem("selectedManufacturerPreviousEntry");
+                localStorage.removeItem("selectedUnitPreviousEntry");
+                // Перезагрузим страницу
                 window.location.reload();
             } else {
                 const errorText = await response.text();
@@ -443,9 +450,9 @@ const AddComponentApplication = (
                                     Ед. изм.
                                 </option>
                                 {unitMeasurement.map((item, index) => (
-                                    <option key={index} value={item.nameUnitMeasurement}>
+                                <option key={index} value={item.nameUnitMeasurement}>
                                     {item.nameUnitMeasurement}
-                                    </option>
+                                </option>
                                 ))}
                             </select>
                         </div>

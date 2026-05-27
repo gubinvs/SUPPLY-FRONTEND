@@ -4,9 +4,10 @@ import "../ApplicationPanel/applicationPanel.css";
 import "./viewSuppliersOffers.css";
 import { handleAnalyzeClick } from "../js/Utilits/handleAnalyzeClick.js";
 import NomenclatureTable from "../ElementApplication/NomenclatureTable.jsx";
-// import PaginationNext from "../ElementApplication/PaginationNext.jsx";
+import PaginationNext from "../ElementApplication/PaginationNext.jsx";
 import PaginationPage from "../ElementApplication/PaginationPage.jsx";
 // import allOffersResponse from "../js/Utilits/allOffersResponse.js";
+import ApiUrl from "../js/ApiUrl.js";
 
 const ViewSuppliersOffers = (
     {components, error, loading}
@@ -15,7 +16,7 @@ const ViewSuppliersOffers = (
     const [selectedIds, setSelectedIds] = useState(new Set());
     const [currentPage, setCurrentPage] = useState(1); 
     const [searchTerm, setSearchTerm] = useState("");
-    const itemsPerPage = 14;
+    const itemsPerPage = 50;
     const navigate = useNavigate();
 
     ///
@@ -31,9 +32,6 @@ const ViewSuppliersOffers = (
     //     };
     //     fetchData();
     // }, [components]);
-
-
-
 
 
 
@@ -58,7 +56,6 @@ const ViewSuppliersOffers = (
     return (
         <div className="main-application-panel__container">
             <div className="view-suppliers-offers__block">
-
                 <input
                     className="form-control view-suppliers-offers__search"
                     type="text"

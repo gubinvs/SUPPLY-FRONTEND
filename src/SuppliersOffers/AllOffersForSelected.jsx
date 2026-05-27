@@ -309,6 +309,11 @@ const AllOffersForSelected = (
                       </>
                     }*/}
                   
+                  {!showBestByProvider ? 
+                    <>
+                      <button className="btn btn-outline-secondary mr-10" onClick={()=> window.location.href="/SuppliersOffers"}>Назад</button>
+                    </>:""
+                  }
                   <button
                     className="btn btn-sm btn-outline-success mx-2"
                     onClick={exportToExcel}
