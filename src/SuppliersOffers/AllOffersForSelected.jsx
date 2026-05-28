@@ -104,13 +104,17 @@ const AllOffersForSelected = (
         // Добавляем данные о стоимости последней закупки = списком артикулов,
         // получаем данные о последних покупках по каждому артикулу и добавляем эти данные в массив allOffers
         const allOffersAllPurchase = [];
-        allOffers.forEach(item => {
+        allOffers.forEach((item, index) => {
+          
           const matches = dataEntryPurchase.filter(x => x.article === item.vendorCode);
-          if (matches == null) {
-                allOffersAllPurchase.push({
+
+          const nextItem = allOffers[index + 1];
+
+          if (nextItem && item.vendorCode === nextItem.vendorCode) {
+            allOffersAllPurchase.push({
                   ...item
                 });
-          } else {
+          }  else  {
                 allOffersAllPurchase.push({
                   ...item,
                   entryPurchase: matches
@@ -119,9 +123,7 @@ const AllOffersForSelected = (
           
         });
 
-        
-
-
+      
         // Сохраняем все предложения
         setCombinedOffers(allOffersAllPurchase);
         
@@ -261,11 +263,11 @@ const AllOffersForSelected = (
           prevVendor = offer.vendorCode;
           prevName = offer.nameComponent;
         }
-
+      
         return (
           <>
-            {isFirstOccurrence && (
-              <tr tr key={`${offer.vendorCode}-${offer.nameProvider}-${index}`}>
+            {isFirstOccurrence  && (
+              <tr key={`${offer.vendorCode}-${offer.nameProvider}-${index}`}>
                 <td>   
                     {isFirstOccurrence && (
                       <input
@@ -299,21 +301,18 @@ const AllOffersForSelected = (
                 <td>{new Date(offer.saveDataPrice).toLocaleDateString("ru-RU")}</td>
             </tr>
             {/*// Выводим оприходование*/}
-            {offer.entryPurchase[0] !== null && index === paginated.length-1?
-            <>
-              <tr key={`purchase-${offer.vendorCode}-${index}`}>
-                  <td style={{width: "20px"}}></td>              
-                  <td colSpan={2} style={{ textAlign: "right" }}>Последняя покупка из 1С:</td>
-                  <td>{offer.entryPurchase[0].nameProvider}</td>
-                  <td>{offer.entryPurchase[0].purchasePrice.toLocaleString("ru-RU")} ₽</td>
-                  <td>Оприходован</td>
-                  <td>{new Date(offer.entryPurchase[0].saveDataPrice).toLocaleDateString("ru-RU")}</td>
-              </tr>
-            </>
-            :
-            <>
-            </>
-            }
+            {offer.entryPurchase?.[0] &&  (
+                <>
+                  <tr key={`purchase-${offer.vendorCode}-${index}`}>
+                      <td style={{width: "20px"}}></td>              
+                      <td colSpan={2} style={{ textAlign: "right" }}>Последняя покупка из 1С:</td>
+                      <td>{offer.entryPurchase[0].nameProvider}</td>
+                      <td>{offer.entryPurchase[0].purchasePrice.toLocaleString("ru-RU")} ₽</td>
+                      <td>Оприходован</td>
+                      <td>{new Date(offer.entryPurchase[0].saveDataPrice).toLocaleDateString("ru-RU")}</td>
+                  </tr>
+                </>
+              )}
           </>
         );
       });
