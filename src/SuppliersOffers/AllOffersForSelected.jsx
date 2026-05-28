@@ -24,7 +24,7 @@ const AllOffersForSelected = (
   const [showBestByProvider, setShowBestByProvider] = useState(false);
   const [selectedVendorCodes, setSelectedVendorCodes] = useState(new Set());
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 1000000000;
+  const rowsPerPage = 1000;
   
   
   const [totalPages, setTotalPage]= useState(1)
@@ -50,27 +50,28 @@ const AllOffersForSelected = (
         return;
       }
 
-      // Запросили данные о ценах поставщика
+      // Запросили данные о ценах поставщика = списком артикулов
       try {
         const response = await fetch(`${ApiUrl}/api/ReturnPriceProviderListArticle`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ Articles: articleList }),
+          body: JSON.stringify({ Articles: articleList })
         });
 
         if (!response.ok) throw new Error("Ошибка загрузки данных");
         const data = await response.json();
 
-        // Собрали данные с сервера
+
+        // Собрали данные с сервера о предложениях поставщиков
         const allOffersApi = [];
-        data.found.forEach((component) => {
-          component.offers.forEach((offer) => {
-            allOffersApi.push({
-              ...offer,
-              vendorCode: component.article,
-              nameComponent: component.nameComponent,
-            });
-          });
+            data.found.forEach((component) => {
+              component.offers.forEach((offer) => {
+                allOffersApi.push({
+                  ...offer,
+                  vendorCode: component.article,
+                  nameComponent: component.nameComponent,
+                });
+              });
         });
 
 
@@ -88,8 +89,39 @@ const AllOffersForSelected = (
         });
 
 
+        // Запрашиваем данные о стоимости последней закупки оформленной в 1С
+        const responseEntryPurchase = await fetch(`${ApiUrl}/api/ReturnListEntryPurchasePrice`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ Articles: articleList })
+        });
+
+        if (!responseEntryPurchase.ok) throw new Error("Ошибка загрузки данных");
+        const dataEntryPurchase = await responseEntryPurchase.json();
+
+        
+        
+        // Добавляем данные о стоимости последней закупки = списком артикулов,
+        // получаем данные о последних покупках по каждому артикулу и добавляем эти данные в массив allOffers
+        const allOffersAllPurchase = [];
+        allOffers.forEach(item => {
+          const matches = dataEntryPurchase.filter(x => x.vendorCode === item.article);
+          console.log("Весь массив", dataEntryPurchase);
+          console.log("Машинес",matches);
+          
+          allOffersAllPurchase.push({
+            ...item,
+            entryPurchase: matches
+          });
+        });
+
+        
+
+
         // Сохраняем все предложения
-        setCombinedOffers(allOffers);
+        setCombinedOffers(allOffersAllPurchase);
+        
+        
 
         // Фильтруем по артикулу и лучшей цене
         const bestOffersByArticle = new Map();
@@ -219,6 +251,8 @@ const AllOffersForSelected = (
       let prevVendor = null;
       let prevName = null;
 
+      console.log(paginated);
+
       return paginated.map((offer, index) => {
         const isFirstOccurrence = offer.vendorCode !== prevVendor || offer.nameComponent !== prevName;
         if (isFirstOccurrence) {
@@ -262,6 +296,21 @@ const AllOffersForSelected = (
                 <td>{offer.deliveryTimeComponent}</td>
                 <td>{new Date(offer.saveDataPrice).toLocaleDateString("ru-RU")}</td>
             </tr>
+            {offer.entryPurchase[0] !== null && offer.entryPurchase[0].article === offer.vendorCode?
+            <>
+              <tr key={index}>
+                  <td style={{width: "20px"}}></td>              
+                  <td colSpan={2} style={{ textAlign: "right" }}>{offer.entryPurchase[0].nameComponent}Последняя покупка из 1С:</td>
+                  <td>{offer.entryPurchase[0].nameProvider}</td>
+                  <td>{offer.entryPurchase[0].purchasePrice.toLocaleString("ru-RU")} ₽</td>
+                  <td>Оприходован</td>
+                  <td>{new Date(offer.entryPurchase[0].saveDataPrice).toLocaleDateString("ru-RU")}</td>
+              </tr>
+            </>
+            :
+            <>
+            </>
+            }
           </>
         );
       });
