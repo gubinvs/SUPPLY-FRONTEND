@@ -105,14 +105,18 @@ const AllOffersForSelected = (
         // получаем данные о последних покупках по каждому артикулу и добавляем эти данные в массив allOffers
         const allOffersAllPurchase = [];
         allOffers.forEach(item => {
-          const matches = dataEntryPurchase.filter(x => x.vendorCode === item.article);
-          console.log("Весь массив", dataEntryPurchase);
-          console.log("Машинес",matches);
+          const matches = dataEntryPurchase.filter(x => x.article === item.vendorCode);
+          if (matches == null) {
+                allOffersAllPurchase.push({
+                  ...item
+                });
+          } else {
+                allOffersAllPurchase.push({
+                  ...item,
+                  entryPurchase: matches
+                });
+          }
           
-          allOffersAllPurchase.push({
-            ...item,
-            entryPurchase: matches
-          });
         });
 
         
@@ -251,8 +255,6 @@ const AllOffersForSelected = (
       let prevVendor = null;
       let prevName = null;
 
-      console.log(paginated);
-
       return paginated.map((offer, index) => {
         const isFirstOccurrence = offer.vendorCode !== prevVendor || offer.nameComponent !== prevName;
         if (isFirstOccurrence) {
@@ -263,7 +265,7 @@ const AllOffersForSelected = (
         return (
           <>
             {isFirstOccurrence && (
-              <tr>
+              <tr tr key={`${offer.vendorCode}-${offer.nameProvider}-${index}`}>
                 <td>   
                     {isFirstOccurrence && (
                       <input
@@ -276,7 +278,7 @@ const AllOffersForSelected = (
                 <td colSpan={5}>{offer.nameComponent}</td>
               </tr>
             )}
-            <tr key={index}>
+            <tr key={`header-${offer.vendorCode}`}>
                 <td style={{width: "20px"}}>
                     {/* {isFirstOccurrence && (
                       <input
@@ -296,11 +298,12 @@ const AllOffersForSelected = (
                 <td>{offer.deliveryTimeComponent}</td>
                 <td>{new Date(offer.saveDataPrice).toLocaleDateString("ru-RU")}</td>
             </tr>
-            {offer.entryPurchase[0] !== null && offer.entryPurchase[0].article === offer.vendorCode?
+            {/*// Выводим оприходование*/}
+            {offer.entryPurchase[0] !== null && index === paginated.length-1?
             <>
-              <tr key={index}>
+              <tr key={`purchase-${offer.vendorCode}-${index}`}>
                   <td style={{width: "20px"}}></td>              
-                  <td colSpan={2} style={{ textAlign: "right" }}>{offer.entryPurchase[0].nameComponent}Последняя покупка из 1С:</td>
+                  <td colSpan={2} style={{ textAlign: "right" }}>Последняя покупка из 1С:</td>
                   <td>{offer.entryPurchase[0].nameProvider}</td>
                   <td>{offer.entryPurchase[0].purchasePrice.toLocaleString("ru-RU")} ₽</td>
                   <td>Оприходован</td>
