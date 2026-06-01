@@ -241,14 +241,14 @@ const AddComponentApplication = (
     }, []);
 
     // если в currentItems остался только один элемент (т.е. найдено точное совпадение), то его чекбокс автоматически становился отмеченным.
-    useEffect(() => {
+    {/*useEffect(() => {
         if (currentItems.length === 1) {
             const onlyItemId = currentItems[0].id;
             if (!selectedIds.has(onlyItemId)) {
                 handleCheckboxToggle(onlyItemId);
             }
         }
-    }, [currentItems]);
+    }, [currentItems]);*/}
 
     return (
         <div className="main-application-panel">
