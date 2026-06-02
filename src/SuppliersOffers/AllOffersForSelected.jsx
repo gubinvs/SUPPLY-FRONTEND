@@ -298,7 +298,26 @@ const AllOffersForSelected = (
                 
                 <td colSpan={2} style={{ textAlign: "right" }}>предложение</td>
                 {/*{!roleUser?<td>{offer.nameProvider}</td>:<td style={{fontSize: '14px', color: "green"}}>доступно по подписке</td>}*/}
-                <td>{offer.nameProvider}</td>
+                <td>
+                      {/*Если пользователь Администратор или заказчик, выводим ссылку на страницу с контактами менеджеров компании*/}
+                      {roleAdmin?
+                      <>
+                        {/*Ссылка на страницу с данными о менедрере компании*/}
+                        <a 
+                          href={"http://192.168.1.43"} 
+                          target="_blank"
+                        >
+                            {offer.nameProvider}
+                        </a>
+                      </>
+                      :
+                      <>
+                      {/*Просто наименование компании*/}
+                        {offer.nameProvider}
+                      </>
+                      }
+                      
+                </td>
                 <td>{offer.priceComponent.toLocaleString("ru-RU")} ₽</td>
                 <td>{offer.deliveryTimeComponent}</td>
                 <td>{new Date(offer.saveDataPrice).toLocaleDateString("ru-RU")}</td>
