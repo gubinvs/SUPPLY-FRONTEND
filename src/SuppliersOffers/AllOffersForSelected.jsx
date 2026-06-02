@@ -24,7 +24,7 @@ const AllOffersForSelected = (
   const [showBestByProvider, setShowBestByProvider] = useState(false);
   const [selectedVendorCodes, setSelectedVendorCodes] = useState(new Set());
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 1000;
+  const rowsPerPage = 1000000;
   
   
   const [totalPages, setTotalPage]= useState(1)
@@ -248,6 +248,9 @@ const AllOffersForSelected = (
     useEffect(() => {
       setTotalPage(Math.ceil(offers.length / rowsPerPage));
     }, [offers.length, rowsPerPage]);
+
+
+    
     // Выдает результат о найденной номенклатуре согласно запросу пользователя
     const renderRows = () => {
   
