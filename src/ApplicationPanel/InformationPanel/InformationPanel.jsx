@@ -7,6 +7,7 @@ import ApiUrl from "../../js/ApiUrl";
 import InformationCompanyCard from "./InformationCompanyCard.jsx";
 import DataCollaborator from "./DataCollaborator.jsx";
 import { SpinnersMin } from "../../ElementApplication/Spinners.jsx";
+import {useProviders} from "../../js/Utilits/loadProviders.js";
 
 
 
@@ -36,6 +37,24 @@ const InformationPanel = ({ role }) => {
   const handleSelect = (e) => {
     setFile(e.target.files[0]);
   };
+
+  // Запрос списка поставщиков
+  const Component = () => {
+      const { providers, loading, error } = useProviders();
+
+      if (loading) return <p>Загрузка...</p>;
+      if (error) return <p>Ошибка: {error.message}</p>;
+
+      return (
+        <>
+            <select class="form-select" style={{'maxMenuHeight': '50px'}}>
+                <option selected>Выберите поставщика</option>
+                {providers.map(p => <option value={p.guidIdProvider}>{p.nameProvider}</option>)}
+            </select>
+        </>
+
+  );
+};
 
 
 
@@ -117,12 +136,29 @@ const InformationPanel = ({ role }) => {
                     company={company} 
                     guidIdCollaborator={guidIdCollaborator} 
                 />
+                {/* Данные о поставщиках и менеджерах */}
+                <div className="collaborator-provider-info-block">
+                    <h5 style={{'padding-left': '20px', 'margin-bottom': "10px"}}> Информация о компании поставщике:</h5>
+                    {Component()}
+                </div>
+            </div>
+            <div className="main-application-panel__right-block">
+                <div className="mb-10">
+                  {/* Форма редактирования данных о пользователе */}
+                  <DataCollaborator 
+                      guidIdCollaborator={guidIdCollaborator}
+                      role={role}
+                      nameCollaborator={nameCollaborator} 
+                      emailCollaborator={emailCollaborator}
+                      phoneCollaborator={phoneCollaborator}
+                      addressDiliveryCollaborator={addressDiliveryCollaborator}
+                  />
+                </div>
                 {/* Форма загрузки файла с данными о купленной номенклатуре, выгрузка из 1с */}
-                {console.log(role)}
                 {role === "Администратор системы"?
                   <> 
-                    <br/><br/><br/>
-                    <h5>Загрузка файла с данными о покупке номенклатуры<br/> из 1С "Выгрузка цен закупки"</h5>
+                    <br/>
+                    <h6>Загрузка файла с данными о покупке номенклатуры<br/> из 1С "Выгрузка цен закупки"</h6>
                     <br/>
                     {!loanding?
                       <>
@@ -147,21 +183,7 @@ const InformationPanel = ({ role }) => {
                   </>
                   :
                   <></>
-              
                 }
-            </div>
-            <div className="main-application-panel__right-block">
-                <div className="mb-10">
-                  {/* Форма редактирования данных о пользователе */}
-                  <DataCollaborator 
-                      guidIdCollaborator={guidIdCollaborator}
-                      role={role}
-                      nameCollaborator={nameCollaborator} 
-                      emailCollaborator={emailCollaborator}
-                      phoneCollaborator={phoneCollaborator}
-                      addressDiliveryCollaborator={addressDiliveryCollaborator}
-                  />
-                </div>
             </div>
         </div>
     </>
