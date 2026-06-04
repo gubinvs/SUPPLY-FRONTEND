@@ -22,6 +22,8 @@ const InformationPanel = ({ role }) => {
   const [emailCollaborator, setEmailCollaborator] = useState("");
   const [phoneCollaborator, setPhoneCollaborator] = useState("");
   const [loanding, setLoanding] = useState(false);
+  // Панель отображения данных о сотрудниках компании
+  const [collaboratorInfo, setCollaboratorInfo] = useState(false);
 
   // Собираем данные о компаниях в таблице SupplyCompany информацию о компаниях пользователей
   const [company, setCompany] = useState([]);
@@ -41,21 +43,25 @@ const InformationPanel = ({ role }) => {
 
   // Запрос списка поставщиков
   const Component = () => {
-      const { providers, loading, error } = useProviders();
+        const { providers, loading, error } = useProviders();
 
-      if (loading) return <p>Загрузка...</p>;
-      if (error) return <p>Ошибка: {error.message}</p>;
+        if (loading) return <p>Загрузка...</p>;
+        if (error) return <p>Ошибка: {error.message}</p>;
 
-      return (
-        <>
-            <select class="form-select" style={{'maxMenuHeight': '50px'}}>
-                <option selected>Выберите поставщика</option>
-                {providers.map(p => <option value={p.guidIdProvider}>{p.nameProvider}</option>)}
-            </select>
-        </>
+        return (
+          <>
+              <select class="form-select" style={{'maxMenuHeight': '50px'}}>
+                  <option selected>Выберите поставщика</option>
+                  {providers.map(p => <option value={p.guidIdProvider}>{p.nameProvider}</option>)}
+              </select>
+          </>
 
-  );
-};
+    );
+  };
+
+   const handleProviderChange = () => {
+      setCollaboratorInfo(true);
+  };
 
 
 
@@ -142,6 +148,14 @@ const InformationPanel = ({ role }) => {
                     <h5 className="cpib__title"> Информация о компании поставщика:</h5>
                     {Component()}
                 </div>
+                {collaboratorInfo?
+                    <>
+                      <div className="collaborator-provider-info-block__collaborator-info">
+                        mmm
+                      </div>
+                    </>:<></>
+                }
+               
             </div>
             <div className="main-application-panel__right-block">
                 <div className="mb-10">
