@@ -1,5 +1,6 @@
 
 import {useState, useEffect} from "react";
+import "./informationPal.css";
 import "../applicationPanel.css";
 import "./dataCollaborator.css";
 import "./informationCompanyCard.css";
@@ -138,7 +139,7 @@ const InformationPanel = ({ role }) => {
                 />
                 {/* Данные о поставщиках и менеджерах */}
                 <div className="collaborator-provider-info-block">
-                    <h5 style={{'padding-left': '20px', 'margin-bottom': "10px"}}> Информация о компании поставщике:</h5>
+                    <h5 className="cpib__title"> Информация о компании поставщика:</h5>
                     {Component()}
                 </div>
             </div>
@@ -157,29 +158,28 @@ const InformationPanel = ({ role }) => {
                 {/* Форма загрузки файла с данными о купленной номенклатуре, выгрузка из 1с */}
                 {role === "Администратор системы"?
                   <> 
-                    <br/>
-                    <h6>Загрузка файла с данными о покупке номенклатуры<br/> из 1С "Выгрузка цен закупки"</h6>
-                    <br/>
-                    {!loanding?
-                      <>
-                       
-                        <div className="input-group mb-3 ">
-                            <input 
-                              type="file" 
-                              className="form-control" 
-                              id="inputGroupFile02" 
-                              onChange={handleSelect}
-                            />
-                            <button 
-                              className="input-group-text" 
-                              for="inputGroupFile02"
-                              onClick={()=>filePurchaseUpload(file)}
-                            >Загрузить</button>
-                        </div>
-                      </>
-                      :
-                      <SpinnersMin />
-                    }
+                    <div className="loading-data-from-1C-block">
+                        <h6 className="ldfb__title">Загрузка файла с данными о покупке номенклатуры<br/> из 1С "Выгрузка цен закупки"</h6>
+                        {!loanding?
+                            <>
+                              <div className="input-group mb-3 ">
+                                  <input 
+                                    type="file" 
+                                    className="form-control" 
+                                    id="inputGroupFile02" 
+                                    onChange={handleSelect}
+                                  />
+                                  <button 
+                                    className="input-group-text" 
+                                    for="inputGroupFile02"
+                                    onClick={()=>filePurchaseUpload(file)}
+                                  >Загрузить</button>
+                              </div>
+                            </>
+                            :
+                            <SpinnersMin />
+                          }
+                    </div>
                   </>
                   :
                   <></>
