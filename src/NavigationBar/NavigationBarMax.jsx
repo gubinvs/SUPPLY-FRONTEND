@@ -133,13 +133,13 @@ const NavigationBarMax = () => {
                             <img src="../images/specification-icon.svg" className="nbm-navigation-item__icon" alt="#"/>
                             <div className="nbm-navigation-item__name">Спецификации</div>
                         </li>
-                        <li
+                        {/*<li
                             className={`navigation-bar-max__navigation-item ${location.pathname === pathOrders ? 'navigation-bar-max__navigation-item_active' : ''}`}
                             onClick={() => navigate(pathOrders)}
                         >
                             <img src="../images/purchase-icon.svg" className="nbm-navigation-item__icon" alt="#"/>
                             <div className="nbm-navigation-item__name">Закупки</div>
-                        </li>
+                        </li>*/}
                     
                     </>
                 )}
