@@ -27,6 +27,10 @@ const InformationPanel = ({ role }) => {
 
   // Собираем данные о компаниях в таблице SupplyCompany информацию о компаниях пользователей
   const [company, setCompany] = useState([]);
+  // Идентификатор компании
+  const [guidIdProvider, setGuidIdProvider] = useState("");
+  // Контакты сотрудников компании
+  const [collaboratorProvider, setCollaboratorProvider] = useState([]);
 
   // Собирем данные о адресах доставки
   const [addressDiliveryCollaborator, setAddressDiliveryCollaborator] = useState([]);
@@ -41,32 +45,67 @@ const InformationPanel = ({ role }) => {
     setFile(e.target.files[0]);
   };
 
-  // Запрос списка поставщиков
+  // Список поставщиков
   const Component = () => {
-        const { providers, loading, error } = useProviders();
+      const { providers, loading, error } = useProviders();
 
-        if (loading) return <p>Загрузка...</p>;
-        if (error) return <p>Ошибка: {error.message}</p>;
+      if (loading) return <p>Загрузка...</p>;
+      if (error) return <p>Ошибка: {error.message}</p>;
 
-        return (
-          <>
-              <select class="form-select" style={{'maxMenuHeight': '50px'}}>
-                  <option selected>Выберите поставщика</option>
-                  {providers.map(p => <option value={p.guidIdProvider}>{p.nameProvider}</option>)}
-              </select>
-          </>
+      return (
+        <>
+            <select 
+                class="form-select" 
+                style={{'maxMenuHeight': '50px'}}
+                onChange={(e) => handleProviderChange(e.target.value)}
+            >
+                <option selected>Выберите поставщика</option>
+                {providers.map(p => <option value={p.guidIdProvider}>{p.nameProvider}</option>)}
+            </select>
+        </>
+      );
+    };
 
-    );
+  // Список производителей
+  const  Manufacturer = () => {
+
+    
+      return (
+        <>
+            <select 
+                class="form-select" 
+                style={{'maxMenuHeight': '50px'}}
+                onChange={(e) => handleProviderChange(e.target.value)}
+            >
+                <option selected>Выберите поставщика</option>
+                {providers.map(p => <option value={p.guidIdProvider}>{p.nameProvider}</option>)}
+            </select>
+        </>
+      );
   };
 
-   const handleProviderChange = () => {
+
+  const handleProviderChange = (e) => {
+      // Записали в переменную идентификатор компании
+      setGuidIdProvider(e);
+
+      // Отправили запрос к api для получения информации о менеджерах компании
+
+
+      // Записали результат полученных данных в переменную
+      setCollaboratorProvider([
+        {
+          nameCollaboratorProvider: "Милованова Наталья Константиновна",
+          phoneCollaboratorProvider: "+7 (351) 7995426, доб. 193",
+          emailCollaboratorProvider: "sale@rusautomation.ru"
+        }]
+      );
+
+      // Сделали видимым окно вывода информации о компании
       setCollaboratorInfo(true);
   };
 
-
-
   useEffect(() => {
-      
     // Оборачиваем асинхронную функцию внутрь useEffect
     const fetchData = async () => {
       try {
@@ -97,10 +136,8 @@ const InformationPanel = ({ role }) => {
     fetchData();
   }, [guidIdCollaborator]);
 
-
   /// Скрипт принимает файл с данными о купленной за период номенклатуре
   /// и отправляет его на сервер
-
   const filePurchaseUpload = async (file) => {
         setLoanding(true);
                       
@@ -120,8 +157,6 @@ const InformationPanel = ({ role }) => {
           }
         );
 
-         
-
         if (!response.ok) {
           const errorText = await response.text();
           throw new Error(`HTTP ${response.status}: ${errorText}`);
@@ -131,9 +166,8 @@ const InformationPanel = ({ role }) => {
         
         
       return await response.text();
-    };
+  };
 
-    
   return (
       <>
         <div className="main-application-panel__container">
@@ -151,7 +185,26 @@ const InformationPanel = ({ role }) => {
                 {collaboratorInfo?
                     <>
                       <div className="collaborator-provider-info-block__collaborator-info">
-                        mmm
+                          <table className="table">
+                              <thead>
+                                  <tr>
+                                      <th scope="col" style={{borderTopLeftRadius:"10px"}}></th>
+                                      <th scope="col">Контакт</th>
+                                      <th scope="col">Телефон</th>
+                                      <th scope="col" style={{borderTopRightRadius: "10px"}}>E-mail</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  {collaboratorProvider.map((item) => (
+                                      <tr key={1}>
+                                          <td></td>
+                                          <td>{item.nameCollaboratorProvider}</td>
+                                          <td>{item.phoneCollaboratorProvider}</td>
+                                          <td>{item.emailCollaboratorProvider}</td>
+                                      </tr>
+                                  ))}
+                              </tbody>
+                          </table>
                       </div>
                     </>:<></>
                 }
@@ -198,6 +251,11 @@ const InformationPanel = ({ role }) => {
                   :
                   <></>
                 }
+                {/* Блок с информацией о Поставщиках определенного производителя*/}
+                <div className="loading-data-from-1C-block">
+                    <h5 className="cpib__title"> Поставщики производителя:</h5>
+                    {Manufacturer()}
+                </div>
             </div>
         </div>
     </>
