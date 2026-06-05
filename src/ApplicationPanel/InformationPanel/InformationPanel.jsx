@@ -31,6 +31,7 @@ const InformationPanel = ({ role }) => {
   const [guidIdProvider, setGuidIdProvider] = useState("");
   // Контакты сотрудников компании
   const [collaboratorProvider, setCollaboratorProvider] = useState([]);
+  const [manufacturer, setManufacturer] = useState([]);
 
   // Собирем данные о адресах доставки
   const [addressDiliveryCollaborator, setAddressDiliveryCollaborator] = useState([]);
@@ -47,38 +48,65 @@ const InformationPanel = ({ role }) => {
 
   // Список поставщиков
   const Component = () => {
-      const { providers, loading, error } = useProviders();
+    const { providers, loading, error } = useProviders();
 
-      if (loading) return <p>Загрузка...</p>;
-      if (error) return <p>Ошибка: {error.message}</p>;
+    if (loading) return <p>Загрузка...</p>;
+    if (error) return <p>Ошибка: {error.message}</p>;
 
-      return (
-        <>
-            <select 
-                class="form-select" 
-                style={{'maxMenuHeight': '50px'}}
-                onChange={(e) => handleProviderChange(e.target.value)}
-            >
-                <option selected>Выберите поставщика</option>
-                {providers.map(p => <option value={p.guidIdProvider}>{p.nameProvider}</option>)}
-            </select>
-        </>
-      );
-    };
+    return (
+      <select
+        className="form-select"
+        style={{ maxHeight: "50px" }}
+        onChange={(e) => handleProviderChange(e.target.value)}
+        defaultValue=""
+      >
+        <option value="" disabled>
+          Выберите поставщика
+        </option>
+
+        {providers.map((p) => (
+          <option
+            key={p.guidIdProvider}
+            value={p.guidIdProvider}
+          >
+            {p.nameProvider}
+          </option>
+        ))}
+      </select>
+    );
+  };
 
   // Список производителей
-  const  Manufacturer = () => {
+  const   Manufacturer = () =>  {
+   
+      useEffect(() => {
+        const loadManufacturers = async () => {
+          try {
+            const response = await fetch(
+              ApiUrl + "/api/ReturnListManufacturer"
+            );
 
-    
+            const data = await response.json();
+
+            setManufacturer(data.manufacturer);
+          } catch (error) {
+            console.error("Ошибка загрузки производителей:", error);
+          }
+        };
+
+        loadManufacturers();
+      }, []);
+      
+
+
       return (
         <>
             <select 
-                class="form-select" 
+                className="form-select" 
                 style={{'maxMenuHeight': '50px'}}
-                onChange={(e) => handleProviderChange(e.target.value)}
             >
-                <option selected>Выберите поставщика</option>
-                {providers.map(p => <option value={p.guidIdProvider}>{p.nameProvider}</option>)}
+                <option selected>Выберите производителя</option>
+                {manufacturer.map(p => <option value={p.guidIdManufacturer}>{p.nameManufacturer}</option>)}
             </select>
         </>
       );
