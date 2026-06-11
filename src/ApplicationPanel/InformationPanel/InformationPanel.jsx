@@ -1,5 +1,6 @@
 
-import {useState, useEffect} from "react";
+import React, { useState, useRef, useEffect } from 'react';
+import Select from 'react-select';
 import "./informationPal.css";
 import "../applicationPanel.css";
 import "./dataCollaborator.css";
@@ -49,67 +50,212 @@ const InformationPanel = ({ role }) => {
   // Список поставщиков
   const Component = () => {
     const { providers, loading, error } = useProviders();
+    // Вставьте этот код внутрь вашего компонента вместо старого <select>
+    const [searchTerm, setSearchTerm] = useState('');      // Текст в поиске
+    const [isOpen, setIsOpen] = useState(false);            // Показ списка
+    const [selectedName, setSelectedName] = useState('');   // Имя выбранного поставщика
+    const dropdownRef = useRef(null);                       // Ссылка для закрытия по клику вне элемента
+
+    // 1. Фильтруем массив поставщиков на основе ввода пользователя
+    const filteredProviders = providers.filter(p =>
+      p.nameProvider?.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    // 2. Логика при выборе поставщика из списка
+    const handleSelectProvider = (guid, name) => {
+      setSelectedName(name);   // Сохраняем имя для отображения в инпуте
+      setSearchTerm('');       // Сбрасываем текст поиска
+      setIsOpen(false);        // Закрываем меню
+      handleProviderChange(guid); // Вызываем вашу функцию (передаем ID бэкенду)
+    };
+
+    // 3. Закрытие выпадающего списка, если кликнули в любое другое место экрана
+    useEffect(() => {
+      const handleClickOutside = (event) => {
+        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+          setIsOpen(false);
+        }
+      };
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    // 1. Фильтрация списка на основе ввода пользователя
+    const filteredManufacturers = manufacturer.filter(p =>
+      p.nameManufacturer.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    const handleSelect = (guid, name) => {
+      setSelectedName(name);
+      setSearchTerm(''); // Очищаем поиск после выбора
+      setIsOpen(false);  // Закрываем список
+      
+      // Здесь можно вызвать функцию отправки id наверх, например: onChange(guid)
+      console.log("Выбран ID:", guid);
+    };
 
     if (loading) return <p>Загрузка...</p>;
     if (error) return <p>Ошибка: {error.message}</p>;
 
     return (
-      <select
-        className="form-select"
-        style={{ maxHeight: "50px" }}
-        onChange={(e) => handleProviderChange(e.target.value)}
-        defaultValue=""
-      >
-        <option value="" disabled>
-          Выберите поставщика
-        </option>
+      <div className="position-relative w-100" ref={dropdownRef}>
+        {/* Имитация селекта: клик открывает поиск */}
+        <div 
+          className="form-select text-start d-flex justify-content-between align-items-center" 
+          onClick={() => setIsOpen(!isOpen)}
+          style={{ cursor: 'pointer' }}
+        >
+          <span className={selectedName ? "text-dark" : "text-muted"}>
+            {selectedName || "Выберите поставщика"}
+          </span>
+        </div>
 
-        {providers.map((p) => (
-          <option
-            key={p.guidIdProvider}
-            value={p.guidIdProvider}
+        {/* Выпадающий блок с поисковой строкой и результатами */}
+        {isOpen && (
+          <div 
+            className="position-absolute bg-white border rounded shadow mt-1 p-2 w-100" 
+            style={{ zIndex: 1050 }}
           >
-            {p.nameProvider}
-          </option>
-        ))}
-      </select>
+            {/* Поле для ввода поискового запроса */}
+            <input
+              type="text"
+              className="form-control mb-2"
+              placeholder="Начните вводить название..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              autoFocus // Фокус установится автоматически при открытии
+            />
+
+            {/* Список отфильтрованных поставщиков */}
+            <div style={{ maxHeight: '150px', overflowY: 'auto' }}>
+              {filteredProviders.length > 0 ? (
+                filteredProviders.map(p => (
+                  <div
+                    key={p.guidIdProvider}
+                    className="dropdown-item p-2 rounded"
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => handleSelectProvider(p.guidIdProvider, p.nameProvider)}
+                  >
+                    {p.nameProvider}
+                  </div>
+                ))
+              ) : (
+                <div className="text-muted p-2 text-center" style={{ fontSize: '14px' }}>
+                  Поставщик не найден
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
     );
   };
 
-  // Список производителей
-  const   Manufacturer = () =>  {
-   
-      useEffect(() => {
-        const loadManufacturers = async () => {
-          try {
-            const response = await fetch(
-              ApiUrl + "/api/ReturnListManufacturer"
-            );
+  // Компонент списка производителей с поиском по тексту
+  const Manufacturer = () => {
+    // Состояния для работы с данными
+    const [manufacturer, setManufacturer] = useState([]); // Массив из БД
+    const [searchTerm, setSearchTerm] = useState('');     // Текст поиска
+    const [isOpen, setIsOpen] = useState(false);           // Открытие списка
+    const [selectedName, setSelectedName] = useState('');  // Имя выбранного производителя
+    const dropdownRef = useRef(null);                      // Ссылка для закрытия по клику извне
 
-            const data = await response.json();
+    // 1. Загрузка данных с бэкенда при монтировании компонента
+    useEffect(() => {
+      const loadManufacturers = async () => {
+        try {
+          const response = await fetch(ApiUrl + "/api/ReturnListManufacturer");
+          if (!response.ok) throw new Error(`Ошибка: ${response.status}`);
+          
+          const data = await response.json();
+          // Записываем массив в стейт
+          setManufacturer(data.manufacturer || []); 
+        } catch (error) {
+          console.error("Ошибка загрузки производителей:", error);
+        }
+      };
 
-            setManufacturer(data.manufacturer);
-          } catch (error) {
-            console.error("Ошибка загрузки производителей:", error);
-          }
-        };
+      loadManufacturers();
+    }, []);
 
-        loadManufacturers();
-      }, []);
+    // 2. Фильтрация списка на основе введенного текста
+    const filteredManufacturers = manufacturer.filter(p =>
+      p.nameManufacturer?.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    // 3. Обработка выбора производителя
+    const handleSelectManufacturer = (guid, name) => {
+      setSelectedName(name);      // Отображаем имя в поле
+      setSearchTerm('');          // Сбрасываем текст в поиске
+      setIsOpen(false);           // Закрываем выпадающий список
       
+      // Передаем выбранный ID дальше (например, в вашу функцию или лог)
+      console.log("Выбран ID производителя:", guid);
+    };
 
+    // 4. Закрытие списка при клике в любое другое место экрана
+    useEffect(() => {
+      const handleClickOutside = (event) => {
+        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+          setIsOpen(false);
+        }
+      };
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
 
-      return (
-        <>
-            <select 
-                className="form-select" 
-                style={{'maxMenuHeight': '50px'}}
-            >
-                <option selected>Выберите производителя</option>
-                {manufacturer.map(p => <option value={p.guidIdManufacturer}>{p.nameManufacturer}</option>)}
-            </select>
-        </>
-      );
+    return (
+      <div className="position-relative w-100" ref={dropdownRef}>
+        {/* Кастомное поле, имитирующее селект */}
+        <div 
+          className="form-select text-start d-flex justify-content-between align-items-center" 
+          onClick={() => setIsOpen(!isOpen)}
+          style={{ cursor: 'pointer' }}
+        >
+          <span className={selectedName ? "text-dark" : "text-muted"}>
+            {selectedName || "Выберите производителя"}
+          </span>
+        </div>
+
+        {/* Окно поиска и выпадающий список */}
+        {isOpen && (
+          <div 
+            className="position-absolute bg-white border rounded shadow mt-1 p-2 w-100" 
+            style={{ zIndex: 1050 }}
+          >
+            {/* Поле ввода текста */}
+            <input
+              type="text"
+              className="form-control mb-2"
+              placeholder="Поиск производителя..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              autoFocus
+            />
+
+            {/* Список отфильтрованных элементов с ограничением высоты */}
+            <div style={{ maxHeight: '150px', overflowY: 'auto' }}>
+              {filteredManufacturers.length > 0 ? (
+                filteredManufacturers.map(p => (
+                  <div
+                    key={p.guidIdManufacturer}
+                    className="dropdown-item p-2 rounded"
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => handleSelectManufacturer(p.guidIdManufacturer, p.nameManufacturer)}
+                  >
+                    {p.nameManufacturer}
+                  </div>
+                ))
+              ) : (
+                <div className="text-muted p-2 text-center" style={{ fontSize: '14px' }}>
+                  Производитель не найден
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+    );
   };
 
 
