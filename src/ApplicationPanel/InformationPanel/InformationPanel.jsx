@@ -25,6 +25,8 @@ const InformationPanel = ({ role }) => {
   const [loanding, setLoanding] = useState(false);
   // Панель отображения данных о сотрудниках компании
   const [collaboratorInfo, setCollaboratorInfo] = useState(false);
+  const [providerManufacturerInfo, setProviderManufacturerInfo] = useState(false);
+  const [providerManufacturerList, setProviderManufacturerList] = useState([]);
 
   // Собираем данные о компаниях в таблице SupplyCompany информацию о компаниях пользователей
   const [company, setCompany] = useState([]);
@@ -42,6 +44,8 @@ const InformationPanel = ({ role }) => {
 
   // Работа с файлом загрузки оприходованных товаров
   const [file, setFile] = useState(null);
+
+  const [guidIdManufacturer, setGuidIdManufacturer] = useState('');
   
   const handleSelect = (e) => {
     setFile(e.target.files[0]);
@@ -91,7 +95,7 @@ const InformationPanel = ({ role }) => {
       setIsOpen(false);  // Закрываем список
       
       // Здесь можно вызвать функцию отправки id наверх, например: onChange(guid)
-      console.log("Выбран ID:", guid);
+      //console.log("Выбран ID:", guid);
     };
 
     if (loading) return <p>Загрузка...</p>;
@@ -183,14 +187,16 @@ const InformationPanel = ({ role }) => {
       p.nameManufacturer?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
+
     // 3. Обработка выбора производителя
     const handleSelectManufacturer = (guid, name) => {
       setSelectedName(name);      // Отображаем имя в поле
       setSearchTerm('');          // Сбрасываем текст в поиске
       setIsOpen(false);           // Закрываем выпадающий список
+      handleSelectManufacturerChange(guid); // Вызываем вашу функцию (передаем ID бэкенду)
       
       // Передаем выбранный ID дальше (например, в вашу функцию или лог)
-      console.log("Выбран ID производителя:", guid);
+      // console.log("Выбран ID производителя:", guid);
     };
 
     // 4. Закрытие списка при клике в любое другое место экрана
@@ -309,6 +315,69 @@ const InformationPanel = ({ role }) => {
       // Сделали видимым окно вывода информации о компании
       setCollaboratorInfo(true);
   };
+
+  const handleSelectManufacturerChange = (e) => {
+      // Записали в переменную идентификатор компании
+      setGuidIdManufacturer(e);
+
+      // Отправили запрос к api для получения информации о менеджерах компании
+      const fetchData = async () => {
+          try {
+            const response = await fetch(`${ApiUrl}/api/ReturnListProviderManufacturer`, {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify(e), // Передаем строку-GUID напрямую в body
+                });
+                
+              if (!response.ok) {
+
+                setProviderManufacturerInfo(false);
+
+                throw new Error(`HTTP error! status: ${response.status}`);
+              }
+        
+              const data = await response.json();
+
+              console.log(data);
+
+              if (data === null || data.length === 0) {
+                const formattedData = {
+                    "id": 0,
+                    "guidIdProvider": " ",
+                    "nameProvider": " ",
+                    "innProvider": " "
+                };
+
+                setProviderManufacturerInfo(false);
+              };
+
+              // Метод .map() создаст новый массив с нужной структурой объектов
+              const formattedData = data.map(element => ({
+                  id: element.id,
+                  guidIdProvider: element.guidIdProvider || " ",
+                  nameProvider: element.nameProvider || " ",
+                  innProvider: element.innProvider || " ",
+              }));
+
+
+              // Сохраняем получившийся массив в состояние
+              setProviderManufacturerList(formattedData);
+
+              console.log(formattedData);
+                  
+          } catch (error) {
+            console.error("Ошибка при авторизации:", error);
+          }
+        };
+      
+      fetchData();
+
+      // Сделали видимым окно вывода информации о компании
+      setProviderManufacturerInfo(true);
+
+    };
 
   useEffect(() => {
     // Оборачиваем асинхронную функцию внутрь useEffect
@@ -461,6 +530,31 @@ const InformationPanel = ({ role }) => {
                     <h5 className="cpib__title"> Поставщики производителя:</h5>
                     {Manufacturer()}
                 </div>
+                {providerManufacturerInfo?
+                    <>
+                    <br/>
+                      <div className="collaborator-provider-info-block__collaborator-info">
+                          <table className="table">
+                              <thead>
+                                  <tr>
+                                      <th scope="col" style={{borderTopLeftRadius:"10px"}}></th>
+                                      <th scope="col">Наименование компаниии</th>
+                                      <th scope="col" style={{borderTopRightRadius: "10px"}}></th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  {providerManufacturerList.map((item) => (
+                                      <tr key={1}>
+                                          <td></td>
+                                          <td>{item.nameProvider}</td>
+                                          <td></td>
+                                      </tr>
+                                  ))}
+                              </tbody>
+                          </table>
+                      </div>
+                    </>:<></>
+                }
             </div>
         </div>
     </>
