@@ -51,6 +51,26 @@ const InformationPanel = ({ role }) => {
     setFile(e.target.files[0]);
   };
 
+  // Включить панель добавления компании поставщика фирмы производителя
+  const [panelProviderManufacturer, setPanelProviderManufacturer] = useState(false);
+  const addProviderManufacturer = () => {
+      if (panelProviderManufacturer === true) {
+          setPanelProviderManufacturer (false);
+      } else {
+        setPanelProviderManufacturer(true)
+      }
+  };
+
+  // Включает панель добавления данных о менеждерах компании поставщика
+  const [panelCollaboratorProvider, setPanelCollaboratorProvider] = useState(false);
+  const addCollaboratorProvider = () => {
+      if (panelCollaboratorProvider === true) {
+          setPanelCollaboratorProvider (false);
+      } else {
+          setPanelCollaboratorProvider(true)
+      }
+  };
+
   // Список поставщиков
   const Component = () => {
     const { providers, loading, error } = useProviders();
@@ -264,7 +284,6 @@ const InformationPanel = ({ role }) => {
     );
   };
 
-
   const handleProviderChange = (e) => {
       // Записали в переменную идентификатор компании
       setGuidIdProvider(e);
@@ -452,8 +471,15 @@ const InformationPanel = ({ role }) => {
                     guidIdCollaborator={guidIdCollaborator} 
                 />
                 {/* Данные о поставщиках и менеджерах */}
-                <div className="collaborator-provider-info-block">
-                    <h5 className="cpib__title"> Информация о компании поставщика:</h5>
+                {panelCollaboratorProvider?<>sdsdssdsd</>:<></>}
+                <div className="collaborator-provider-info-block"> 
+                    <div
+                      className="pagination-icon-block__icon pagination-icon-block__add-icon cpib__plus-button"
+                      onClick={()=>addCollaboratorProvider()}
+                    >
+                      +
+                    </div>
+                    <h5 className="cpib__title"> Информация о менеджере компании поставщика:</h5>
                     {Component()}
                 </div>
                 {collaboratorInfo?
@@ -520,13 +546,20 @@ const InformationPanel = ({ role }) => {
                             :
                             <SpinnersMin />
                           }
-                    </div>
+                    </div><br/>
                   </>
                   :
                   <></>
                 }
                 {/* Блок с информацией о Поставщиках определенного производителя*/}
+                {panelProviderManufacturer?<>asasasa</>:<></>}
                 <div className="loading-data-from-1C-block">
+                    <div
+                      className="pagination-icon-block__icon pagination-icon-block__add-icon cpib__plus-button"
+                      onClick={()=>addProviderManufacturer()}
+                    >
+                      +
+                    </div>
                     <h5 className="cpib__title"> Поставщики производителя:</h5>
                     {Manufacturer()}
                 </div>
