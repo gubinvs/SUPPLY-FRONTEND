@@ -118,16 +118,47 @@ const InformationPanel = ({ role }) => {
       setGuidIdProvider(e);
 
       // Отправили запрос к api для получения информации о менеджерах компании
+      const fetchData = async () => {
+          try {
+           const response = await fetch(`${ApiUrl}/api/ReturnInfoCollaboratorProvider?guid=${e}`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            });
+      
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+      
+            const data = await response.json();
 
+            if (data === null || data.length === 0) {
+              const formattedData = {
+                nameCollaboratorProvider: " ",
+                phoneCollaboratorProvider: " ",
+                emailCollaboratorProvider: " "
+              };
+            };
 
-      // Записали результат полученных данных в переменную
-      setCollaboratorProvider([
-        {
-          nameCollaboratorProvider: "Милованова Наталья Константиновна",
-          phoneCollaboratorProvider: "+7 (351) 7995426, доб. 193",
-          emailCollaboratorProvider: "sale@rusautomation.ru"
-        }]
-      );
+            // Метод .map() создаст новый массив с нужной структурой объектов
+            const formattedData = data.map(element => ({
+              nameCollaboratorProvider: element.nameCollaboratorProvider || " ",
+              phoneCollaboratorProvider: element.phoneCollaboratorProvider || " ",
+              emailCollaboratorProvider: element.emailCollaboratorProvider || " "
+            }));
+
+            console.log(formattedData);
+
+            // Сохраняем получившийся массив в состояние
+            setCollaboratorProvider(formattedData);
+                  
+          } catch (error) {
+            console.error("Ошибка при авторизации:", error);
+          }
+        };
+      
+      fetchData();
 
       // Сделали видимым окно вывода информации о компании
       setCollaboratorInfo(true);
