@@ -27,7 +27,6 @@ const InformationPanel = ({ role }) => {
   const [collaboratorInfo, setCollaboratorInfo] = useState(false);
   const [providerManufacturerInfo, setProviderManufacturerInfo] = useState(false);
   const [providerManufacturerList, setProviderManufacturerList] = useState([]);
-
   // Собираем данные о компаниях в таблице SupplyCompany информацию о компаниях пользователей
   const [company, setCompany] = useState([]);
   // Идентификатор компании
@@ -35,18 +34,13 @@ const InformationPanel = ({ role }) => {
   // Контакты сотрудников компании
   const [collaboratorProvider, setCollaboratorProvider] = useState([]);
   const [manufacturer, setManufacturer] = useState([]);
-
   // Собирем данные о адресах доставки
   const [addressDiliveryCollaborator, setAddressDiliveryCollaborator] = useState([]);
-
   // Достаем GUID из хранилища
   const guidIdCollaborator = localStorage.getItem("guidIdCollaborator");
-
   // Работа с файлом загрузки оприходованных товаров
   const [file, setFile] = useState(null);
-
   const [guidIdManufacturer, setGuidIdManufacturer] = useState('');
-  
   const handleSelect = (e) => {
     setFile(e.target.files[0]);
   };
@@ -165,7 +159,7 @@ const InformationPanel = ({ role }) => {
                 ))
               ) : (
                 <div className="text-muted p-2 text-center" style={{ fontSize: '14px' }}>
-                  Поставщик не найден
+                    Поставщик не найден
                 </div>
               )}
             </div>
@@ -173,6 +167,110 @@ const InformationPanel = ({ role }) => {
         )}
       </div>
     );
+  };
+
+  // Функция добавления данных о новом пменеджере компании
+  const AddInfoCollaborator = () => {
+    const { providers, loading, error } = useProviders();
+    // Вставьте этот код внутрь вашего компонента вместо старого <select>
+    const [searchTerm, setSearchTerm] = useState('');      // Текст в поиске
+    const [isOpen, setIsOpen] = useState(false);            // Показ списка
+    const [selectedName, setSelectedName] = useState('');   // Имя выбранного поставщика
+    const dropdownRef = useRef(null);                       // Ссылка для закрытия по клику вне элемента
+
+    // 1. Фильтруем массив поставщиков на основе ввода пользователя
+    const filteredProviders = providers.filter(p =>
+      p.nameProvider?.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    // 2. Логика при выборе поставщика из списка
+    const handleSelectProvider = (guid, name) => {
+      setSelectedName(name);   // Сохраняем имя для отображения в инпуте
+      setSearchTerm('');       // Сбрасываем текст поиска
+      setIsOpen(false);        // Закрываем меню
+      handleProviderChange(guid); // Вызываем вашу функцию (передаем ID бэкенду)
+    };
+
+    // 3. Закрытие выпадающего списка, если кликнули в любое другое место экрана
+    useEffect(() => {
+      const handleClickOutside = (event) => {
+        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+          setIsOpen(false);
+        }
+      };
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    // 1. Фильтрация списка на основе ввода пользователя
+    const filteredManufacturers = manufacturer.filter(p =>
+      p.nameManufacturer.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    const handleSelect = (guid, name) => {
+      setSelectedName(name);
+      setSearchTerm(''); // Очищаем поиск после выбора
+      setIsOpen(false);  // Закрываем список
+      
+      // Здесь можно вызвать функцию отправки id наверх, например: onChange(guid)
+    };
+
+    if (loading) return <p>Загрузка...</p>;
+    if (error) return <p>Ошибка: {error.message}</p>;
+
+    return (
+      <div className="position-relative w-100" ref={dropdownRef}>
+        {/* Имитация селекта: клик открывает поиск */}
+        <div 
+          className="form-select text-start d-flex justify-content-between align-items-center" 
+          onClick={() => setIsOpen(!isOpen)}
+          style={{ cursor: 'pointer' }}
+        >
+          <span className={selectedName ? "text-dark" : "text-muted"}>
+            {selectedName || "Выберите поставщика"}
+          </span>
+        </div>
+
+        {/* Выпадающий блок с поисковой строкой и результатами */}
+        {isOpen && (
+          <div 
+            className="position-absolute bg-white border rounded shadow mt-1 p-2 w-100" 
+            style={{ zIndex: 1050 }}
+          >
+            {/* Поле для ввода поискового запроса */}
+            <input
+              type="text"
+              className="form-control mb-2"
+              placeholder="Начните вводить название..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              autoFocus // Фокус установится автоматически при открытии
+            />
+
+            {/* Список отфильтрованных поставщиков */}
+            <div style={{ maxHeight: '150px', overflowY: 'auto' }}>
+              {filteredProviders.length > 0 ? (
+                filteredProviders.map(p => (
+                  <div
+                    key={p.guidIdProvider}
+                    className="dropdown-item p-2 rounded"
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => handleSelectProvider(p.guidIdProvider, p.nameProvider)}
+                  >
+                    {p.nameProvider}
+                  </div>
+                ))
+              ) : (
+                <div className="text-muted p-2 text-center" style={{ fontSize: '14px' }}>
+                    Поставщик не найден
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+    );
+
   };
 
   // Компонент списка производителей с поиском по тексту
@@ -471,44 +569,72 @@ const InformationPanel = ({ role }) => {
                     guidIdCollaborator={guidIdCollaborator} 
                 />
                 {/* Данные о поставщиках и менеджерах */}
-                {panelCollaboratorProvider?<>sdsdssdsd</>:<></>}
-                <div className="collaborator-provider-info-block"> 
-                    <div
-                      className="pagination-icon-block__icon pagination-icon-block__add-icon cpib__plus-button"
-                      onClick={()=>addCollaboratorProvider()}
-                    >
-                      +
-                    </div>
-                    <h5 className="cpib__title"> Информация о менеджере компании поставщика:</h5>
-                    {Component()}
-                </div>
-                {collaboratorInfo?
+                {panelCollaboratorProvider?
                     <>
-                      <div className="collaborator-provider-info-block__collaborator-info">
-                          <table className="table">
-                              <thead>
-                                  <tr>
-                                      <th scope="col" style={{borderTopLeftRadius:"10px"}}></th>
-                                      <th scope="col">Контакт</th>
-                                      <th scope="col">Телефон</th>
-                                      <th scope="col" style={{borderTopRightRadius: "10px"}}>E-mail</th>
-                                  </tr>
-                              </thead>
-                              <tbody>
-                                  {collaboratorProvider.map((item) => (
-                                      <tr key={1}>
-                                          <td></td>
-                                          <td>{item.nameCollaboratorProvider}</td>
-                                          <td>{item.phoneCollaboratorProvider}</td>
-                                          <td>{item.emailCollaboratorProvider}</td>
-                                      </tr>
-                                  ))}
-                              </tbody>
-                          </table>
-                      </div>
-                    </>:<></>
-                }
-               
+                        {/* Панель ввода данных о менеджере компании */}
+                        <div className="collaborator-provider-info-block"> 
+                            <div
+                              className="pagination-icon-block__icon pagination-icon-block__add-icon cpib__plus-button"
+                              onClick={()=>addCollaboratorProvider()}
+                            >
+                              -
+                            </div>
+                            <h5 className="cpib__title"> Ввод данных о менеджере компании поставщика:</h5>
+                            {AddInfoCollaborator()}
+                        </div>
+                        <div className="row g-3" style={{marginBottom: '10px', paddingRight: "10px"}}>
+                          <div class="col">
+                            <input type="text" className="form-control" placeholder="Фамилия Имя *Отчество" aria-label="Фамилия Имя Отчество*" />
+                          </div>
+                          <div class="col">
+                            <input type="email" className="form-control" placeholder="Email" aria-label="Email" />
+                          </div>
+                           <div class="col">
+                            <input type="text" className="form-control" placeholder="Телефон" aria-label="Телефон" />
+                          </div>
+                          <button style={{width: "200px"}} type="button" className="btn btn-outline-warning">Записать</button>
+                        </div>
+                    </>
+                    :
+                    <>
+                      {/* Панель вывода данных о менеджере компании */}
+                        <div className="collaborator-provider-info-block"> 
+                            <div
+                              className="pagination-icon-block__icon pagination-icon-block__add-icon cpib__plus-button"
+                              onClick={()=>addCollaboratorProvider()}
+                            >
+                              +
+                            </div>
+                            <h5 className="cpib__title"> Информация о менеджере компании поставщика:</h5>
+                            {Component()}
+                        </div>
+                        {collaboratorInfo?
+                          <>
+                            <div className="collaborator-provider-info-block__collaborator-info">
+                                <table className="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" style={{borderTopLeftRadius:"10px"}}></th>
+                                            <th scope="col">Контакт</th>
+                                            <th scope="col">Телефон</th>
+                                            <th scope="col" style={{borderTopRightRadius: "10px"}}>E-mail</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {collaboratorProvider.map((item) => (
+                                            <tr key={1}>
+                                                <td></td>
+                                                <td>{item.nameCollaboratorProvider}</td>
+                                                <td>{item.phoneCollaboratorProvider}</td>
+                                                <td>{item.emailCollaboratorProvider}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                          </>:<></>
+                        }
+                    </>}               
             </div>
             <div className="main-application-panel__right-block">
                 <div className="mb-10">
