@@ -45,6 +45,47 @@ const InformationPanel = ({ role }) => {
     setFile(e.target.files[0]);
   };
 
+  console.log(guidIdProvider);
+
+  const [newNameCollaborator, setNewNameCollaborator] = useState("");
+  const [newEmailCollaborator, setNewEmailCollaborator] = useState("");
+  const [newPhoneCollaborator, setNewPhoneCollaborator] = useState("");
+  const [editGuidIdProvider, setEditGuidIdProvider] = useState("");
+  const pushNewDataCollaborator = async  (guid, n, e, p) => {
+
+      const newData = {
+          guidIdCompanyProvider : guidIdProvider,
+          nameCollaboratorProvider : n,
+          phoneCollaboratorProvider : p,
+          emailCollaboratorProvider : e
+      }
+
+
+      console.log(newData);
+      // Отправляем данные о новом менеджере компании
+      try {
+          const response = await fetch(
+              ApiUrl + "/api/+++++++++++++",
+            {
+              method: "POST",
+              body: JSON.stringify(newData),
+              headers: {
+                accept: "*/*",
+              },
+            }
+          );
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`HTTP ${response.status}: ${errorText}`);
+        } else {
+          setLoanding(false);
+        }
+      } catch (error) {
+          console.error("Ошибка загрузки данных о новом менеджере:", error);
+      }
+  };
+
   // Включить панель добавления компании поставщика фирмы производителя
   const [panelProviderManufacturer, setPanelProviderManufacturer] = useState(false);
   const addProviderManufacturer = () => {
@@ -84,7 +125,7 @@ const InformationPanel = ({ role }) => {
       setSelectedName(name);   // Сохраняем имя для отображения в инпуте
       setSearchTerm('');       // Сбрасываем текст поиска
       setIsOpen(false);        // Закрываем меню
-      handleProviderChange(guid); // Вызываем вашу функцию (передаем ID бэкенду)
+      handleProviderChange(guid); // Вызываем вашу функцию (передаем ID бэкенду) 
     };
 
     // 3. Закрытие выпадающего списка, если кликнули в любое другое место экрана
@@ -169,7 +210,7 @@ const InformationPanel = ({ role }) => {
     );
   };
 
-  // Функция добавления данных о новом пменеджере компании
+  // Функция добавления данных о новом менеджере компании
   const AddInfoCollaborator = () => {
     const { providers, loading, error } = useProviders();
     // Вставьте этот код внутрь вашего компонента вместо старого <select>
@@ -188,7 +229,7 @@ const InformationPanel = ({ role }) => {
       setSelectedName(name);   // Сохраняем имя для отображения в инпуте
       setSearchTerm('');       // Сбрасываем текст поиска
       setIsOpen(false);        // Закрываем меню
-      handleProviderChange(guid); // Вызываем вашу функцию (передаем ID бэкенду)
+      setEditGuidIdProvider(guid);
     };
 
     // 3. Закрытие выпадающего списка, если кликнули в любое другое место экрана
@@ -212,7 +253,6 @@ const InformationPanel = ({ role }) => {
       setSearchTerm(''); // Очищаем поиск после выбора
       setIsOpen(false);  // Закрываем список
       
-      // Здесь можно вызвать функцию отправки id наверх, например: onChange(guid)
     };
 
     if (loading) return <p>Загрузка...</p>;
@@ -304,7 +344,6 @@ const InformationPanel = ({ role }) => {
     const filteredManufacturers = manufacturer.filter(p =>
       p.nameManufacturer?.toLowerCase().includes(searchTerm.toLowerCase())
     );
-
 
     // 3. Обработка выбора производителя
     const handleSelectManufacturer = (guid, name) => {
@@ -417,8 +456,6 @@ const InformationPanel = ({ role }) => {
               emailCollaboratorProvider: element.emailCollaboratorProvider || " "
             }));
 
-            console.log(formattedData);
-
             // Сохраняем получившийся массив в состояние
             setCollaboratorProvider(formattedData);
                   
@@ -482,7 +519,6 @@ const InformationPanel = ({ role }) => {
               // Сохраняем получившийся массив в состояние
               setProviderManufacturerList(formattedData);
 
-              console.log(formattedData);
                   
           } catch (error) {
             console.error("Ошибка при авторизации:", error);
@@ -584,15 +620,38 @@ const InformationPanel = ({ role }) => {
                         </div>
                         <div className="row g-3" style={{marginBottom: '10px', paddingRight: "10px"}}>
                           <div class="col">
-                            <input type="text" className="form-control" placeholder="Фамилия Имя *Отчество" aria-label="Фамилия Имя Отчество*" />
+                            <input 
+                                type="text" 
+                                className="form-control" 
+                                placeholder="Фамилия Имя *Отчество" 
+                                aria-label="Фамилия Имя Отчество*" 
+                                onChange={(e) => setNewNameCollaborator(e.target.value)}
+                            />
                           </div>
                           <div class="col">
-                            <input type="email" className="form-control" placeholder="Email" aria-label="Email" />
+                            <input 
+                                type="email" 
+                                className="form-control" 
+                                placeholder="Email" 
+                                aria-label="Email" 
+                                onChange={(e) => setNewEmailCollaborator(e.target.value)}
+                            />
                           </div>
                            <div class="col">
-                            <input type="text" className="form-control" placeholder="Телефон" aria-label="Телефон" />
+                            <input 
+                                type="text" 
+                                className="form-control" 
+                                placeholder="Телефон" 
+                                aria-label="Телефон" 
+                                onChange={(e) => setNewPhoneCollaborator(e.target.value)}
+                            />
                           </div>
-                          <button style={{width: "200px"}} type="button" className="btn btn-outline-warning">Записать</button>
+                          <button 
+                              style={{width: "200px"}} 
+                              type="button" 
+                              className="btn btn-outline-warning"
+                              onClick={()=>pushNewDataCollaborator(editGuidIdProvider, newNameCollaborator, newEmailCollaborator, newPhoneCollaborator)}
+                          >Записать</button>
                         </div>
                     </>
                     :
@@ -721,3 +780,4 @@ const InformationPanel = ({ role }) => {
 };
 
 export default InformationPanel;
+//setEditGuidIdProvider(guid); // Сохраняем идентификатор компании у которой редактируется менеджер
