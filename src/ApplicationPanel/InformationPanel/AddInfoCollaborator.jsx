@@ -12,10 +12,13 @@ import {useProviders} from "../../js/Utilits/loadProviders.js";
 import Component from './Component.jsx';
 import Manufacturer from './Manufacturer.jsx';
 import {handleSelectManufacturerChange} from "../../js/Utilits/handleSelectManufacturerChange.js";
-import AddInfoCollaborator from './AddInfoCollaborator.jsx';
 
 // Функция добавления данных о новом менеджере компании
-const AddInfoCollaborator = () => {
+const AddInfoCollaborator = (
+    {
+        setEditGuidIdProvider, manufacturer
+    }
+) => {
     const { providers, loading, error } = useProviders();
     // Вставьте этот код внутрь вашего компонента вместо старого <select>
     const [searchTerm, setSearchTerm] = useState('');      // Текст в поиске

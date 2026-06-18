@@ -1,5 +1,5 @@
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 //import Select from 'react-select';
 import "./informationPal.css";
 import "../applicationPanel.css";
@@ -13,7 +13,7 @@ import {useProviders} from "../../js/Utilits/loadProviders.js";
 import Component from './Component.jsx';
 import Manufacturer from './Manufacturer.jsx';
 import {handleSelectManufacturerChange} from "../../js/Utilits/handleSelectManufacturerChange.js";
-import AddInfoCollaborator from './AddInfoCollaborator.jsx';
+import AddInfoCollaborator from "./AddInfoCollaborator";
 
 
 
@@ -194,7 +194,30 @@ const InformationPanel = ({ role }) => {
                               -
                             </div>
                             <h5 className="cpib__title"> Ввод данных о менеджере компании поставщика:</h5>
-                            <AddInfoCollaborator />
+
+
+
+
+
+
+
+
+
+
+
+                            <AddInfoCollaborator  setEditGuidIdProvider={setEditGuidIdProvider} manufacturer={manufacturer} />
+
+
+
+
+
+
+
+
+
+
+
+
                         </div>
                         <div className="row g-3" style={{marginBottom: '10px', paddingRight: "10px"}}>
                           <div class="col">
