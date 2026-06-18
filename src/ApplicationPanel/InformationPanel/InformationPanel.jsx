@@ -1,6 +1,6 @@
 
 import React, { useState, useRef, useEffect } from 'react';
-import Select from 'react-select';
+//import Select from 'react-select';
 import "./informationPal.css";
 import "../applicationPanel.css";
 import "./dataCollaborator.css";
@@ -317,54 +317,6 @@ const InformationPanel = ({ role }) => {
     );
   };
 
-  const handleProviderChange = (e) => {
-      // Записали в переменную идентификатор компании
-      setGuidIdProvider(e);
-
-      // Отправили запрос к api для получения информации о менеджерах компании
-      const fetchData = async () => {
-          try {
-           const response = await fetch(`${ApiUrl}/api/ReturnInfoCollaboratorProvider?guid=${e}`, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-            });
-      
-            if (!response.ok) {
-              throw new Error(`HTTP error! status: ${response.status}`);
-            }
-      
-            const data = await response.json();
-
-            if (data === null || data.length === 0) {
-              const formattedData = {
-                nameCollaboratorProvider: " ",
-                phoneCollaboratorProvider: " ",
-                emailCollaboratorProvider: " "
-              };
-            };
-
-            // Метод .map() создаст новый массив с нужной структурой объектов
-            const formattedData = data.map(element => ({
-              nameCollaboratorProvider: element.nameCollaboratorProvider || " ",
-              phoneCollaboratorProvider: element.phoneCollaboratorProvider || " ",
-              emailCollaboratorProvider: element.emailCollaboratorProvider || " "
-            }));
-
-            // Сохраняем получившийся массив в состояние
-            setCollaboratorProvider(formattedData);
-                  
-          } catch (error) {
-            console.error("Ошибка при авторизации:", error);
-          }
-        };
-      
-      fetchData();
-
-      // Сделали видимым окно вывода информации о компании
-      setCollaboratorInfo(true);
-  };
 
   const handleSelectManufacturerChange = (e) => {
       // Записали в переменную идентификатор компании
@@ -561,7 +513,7 @@ const InformationPanel = ({ role }) => {
                               +
                             </div>
                             <h5 className="cpib__title"> Информация о менеджере компании поставщика:</h5>
-                            <Component />
+                            <Component setGuidIdProvider={setGuidIdProvider} setCollaboratorInfo={setCollaboratorInfo} setCollaboratorProvider={setCollaboratorProvider}  />
                         </div>
                         {collaboratorInfo?
                           <>

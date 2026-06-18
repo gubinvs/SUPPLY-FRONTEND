@@ -1,20 +1,21 @@
 import React, { useState, useRef, useEffect } from 'react';
-import Select from 'react-select';
+//import Select from 'react-select';
 import "./informationPal.css";
 import "../applicationPanel.css";
 import "./dataCollaborator.css";
 import "./informationCompanyCard.css";
-import ApiUrl from "../../js/ApiUrl.js";
-import InformationCompanyCard from "./InformationCompanyCard.jsx";
-import DataCollaborator from "./DataCollaborator.jsx";
-import { SpinnersMin } from "../../ElementApplication/Spinners.jsx";
+//import ApiUrl from "../../js/ApiUrl.js";
+//import InformationCompanyCard from "./InformationCompanyCard.jsx";
+//import DataCollaborator from "./DataCollaborator.jsx";
+//import { SpinnersMin } from "../../ElementApplication/Spinners.jsx";
 import {useProviders} from "../../js/Utilits/loadProviders.js";  
+import {handleProviderChange} from "../../js/Utilits/handleProviderChange.js";
   
   
   
   
   // Список поставщиков
-  const Component = () => {
+  const Component = ({setGuidIdProvider, setCollaboratorInfo, setCollaboratorProvider}) => {
     const { providers, loading, error } = useProviders();
     // Вставьте этот код внутрь вашего компонента вместо старого <select>
     const [searchTerm, setSearchTerm] = useState('');      // Текст в поиске
@@ -32,7 +33,7 @@ import {useProviders} from "../../js/Utilits/loadProviders.js";
       setSelectedName(name);   // Сохраняем имя для отображения в инпуте
       setSearchTerm('');       // Сбрасываем текст поиска
       setIsOpen(false);        // Закрываем меню
-      handleProviderChange(guid); // Вызываем вашу функцию (передаем ID бэкенду) 
+      handleProviderChange(guid, setGuidIdProvider, setCollaboratorInfo, setCollaboratorProvider); // Вызываем вашу функцию (передаем ID бэкенду) 
     };
 
     // 3. Закрытие выпадающего списка, если кликнули в любое другое место экрана
@@ -47,18 +48,18 @@ import {useProviders} from "../../js/Utilits/loadProviders.js";
     }, []);
 
     // 1. Фильтрация списка на основе ввода пользователя
-    const filteredManufacturers = manufacturer.filter(p =>
-      p.nameManufacturer.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    //const filteredManufacturers = manufacturer.filter(p =>
+    //  p.nameManufacturer.toLowerCase().includes(searchTerm.toLowerCase())
+    //);
 
-    const handleSelect = (guid, name) => {
-      setSelectedName(name);
-      setSearchTerm(''); // Очищаем поиск после выбора
-      setIsOpen(false);  // Закрываем список
+    //const handleSelect = (guid, name) => {
+    //  setSelectedName(name);
+    //  setSearchTerm(''); // Очищаем поиск после выбора
+    //  setIsOpen(false);  // Закрываем список
       
       // Здесь можно вызвать функцию отправки id наверх, например: onChange(guid)
       //console.log("Выбран ID:", guid);
-    };
+    //};
 
     if (loading) return <p>Загрузка...</p>;
     if (error) return <p>Ошибка: {error.message}</p>;
