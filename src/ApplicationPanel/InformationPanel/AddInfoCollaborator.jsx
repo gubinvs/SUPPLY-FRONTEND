@@ -4,14 +4,14 @@ import "./informationPal.css";
 import "../applicationPanel.css";
 import "./dataCollaborator.css";
 import "./informationCompanyCard.css";
-import ApiUrl from "../../js/ApiUrl";
-import InformationCompanyCard from "./InformationCompanyCard.jsx";
-import DataCollaborator from "./DataCollaborator.jsx";
-import { SpinnersMin } from "../../ElementApplication/Spinners.jsx";
+//import ApiUrl from "../../js/ApiUrl";
+//import InformationCompanyCard from "./InformationCompanyCard.jsx";
+//import DataCollaborator from "./DataCollaborator.jsx";
+//import { SpinnersMin } from "../../ElementApplication/Spinners.jsx";
 import {useProviders} from "../../js/Utilits/loadProviders.js";
-import Component from './Component.jsx';
-import Manufacturer from './Manufacturer.jsx';
-import {handleSelectManufacturerChange} from "../../js/Utilits/handleSelectManufacturerChange.js";
+//import Component from './Component.jsx';
+//import Manufacturer from './Manufacturer.jsx';
+//import {handleSelectManufacturerChange} from "../../js/Utilits/handleSelectManufacturerChange.js";
 
 // Функция добавления данных о новом менеджере компании
 const AddInfoCollaborator = (
@@ -51,16 +51,16 @@ const AddInfoCollaborator = (
     }, []);
 
     // 1. Фильтрация списка на основе ввода пользователя
-    const filteredManufacturers = manufacturer.filter(p =>
-        p.nameManufacturer.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    //const filteredManufacturers = manufacturer.filter(p =>
+     //   p.nameManufacturer.toLowerCase().includes(searchTerm.toLowerCase())
+    //);
 
-    const handleSelect = (guid, name) => {
-        setSelectedName(name);
-        setSearchTerm(''); // Очищаем поиск после выбора
-        setIsOpen(false);  // Закрываем список
+    //const handleSelect = (guid, name) => {
+    //    setSelectedName(name);
+    //    setSearchTerm(''); // Очищаем поиск после выбора
+    //    setIsOpen(false);  // Закрываем список
         
-    };
+    //};
 
     if (loading) return <p>Загрузка...</p>;
     if (error) return <p>Ошибка: {error.message}</p>;

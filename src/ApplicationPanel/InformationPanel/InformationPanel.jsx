@@ -9,10 +9,10 @@ import ApiUrl from "../../js/ApiUrl";
 import InformationCompanyCard from "./InformationCompanyCard.jsx";
 import DataCollaborator from "./DataCollaborator.jsx";
 import { SpinnersMin } from "../../ElementApplication/Spinners.jsx";
-import {useProviders} from "../../js/Utilits/loadProviders.js";
+//import {useProviders} from "../../js/Utilits/loadProviders.js";
 import Component from './Component.jsx';
 import Manufacturer from './Manufacturer.jsx';
-import {handleSelectManufacturerChange} from "../../js/Utilits/handleSelectManufacturerChange.js";
+//import {handleSelectManufacturerChange} from "../../js/Utilits/handleSelectManufacturerChange.js";
 import AddInfoCollaborator from "./AddInfoCollaborator";
 
 
@@ -194,30 +194,7 @@ const InformationPanel = ({ role }) => {
                               -
                             </div>
                             <h5 className="cpib__title"> Ввод данных о менеджере компании поставщика:</h5>
-
-
-
-
-
-
-
-
-
-
-
                             <AddInfoCollaborator  setEditGuidIdProvider={setEditGuidIdProvider} manufacturer={manufacturer} />
-
-
-
-
-
-
-
-
-
-
-
-
                         </div>
                         <div className="row g-3" style={{marginBottom: '10px', paddingRight: "10px"}}>
                           <div class="col">
