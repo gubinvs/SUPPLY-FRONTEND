@@ -9,6 +9,7 @@ import DataCollaborator from "./DataCollaborator.jsx";
 import { SpinnersMin } from "../../ElementApplication/Spinners.jsx";
 import {useProviders} from "../../js/Utilits/loadProviders.js";
 import Component from './Component.jsx';
+import {handleSelectManufacturerChange} from "../../js/Utilits/handleSelectManufacturerChange.js";
   
   
 // Компонент списка производителей с поиском по тексту

@@ -43,7 +43,7 @@ const InformationPanel = ({ role }) => {
   const guidIdCollaborator = localStorage.getItem("guidIdCollaborator");
   // Работа с файлом загрузки оприходованных товаров
   const [file, setFile] = useState(null);
-  const [guidIdManufacturer, setGuidIdManufacturer] = useState('');
+  const [guidIdManufacturer, setGuidIdManufacturer] = useState("");
   const handleSelect = (e) => {
     setFile(e.target.files[0]);
   };

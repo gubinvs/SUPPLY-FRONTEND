@@ -3,7 +3,7 @@ import ApiUrl from "../ApiUrl";
 
 
 export const handleSelectManufacturerChange = (
-    {e, setGuidIdManufacturer, setProviderManufacturerInfo, setProviderManufacturerList }
+    e, setGuidIdManufacturer, setProviderManufacturerInfo, setProviderManufacturerList
 ) => {
     // Записали в переменную идентификатор компании
     setGuidIdManufacturer(e);
