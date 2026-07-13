@@ -56,32 +56,37 @@ const InformationPanel = ({ role }) => {
   const pushNewDataCollaborator = async  (guid, n, e, p) => {
 
       const newData = {
-          guidIdCompanyProvider : guid,
-          nameCollaboratorProvider : n,
-          phoneCollaboratorProvider : p,
-          emailCollaboratorProvider : e
+          GuidIdCompanyProvider : guid,
+          NameCollaboratorProvider : n,
+          PhoneCollaboratorProvider : p,
+          EmailCollaboratorProvider : e
       }
 
 
-      console.log(newData);
+      //console.log(newData);
       // Отправляем данные о новом менеджере компании
       try {
           const response = await fetch(
-              ApiUrl + "/api/+++++++++++++",
+            ApiUrl + "/api/PushNewDataCollaboratorProvider",
             {
               method: "POST",
               body: JSON.stringify(newData),
-              headers: {
-                accept: "*/*",
+             headers: {
+                "accept": "*/*",
+                // Обязательный заголовок, который исправляет ошибку 415
+                "Content-Type": "application/json", 
               },
             }
           );
-
+          setLoanding(true); // Выключаем загрузку
         if (!response.ok) {
           const errorText = await response.text();
           throw new Error(`HTTP ${response.status}: ${errorText}`);
         } else {
-          setLoanding(false);
+
+          setLoanding(false); // Выключаем загрузку
+          // Перезагружаем страницу для обновления данных
+          window.location.reload(); 
         }
       } catch (error) {
           console.error("Ошибка загрузки данных о новом менеджере:", error);
