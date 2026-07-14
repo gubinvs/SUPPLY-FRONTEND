@@ -333,7 +333,7 @@ const InformationPanel = ({ role }) => {
                           <div className="col g-3" style={{marginBottom: '10px', paddingRight: "10px"}}>
                               <div class="col mb-2">
                                 <input 
-                                    type="email" 
+                                    type="text" 
                                     className="form-control" 
                                     placeholder="Email" 
                                     aria-label="Email" 
