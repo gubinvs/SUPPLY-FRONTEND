@@ -55,12 +55,12 @@ const InformationPanel = ({ role }) => {
   const [editGuidIdProvider, setEditGuidIdProvider] = useState("");
   const pushNewDataCollaborator = async  (guid, n, e, p) => {
 
-      const newData = {
-          GuidIdCompanyProvider : guid,
-          NameCollaboratorProvider : n,
-          PhoneCollaboratorProvider : p,
-          EmailCollaboratorProvider : e
-      }
+  const newData = {
+      GuidIdCompanyProvider : guid,
+      NameCollaboratorProvider : n,
+      PhoneCollaboratorProvider : p,
+      EmailCollaboratorProvider : e
+  }
 
 
       //console.log(newData);
@@ -332,28 +332,14 @@ const InformationPanel = ({ role }) => {
                           <h5 className="cpib__title"> Поставщики производителя:</h5>
                           <div className="col g-3" style={{marginBottom: '10px', paddingRight: "10px"}}>
                               <div class="col mb-2">
-                                <input 
-                                    type="text" 
-                                    className="form-control" 
-                                    placeholder="Email" 
-                                    aria-label="Email" 
-                                  
-                                />
+                                <Manufacturer setGuidIdManufacturer={setGuidIdManufacturer} setProviderManufacturerInfo={setProviderManufacturerInfo} setProviderManufacturerList={setProviderManufacturerList} />
                               </div>
                               <div class="col mb-4">
-                                <input 
-                                    type="text" 
-                                    className="form-control" 
-                                    placeholder="Телефон" 
-                                    aria-label="Телефон" 
-                                    
-                                />
-                              </div>
+                                  </div>
                               <button 
                                   style={{width: "100%"}} 
                                   type="button" 
                                   className="btn btn-outline-warning"
-                                  
                               >Записать</button>
                             </div>
                       </div>
