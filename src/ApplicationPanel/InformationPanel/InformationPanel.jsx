@@ -320,17 +320,57 @@ const InformationPanel = ({ role }) => {
                   <></>
                 }
                 {/* Блок с информацией о Поставщиках определенного производителя*/}
-                {panelProviderManufacturer?<>asasasa</>:<></>}
-                <div className="loading-data-from-1C-block">
-                    <div
-                      className="pagination-icon-block__icon pagination-icon-block__add-icon cpib__plus-button"
-                      onClick={()=>addProviderManufacturer()}
-                    >
-                      +
-                    </div>
-                    <h5 className="cpib__title"> Поставщики производителя:</h5>
-                    <Manufacturer setGuidIdManufacturer={setGuidIdManufacturer} setProviderManufacturerInfo={setProviderManufacturerInfo} setProviderManufacturerList={setProviderManufacturerList} />
-                </div>
+                {panelProviderManufacturer?
+                    <>
+                      <div className="loading-data-from-1C-block">
+                          <div
+                            className="pagination-icon-block__icon pagination-icon-block__add-icon cpib__plus-button"
+                            onClick={()=>addProviderManufacturer()}
+                          >
+                            -
+                          </div>
+                          <h5 className="cpib__title"> Поставщики производителя:</h5>
+                          <div className="col g-3" style={{marginBottom: '10px', paddingRight: "10px"}}>
+                              <div class="col mb-2">
+                                <input 
+                                    type="email" 
+                                    className="form-control" 
+                                    placeholder="Email" 
+                                    aria-label="Email" 
+                                  
+                                />
+                              </div>
+                              <div class="col mb-4">
+                                <input 
+                                    type="text" 
+                                    className="form-control" 
+                                    placeholder="Телефон" 
+                                    aria-label="Телефон" 
+                                    
+                                />
+                              </div>
+                              <button 
+                                  style={{width: "100%"}} 
+                                  type="button" 
+                                  className="btn btn-outline-warning"
+                                  
+                              >Записать</button>
+                            </div>
+                      </div>
+                    </>:
+                    <>
+                       <div className="loading-data-from-1C-block">
+                            <div
+                              className="pagination-icon-block__icon pagination-icon-block__add-icon cpib__plus-button"
+                              onClick={()=>addProviderManufacturer()}
+                            >
+                              +
+                            </div>
+                            <h5 className="cpib__title"> Поставщики производителя:</h5>
+                            <Manufacturer setGuidIdManufacturer={setGuidIdManufacturer} setProviderManufacturerInfo={setProviderManufacturerInfo} setProviderManufacturerList={setProviderManufacturerList} />
+                        </div>
+                    </>}
+             
                 {providerManufacturerInfo?
                     <>
                     <br/>
