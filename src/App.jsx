@@ -110,7 +110,6 @@ return (
             role={role} 
             title="Добавление данных"
             components={components} 
-            
           />
         </PrivateRoute>
       } />
